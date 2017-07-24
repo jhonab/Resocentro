@@ -1,0 +1,127 @@
+﻿@model Encuesta.ViewModels.Encuesta.EncuestaDetalleViewModel
+<script type="text/javascript">
+
+    function mostrarAmpliacion() {
+        if ($("#div_historial").is(":visible") && Tipo_div_historial == 2) {
+            $("#div_historial").hide("Fold");
+            Tipo_div_historial == 0;
+        } else {
+            @if(Model.isampliacion){
+                <text>
+            if ("@Model.nexamenAmpli" != "0") {
+                var msj = "<div class='col-lg-12'>" +
+                                    "<div class='panel panel-medico' data-collapsed='0'>" +
+                                        "<div class='panel-heading'>" +
+                                            "<div class='panel-title'>Datos de Ampliación </div>" +
+                                        "</div>" +
+                                        "<div class='panel-body chart-responsive'>" +
+                                          '<div class="row"><div class=""><div class="col-md-3"><div class="form-group"><label>Encuestador: </label>&nbsp;&nbsp;' +
+                                               "@Model.encuestadorAmpli" +
+                       '</div></div><div class="col-md-3"><div class="form-group"><label>Supervisor: </label>&nbsp;&nbsp;' +
+                       "@Model.superAmpli" +
+                       '</div></div><div class="col-md-3"><div class="form-group"><label>Tecnólogo: </label>&nbsp;&nbsp;' +
+                       "@Model.tecnoAmpli" +
+                       '</div></div><div class="col-md-3"><div class="form-group"><label>Equipo: </label>&nbsp;&nbsp;' +
+                       "@Model.equipoAmpli" +
+                       '</div></div></div><div class="col-md-12"><div class="form-group"><label>Motivo Ampliación: </label><br/>' +
+                           '@Model.AmpliMotivo' +
+                  '</div>' +
+                '</div>' +
+            "</div>" +
+        "</div>" +
+    "</div>";
+                Tipo_div_historial = 2;
+                $("#div_historial").html(msj);
+                $("#div_historial").show("Blind");
+            } else {
+                var msj = "<div class='col-lg-12'>" +
+                "<div class='panel panel-dark' data-collapsed='0'>" +
+                    "<div class='panel-heading'>" +
+                        "<div class='boxpanel-title'>Datos de Ampliación </div>" +
+                    "</div>" +
+                    "<div class='panel-body chart-responsive'>" +
+                      '<div class="row"><div class=""><div class="col-md-12"><div class="form-group"><code>No se encontro una relación con el estudio de origen.</code>' +
+'</div>' +
+'</div>' +
+"</div>" +
+"</div>" +
+"</div>"
+                Tipo_div_historial = 2;
+                $("#div_historial").html(msj);
+                $("#div_historial").show("Blind");
+            }
+            </text>
+            }
+        }
+    }
+</script>
+<div class="table-medico">
+    <table class="table">
+        <tbody>
+            &nbsp;
+            <tr>
+                <td style="width: 140px;">
+                    <span>Hospitalizado :</span>
+                </td>
+                <td id="_Partial_Encuesta_Hospitalizado"></td>
+            </tr>
+            <tr>
+                <td style="width: 140px;">
+                    <span>Procedencia :</span>
+                </td>
+                <td id="_Partial_Encuesta_Procedencia"></td>
+            </tr>
+            <tr>
+                <td style="width: 140px;">
+                    <span>Encuestador :</span>
+                </td>
+                <td>
+                    @if (Model.encuestador != "")
+                    {
+                        <label>@Html.DisplayFor(model => model.encuestador)</label>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 140px;">
+                    <span>Tecnólogo :</span>
+                </td>
+                <td>
+                    @if (Model.tecnologo != "")
+                    {
+                        <label>@Html.DisplayFor(model => model.tecnologo)</label>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 140px;">
+                    <span>Supervisor :</span>
+                </td>
+                <td>
+                    @if (Model.supervisor != "")
+                    {
+                        <label>@Html.DisplayFor(model => model.supervisor)</label>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 140px;">
+                    <span>Equipo :</span>
+                </td>
+                <td>
+                    @if (Model.equipo != "")
+                    {
+                        <label>@Html.DisplayFor(model => model.equipo)</label>
+                    }
+                    @if (Model.contraste)
+                    {
+                        <br/>
+                        <button class="btn btn-danger box-tools  no-print">CONTRASTE</button>
+                    }
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+</div>

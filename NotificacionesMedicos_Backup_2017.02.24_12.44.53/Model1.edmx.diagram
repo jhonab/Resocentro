@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="53da630fd2294a3984cad4d11a05981c" Name="Diagram1">
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Encuesta" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.EXAMENXATENCION" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Encuesta_Satisfaccion" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.USUARIO" Width="1.5" PointX="3.125" PointY="19.25" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_Encuesta_Satisfaccion_USUARIO" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.EQUIPO" Width="1.5" PointX="0.75" PointY="7.125" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__EXAMENXAT__codig__57DD0BE4" />
+        <AssociationConnector Association="DATABASEGENERALModel.fk_equipoFinal_examenxatencion" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.PACIENTE" Width="1.5" PointX="3.125" PointY="24.375" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_Encuesta_Satisfaccion_PACIENTE" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ATENCION" Width="1.5" PointX="5.625" PointY="22.875" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ESTUDIO" Width="1.5" PointX="0.75" PointY="13.625" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__ATENCION__codigo__25518C17" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__EXAMENXATENCION__58D1301D" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__EXAMENXATENCION__56E8E7AB" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

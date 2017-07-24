@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ResocentroWebModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Consulta">
+          <Key>
+            <PropertyRef Name="ConsultaId" />
+          </Key>
+          <Property Name="ConsultaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="900" />
+          <Property Name="Apellidos" Type="varchar" MaxLength="900" />
+          <Property Name="Email" Type="varchar" MaxLength="900" />
+          <Property Name="Telefono" Type="varchar" MaxLength="900" />
+          <Property Name="Tipo_Estudio" Type="varchar" MaxLength="900" />
+          <Property Name="Estudio" Type="varchar" MaxLength="900" />
+          <Property Name="Mensaje" Type="varchar" MaxLength="900" />
+          <Property Name="Fec_Registro" Type="datetime" />
+          <Property Name="isAtendido" Type="bit" Nullable="false" />
+          <Property Name="Fec_Atencion" Type="datetime" />
+          <Property Name="IsEliminado" Type="bit" Nullable="false" />
+          <Property Name="isLeido" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Historia">
+          <Key>
+            <PropertyRef Name="HistoriaId" />
+          </Key>
+          <Property Name="HistoriaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConsultId" Type="int" Nullable="false" />
+          <Property Name="usuario" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+          <Property Name="mensaje" Type="varchar" MaxLength="8000" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_dbo_Historia_dbo_Consulta_ConsultId">
+          <End Role="Consulta" Type="Self.Consulta" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Historia" Type="Self.Historia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consulta">
+              <PropertyRef Name="ConsultaId" />
+            </Principal>
+            <Dependent Role="Historia">
+              <PropertyRef Name="ConsultId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ResocentroWebModelStoreContainer">
+          <EntitySet Name="Consulta" EntityType="Self.Consulta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Historia" EntityType="Self.Historia" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Historia_dbo_Consulta_ConsultId" Association="Self.FK_dbo_Historia_dbo_Consulta_ConsultId">
+            <End Role="Consulta" EntitySet="Consulta" />
+            <End Role="Historia" EntitySet="Historia" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ResocentroWebModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ResocentroWebEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Consulta" EntityType="ResocentroWebModel.Consulta" />
+          <EntitySet Name="Historia" EntityType="ResocentroWebModel.Historia" />
+          <AssociationSet Name="FK_dbo_Historia_dbo_Consulta_ConsultId" Association="ResocentroWebModel.FK_dbo_Historia_dbo_Consulta_ConsultId">
+            <End Role="Consulta" EntitySet="Consulta" />
+            <End Role="Historia" EntitySet="Historia" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Consulta">
+          <Key>
+            <PropertyRef Name="ConsultaId" />
+          </Key>
+          <Property Name="ConsultaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
+          <Property Name="Telefono" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo_Estudio" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
+          <Property Name="Estudio" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
+          <Property Name="Mensaje" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
+          <Property Name="Fec_Registro" Type="DateTime" Precision="3" />
+          <Property Name="isAtendido" Type="Boolean" Nullable="false" />
+          <Property Name="Fec_Atencion" Type="DateTime" Precision="3" />
+          <Property Name="IsEliminado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Historia" Relationship="ResocentroWebModel.FK_dbo_Historia_dbo_Consulta_ConsultId" FromRole="Consulta" ToRole="Historia" />
+          <Property Name="isLeido" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Historia">
+          <Key>
+            <PropertyRef Name="HistoriaId" />
+          </Key>
+          <Property Name="HistoriaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConsultId" Type="Int32" Nullable="false" />
+          <Property Name="usuario" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="mensaje" Type="String" Nullable="false" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Consulta" Relationship="ResocentroWebModel.FK_dbo_Historia_dbo_Consulta_ConsultId" FromRole="Historia" ToRole="Consulta" />
+        </EntityType>
+        <Association Name="FK_dbo_Historia_dbo_Consulta_ConsultId">
+          <End Type="ResocentroWebModel.Consulta" Role="Consulta" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ResocentroWebModel.Historia" Role="Historia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consulta">
+              <PropertyRef Name="ConsultaId" />
+            </Principal>
+            <Dependent Role="Historia">
+              <PropertyRef Name="ConsultId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ResocentroWebModelStoreContainer" CdmEntityContainer="ResocentroWebEntities">
+          <EntitySetMapping Name="Consulta">
+            <EntityTypeMapping TypeName="ResocentroWebModel.Consulta">
+              <MappingFragment StoreEntitySet="Consulta">
+                <ScalarProperty Name="isLeido" ColumnName="isLeido" />
+                <ScalarProperty Name="IsEliminado" ColumnName="IsEliminado" />
+                <ScalarProperty Name="Fec_Atencion" ColumnName="Fec_Atencion" />
+                <ScalarProperty Name="isAtendido" ColumnName="isAtendido" />
+                <ScalarProperty Name="Fec_Registro" ColumnName="Fec_Registro" />
+                <ScalarProperty Name="Mensaje" ColumnName="Mensaje" />
+                <ScalarProperty Name="Estudio" ColumnName="Estudio" />
+                <ScalarProperty Name="Tipo_Estudio" ColumnName="Tipo_Estudio" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ConsultaId" ColumnName="ConsultaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Historia">
+            <EntityTypeMapping TypeName="ResocentroWebModel.Historia">
+              <MappingFragment StoreEntitySet="Historia">
+                <ScalarProperty Name="mensaje" ColumnName="mensaje" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+                <ScalarProperty Name="ConsultId" ColumnName="ConsultId" />
+                <ScalarProperty Name="HistoriaId" ColumnName="HistoriaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,259 @@
+﻿@model SistemaResocentro.Models.MEDICOEXTERNO
+
+@{
+    Layout = null;
+    ViewBag.Title = "Details";
+}
+<script src="~/js/validar-input.js"></script>
+<script src="~/js/Datetime/moment.js"></script>
+<script src="~/js/Datetime/moment-with-locales.js"></script>
+<script src="~/js/Datetime/bootstrap-datetimepicker.js"></script>
+<link href="~/css/Datetime/bootstrap-datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(function () {
+        iniciarForm();
+        ingresoForm();
+        $('#fechanacio').datetimepicker({
+            locale: 'es',
+            format: 'DD/MM/YYYY',
+            maxDate: '@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")'
+        });
+
+        $("#cmpCorregido").change(validarCMP);
+    });
+    function validar() {
+        return (validar_form("div-medico"));
+    }
+    function validarCMP() {
+        var _result = true;
+        var _cmp = $("#cmpCorregido").val();
+        var _tipo = $("#tipomedico").val();
+        if (_cmp != "") {
+            $.ajax({
+                async: false,
+                cache: false,
+                url: '/Medico/ValidarCMP',
+                data: { cmp: _cmp, tipo: _tipo },
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    if (!data) {
+                        removeHasAll("cmpCorregido");
+                        addError("cmpCorregido");
+                        toastr.error("El N° de CMP ya esta registrado", "Error", opts);
+                        _result = false;
+                    } else {
+                        removeHasAll("cmpCorregido");
+                        addSuccess("cmpCorregido");
+                    }
+                },
+                error: function () {
+                    $("#cmpCorregido").parents(".form-group").first().addClass("has-error");
+                    toastr.error("El N° de CMP ya esta registrado", "Error", opts);
+                    _result = false;
+                }
+            });
+        } else {
+            removeHasAll("cmpCorregido");
+        }
+        return _result;
+    }
+</script>
+<div class="modal-header modal-primary">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">@Model.apellidos, @Model.nombres <strong> CMP:</strong> @Model.cmp</h4>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <div class="row">
+            <div id="div-medico">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <label>Código:</label>
+                            <div class="">
+
+                                @Html.EditorFor(model => model.cmp, new { htmlAttributes = new { @class = "form-control validar", @maxlength = "6", @readonly = "" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo Medico:</label>
+                            @Html.DropDownListFor(model => model.tipomedico, (SelectList)ViewBag.Tipo, "- Seleccione Tipo Médico -", htmlAttributes: new { @class = "form-control " })
+                            @Html.ValidationMessageFor(model => model.tipomedico, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label>CMP/CMV/COP:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.cmpCorregido, new { htmlAttributes = new { @class = "form-control validar", @placeholder = "CMP Corregido", @maxlength = "6" } })
+                                @Html.ValidationMessageFor(model => model.cmpCorregido, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Apellidos:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.apellidos, new { htmlAttributes = new { @class = "form-control validar" } })
+                                @Html.ValidationMessageFor(model => model.apellidos, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nombres:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.nombres, new { htmlAttributes = new { @class = "form-control validar" } })
+                                @Html.ValidationMessageFor(model => model.nombres, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Sexo:</label>
+                            <div class="">
+                                @Html.RadioButtonFor(model => model.SexoMedico, true, new { @class = " validar " }) Masculino
+                                @Html.RadioButtonFor(model => model.SexoMedico, false) Femenino
+                                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nacimiento:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.fechanacio, new { htmlAttributes = new { @class = "form-control " } })
+                                @Html.ValidationMessageFor(model => model.fechanacio, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>DNI:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.dniMedico, new { htmlAttributes = new { @class = "form-control validar" } })
+                                @Html.ValidationMessageFor(model => model.dniMedico, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Celular:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.celular, new { htmlAttributes = new { @class = "form-control validar" } })
+                                @Html.ValidationMessageFor(model => model.celular, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Estado Civil:</label>
+                            <div class="">
+                                @Html.DropDownListFor(model => model.estado_civil, (SelectList)ViewBag.Civil, "- Seleccione Estado Civil -", htmlAttributes: new { @class = "form-control " })
+                                @Html.ValidationMessageFor(model => model.estado_civil, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label>E-mail:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Dirección:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.direccion, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.direccion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Especialidad:</label>
+                            <div class="">
+                                @Html.DropDownListFor(model => model.codigoespecialidad, (SelectList)ViewBag.Especialidad, "- Seleccione Especialidad - ", htmlAttributes: new { @class = "form-control validar" })
+                                @Html.ValidationMessageFor(model => model.codigoespecialidad, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Pago:</label>
+                            <div class="">
+                                <div class="checkbox">
+                                    @Html.CheckBoxFor(model => model.isPaga, new { @mostrar_respuesta = "div_pago" })
+                                    @Html.ValidationMessageFor(model => model.isPaga, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="div_pago" class="col-md-12">
+                            <div class="form-group">
+                                <label>Emite Documento:</label>
+                                <div class="">
+                                    <div class="checkbox">
+                                        @Html.CheckBoxFor(model => model.isDocumento, new { @mostrar_respuesta = "div_documentopago" })
+                                        @Html.ValidationMessageFor(model => model.isDocumento, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $(function () {
+                                    $("#DocumentoPago").val("@Model.DocumentoPago");
+                                });
+                            </script>
+                            <div id="div_documentopago" class="col-md-12">
+                                <div class="form-group">
+                                    <label>Típo Documento:</label>
+                                    <div class="">
+                                        @Html.DropDownListFor(model => model.DocumentoPago, (SelectList)ViewBag.DocumentoPago,"Seleccione", htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.DocumentoPago, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Hobby:</label>
+                            <div class="">
+                                @Html.TextAreaFor(model => model.hobby, new { @class = "form-control", @rows = "5" })
+                                @Html.ValidationMessageFor(model => model.hobby, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Activo Session Web:</label>
+                            <div class="">
+                                @Html.CheckBoxFor(model => model.isActiveWeb, new { @mostrar_respuesta = "div_sesion" })
+                                @Html.ValidationMessageFor(model => model.isActiveWeb, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div id="div_sesion" class="col-md-12" >
+                            <div class="form-group">
+                                <label>Usuario:</label>
+                                <div class="">
+                                    @Html.TextBoxFor(model => model.usuario, new { @class = "form-control", @readonly="" })
+                                    @Html.ValidationMessageFor(model => model.usuario, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Clave:</label>
+                                <div class="">
+                                    @Html.TextBoxFor(model => model.clave, new { @class = "form-control", @readonly="" })
+                                    @Html.ValidationMessageFor(model => model.clave, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button id="btnregistrar" type="submit" class="btn btn-success" onclick="return validar();"><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp; Modificar </button>
+    </div>
+}
+

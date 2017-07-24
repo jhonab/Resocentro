@@ -1,0 +1,71 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+    xmlns:telerikControls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"    
+    x:Class="Resocentro_Desktop.Interfaz.Chat.frmListChat" 
+            Height="auto" MaxHeight="400" Width="250" Background="{DynamicResource Windows.Background}" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+
+        <DataTemplate x:Key="ListBoxItemTemplate">
+            <Grid Background="{DynamicResource Windows.Background}" >
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Path Data="M16,0C24.837036,0 32,7.1629944 32,16 32,24.836975 24.837036,32 16,32 7.1630249,32 0,24.836975 0,16 0,7.1629944 7.1630249,0 16,0z" Stretch="Uniform" Fill="#FF0DFF06" Width="10" Height="10" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" Grid.Column="0">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <TransformGroup.Children>
+                                <RotateTransform Angle="0" />
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </TransformGroup.Children>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+                <TextBlock Text="{Binding username}" Background="{DynamicResource Windows.Background}" Foreground="White" Grid.Column="1" Margin="10 0 0 0" HorizontalAlignment="Left" />
+            </Grid>
+        </DataTemplate>
+
+    </UserControl.Resources>
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="241*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Background="#FF406691" >
+            <Grid Margin="3">
+                <StackPanel Orientation="Horizontal">
+                    <Grid>
+                        <Border x:Name="Mask"
+						Background="White"
+						CornerRadius="30"/>
+                        <StackPanel>
+                            <StackPanel.OpacityMask>
+                                <VisualBrush Visual="{Binding ElementName=Mask}" />
+                            </StackPanel.OpacityMask>
+                            <Image x:Name="imgbuddychat" Width="60" Height="60" Stretch="UniformToFill" Source="img/profile.png"/>
+                        </StackPanel>
+                    </Grid>                  
+                    
+                    <Label Content="Usuario Conectado"  Name="lblusuario" VerticalAlignment="Center" Foreground="White"/>
+                </StackPanel>
+            </Grid>
+
+        </StackPanel>
+        <Grid  Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="241*"/>
+            </Grid.RowDefinitions>
+            <!--"-->
+            <telerik:RadListBox Grid.Row="1" x:Name="listChat" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Auto" Width="250" VerticalAlignment="Top" HorizontalAlignment="Left" BorderThickness="0" Background="{DynamicResource Windows.Background}"   telerikControls:StyleManager.Theme="Windows8" SelectionChanged="listChat_SelectionChanged" ItemTemplate="{StaticResource ListBoxItemTemplate}">
+            </telerik:RadListBox>
+        </Grid>
+    </Grid>
+
+</UserControl>

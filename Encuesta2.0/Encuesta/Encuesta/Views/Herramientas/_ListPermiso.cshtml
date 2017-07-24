@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Encuesta.Models.Permiso>
+<table class="table table-striped table-bordered table-hover" id="table_sedes">
+    <thead>
+        <tr>
+            <th>Permiso</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="padding: 1px!important">@Html.DisplayFor(modelItem => item.descripcion)</td>
+                <td class="table_id" style="padding: 1px!important">
+                    <button type="button" class="btn btn-outline btn-danger btn-circle" onclick="eliminarpermiso('@item.idpermiso')"><i class="fa fa-times"></i></button>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

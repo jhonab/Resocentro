@@ -1,0 +1,212 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    .width-120{
+        width:120px!important;
+    }
+     .width-90{
+        width:90px!important;
+    }
+       .width-40{
+        width:40px!important;
+    }
+      .width-1{
+        width:1px!important;
+    }
+</style>
+<script type="text/javascript">
+    
+    $(function () {
+        tableExamen = $('#myDataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "@Url.Action("ListaAsync", "RealizarExamen")",
+            //"bProcessing": true,
+            "iDisplayLength": 20,
+            "lengthMenu": [[20, 25, 50, -1], [20, 25, 50, "All"]],
+            "aoColumns": [
+                             { "sName": "chk" },//0
+                             { "sName": "N Examen" },//1
+                             { "sName": "Paciente" },//2
+                             { "sName": "HCita", "bVisible": false },//3
+                             { "sName": "HAdmin." },//4
+                             { "sName": "Min." },//5
+                             { "sName": "Concicion", "bVisible": false },//6
+                             { "sName": "Estudio" },//7
+                             { "sName": "Equipo Asignado" },//8
+                             {
+                                 "sName": "Acciones",
+                                 "mRender": function (data, type, full) {
+                                     return "";
+                                 }
+                             },//9
+                             { "sName": "isvip", "bVisible": false },//10
+                             { "sName": "validado", "bVisible": false },//11 Supervisado
+                             { "sName": "validacion", "bVisible": false },//12 Solicita validacionTenologo
+                             { "sName": "sedacion", "bVisible": false },//13
+                             { "sName": "isIniciado", "bVisible": false },//14 enviado a la modalidad
+                             { "sName": "isActivado", "bVisible": false },//15 si ya paso mas de 15 min para solicitar supervision
+                             { "sName": "minrestante", "bVisible": false },//16 mint faltantes
+            { "sName": "atencion", "bVisible": false },//17 numero cita
+            { "sName": "contraste", "bVisible": false }//18 contraste
+            ],
+            "createdRow": function (row, aData, dataIndex) {
+                //seleccionar celda
+                $('td:eq(0)', row).html('<input type="checkbox" onchange="selecctRow(' + aData[1] + ');"/>');
+
+                // si es una validacion pendiente
+                var fec_admi = new Date((aData[4]).substring(6, 10), parseInt((aData[4]).substring(3, 5)) - 1, (aData[4]).substring(0, 2), 0, 0, 0);
+                var fec_now = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0);
+
+
+                var isVisibleContraste = true;
+                if (aData[18] == "True") {
+                    isVisibleContraste = false;
+                } else {
+                    isVisibleContraste = true;
+                }
+                @*$.ajax({
+                   async: false,
+                   cache: false,
+                   url: "@Url.Action("VerificarRegistroContraste", "RealizarExamen")",
+                   data: { atencion: (aData[17]) },
+               dataType: "json",
+               type: "POST",
+               error: function () {
+                   mostrarmensaje(4, 'Ocurrio un problema y <b>no</b> se enviaron los datos al sistema');
+               },
+               success: function (data) {
+                   isVisibleContraste = !data.result;
+               }
+           }
+                );*@
+
+                if (fec_admi < fec_now) {
+                    $(row).addClass('warning');
+                }
+                else {
+                    $('td:eq(3)', row).html((aData[4]).substring(11));
+                }
+                // si es Sedacion
+                if (aData[13] == "True") {
+                    $(row).addClass('danger');
+                }
+                // si es VIP
+                if (aData[10] == "True") {
+                    $('td:eq(2)', row).html(aData[2] + '&nbsp;&nbsp;&nbsp; <i class="fa fa-star fa-lg fa-spin" style="color: #F8DB07;"></i>');
+                }
+              
+                // si esta Supervisado (
+                if (aData[11] == "True") {
+                    $('td:eq(7)', row).html('<button type="button" onclick="RealizarExamen(' + aData[1] + ')" class="btn btn-success width-120" ><i class="fa fa-check" /> &nbsp;&nbsp;Validación </button>');
+                    $('td:eq(1)', row).html(aData[1] + '&nbsp;&nbsp;&nbsp;<i class="fa fa-check fa-lg " style="color: #47DB3B"></i>');
+
+                    if (isVisibleContraste) {
+                        //Contraste
+                        $('td:eq(7)', row).append('<br/><button type="button" style="margin-top:5px !important;" onclick="agregarContraste(' + aData[1] + ',' + aData[17] + ')" class="btn btn-orange btn-xs " ><i class="fa fa-flask "/>&nbsp;&nbsp; Contraste </button>');
+                    }
+                }
+                    // si esta esperando ser Supervisado
+                else if (aData[12] == "True") {
+                    $('td:eq(7)', row).html('<button type="button" onclick="rellamadaSupervisor(' + aData[1] + ')" class="btn btn-info width-120" ><i class="fa fa-bullhorn" /> &nbsp;&nbsp;Rellamada </button>');
+                    $('td:eq(1)', row).html(aData[1] + '&nbsp;&nbsp;&nbsp;<i class="fa fa-spinner fa-lg fa-spin" style="color: #F8A003"></i>');
+                    if (isVisibleContraste) {
+                        //Contraste
+                        $('td:eq(7)', row).append('<br/><button type="button" style="margin-top:5px !important;" onclick="agregarContraste(' + aData[1] + ',' + aData[17] + ')" class="btn btn-orange btn-xs width-120" ><i class="fa fa-flask "/>&nbsp;&nbsp; Contraste </button>');
+                    }
+                }
+                    // si esta enviado a la modalidad
+                else if (aData[14] == "True") {
+                    $('td:eq(1)', row).html(aData[1] + '&nbsp;&nbsp;&nbsp;<i class="fa fa-joomla fa-lg fa-spin" style="color: #078EF8"></i>');
+                    $('td:eq(7)', row).html('<button type="button" onclick="SolicitarSupervision(' + "'" + aData[1] + "'" + ')"  class="btn btn-blue width-120" ><i class="fa fa-spinner fa-spin" /> &nbsp;&nbsp;Supervisión</button>');
+                    if (isVisibleContraste) {
+                        //Contraste
+                        $('td:eq(7)', row).append('<br/><button type="button" style="margin-top:5px !important;" onclick="agregarContraste(' + aData[1] + ',' + aData[17] + ')" class="btn btn-orange btn-xs" ><i class="fa fa-flask "/>&nbsp;&nbsp; Contraste </button>');
+                    }
+                    /*if (aData[14] == "True") {
+                        $('td:eq(8)', row).html('<input type="button" onclick="SolicitarSupervision(' + aData[0] + ')"  class="btn btn-primary" value="Supervisión"/>');
+                    }
+                    else {
+                        $('td:eq(8)', row).html("Faltan : "+ aData[0] +" .min")
+
+                    }*/
+                }
+                    // si aun no lo revisan
+                else {
+                    $('td:eq(7)', row).html('<button type="button" onclick="cargarDatosExamen(' + aData[1] + ',2)" class="btn btn-default width-120" ><i class="fa fa-joomla fa-spin"/>&nbsp;&nbsp;Modalidad</button>');
+                    $('td:eq(1)', row).html(aData[1]);//mostrar solo en N Examen
+                }
+
+                $('td:eq(7)', row).addClass('width-120');
+                $('td:eq(7)', row).addClass('texto-medio');
+                $('td:eq(6)', row).addClass('width-120');
+                $('td:eq(6)', row).addClass('texto-medio');
+                $('td:eq(5)', row).addClass('texto-medioV');
+                $('td:eq(3)', row).addClass('width-90');
+                $('td:eq(3)', row).addClass('texto-medioV');
+                $('td:eq(2)', row).addClass('texto-medioV');
+                $('td:eq(1)', row).addClass('width-90');
+                $('td:eq(1)', row).addClass('texto-medio');
+                $('td:eq(0)', row).addClass('width-1');
+                $('td:eq(0)', row).addClass('texto-medioV');
+
+                // minutos trascurridos 
+                $('td:eq(4)', row).addClass('texto-medio');
+                $('td:eq(4)', row).addClass('width-40');
+                if (parseInt(aData[5]) > 30) {
+                    $('td:eq(4)', row).addClass('tiempo_excedente');
+                }
+                else if (parseInt(aData[5]) > 15) {
+                    $('td:eq(4)', row).addClass('tiempo_intermedio');
+                }
+                else {
+                    $('td:eq(4)', row).addClass('tiempo_correcto');
+                }
+
+                //agregarboton de informacion Paciente
+                $('td:eq(2)', row).append('<br /> <button type="button" onclick="cargarDatosExamen(' + aData[1] + ',1)"  class="btn btn-outline btn-info btn-xs" ><i class="fa fa-info-circle"></i>&nbsp;&nbsp;Info</button>');
+
+                //agregarboton de informacion Apmpliacion Paciente
+                if (aData[7].indexOf("Ampliaci") > -1) {
+                    $('td:eq(2)', row).append('<button type="button" onclick="cargarInfoAmpliacion(' + aData[1] + ')"  class="btn btn-outline btn-warning btn-xs" ><i class="fa fa-info-circle"></i>&nbsp;&nbsp;Ampliación</button>');
+                }
+
+                //agregarboton de informacion Encuesta
+                $('td:eq(5)', row).append('<br /> <input type="button" onclick="verEncuesta(' + aData[1] + ')"  class="btn btn-outline btn-black btn-xs" value="Encuesta"/>');
+
+
+            },
+            //"rowCallback": function (row, data) {
+            //    selected.forEach(function (val, idx) {
+            //        if (val == data[1]) {
+            //            $('td:eq(0)', row).html('<input type="checkbox" checked onchange="selecctRow(' + data[1] + ');"/>');
+            //            $(row).addClass('selected');
+            //        }
+            //    });
+            //}
+        });
+
+        $("#div_time").html('<p class="pull-right">Last Refresh : <b>' + myDate.toLocaleTimeString() + '</b></p>');
+        $('#myDataTable').css("width", "100%!important");
+    });
+</script>
+
+<div class="table-responsive">
+    <table id="myDataTable" class="table compact table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>N° Examen</th>
+                <th>Paciente</th>
+                <th>H. Cita</th>
+                <th>H. Admin.</th>
+                <th>Min. </th>
+                <th>Cond.</th>
+                <th>Estudio</th>
+                <th>Equipo Asignado</th>
+                <th></th>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+</div>

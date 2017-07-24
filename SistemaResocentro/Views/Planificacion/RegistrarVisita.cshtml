@@ -1,0 +1,197 @@
+﻿@model SistemaResocentro.Models.Planificacion
+@{
+    ViewBag.Title = "RegistrarVisita";
+    Layout = null;
+}
+<script src="~/js/validar-input.js"></script>
+<link href="~/js/select2/select2-bootstrap.css" rel="stylesheet" />
+<link href="~/js/select2/select2.css" rel="stylesheet" />
+<script src="~/js/select2/select2.min.js"></script>
+@*<link href="~/js/chosen/chosen.bootstrap.css" rel="stylesheet" />
+    <script src="~/js/chosen/chosen.jquery.min.js"></script>*@
+
+<script type="text/javascript">
+    var _fe = '@DateTime.Now.ToString("MM/dd/yyyy")';
+    $(function () {
+        //$("._cbo2").chosen({
+        //    width: "100%",
+        //    placeholder: "Select a state",
+        //    allowClear: true
+        //});
+        $("._cbo2").select2({
+            placeholder: "Select a state",
+            allowClear: true
+        });
+        $('#fechaTab2').datetimepicker({
+            sideBySide: true,
+            locale: 'es',
+            defaultDate: "@DateTime.Now.ToString("yyyy/MM/dd HH:mm")",
+            minDate: '@DateTime.Now.ToString("yyyy/MM/dd")'
+        });
+
+        cargarVisitasTab2(_fe);
+        $("#fechaTab2").on("dp.change", function (e) {
+            if (_fe != e.date.format("MM/DD/YYYY")) {
+                _fe = e.date.format("MM/DD/YYYY")
+                cargarVisitasTab2(_fe);
+            }
+        });
+
+    });
+
+    function cargarVisitasTab2(fecha) {
+        var _newfec = fecha.replace("/", "%2F").replace("/", "%2F");
+        $("#planificar_visita").load("/Planificacion/VisitasxDia?fecha=" + _newfec + "&show=false", function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+            $("#lblplanificar_visitas").html("Visitas programadas para la fecha: " + fecha.substring(3, 6) + fecha.substring(0, 3) + fecha.substring(6, 10));
+        });
+    }
+
+    function validar() {
+        if (validar_form("div_create")) {
+            var result = true;
+            var hoy = "@DateTime.Now.ToString("MM/dd/yyyy")";
+            if (hoy == _fe)
+                result = validarcantidadPlanificacion() && result;
+            result = (validarConcurrecia() && result)
+            return result;
+        } else
+            return false;
+
+    }
+
+    function validarcantidadPlanificacion() {
+        var _result = true;
+        $.ajax({
+            async: false,
+            cache: false,
+            url: '/Planificacion/validarCantidadPlanificaciones',
+            data: {},
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                if (!data) {
+                    toastr.warning("No puede registrar visitas para hoy por que no tiene la cantidad mínima de visitas.", "Error", opts);
+                    _result = false;
+                }
+            },
+            error: function () {
+                toastr.error("No se comprobó la cantidad de planificaciones.", "Advertencia", opts);
+                _result = false;
+            }
+        });
+        return _result;
+    }
+
+    function validarConcurrecia() {
+        //para cmp y codigoclinica
+
+        var cmp = $("#cmp").val();
+        var clinica = $("#codigoclinica").val();
+        var _newfec = $("#fecha").val();
+        var _result = true;
+        $.ajax({
+            async: false,
+            cache: false,
+            url: '/Planificacion/validacionConcurrencia',
+            data: { clinica: clinica, cmp: cmp, fecha: _newfec },
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                if (!data.resultado) {
+                    toastr.warning(data.msj, "Advertencia", opts);
+                    _result = false;
+                }
+            },
+            error: function () {
+                toastr.error("No se comprobó la concurrencia de visita al Médico.", "Error", opts);
+                _result = false;
+            }
+        });
+        return _result;
+    }
+
+    function cargarMedicos() {
+        var abbr = $("#codigoclinica").val();
+        $.ajax({
+            url: "@Url.Action("getMedicos", "Planificacion")",
+            data: { codigoclinica: abbr },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                toastr.error("No se comprobó la concurrencia de visita al Médico.", "Error", opts);
+            },
+            success: function (data) {
+                var items = "";
+                items += "<option value=''>- Seleccione el Médico -</option>";
+                $.each(data, function (i, item) {
+                    items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                });
+                $("#cmp").html(items).select2();
+                //$('#cmp').trigger("chosen:updated");
+            }
+        });
+    }
+
+</script>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-6" id="div_create">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label>Institución Médica:</label>
+                <div class="col-sm-12">
+                    @Html.DropDownListFor(model => model.codigoclinica, (SelectList)ViewBag.Institucion, "- Seleccione Institución Médica -", htmlAttributes: new { @class = "form-control _cbo2 validar", @onchange = "cargarMedicos()" })
+                    @Html.ValidationMessageFor(model => model.codigoclinica, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Médico:</label>
+                <div class="col-sm-12">
+                    @Html.DropDownListFor(model => model.cmp, (SelectList)ViewBag.Medico, "- Seleccione Institución Médica -", htmlAttributes: new { @class = "form-control _cbo2 validar" })
+                    @Html.ValidationMessageFor(model => model.cmp, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Motivo:</label>
+                <div class="col-sm-12">
+                    @Html.DropDownListFor(model => model.motivo, (SelectList)ViewBag.Motivos, "- Seleccione Motivo -", htmlAttributes: new { @class = "form-control _cbo2 validar" })
+                    @Html.ValidationMessageFor(model => model.motivo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Fecha:</label>
+                <div class='input-group date' id='fechaTab2'>
+                    @Html.TextBoxFor(model => model.fecha, new { @class = "form-control validar" })
+                    <span class="input-group-addon btn-blue">
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                </div>
+                @Html.ValidationMessageFor(model => model.codigoclinica, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label></label>
+                <div class="col-sm-12">
+                    <button id="btnregistrar" type="submit" class="btn btn-success pull-right" onclick="return validar();"><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp; Registrar </button>
+                </div>
+            </div>
+            <br />
+            <br />
+        </div>
+        <div class="col-md-6" id="">
+            <label id="lblplanificar_visitas"></label>
+            <div id="planificar_visita">
+
+            </div>
+        </div>
+
+    </div>
+}

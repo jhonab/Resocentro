@@ -1,0 +1,36 @@
+﻿.sprite_google_download {
+    
+    background: no-repeat url(//ssl.gstatic.com/mail/sprites/newattachmentcards-1203a0f412c82bdc576da4b309729e7f.png) -88px -129px;
+    padding-left:21px;
+    padding-bottom:9px;
+}
+
+.sprite_google_view {
+    background: no-repeat url(//ssl.gstatic.com/mail/sprites/newattachmentcards-1203a0f412c82bdc576da4b309729e7f.png) -283px -87px;
+    padding-left:21px;
+    padding-bottom:9px;
+}
+
+.sprite_google_pdf {
+    background: no-repeat url(//ssl.gstatic.com/mail/sprites/newattachmentcards-1203a0f412c82bdc576da4b309729e7f.png) -162px -47px ;
+    width: 40px;
+    height: 40px;
+     
+     
+     margin:10px 0 10px 60px;
+         
+}
+.sprite_google_div{
+      
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  float: left;
+  margin-right: 8px;
+  min-width: 0;
+  padding: 10px;
+  line-height: 23px;
+  cursor: pointer;
+}
+.sprite_google_contenedor:hover{
+      background:rgba(255, 216, 0,1);
+}

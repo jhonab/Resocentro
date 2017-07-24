@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="99c45c396c5240e79692ab3911fa5004" Name="Diagram1" ZoomLevel="90" ShowGrid="false" DisplayType="true">
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Aplicativo" Width="1.5" PointX="8.25" PointY="3.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.EMPLEADO" Width="1.5" PointX="3" PointY="20.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Notificaciones" Width="1.5" PointX="10.5" PointY="20.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Permiso" Width="1.5" PointX="10.5" PointY="3.375" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_Notificaciones_Aplicativo" ManuallyRouted="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_Permiso_Aplicativo" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Encuesta" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.MED_PRE_ENTREVISTA" Width="2" PointX="2.75" PointY="3.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.INTEGRACION" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ESTUDIO_COMPANIA" Width="1.875" PointX="0.75" PointY="5.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.REGISTRODETECNICA" Width="1.875" PointX="7.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.POSTPROCESO" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Equipo_PostProceso" Width="2.125" PointX="10.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.MEDICOEXTERNO" Width="1.75" PointX="8" PointY="40.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Encuesta_Satisfaccion" Width="2.125" PointX="7.5" PointY="9.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Estudio_PostProceso" Width="2.125" PointX="10.75" PointY="4.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Tipo_Permiso" Width="1.5" PointX="10.75" PointY="6.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.SUCURSAL" Width="1.5" PointX="8.25" PointY="5.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CLASE" Width="1.5" PointX="10.75" PointY="8.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CARTAGARANTIA" Width="1.75" PointX="10.5" PointY="22.375" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__CARTAGARANT__cmp__282DF8C2" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Insumo_Cum_Sunasa" Width="1.5" PointX="8.5" PointY="7.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CARGO" Width="1.5" PointX="0.75" PointY="20.375" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__EMPLEADO__codigo__4E53A1AA" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.TKT_Ticketera" Width="1.5" PointX="12.75" PointY="2.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HONORARIOTECNOLOGO" Width="2.125" PointX="3" PointY="7.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.INFORMEMEDICO" Width="2.125" PointX="7.5" PointY="10.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ExamenAmpliacion" Width="1.5" PointX="12.75" PointY="6.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.EQUIPO" Width="1.5" PointX="0.75" PointY="9.375" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__HONORARIO__codig__625A9A57" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Motivo_Entre_Turno" Width="1.5" PointX="0.75" PointY="0.875" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Solicitud_Entre_Turno" Width="1.75" PointX="3" PointY="1.75" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_Solicitud_Entre_Turno_Motivo_Entre_Turno" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HORARIO" Width="1.5" PointX="3" PointY="8.25" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__HORARIO__codigoe__6442E2C9" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Contraste" Width="1.5" PointX="7.5" PointY="11.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.USUARIO" PointX="5" PointY="16" Width="2.25" />
+        <AssociationConnector Association="DATABASEGENERALModel.USUARIO_REVISA" />
+        <AssociationConnector Association="DATABASEGENERALModel.USUARIO_TRAMITADOR" />
+        <AssociationConnector Association="DATABASEGENERALModel.USUARIO_UPDATE" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__Contraste__tecno__375BF910" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__Contraste__usuar__39444182" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__USUARIO__dni__0E391C95" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_Encuesta_Satisfaccion_USUARIO" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_Informe_VerificadorDeUsuarioValidador" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_Notificaciones_USUARIO" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Visor" Width="1.5" PointX="12.75" PointY="8.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Detalle_Contraste" Width="1.5" PointX="10.75" PointY="10.125" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_Detalle_Contraste_Contraste" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_Detalle_Contraste_Insumo_Cum_Sunasa" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.AL_Insum" Width="1.5" PointX="12.75" PointY="12.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.SegUsuarioXRol" Width="1.5" PointX="7.5" PointY="25.25" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__SegUsuari__codig__27458CD8" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ExamenXEvento" Width="1.5" PointX="0.75" PointY="13.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Sedacion" Width="1.5" PointX="7.5" PointY="27.75" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__Sedacion__tecnol__3B2C89F4" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__Sedacion__usuari__3D14D266" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Detalle_Sedacion" Width="1.5" PointX="9.75" PointY="31.875" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_Detalle_Sedacion_Insumo_Cum_Sunasa" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_Detalle_Sedacion_Sedacion" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.EventosImpax" Width="1.5" PointX="3.375" PointY="13.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Insti_Prom_Medico" Width="1.5" PointX="15.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.SUCURSALXUSUARIO" Width="2" PointX="10.5" PointY="16.125" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.UNIDADNEGOCIO" Width="1.5" PointX="6" PointY="3.625" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_SUCURSAL_UNIDADNEGOCIO" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_SUCURSALXUSUARIO_SUCURSAL" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_SUCURSALXUSUARIO_USUARIO" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Calificacion_Paciente" Width="1.5" PointX="15.375" PointY="4.75" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_AL_Insum_AL_Insum" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.EmpresaServicio" Width="1.5" PointX="0.75" PointY="22.375" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.IncidenteEquipo" Width="1.5" PointX="3" PointY="42" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.PiezasRevision" Width="1.5" PointX="7.5" PointY="42.625" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.RevisionIncidente" Width="1.5" PointX="5.25" PointY="42.125" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_EQUIPO_EmpresaServicio" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_IncidenteEquipo_EQUIPO" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_RevisionIncidente_IncidenteEquipo" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_PiezasRevision_RevisionIncidente" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.AdjuntoIncidente" Width="1.5" PointX="15.375" PointY="10.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.SupervisarEncuesta" Width="3.25" PointX="8" PointY="45.5" />
+        <AssociationConnector Association="DATABASEGENERALModel.Informante" />
+        <AssociationConnector Association="DATABASEGENERALModel.Supervisor" />
+        <AssociationConnector Association="DATABASEGENERALModel.Validador" />
+        </Diagram>
+      <Diagram DiagramId="b0e473b08021486d9944284706b8bc57" Name="Encuestas" ZoomLevel="93" >
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_CEREBRO" Width="3.125" PointX="0.625" PointY="0.5" FillColor="0, 122, 204" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_ABDOMEN" Width="3.125" PointX="0.625" PointY="6.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_CADERA" Width="3.125" PointX="0.625" PointY="7" IsExpanded="false" FillColor="0, 122, 204" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_CODO" Width="3.125" PointX="0.625" PointY="1" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_COLUMNA_A" Width="3.125" PointX="0.625" PointY="1.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_COLUMNA_B" Width="3.125" PointX="0.625" PointY="2" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_COLUMNA_C" Width="3.125" PointX="0.625" PointY="2.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_EXTREMIDAD" Width="3.125" PointX="0.625" PointY="4" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_MAMA" Width="3.125" PointX="0.625" PointY="5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_MANO" Width="3.125" PointX="0.625" PointY="4.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_ONCOLOGICO" Width="3.125" PointX="0.625" PointY="5.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_PIE" Width="3.125" PointX="0.625" PointY="3" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_RODILLA" Width="3.125" PointX="0.625" PointY="3.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_TEM_AORTA" Width="3.125" PointX="3.875" PointY="3" IsExpanded="false" FillColor="200, 0, 5" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_TEM_ARTERIAS" Width="3.125" PointX="3.875" PointY="1.5" IsExpanded="false" FillColor="200, 0, 5" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_TEM_CEREBRAL" Width="3.125" PointX="3.875" PointY="3.5" IsExpanded="false" FillColor="98, 0, 2" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_TEM_COLONOSCOPIA" Width="3.125" PointX="3.875" PointY="1" IsExpanded="false" FillColor="200, 0, 5" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_TEM_MUSCULO" Width="3.125" PointX="3.875" PointY="0.5" IsExpanded="false" FillColor="200, 0, 5" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_HOMBRO" Width="3.125" PointX="0.625" PointY="6" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_TEM_NEUROCEREBRO" Width="3.125" PointX="3.875" PointY="2.5" IsExpanded="false" FillColor="200, 0, 5" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_TEM_CEREBRO" Width="3.125" PointX="3.875" PointY="4" IsExpanded="false" FillColor="98, 0, 2" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_TEM_GENERICA" Width="3.125" PointX="3.875" PointY="2" IsExpanded="false" FillColor="192, 0, 0" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_GENERICA_EMETAC" Width="3" PointX="4.375" PointY="5.75" FillColor="192, 255, 255" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ESPECIALIDAD" Width="1.5" PointX="4.375" PointY="7.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HISTORIA_CLINICA_FIBROSCAN" Width="1.5" PointX="6.375" PointY="7.75" />
+      </Diagram>
+      <Diagram DiagramId="dba035a37216448cbe3f1a5cdaa62ab3" Name="Core" ZoomLevel="71" >
+        <EntityTypeShape EntityType="DATABASEGENERALModel.DOCESCANEADO" Width="1.5" PointX="6.25" PointY="4.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ESCANADMISION" Width="1.5" PointX="6.25" PointY="3.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ESTUDIO" Width="1.5" PointX="1.25" PointY="1.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CLINICAHOSPITAL" Width="1.5" PointX="5.875" PointY="2.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.COMPANIASEGURO" Width="1.5" PointX="5.75" PointY="1.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ATENCION" Width="1.5" PointX="2.25" PointY="3" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.PACIENTE" Width="1.5" PointX="0.75" PointY="6.5" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__ATENCION__codigo__25518C17" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.EXAMENXCITA" Width="1.5" PointX="8" PointY="0.75" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__EXAMENXCITA__59C55456" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.EXAMENXATENCION" Width="1.5" PointX="10.5" PointY="0.75" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__EXAMENXATENCION__58D1301D" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__EXAMENXATENCION__56E8E7AB" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CITA" Width="1.5" PointX="8.125" PointY="7.375" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__ATENCION__236943A5" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__CITA__2BFE89A6" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__CITA__codigopaci__2CF2ADDF" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__EXAMENXCITA__5BAD9CC8" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_CITA_COMPANIASEGURO" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

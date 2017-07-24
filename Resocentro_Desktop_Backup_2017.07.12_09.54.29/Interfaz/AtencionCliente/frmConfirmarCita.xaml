@@ -1,0 +1,109 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        x:Class="Resocentro_Desktop.Interfaz.AtencionCliente.frmConfirmarCita"
+        Title="frmConfirmarCita" Background="{DynamicResource Windows.Background}" Height="502" Width="768">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="38"/>
+            <RowDefinition Height="174*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="114"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="44"/>
+
+        </Grid.RowDefinitions>
+        <Label Content="Paciente" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="66"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="159*"/>
+                <ColumnDefinition Width="31*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel >
+                <Label Content="JHON ALVAREZ BENITO" x:Name="lblpaciente" VerticalContentAlignment="Center" FontWeight="Bold" Margin="60,0,5,0" FontSize="20" Foreground="White">
+                    <telerik:RadContextMenu.ContextMenu>
+                        <telerik:RadContextMenu BorderThickness="0">
+                            <telerik:RadMenuItem Header="Historia Clínica de Paciente" Click="HCPaciente_Click">
+                                <telerik:RadMenuItem.Icon>
+                                    <Image Source="/Resocentro_Desktop;component/img/buscar.png"/>
+                                </telerik:RadMenuItem.Icon>
+                            </telerik:RadMenuItem>
+                            <telerik:RadMenuItem Header="Info Paciente" Click="InfoPaciente_Click"/>
+                        </telerik:RadContextMenu>
+                    </telerik:RadContextMenu.ContextMenu>
+                </Label>
+            </StackPanel>
+            <Label x:Name="lblcodigocarta" Content=""  FontWeight="Bold" FontSize="14" Grid.Column="1">
+                <telerik:RadContextMenu.ContextMenu>
+                    <telerik:RadContextMenu x:Name="ContextMenuPaciente" BorderThickness="0">
+                        <telerik:RadMenuItem Header="Ver Carta de Garantia" Click="MenuContextCartaGarantia_Click"/>
+                    </telerik:RadContextMenu>
+                </telerik:RadContextMenu.ContextMenu>
+            </Label>
+        </Grid>
+
+        <Label Name="lbltelefono" Content="Tel.: 963718372 -" HorizontalAlignment="Right" Margin="0,9,20,0"  VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="Auto" Foreground="White"/>
+        <telerik:RadGridView Name="gridEstudios" Grid.Row="2" Margin="5,5,5,0" AutoGenerateColumns="False" ShowGroupFooters="True" ShowGroupPanel="False" CellValidating="gridEstudios_CellValidating" RowEditEnded="gridEstudios_RowEditEnded">
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Hora" DataMemberBinding="{Binding fecha}" IsReadOnly="False" />
+                <telerik:GridViewDataColumn Header="Estudio" DataMemberBinding="{Binding nombreestudio}" IsReadOnly="False"/>
+                <telerik:GridViewDataColumn Header="moneda" DataMemberBinding="{Binding moneda}" IsReadOnly="False"/>
+                <telerik:GridViewDataColumn Header="Precio" DataMemberBinding="{Binding preciobruto}"  DataFormatString="{}{0:0.##}">
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction Caption="Total: " ResultFormatString="{}{0:0.##}" />
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Header="Cob" DataMemberBinding="{Binding cobertura}" DataFormatString="{}{0:F} %" IsReadOnly="False" >
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction Caption="Total: " ResultFormatString="{}{0:0.##}" />
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Header="Des." DataMemberBinding="{Binding descuento}" DataFormatString="{}{0:0.##}" IsReadOnly="False" >
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction Caption="Total: " ResultFormatString="{}{0:0.##}" />
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Header="Neto" DataMemberBinding="{Binding precioneto}" DataFormatString="{}{0:0.##}" IsReadOnly="False" >
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction Caption="Total: " ResultFormatString="{}{0:0.##}" />
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+        <Grid HorizontalAlignment="Left" Height="100" Margin="364,36,0,0" Grid.Row="4" VerticalAlignment="Top" Width="100" Grid.RowSpan="2"/>
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="73*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Comentarios:" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top"/>
+            <Label Content="Nuevos Comentarios" Grid.Column="1" HorizontalAlignment="Left" Margin="10,1,0,0" VerticalAlignment="Top"/>
+            <TextBox Grid.Row="1" Name="txtcomentarios" TextWrapping="Wrap" Text="" Margin="5,0" AcceptsReturn="True" IsReadOnly="True" Foreground="Red" />
+            <TextBox Grid.Row="1" Grid.Column="2" Name="txtnewcomentarios" TextWrapping="Wrap" Text="" Margin="5,0" AcceptsReturn="True"  />
+        </Grid>
+        <StackPanel Grid.Row="5" HorizontalAlignment="Center"  >
+            <CheckBox Name="chkCitaConfirmada" Content="Cita Confirmada"  FontSize="18"  VerticalContentAlignment="Center" Height="30" IsChecked="False" Padding="10,0" Foreground="White" />
+        </StackPanel>
+        <Label Content="1321325" Name="lblidpaciente" FontSize="7" HorizontalAlignment="Left" Margin="12,10,0,0" VerticalAlignment="Top" Visibility="Hidden" Grid.Row="1" Height="19" Width="36"/>
+        <Button Content="Enviar Email" HorizontalAlignment="Left" Margin="176,0,0,0" Grid.Row="6" VerticalAlignment="Top" Width="125" Height="38" Click="btnEnviarCorreo_Click"/>
+        <Button Content="Registrar Llamada" HorizontalAlignment="Left" Margin="459,0,0,0" Grid.Row="6" VerticalAlignment="Top" Width="146" Height="38" Click="Button_Click"/>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Label Content="Contraste" Margin=" 5,0,0,0" VerticalAlignment="Center" FontWeight="Bold"/>
+            <Label Name="lblmonedacontraste" Content="S/." Margin=" 5,0,0,0" VerticalAlignment="Center" FontWeight="Bold" Padding="0" FontSize="16"/>
+            
+            <TextBox Name="txtcontraste" Text="" MinWidth="100" Margin="5" VerticalContentAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" Name="stkSedacion">
+            <Label Content="Sedacion" Margin=" 100,0,0,0" VerticalAlignment="Center" FontWeight="Bold"/>
+            <Label Name="lblmonedasedacion" Content="S/." Margin=" 5,0,0,0" VerticalAlignment="Center" FontWeight="Bold" Padding="0" FontSize="16"/>
+            <TextBox Name="txtsedacion" Text="" MinWidth="100" Margin="5" VerticalContentAlignment="Center"/>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</Window>

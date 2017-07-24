@@ -1,0 +1,94 @@
+﻿@model IEnumerable<SistemaResocentro.ViewModel.Mantenimiento.MantenimientoViewModel>
+
+@{
+    ViewBag.Title = "Lista de Incidentes";
+}
+<h2>Lista de Incidentes</h2>
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $(function () {
+        t0 = $(".table").DataTable({
+            "sPaginationType": "bootstrap",
+            "ordering": false
+        });
+    });
+</script>
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            <a href='@Url.Action("RegistrarIncidente")' class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp; Registrar Incidente</a>
+        </p>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        N°
+                    </th>
+                    <th>
+                        Fecha
+                    </th>
+                    <th>
+                        Sucursal
+                    </th>
+                    <th>
+                        Tipo Incidente
+                    </th>
+                    <th>
+                        Equipo
+                    </th>
+                    <th>
+                        Modalidad
+                    </th>
+                    <th>
+                        Marca - Modelo / SN
+                    </th>
+                    <th>
+                        Empresa
+                    </th>
+                    <th style="width:20px!important"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                           @item.idIncidente
+                        </td>
+                        <td>
+                            @item.fecha_detecta.ToShortDateString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.equipo.empresa)-@Html.DisplayFor(modelItem => item.equipo.sucursal)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.tipoIncidente)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.equipo.nombreEquipo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.equipo.modalidad)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.equipo.marca) - @Html.DisplayFor(modelItem => item.equipo.modelo) SN: @item.equipo.serie
+                        </td>
+                        <td>
+                            @if(item.idTipoIncidente!=2){
+                           @Html.DisplayFor(modelItem => item.equipo.empresaMantenimiento.razonsocial)
+                            }else{
+                                @:RESOCENTRO
+                            }
+                        </td>
+                        <td style="width:20px!important">
+                            <a href="@Url.Action("RegistrarRevision", "Mantenimiento", new { incidente = item.idIncidente })" title="Registrar Incidente"><i class="fa fa-edit fa-2x "></i></a>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

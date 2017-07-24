@@ -1,0 +1,31 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.Caja.frmMantFacGlobal"
+        Title="Lista de Pre-Facturas" Height="600" Width="500" Background="{DynamicResource Windows.Background}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48*"/>
+            <RowDefinition Height="521*"/>
+        </Grid.RowDefinitions>
+
+
+        <Button Content="Nuevo" HorizontalAlignment="Left" Margin="407,10,0,0" VerticalAlignment="Top" Width="75" Height="18" Click="Button_Click"/>
+        <telerik:RadGridView Grid.Row="1" AutoGenerateColumns="False" ShowGroupPanel="False" IsReadOnly="True" Name="gridFacturas">
+            <telerik:RadGridView.Columns >
+                <telerik:GridViewDataColumn  Header="ID" IsReadOnly="True"   DataMemberBinding="{Binding idFac}"/>
+                <telerik:GridViewDataColumn  Header="Fecha" IsReadOnly="True"   DataMemberBinding="{Binding fec_registro, StringFormat=\{0:dd/MM/yyyy\}}"/>
+                <telerik:GridViewDataColumn  Header="RUC" IsReadOnly="True"   DataMemberBinding="{Binding ruc}"/>
+                <telerik:GridViewDataColumn  Header="Aseguradora" IsReadOnly="True"   DataMemberBinding="{Binding aseguradora}"/>
+            </telerik:RadGridView.Columns>
+            <telerik:RadContextMenu.ContextMenu>
+                <telerik:RadContextMenu Name="MenuContext_Pagos">
+                    <telerik:RadMenuItem Header="Modificar Items" Name="MenuItemModificar" Click="MenuItemModificar_Click"/>
+                    <telerik:RadMenuItem Header="Agregar Items" Name="MenuItemAgregar" Click="MenuItemAgregar_Click"/>
+                    <telerik:RadMenuItem Header="Eliminar" Name="MenuItemEliminar" Click="MenuItemEliminar_Click"/>
+                </telerik:RadContextMenu>
+            </telerik:RadContextMenu.ContextMenu>
+        </telerik:RadGridView>
+        <Button Content="Actualizar" HorizontalAlignment="Left" Margin="317,10,0,0" VerticalAlignment="Top" Width="85" Height="18" Click="Button_Click1"/>
+    </Grid>
+</Window>

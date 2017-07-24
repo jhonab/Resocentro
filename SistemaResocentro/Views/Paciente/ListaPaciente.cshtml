@@ -1,0 +1,64 @@
+﻿@model IEnumerable<SistemaResocentro.Models.PACIENTE>
+
+@{
+    Layout = null;
+}
+
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+
+<script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $(function () {
+        t0 = $("#datatablepaciente").DataTable({
+            "sPaginationType": "bootstrap"
+        });
+    });
+</script>
+    <table id="datatablepaciente" class="table  compact table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                apellidos
+            </th>
+            <th>
+                Nombres
+            </th>
+            <th>
+                N° Documento
+            </th>
+            <th>
+                Teléfono
+            </th>
+            <th>
+                Celular
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.apellidos)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombres)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dni)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.telefono)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.celular)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-info btn-xs" onclick="selectPaciente('@item.codigopaciente','@item.apellidos, @item.nombres ')"><i class="fa fa-check"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,27 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.AtencionCliente.frmConfirmarDatosEnvioCorreo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="frmConfirmarDatosEnvioCorreo" Background="{DynamicResource Windows.Background}" Height="461" Width="388">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="31*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Correo de Paciente" VerticalContentAlignment="Center"/>
+        <TextBox Name="txtcorreopaciente" Grid.Row="1" TextWrapping="Wrap" Text="" Margin="5" VerticalContentAlignment="Center"/>
+        <Label Content="Preparación:" VerticalContentAlignment="Center" Grid.Row="4"/>
+        <TextBox Name="txtpreparacion" Grid.Row="5" TextWrapping="Wrap" Margin="5" AcceptsReturn="True"/>
+        <Label Content="Observaciones:" VerticalContentAlignment="Center" Grid.Row="6"/>
+        <TextBox Name="txtobservaciones" Grid.Row="7" TextWrapping="Wrap" Text="" Margin="5" AcceptsReturn="True" />
+        <Button Content="Enviar Email" HorizontalAlignment="Left" Margin="137,6,0,0" Grid.Row="8" VerticalAlignment="Top" Width="125" Height="38" Click="Button_Click"/>
+        <Label Content="Entrega de Resultados" VerticalContentAlignment="Center" Grid.Row="2"/>
+        <TextBox x:Name="txtresultados" Grid.Row="3" TextWrapping="Wrap" Text="Dos(02) días útiles" Margin="5" VerticalContentAlignment="Center"/>
+    </Grid>
+</Window>

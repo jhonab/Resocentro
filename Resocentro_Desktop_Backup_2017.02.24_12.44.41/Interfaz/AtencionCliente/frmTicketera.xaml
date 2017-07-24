@@ -1,0 +1,142 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.AtencionCliente.frmTicketera"
+        Title="Ticketera"  Height="210" Width="480" Background="{DynamicResource Windows.Background}" Loaded="Window_Loaded" Closing="Window_Closed" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="436"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Margin="0 5 0 0" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="147"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" >
+                    <Label Content="Tipo:"/>
+                    <TextBox x:Name="txttipo" IsReadOnly="True" Text="" VerticalAlignment="Center" Padding="2" FontSize="17"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Column="1">
+                    <Button x:Name="btnLlamar" Content="Llamar" Click="ButtonLlamar_Click" />
+                    <Label/>
+                    <Button Content="Rellamar" IsEnabled="{Binding IsEnabled, Converter={StaticResource isReadyOnly}, ElementName=btnLlamar}" Click="ButtonRellamada_Click" />
+                </StackPanel>
+            </Grid>
+            <StackPanel Orientation="Horizontal" Margin="0 5 0 0" Grid.Row="1" Grid.ColumnSpan="2" >
+                <Label Content="Paciente:"/>
+                <TextBox x:Name="txtpaciente" IsReadOnly="True" Text="" VerticalAlignment="Center" Padding="2" FontSize="17"/>
+                <Label/><Label Name="lbltiempo" Content="" HorizontalAlignment="Right"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" HorizontalAlignment="Center"  Orientation="Horizontal">
+                <Button Content="Finalizar" IsEnabled="{Binding IsEnabled, Converter={StaticResource isReadyOnly}, ElementName=btnLlamar}" Click="ButtonTerminado_Click" >
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF129318" Offset="0"/>
+                            <GradientStop Color="#FF129318" Offset="1"/>
+                            <GradientStop Color="#FF31C387" Offset="0.5"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Label/>
+                <Button Content="Abandonar" IsEnabled="{Binding IsEnabled, Converter={StaticResource isReadyOnly}, ElementName=btnLlamar}" Click="ButtonAusente_Click" >
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF931212" Offset="0"/>
+                            <GradientStop Color="#FF931212" Offset="1"/>
+                            <GradientStop Color="#FFC33131" Offset="0.5"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Label/>
+                <Button Content="Liberar" IsEnabled="{Binding IsEnabled, Converter={StaticResource isReadyOnly}, ElementName=btnLlamar}" Click="ButtonLiberar_Click" >
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF128793" Offset="0"/>
+                            <GradientStop Color="#FF128D93" Offset="1"/>
+                            <GradientStop Color="#FF31B6C3" Offset="0.5"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+            </StackPanel>
+            <CheckBox x:Name="chkCaja" IsChecked="False" Content="Caja" Foreground="White" HorizontalAlignment="Left" Margin="391,10,0,0" Grid.Row="2" VerticalAlignment="Top"/>
+
+            <Label x:Name="lblpaciente" Content="" Grid.Row="3" />
+            <telerik:RadExpander Name="expEspera" Grid.Row="5" ExpandDirection="Down" telerik:AnimationManager.IsAnimationEnabled="False"  IsExpanded="False" Expanded="RadExpander_Expanded_1" Collapsed="RadExpander_Collapsed_1">
+                <telerik:RadExpander.Header>
+                    <TextBlock Text="Pacientes en Espera" Foreground="White" />
+                </telerik:RadExpander.Header>
+                <telerik:RadExpander.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Button Content="Actualizar" HorizontalAlignment="Left" Width="100" Click="Button_Click1"/>
+                        <telerik:RadGridView Name="grid_espera" ShowColumnFooters="True" ShowGroupPanel="False" AutoGenerateColumns="False" IsReadOnly="True" Grid.Row="1">
+                            <telerik:RadGridView.Columns>
+                                <telerik:GridViewDataColumn IsFilterable="False" Header="Tipo" DataMemberBinding="{Binding atencion}" >
+                                    <telerik:GridViewDataColumn.AggregateFunctions>
+                                        <telerik:CountFunction Caption="Total "/>
+                                    </telerik:GridViewDataColumn.AggregateFunctions>
+                                </telerik:GridViewDataColumn>
+                                <telerik:GridViewDataColumn IsFilterable="False" Header="Ticket" DataMemberBinding="{Binding ticket}" />
+                                <telerik:GridViewDataColumn IsFilterable="False" Header="Dur." DataMemberBinding="{Binding duracion}" />
+                                <telerik:GridViewColumn Header="Accion" TextAlignment="Right"  >
+                                    <telerik:GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                <telerik:RadButton Content="Atender"  CommandParameter="{Binding idTicket}" Padding="10,3" Margin="0,0,10,0" Click="btnAtenderticket_Click" Background="#25A0DA" BorderBrush="White" Foreground="White" CornerRadius="5" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </telerik:GridViewColumn.CellTemplate>
+                                </telerik:GridViewColumn>
+                            </telerik:RadGridView.Columns>
+                        </telerik:RadGridView>
+                    </Grid>
+                </telerik:RadExpander.Content>
+            </telerik:RadExpander>
+        </Grid>
+
+
+        <telerik:RadExpander Name="expAtendido" Grid.Column="1" ExpandDirection="Right" IsExpanded="False" Expanded="RadExpander_Expanded" telerik:AnimationManager.IsAnimationEnabled="False" Collapsed="RadExpander_Collapsed">
+            <telerik:RadExpander.Header>
+                <TextBlock Text="Atendidos" Foreground="White" />
+            </telerik:RadExpander.Header>
+            <telerik:RadExpander.Content>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button Content="Actualizar" HorizontalAlignment="Left" Width="100" Click="Button_Click"/>
+                    <telerik:RadGridView Name="grid_atendidos" AutoGenerateColumns="False" IsReadOnly="True" Grid.Row="1" ShowColumnFooters="True" ShowGroupPanel="False">
+                        <telerik:RadGridView.Columns>
+                            <telerik:GridViewDataColumn IsFilterable="False" Header="Tipo Atencion" DataMemberBinding="{Binding atencion}" >
+                                <telerik:GridViewDataColumn.AggregateFunctions>
+                                    <telerik:CountFunction Caption="Total "/>
+                                </telerik:GridViewDataColumn.AggregateFunctions>
+                            </telerik:GridViewDataColumn>
+                            <telerik:GridViewDataColumn IsFilterable="False" Header="Ticket" DataMemberBinding="{Binding ticket}" />
+                            <telerik:GridViewDataColumn IsFilterable="False" Header="Tipo" DataMemberBinding="{Binding tipo}" />
+                            <telerik:GridViewDataColumn IsFilterable="False" Header="Dur." DataMemberBinding="{Binding duracion}" />
+                        </telerik:RadGridView.Columns>
+                    </telerik:RadGridView>
+
+                </Grid>
+            </telerik:RadExpander.Content>
+
+        </telerik:RadExpander>
+
+
+    </Grid>
+</Window>

@@ -1,0 +1,169 @@
+﻿@model IEnumerable<SistemaResocentro.Models.EMPLEADO>
+
+@{
+    ViewBag.Title = "Lista de Colaboradores";
+}
+
+<h2>Lista de Colaboradores</h2>
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+
+<script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $(function () {
+        t0 = $(".table").DataTable({
+            "sPaginationType": "bootstrap"
+        });
+    });
+</script>
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            <a href='@Url.Action("Create")' class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp; Registrar Empleado</a>
+        </p>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Apellidos
+                    </th>
+                    <th>
+                        Nombres
+                    </th>
+                    <th>
+                        DNI
+                    </th>
+                    <th>
+                        Nacimiento
+                    </th>
+                    <th>
+                        Estado Civil
+                    </th>
+                    <th>
+                        Cargo
+                    </th>
+                    <th style="width:90px!important"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.apellidos)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.nombres)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.dni)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fechanacimiento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.estadocivil)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CARGO.descripcion)
+                        </td>
+                        <td style="width:90px!important">
+                            <a href="javascript:openModal('@Url.Action("Sucursalesusuario", "Empleado", new { id= item.dni,tipo=1})')" title="Modificar Sucursales Asignadas"><i class="fa fa-briefcase fa-lg"></i></a>&nbsp;
+                            <a href="@Url.Action("Editar", "Empleado", new { dni=item.dni})" title="Editar Usuario"><i class="fa fa-edit fa-lg"></i></a>&nbsp;
+                            <a href="@Url.Action("Detalle", "Empleado", new { dni=item.dni})" title="Detalle de Usuario"><i class="fa fa-file fa-lg"></i></a>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function openModal(url) {
+        $("#modal-body").load(url, function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            } else {
+                $("#modalAll").modal('show');
+            }
+        });
+    }
+</script>
+<div class="modal fade" id="modalAll" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalAll-Label" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header modal-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Detalle de Sucursales Asignadas</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="modal-body">
+                    <script type="text/javascript">
+                        function agregarSucursal() {
+                            var sucursal = $("#cbosucursal").val();
+                            if (sucursal != "") {
+                                var unidad = parseInt(parseInt(sucursal) / 100);
+                                var sede = parseInt(parseInt(sucursal) - unidad*100);
+                                console.log(codigo);
+                                $.ajax({
+                                    url: "/Empleado/AgregarSucursalusuario",
+                                    data: { id: codigo, unidad:unidad,sucursal: sede },
+                                    dataType: "json",
+                                    type: "POST",
+                                    success: function (data) {
+                                        if (data == 0)
+                                            toastr.error("La sucursal ya esta asignada.", opts);
+                                        else {
+                                            toastr.success("Se agregó la sucursal.", opts);
+                                            actualizarLista();
+                                        }
+                                    },
+                                    error: function (data) {
+                                        toastr.error("Ocurrio un error al momento de guardar la sucursal.", opts);
+                                    }
+                                });
+                            } else {
+                                toastr.error("Debe seleccionar una sucursal", opts);
+                            }
+                        }
+                        function eliminarSucursal(unidad,sucursal) {
+
+                            $.ajax({
+                                url: "/Empleado/EliminarSucursalusuario",
+                                data: { id: codigo,unidad:unidad, sucursal: sucursal },
+                                dataType: "json",
+                                type: "POST",
+                                success: function (data) {
+                                    if (data == 0)
+                                        toastr.error("La sucursal no existe.", opts);
+                                    else {
+                                        toastr.success("Se eliminó la sucursal.", opts);
+                                        actualizarLista();
+                                    }
+                                },
+                                error: function (data) {
+                                    toastr.error("Ocurrio un error al momento de eliminar la sucursal.", opts);
+                                }
+                            });
+
+                        }
+                        function actualizarLista() {
+                            $("#div_lst_sucursal_usuario").load("/Empleado/Sucursalesusuario?id=" + codigo + "&tipo=0", function (response, status, xhr) {
+                                if (status == "error") {
+                                    toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+                                }
+                            });
+                        }
+                    </script>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>

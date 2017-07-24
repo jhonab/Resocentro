@@ -1,0 +1,181 @@
+﻿@model IEnumerable<SistemaResocentro.Models.MEDICOEXTERNO>
+
+@{
+    ViewBag.Title = "Lista de Médicos Referentes";
+}
+
+<h2>Lista de Médicos Referentes</h2>
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    var tabla;
+    $(function () {
+
+        tabla=$('.table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": "@Url.Action("ListaAsync", "Medico")"
+        });
+        $(".esperando").remove();
+        $(".hidden").removeClass("hidden");
+
+    });
+</script>
+
+<div class="row">
+    <div class="esperando " style="text-align: center;color:#065d9d"><i class="fa fa-spinner fa-5x fa-spin"></i> <br />Cargando...</div>
+    <div class="col-lg-12 ">
+        <p>
+            <a href='@Url.Action("Create")' class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp; Registrar Médico</a>
+        </p>
+        <style>
+            @@media only screen and (max-width: 800px) {
+                table td:nth-child(4),
+                table th:nth-child(4),
+                table td:nth-child(5),
+                table th:nth-child(5),
+                table td:nth-child(6),
+                table th:nth-child(6),
+                table td:nth-child(7),
+                table th:nth-child(7),  {
+                    display: none;
+                }
+            }
+        </style>
+
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Apellidos
+                    </th>
+                    <th>
+                        Nombres
+                    </th>
+                    <th>
+                        Tipo
+                    </th>
+                    <th>
+                        CMP/CVP/COP
+                    </th>
+                    @*<th>
+                        Especialidad
+                    </th>*@
+                    <th>
+                        Activo
+                    </th>
+                    <th>
+                        Web
+                    </th>
+                    <th>
+                        Pago
+                    </th>
+                    <th style="width:90px!important"></th>
+                </tr>
+            </thead>
+
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="modalAll" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalAll-Label" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content" id="modal-body">
+        </div>
+        <!-- /.modal-content -->
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modalDelete" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalDelete-Label" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content" id="modal-body">
+            <div class="modal-header modal-danger">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Eliminar Médico</h4>
+            </div>
+            <div class="modal-body">
+                ¿Está seguro de que desea eliminar el Médico de forma permanente?<br />
+                <label id="modaldelete-name"></label><br />
+                <label id="modaldelete-cmp"></label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button id="btndelete" type="submit" class="btn btn-danger" onclick=""><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp; Eliminar </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+    function openModalDelete(cmp, nombre) {
+        $("#modaldelete-name").html("Nombres: "+nombre);
+        $("#modaldelete-cmp").html("CMP: "+cmp);
+        $("#btndelete").attr('onclick', "confirmDelete('" + cmp+"')")
+        $("#modalDelete").modal('show');
+    }
+
+    function confirmDelete(cmp) {
+        $.ajax({
+            url: '/Medico/DisableMedico',
+            data: { cmp: cmp },
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                $("#modalDelete").modal('hide');
+                tabla.ajax.reload();
+            },
+            error: function () {
+                toastr.error("Ocurrio un error y no se pudo Eliminar el Médico", "Error", opts);
+            }
+        });
+    }
+    function openModal(url) {
+        $("#modal-body").load(url, function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            } else {
+                $("#modalAll").modal('show');
+            }
+        });
+    }
+</script>
+
+
+<script type="text/javascript">
+    function openModalDelete(cmp, nombre) {
+        $("#modaldelete-name").html("Nombres: "+nombre);
+        $("#modaldelete-cmp").html("CMP: "+cmp);
+        $("#btndelete").attr('onclick', "confirmDelete('" + cmp+"')")
+        $("#modalDelete").modal('show');
+    }
+
+    function confirmDelete(cmp) {
+        $.ajax({
+            url: '/Medico/DisableMedico',
+            data: { cmp: cmp },
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                $("#modalDelete").modal('hide');
+                tabla.ajax.reload();
+            },
+            error: function () {
+                toastr.error("Ocurrio un error y no se pudo Eliminar el Médico", "Error", opts);
+            }
+        });
+    }
+    function openModal(url) {
+        $("#modal-body").load(url, function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            } else {
+                $("#modalAll").modal('show');
+            }
+        });
+    }
+</script>

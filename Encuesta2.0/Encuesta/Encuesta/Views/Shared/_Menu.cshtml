@@ -1,0 +1,442 @@
+﻿
+<ul id="main-menu" class="main-menu">
+    <li class="has-sub root-level">
+        <a href="#">
+            <i class="fa fa-user-md"></i><span class="title">Médicos</span>
+        </a>
+        <ul>
+            @if (User.IsInRole("1"))//Realizar Encuesta
+            {
+                <li class=" ">
+                    <a href="@Url.Action("ListaEspera", "RealizarEncuesta")">
+                        <i class="fa fa-edit    "></i><span class="title">Realizar Encuesta</span>
+
+                    </a>
+                </li>
+                @*<li class=" ">
+                        <a href="@Url.Action("ListaEspera", "Ampliaciones")">
+                            <i class="fa fa-yelp    "></i><span class="title"> Ampliaciones</span>
+                        </a>
+                    </li>*@
+                <li class=" ">
+                    <a href="@Url.Action("AsignarHopitalizado", "RealizarEncuesta")">
+                        <i class="fa fa-h-square    "></i><span class="title">Asignar Urgencia - Hospitalizado</span>
+                    </a>
+                </li>
+
+            }
+
+            @if (User.IsInRole("2"))//Supervisar Encuesta
+            {
+                <li class=" ">
+                    <a href="@Url.Action("ListaEspera", "SupervisarExamen")">
+                        <i class="fa  fa-check-square-o fa-2x   "></i><span class="title">Supervisar Examen</span>
+                    </a>
+                </li>
+
+            }
+            @if (User.IsInRole("21"))//Entre Turno
+            {
+                <li class=" ">
+                    <a href='@Url.Action("AprobarEntreTurno", "Atencion")'>
+                        <i class="fa fa-clock-o fa-2x   "></i><span class="title">Aprobar Entre Turno</span>
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("7"))//Lista encuesta Satisfaccion
+            {
+                <li class=" ">
+
+                    <a href='@Url.Action("ListaEspera", "Satisfaccion")'>
+                        &nbsp;<i class="fa  fa-child fa-2x   "></i><span class="title">Encuesta Satisfacción</span>
+                    </a>
+                </li>
+            }
+            <li class=" ">
+                <a href="@Url.Action("ListadoSupervisiones", "SupervisarExamen", new { inicio = DateTime.Now.ToShortDateString(), fin = DateTime.Now.ToShortDateString() })">
+                    <i class="fa  fa-check-square-o fa-2x   "></i><span class="title">Lista de Calificaciones</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+
+    <li class="has-sub root-level">
+        <a href="#">
+            <i class="fa fa-fire"></i><span class="title">Tecnólogos</span>
+        </a>
+        <ul>
+            @if (User.IsInRole("3"))//realizar examen
+            {
+                <li class=" ">
+                    <a href='@Url.Action("ListaEspera", "RealizarExamen")'>
+                        <i class="fa  fa-fire fa-2x   "></i><span class="title">Realizar Examen</span>
+                    </a>
+                </li>
+                @*if (DateTime.Now.Hour == 7)//Enviar estudio a la modalidad solo esta activado a las 7 am
+                    {
+                        <li class=" ">
+                            <a href='@Url.Action("EnviaEstudioModalidad", "RealizarExamen")'>
+                                <i class="fa  fa-send-o fa-2x   "></i><span>Enviar a Modalidad</span>
+                            </a>
+                        </li>
+                    }*@
+                if (User.IsInRole("8"))//Realizar PostProceso
+                {
+                    <li class="">
+                        <a href='@Url.Action("ListaEspera", "PostProceso")'>
+                            <i class="fa  fa-wrench fa-2x   "></i><span class="title">Realizar Post-Proc.</span>
+                        </a>
+                    </li>
+                }
+                <li class="has-sub">
+                    <a href="#">
+                        <i class="fa fa-angle-right"></i><span class="title">Incidente</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="@Url.Action("ListaIncidente", "Mantenimiento", new { tipo = "" })">
+                                &nbsp;<i class="fa fa-angle-double-right "></i><span class="title">Listado Incidentes</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("RegistrarIncidente", "Mantenimiento")">
+                                &nbsp;<i class="fa fa-angle-double-right "></i><span class="title">Registrar Incidente</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>       
+                <li class="">
+                    <a href='@Url.Action("ListaEsperaEventoImg", "ResolverEventosImg")'>
+                        <i class="fa fa-angle-double-right fa-2x   "></i><span class="title">
+                            Resolver Eventos
+                        </span>
+                    </a>
+                </li>
+            }
+
+            @if (User.IsInRole("25"))//Herramienta Tecnólogo
+            {
+
+                <li class="">
+                    <a href='@Url.Action("ReporteEventos", "ResolverEventosImg")'>
+                        <i class="fa  fa-angle-double-right fa-2x   "></i><span class="title">Reporte Eventos</span>
+                    </a>
+                </li>
+            }
+
+            @if (User.IsInRole("20"))//resolver evento
+            {
+
+                <li class="">
+                    <a href='@Url.Action("ReporteEventos", "ResolverEventosImg")'>
+                        <i class="fa  fa-angle-double-right fa-2x   "></i><span class="title">Reporte Eventos</span>
+                    </a>
+                </li>
+            }
+
+
+        </ul>
+    </li>
+
+    <li class="has-sub root-level">
+        <a href="#">
+            <i class="fa fa-flask"></i><span class="title">Enfermeras</span>
+        </a>
+        <ul>
+            @if (User.IsInRole("4"))//Registrar Contraste
+            {
+                <li class="">
+                    <a href='@Url.Action("ListaEspera", "RealizaContraste")'>
+                        <i class="fa  fa-flask fa-2x   "></i><span class="title">Registrar Contraste</span>
+
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("24"))//Herramienta Contraste
+            {
+                <li class="has-sub">
+                    <a href="@Url.Action("RegistraContraste", "RealizaContraste")">
+                        <i class="fa fa-gear"></i><span class="title">Mantenimiento Contraste</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </li>
+
+    <li class="has-sub root-level">
+        <a href="#">
+            <i class="fa fa-tint"></i><span class="title">Anestesiólogos</span>
+        </a>
+        <ul>
+            @if (User.IsInRole("5"))//Registrar Sedacion
+            {
+                <li class="">
+                    <a href='@Url.Action("ListaEspera", "RealizarSedacion")'>
+                        &nbsp;<i class="fa  fa-tint fa-2x   "></i><span>Registrar Sedación</span>
+
+                    </a>
+                </li>
+            }
+        </ul>
+    </li>
+
+    @if (User.IsInRole("1") || User.IsInRole("2") || User.IsInRole("5"))//CANCELAR
+    {
+        <li class="root-level">
+            <a href='@Url.Action("Cancelar", "CancelarEncuesta")'>
+                &nbsp;<i class="fa fa-times-circle-o fa-2x   "></i><span class="title">Cancelar Examen</span>
+            </a>
+        </li>
+    }
+    @if (User.IsInRole("1") || User.IsInRole("2"))// VISOR CARGA
+    {
+        <li class="root-level">
+            <a href='@Url.Action("VisorCarga", "VisorCarga")'><i class="fa fa-cog fa-spin fa-2x"></i><span class="title">Visor Carga</span></a>
+        </li>
+    }
+    @if (User.IsInRole("1") || User.IsInRole("2") || User.IsInRole("3"))//BUSCAR ENCUESTA
+    {
+        <li class="">
+            <a href='@Url.Action("BuscarExamen", "BuscarEncuesta")'><i class="fa fa-binoculars fa-2x   "></i><span class="title">Buscar Encuesta</span></a>
+        </li>
+    }
+    <li class="has-sub root-level">
+        <a href="#">
+            <i class="fa fa-line-chart"></i><span class="title">Reportes</span>
+        </a>
+        <ul>
+
+            @*@if (User.IsInRole("20"))//Reporte Médico
+                {
+                    <li class="root-level">
+                        <a href='@Url.Action("ReporteMedico", "Reporte", new { i=DateTime.Now,f=DateTime.Now})'><i class="fa fa-area-chart fa-2x"></i><span>Reporte Medico</span></a>
+                    </li>
+                }*@
+
+            @if (User.IsInRole("20"))//Reporte Tecnólogos
+            {
+                <li class="">
+                    <a href='@Url.Action("ReporteTecnologos", "Reporte", new { i=DateTime.Now,f=DateTime.Now,tecno="%",equipo="%"})'><i class="fa fa-area-chart fa-2x"></i><span class="title">Reporte Tecnólogos</span></a>
+                </li>
+            }
+            @if (User.IsInRole("20"))//Reporte Contraste
+            {
+                <li class="has-sub">
+                    <a href='#'>
+                        <i class="fa fa-area-chart fa-2x   "></i><span class="title">Reportes de Contraste </span>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href='@Url.Action("ReporteContraste", "Reporte", new { i=DateTime.Now,f=DateTime.Now})'>
+                                <i class="fa fa-angle-double-right"></i><span class="title">Mostrar Reporte</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("ReporteContrasteDiario", "Reporte", new { fecha=DateTime.Now})'>
+                                <i class="fa fa-angle-double-right"></i><span class="title">Contrastes Usados</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("ReporteContrasteStock", "Reporte")'>
+                                <i class="fa fa-angle-double-right"></i><span class="title">Stock Contrastes</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href='@Url.Action("PrintReporteContraste", "Reporte", new { i = DateTime.Now, f = DateTime.Now })'>
+                                <i class="fa fa-angle-double-right"></i><span class="title">Imprimir Reporte</span>
+
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href='@Url.Action("ReporteFrasco", "Reporte", new { lstsedes = 1, lstproducto = "1001" })'>
+                                <i class="fa fa-angle-double-right"></i><span class="title">Frascos</span>
+
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href='@Url.Action("ReporteMensualContrastes", "Reporte", new { date = DateTime.Now.ToString("yyyy-MM"), lstsedes = 1 })'>
+                                <i class="fa fa-angle-double-right"></i><span class="title">Reporte Mensual - F</span>
+
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href='@Url.Action("ReporteMensualContrastesML", "Reporte", new { date = DateTime.Now.ToString("yyyy-MM"), lstsedes = 1 })'>
+                                <i class="fa fa-angle-double-right"></i><span class="title">Reporte Mensual - ML</span>
+
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href='@Url.Action("ReporteMensualExamenesContrastados", "Reporte", new { i = DateTime.Now.Month, lstsedes = 1 })'>
+                                <i class="fa fa-angle-double-right"></i><span class="title">Exámenes Contrastados</span>
+
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href='@Url.Action("ReporteMerma", "Reporte", new { i = DateTime.Now.Month, lstsedes = 1, lstproducto = "1001" })'>
+                                <i class="fa fa-angle-double-right"></i><span class="title">Reporte Merma</span>
+
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+            }
+
+
+            @if (User.IsInRole("20"))//Reporte Sedación
+            {
+                <li class=" has-sub">
+                    <a href='#'>
+                        <i class="fa fa-area-chart fa-2x   "></i><span>Reporte de Sedaciones </span>
+                    </a>
+                    <ul class="has-sub">
+                        @if (User.IsInRole("20"))//Reporte Sedación
+                        {
+                            <li>
+                                <a href='@Url.Action("ReporteSedacion", "Reporte", new { i=DateTime.Now,f=DateTime.Now})'>
+                                    <i class="fa fa-angle-double-right"></i><span>Mostrar Reporte</span>
+
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </li>
+            }
+        </ul>
+    </li>
+
+    @*@if (User.IsInRole("3"))//resolver evento
+        {
+             //Encuesta.Models.DATABASEGENERALEntities db = new Encuesta.Models.DATABASEGENERALEntities();
+             //Encuesta.Member.CustomMembershipUser usuario = Membership.GetUser(true) as Encuesta.Member.CustomMembershipUser;
+
+            if(db.ExamenXEvento.Where(x => x.TecnoReg == usuario.ProviderUserKey.ToString()).ToList().Count() )
+
+            <li class="p3-2">
+                <a href='@Url.Action("ListaEsperaEvento", "ResolverEvento")'>
+                    <i class="fa  fa-fire fa-2x   "></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resolver Eventos
+                    <small class="label pull-right bg-green" id="lblCantidadEventos">new</small>
+                </a>
+            </li>
+        }*@
+
+    @if (User.IsInRole("17") || User.IsInRole("16") || User.IsInRole("26") || User.IsInRole("27"))//////////ATENCION AL CLIENTE///////////
+    {
+        <li class="has-sub ">
+            <a href="#">
+                <i class="fa fa-thumbs-up fa-2x"></i><span class="title">Atención al Cliente</span>
+            </a>
+            <ul>
+                @if (User.IsInRole("26"))//COBRANZA
+                {
+                    <li class="root-level">
+                        <a href='@Url.Action("ListaCalificacion", "Atencion")'>
+                            <i class="fa fa-child fa-2x   "></i><span class="title">Calificación Atención</span>
+                        </a>
+                    </li>
+                }
+                @if (User.IsInRole("27"))//COBRANZA
+                {
+                    <li class="root-level">
+                        <a href='@Url.Action("ReporteCalificarAtencion", "Atencion", new { inicio = DateTime.Now, fin = DateTime.Now })'>
+                            <i class="fa fa-shopping-cart fa-2x   "></i><span class="title">Reporte Calificacón Atencion</span>
+                        </a>
+                    </li>
+                }
+                @if (User.IsInRole("17"))//COBRANZA
+                {
+                    <li class="root-level">
+                        <a href='@Url.Action("ListaExamen", "Cobranza")'>
+                            <i class="fa fa-shopping-cart fa-2x   "></i><span class="title">Cobranza</span>
+                        </a>
+                    </li>
+                }
+
+                @if (User.IsInRole("16"))//VERIFICAR ATENCION
+                {
+                    <li class="root-level">
+                        <a href='@Url.Action("ListaEspera", "Atencion")'><i class="fa fa-check-circle-o  fa-2x   "></i><span class="title">Verificar Atencíón</span></a>
+                    </li>
+                }
+                @*  @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>
+                            <a href="#"><i class="fa  fa-calendar fa-2x   "></i>&nbsp;&nbsp;Visor de Citas</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa  fa-users fa-2x   "></i>&nbsp;&nbsp;Visor de Carga</a>
+                        </li>
+                    }*@
+            </ul>
+        </li>
+
+    }
+
+    @*@if (User.IsInRole("1") || User.IsInRole("2") || User.IsInRole("3"))
+        {
+            <li><a href='@Url.Action("SolucionarProblemasEncuesta", "Herramientas")'><i class="fa fa-angle-double-right"></i><i class="fa fa-cogs fa-1x"></i>&nbsp;Solucionar Problemas Encuesta</a></li>
+        }*@
+
+    @if (User.IsInRole("9") || User.IsInRole("11") || User.IsInRole("19"))
+    {
+        <li class="has-sub ">
+            <a href="#">
+                <i class="fa fa-briefcase fa-2x"></i><span class="title">Administración</span>
+            </a>
+            <ul>
+
+                @if (User.IsInRole("9"))//Administracion
+                {
+                    <li class="has-sub">
+                        <a href="#">&nbsp;<i class="fa  fa-gear fa-2x   "></i><span class="title">Herramientas</span></a>
+                        <ul class="has-sub">
+                            @if (User.IsInRole("12"))//Permisos
+                            {
+                                <li><a href='@Url.Action("Permisos", "Herramientas")'><i class="fa fa-key fa-1x"></i><span class="title">Permiso</span></a></li>
+                            }
+                            @if (User.IsInRole("14"))//cambiar medico
+                            {
+                                <li><a href='@Url.Action("CambiarMedico", "Herramientas")'><i class="fa fa-user-md fa-1x"></i><span class="title">Cambiar Médico</span></a></li>
+                            }
+                            @if (User.IsInRole("15"))//cambiar tecnologo
+                            {
+                                <li><a href='@Url.Action("CambiarTecnologo", "Herramientas")'><i class="fa fa-fire fa-1x"></i><span class="title">Cambiar Tecnólogo</span></a></li>
+                            }
+
+
+                            <li><a href='@Url.Action("DeleteCalificacion", "Herramientas")'><i class="fa fa-times-circle fa-1x"></i><span class="title">Eliminar Calificación Médico</span></a></li>
+                            <li><a href='@Url.Action("DeleteEncuesta", "Herramientas")'><i class="fa fa-clipboard fa-1x"></i><span class="title">Mantenimiento Encuesta</span></a></li>
+                            <li><a href='@Url.Action("MoveEncuesta", "Herramientas")'><i class="fa fa-files-o fa-1x"></i><span class="title">Mover Encuesta</span></a></li>
+                            <li><a href='@Url.Action("SolucionarProblemasEncuesta", "Herramientas")'><i class="fa fa-cogs fa-1x"></i><span class="title">Solucionar Problemas Encuesta</span></a></li>
+                            <li><a href='@Url.Action("RegistraContraste", "RealizaContraste")'><i class="fa fa-tint fa-1x"></i><span class="title">Registrar Contraste</span></a></li>
+                        </ul>
+                    </li>
+                }
+
+                @if (User.IsInRole("11"))//Reporte Administracion
+                {
+                    <li class="has-sub">
+                        <a href='#'><i class="fa  fa-line-chart fa-2x  "></i><span class="title">Reportes </span></a>
+                        <ul class="has-sub">
+                            <li><a href='@Url.Action("GeneralEncuesta", "Reporte", new { i = DateTime.Now })'><i class="fa fa-angle-double-right"></i><span class="title">Reporte General Encuesta</span></a></li>
+                            <li><a href='@Url.Action("ReporteTiempoEncuesta", "Reporte", new { i = DateTime.Now })'><i class="fa fa-angle-double-right"></i><span class="title">Reporte de Tiempos y Eficacia </span></a></li>
+                            <li><a href='@Url.Action("ReporteValidacionTecnologo", "Reporte", new { i = DateTime.Now, f = DateTime.Now })'><i class="fa fa-angle-double-right"></i><span class="title">Reporte de Revisión de Tecnologos </span></a></li>
+                            @*<li><a href='@Url.Action("AsignacionesInsti_Prom_Med", "Asignaciones")'><i class="fa fa-angle-double-right"></i>Asignaciones</a></li>*@
+                        </ul>
+                    </li>
+                }
+
+            </ul>
+        </li>
+    }
+
+
+</ul>

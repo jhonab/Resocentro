@@ -1,0 +1,91 @@
+﻿
+@model SistemaResocentro.Models.AsignacionRepresentanteMedico
+
+@{
+    Layout = null;
+    ViewBag.Title = "Create";
+}
+
+
+<script src="~/js/validar-input.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("._cbo2").chosen({ width: "100%" });
+    });
+
+    function validar() {
+
+        var idmedico = $("#idMedico").val();
+
+        if (idmedico == "") {
+            removeHasAll("idMedico");
+            if (idinstitucion == "")
+                addError("idMedico");
+            return false;
+        }
+
+        if (!validarAsignacionPromotor(idmedico))
+          return false;
+        return true;
+    }
+    function validarAsignacionPromotor(idmedico) {
+        var _result = true;
+
+        $.ajax({
+            async: false,
+            cache: false,
+            url: '/Asignaciones/validarAfinidadMedico',
+            data: { cmp:idmedico },
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                if (!data) {
+                    removeHasAll("idPromotor");
+                    addError("idPromotor");
+                    toastr.error("El Médico ya se asignó a otro Representante Médico", "Error", opts);
+                    _result = false;
+                }
+            },
+            error: function () {
+                toastr.error("No se pudo validar la asignación", "Error", opts);
+                _result = false;
+            }
+        });
+        return _result;
+    }
+</script>
+<div class="modal-header modal-primary">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Asignar Afinidad de Médicos</h4>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <div class="row">
+            <div id="">
+                <div class="col-md-12">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <label>Medico</label>
+                        <div class="">
+                            @Html.DropDownListFor(model => model.idMedico, (SelectList)ViewBag.Medicos, "- Seleccione el Médico -", htmlAttributes: new { @class = "form-control _cbo2" })
+                            @Html.ValidationMessageFor(model => model.idMedico, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Representante</label>
+                        <div class="">
+                            @Html.DropDownListFor(model => model.idPromotor, (SelectList)ViewBag.Promotor, "- Seleccione el Representante -", htmlAttributes: new { @class = "form-control _cbo2" })
+                            @Html.ValidationMessageFor(model => model.idPromotor, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button id="btnregistrar" type="submit" class="btn btn-success" onclick="return validar();"><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp; Registrar </button>
+    </div>
+}

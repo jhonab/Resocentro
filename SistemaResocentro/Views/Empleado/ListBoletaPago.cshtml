@@ -1,0 +1,51 @@
+﻿@model IEnumerable<SistemaResocentro.Controllers.Sistemas.DownloadableFile>
+
+@{
+    ViewBag.Title = "Documentos Laborales";
+
+}
+<script type="text/javascript">
+    function sendCorreo(filename, path) {
+        $.ajax({
+            url: "@Url.Action("ConfirmacionLectura", "Empleado")",
+            method: "POST",
+            data: { filename: filename, path: path },
+            success: function (result) {
+                location.reload();
+            }
+        });
+    }
+</script>
+<h2>Lista de Documentos</h2>
+<div class="row">
+    <div class="col-md-5">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Documento</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() == 0)
+                {
+                    <tr>
+                        <td>
+                            No hay Documentos que mostrar
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a target="_blank" onclick="sendCorreo('@item.FileName','@item.pathdelete')" href="@item.Path">@item.FileName</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

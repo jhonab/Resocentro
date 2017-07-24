@@ -1,0 +1,45 @@
+﻿@{
+    Layout = null;
+}
+<script src="~/js/script/medico/searchmedico.js"></script>
+<link href="~/css/progressbar.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="form-horizontal " >
+            <h4>Buscar Medico</h4>
+            <hr />
+
+            <input type="hidden" id="result_cmp" />
+            <input type="hidden" id="result_nombres" />
+            <div class="row">
+                <div class="col-md-8 col-xs-10">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Filtro:</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="filtro" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-2">
+                    <div class="form-group">
+                        <br />
+                        <span></span>
+                        <button class="btn btn-info btn-xs" onclick="getMedico()" type="button"><i class="fa fa-search fa-2x"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group" id="table_medico">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+</div>

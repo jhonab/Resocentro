@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DATABASEGENERALModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EQUIPO">
+          <Key>
+            <PropertyRef Name="codigoequipo" />
+          </Key>
+          <Property Name="fechaadquirio" Type="datetime" Nullable="false" />
+          <Property Name="intensidad" Type="real" Nullable="false" />
+          <Property Name="modelo" Type="varchar" MaxLength="40" />
+          <Property Name="marca" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="nombreequipo" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="codigoequipo" Type="int" Nullable="false" />
+          <Property Name="codigosucursal2" Type="int" Nullable="false" />
+          <Property Name="codigounidad2" Type="int" Nullable="false" />
+          <Property Name="estado" Type="char" MaxLength="1" />
+          <Property Name="ShortDesc" Type="varchar" MaxLength="15" />
+          <Property Name="LongDesc" Type="varchar" MaxLength="25" />
+          <Property Name="isIntegrator" Type="bit" />
+          <Property Name="PathTemplate" Type="varchar" MaxLength="200" />
+          <Property Name="isSupervisable" Type="bit" Nullable="false" />
+          <Property Name="codigomodalidad2" Type="int" />
+          <Property Name="EstadoActual" Type="char" MaxLength="1" />
+          <Property Name="AETitleConsulta" Type="varchar" MaxLength="200" />
+          <Property Name="StationName" Type="varchar" MaxLength="200" />
+          <Property Name="anofabricacion" Type="int" Nullable="false" />
+          <Property Name="idfrecuencia" Type="int" Nullable="false" />
+          <Property Name="idEmpresa" Type="int" Nullable="false" />
+          <Property Name="fec_emision_Licencia" Type="date" Nullable="false" />
+          <Property Name="fec_vencimiento_Licencia" Type="date" Nullable="false" />
+          <Property Name="licencia" Type="varchar" MaxLength="600" Nullable="false" />
+          <Property Name="isEliminado" Type="bit" Nullable="false" />
+          <Property Name="serienumber" Type="varchar" MaxLength="400" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="codigousuario" />
+          </Key>
+          <Property Name="jerarquia" Type="int" Nullable="false" />
+          <Property Name="estadousuario" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="siglas" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="codigousuario" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="dni" Type="char" MaxLength="8" />
+          <Property Name="bloqueado" Type="bit" Nullable="false" />
+          <Property Name="contrasena" Type="varchar" MaxLength="20" />
+          <Property Name="ShortName" Type="varchar" MaxLength="25" />
+          <Property Name="isEnf" Type="bit" />
+          <Property Name="isAnes" Type="bit" />
+          <Property Name="username" Type="varchar" MaxLength="300" />
+          <Property Name="Acro" Type="varchar" MaxLength="2" />
+          <Property Name="CurrentUnidad" Type="int" />
+          <Property Name="isSessionLocked" Type="bit" Nullable="false" />
+          <Property Name="User_Uid" Type="varchar(max)" />
+          <Property Name="AreaId" Type="int" />
+        </EntityType>
+        <EntityContainer Name="DATABASEGENERALModelStoreContainer">
+          <EntitySet Name="EQUIPO" EntityType="Self.EQUIPO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DATABASEGENERALModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="EQUIPO">
+          <Key>
+            <PropertyRef Name="codigoequipo" />
+          </Key>
+          <Property Name="fechaadquirio" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="intensidad" Type="Single" Nullable="false" />
+          <Property Name="modelo" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="marca" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombreequipo" Type="String" MaxLength="35" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="codigoequipo" Type="Int32" Nullable="false" />
+          <Property Name="codigosucursal2" Type="Int32" Nullable="false" />
+          <Property Name="codigounidad2" Type="Int32" Nullable="false" />
+          <Property Name="estado" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="ShortDesc" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="LongDesc" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="isIntegrator" Type="Boolean" />
+          <Property Name="PathTemplate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="isSupervisable" Type="Boolean" Nullable="false" />
+          <Property Name="codigomodalidad2" Type="Int32" />
+          <Property Name="EstadoActual" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="AETitleConsulta" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="StationName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="anofabricacion" Type="Int32" Nullable="false" />
+          <Property Name="idfrecuencia" Type="Int32" Nullable="false" />
+          <Property Name="idEmpresa" Type="Int32" Nullable="false" />
+          <Property Name="fec_emision_Licencia" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="fec_vencimiento_Licencia" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="licencia" Type="String" MaxLength="600" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="isEliminado" Type="Boolean" Nullable="false" />
+          <Property Name="serienumber" Type="String" MaxLength="400" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="codigousuario" />
+          </Key>
+          <Property Name="jerarquia" Type="Int32" Nullable="false" />
+          <Property Name="estadousuario" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="siglas" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="codigousuario" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="dni" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+          <Property Name="bloqueado" Type="Boolean" Nullable="false" />
+          <Property Name="contrasena" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ShortName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="isEnf" Type="Boolean" />
+          <Property Name="isAnes" Type="Boolean" />
+          <Property Name="username" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="Acro" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="CurrentUnidad" Type="Int32" />
+          <Property Name="isSessionLocked" Type="Boolean" Nullable="false" />
+          <Property Name="User_Uid" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AreaId" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="DATABASEGENERALEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="EQUIPO" EntityType="Self.EQUIPO" />
+          <EntitySet Name="USUARIO" EntityType="Self.USUARIO" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DATABASEGENERALModelStoreContainer" CdmEntityContainer="DATABASEGENERALEntities1">
+          <EntitySetMapping Name="EQUIPO">
+            <EntityTypeMapping TypeName="DATABASEGENERALModel.EQUIPO">
+              <MappingFragment StoreEntitySet="EQUIPO">
+                <ScalarProperty Name="fechaadquirio" ColumnName="fechaadquirio" />
+                <ScalarProperty Name="intensidad" ColumnName="intensidad" />
+                <ScalarProperty Name="modelo" ColumnName="modelo" />
+                <ScalarProperty Name="marca" ColumnName="marca" />
+                <ScalarProperty Name="nombreequipo" ColumnName="nombreequipo" />
+                <ScalarProperty Name="codigoequipo" ColumnName="codigoequipo" />
+                <ScalarProperty Name="codigosucursal2" ColumnName="codigosucursal2" />
+                <ScalarProperty Name="codigounidad2" ColumnName="codigounidad2" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="ShortDesc" ColumnName="ShortDesc" />
+                <ScalarProperty Name="LongDesc" ColumnName="LongDesc" />
+                <ScalarProperty Name="isIntegrator" ColumnName="isIntegrator" />
+                <ScalarProperty Name="PathTemplate" ColumnName="PathTemplate" />
+                <ScalarProperty Name="isSupervisable" ColumnName="isSupervisable" />
+                <ScalarProperty Name="codigomodalidad2" ColumnName="codigomodalidad2" />
+                <ScalarProperty Name="EstadoActual" ColumnName="EstadoActual" />
+                <ScalarProperty Name="AETitleConsulta" ColumnName="AETitleConsulta" />
+                <ScalarProperty Name="StationName" ColumnName="StationName" />
+                <ScalarProperty Name="anofabricacion" ColumnName="anofabricacion" />
+                <ScalarProperty Name="idfrecuencia" ColumnName="idfrecuencia" />
+                <ScalarProperty Name="idEmpresa" ColumnName="idEmpresa" />
+                <ScalarProperty Name="fec_emision_Licencia" ColumnName="fec_emision_Licencia" />
+                <ScalarProperty Name="fec_vencimiento_Licencia" ColumnName="fec_vencimiento_Licencia" />
+                <ScalarProperty Name="licencia" ColumnName="licencia" />
+                <ScalarProperty Name="isEliminado" ColumnName="isEliminado" />
+                <ScalarProperty Name="serienumber" ColumnName="serienumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USUARIO">
+            <EntityTypeMapping TypeName="DATABASEGENERALModel.USUARIO">
+              <MappingFragment StoreEntitySet="USUARIO">
+                <ScalarProperty Name="jerarquia" ColumnName="jerarquia" />
+                <ScalarProperty Name="estadousuario" ColumnName="estadousuario" />
+                <ScalarProperty Name="siglas" ColumnName="siglas" />
+                <ScalarProperty Name="codigousuario" ColumnName="codigousuario" />
+                <ScalarProperty Name="dni" ColumnName="dni" />
+                <ScalarProperty Name="bloqueado" ColumnName="bloqueado" />
+                <ScalarProperty Name="contrasena" ColumnName="contrasena" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="isEnf" ColumnName="isEnf" />
+                <ScalarProperty Name="isAnes" ColumnName="isAnes" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="Acro" ColumnName="Acro" />
+                <ScalarProperty Name="CurrentUnidad" ColumnName="CurrentUnidad" />
+                <ScalarProperty Name="isSessionLocked" ColumnName="isSessionLocked" />
+                <ScalarProperty Name="User_Uid" ColumnName="User_Uid" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

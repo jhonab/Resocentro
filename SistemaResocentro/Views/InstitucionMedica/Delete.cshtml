@@ -1,0 +1,160 @@
+﻿@model SistemaResocentro.Models.CLINICAHOSPITAL
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>CLINICAHOSPITAL</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.razonsocial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.razonsocial)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.telefono)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.telefono)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.celular)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.celular)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.direccion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.direccion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.web)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.web)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tipo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IdIpress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdIpress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CodigoIpress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CodigoIpress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UbigeoId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UbigeoId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.latitud)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.latitud)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.longitud)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.longitud)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.rucClinica)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.rucClinica)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuFecNew)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuFecNew)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsVerified)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsVerified)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsEnabled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsEnabled)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuFecUpd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuFecUpd)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

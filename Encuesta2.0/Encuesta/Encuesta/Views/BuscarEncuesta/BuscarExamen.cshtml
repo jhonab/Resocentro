@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "<i class='fa fa-binoculars'></i> Buscar Encuesta";
+    ViewBag.Titlenot = "Buscar Encuesta";
+}
+
+<script src="~/js/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //activacion del boton en el menu
+        
+        $("#msj").hide()//ocultar el msj
+        $("#div_partial_encuesta").hide();
+    });
+
+    function cargarEncuesta() {
+        var examen = $("#num_exam").val();
+        var paciente = $("#paciente").val();
+        if (paciente != "" || examen > 0) {
+            if (examen == "")
+                examen = 0;
+            $.ajax({
+                url: "@Url.Action("GetEncuesta", "Herramientas")",
+                data: { examen: examen, paciente: paciente },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+                },
+                success: function (data) {
+                    if (data.result) {
+                        $("#partial_encuesta").html(data.msj);
+                        $("#div_partial_encuesta").show();
+                    } else
+                        mostrarmensaje(2, "Non existe ninguna referencia con el numero ingresado");
+
+                }
+            });
+
+        } else
+            mostrarmensaje(4, "Ingrese un numero de Examen correcto o Apellidos de Paciente");
+    }
+    function verEncuesta(examen) {
+        var _equipo = $("#lstEquipo").val();
+        if (_equipo != '') {
+            window.open('/LectorEncuesta/LectorEncuesta?examen=' + examen+'&isVisible=false', '_blank');
+        } else {
+
+            mostrarmensaje(4, 'Seleccione el <b>Equipo</b> para enviar los datos ');
+        }
+    }
+   
+</script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h2 class="box-title">Buscar Encuesta</h2>
+            </div>
+            <div class="box-body chart-responsive">
+                <div class="row">
+
+                    <div class="alert" id="msj">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>N° Examen:</label>
+                            <input type="number" id="num_exam" placeholder="Número de Examen" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Apellido Paciente:</label>
+                            <input type="text" id="paciente" id="nombre" placeholder="Nombre Paciente" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-1 col-lg-1">
+                        <div class="form-group">
+                            <label></label>
+                            <button type="button" class=" btn btn-info " onclick="cargarEncuesta()" id="btncargarEncuesta"><i class="fa fa-search"></i>&nbsp;&nbsp; Buscar&nbsp;&nbsp; </button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="div_partial_encuesta">
+                    <div class="col-lg-4">
+                        <div id="partial_encuesta">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

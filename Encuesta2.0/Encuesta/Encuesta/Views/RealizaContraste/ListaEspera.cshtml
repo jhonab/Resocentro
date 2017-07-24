@@ -1,0 +1,240 @@
+﻿@{
+    ViewBag.Title = "<i class='fa fa-flask '></i> Contraste";
+    ViewBag.Titlenot = "Contraste";
+}
+
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="~/js/jquery.autosize.js"></script>
+<script src="~/js/getUrl.js"></script>
+
+<script src="~/js/jquery-ui.min.js"></script>
+
+<script type="text/javascript">
+    var table;
+    var myDate = new Date();
+
+    $(document).ready(function () {
+        //activacion del boton en el menu
+        $(".sidebar > .sidebar-menu > li").removeClass("active");
+        $(".sidebar > .sidebar-menu > li.p4").addClass("active");
+
+
+        $("#msj").fadeOut()//ocultar el msj
+        $('.animate').autosize();//autosizeTexbox
+        table = $('#myDataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "@Url.Action("ListaAsync", "RealizaContraste")",
+            //"bProcessing": true,
+            "iDisplayLength": 20,
+            "lengthMenu": [[20, 25, 50, -1], [20, 25, 50, "All"]],
+            "aoColumns": [
+                            { "sName": "N Examen" },//0
+                             { "sName": "Paciente" },//1
+                             { "sName": "HAdmin." },//2
+                             { "sName": "Min." },//3
+                             { "sName": "Concicion" },//4
+                             { "sName": "Estudio" },//5
+                             { "sName": "Equipo" },//6
+                             {
+                                 "sName": "Acciones",
+                                 "mRender": function (data, type, full) {
+                                     return "";
+                                 }
+                             },//7
+                             { "sName": "isvip", "bVisible": false },//8
+                             { "sName": "sedacion", "bVisible": false }//9
+
+
+
+            ],
+            "createdRow": function (row, aData, dataIndex) {
+
+                // si es una validacion pendiente
+                var fec_admi = new Date((aData[2]).substring(6, 10), parseInt((aData[2]).substring(3, 5)) - 1, (aData[2]).substring(0, 2), 0, 0, 0);
+                var fec_now = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0);
+
+                if (fec_admi < fec_now) {
+                    $(row).addClass('warning');
+                }
+                else {
+                    $('td:eq(2)', row).html((aData[2]).substring(11));
+                }
+                // si es Sedacion
+                if (aData[9] == "True") {
+                    $(row).addClass('danger alert-danger');
+                }
+                // si es VIP
+                if (aData[8] == "True") {
+                    $('td:eq(1)', row).html(aData[1] + ' <i class="fa fa-star fa-lg fa-spin" style="color: #F8DB07;"></i>');
+                }
+                // minutos trascurridos
+                if (parseInt(aData[3]) > 40) {
+                    $('td:eq(3)', row).addClass('tiempo_excedente');
+                }
+                else if (parseInt(aData[3]) > 20) {
+                    $('td:eq(3)', row).addClass('tiempo_intermedio');
+                }
+                else {
+                    $('td:eq(3)', row).addClass('tiempo_correcto');
+                }
+                
+              
+
+                //agregarboton de informacion Paciente
+                $('td:eq(1)', row).append('<br /> <button type="button" onclick="cargarDatosExamen(' + aData[0] + ')"  class="btn btn-outline btn-info btn-xs" ><i class="fa fa-info-circle"></i> Info</button>');
+
+                //agregarboton de registrar
+                $('td:eq(7)', row).append('<br /> <button type="button" onclick="RegistrarContraste(' + aData[7] + ')"  class="btn btn-success" ><i class="fa fa-flask fa-lg"></i> Registrar</button>');
+
+
+            }
+        });
+        $("#div_time").html('<p class="pull-right">Last Refresh : <b>' + myDate.toLocaleTimeString() + '</b></p>');
+        $('#myDataTable').css("width", "100%!important");
+        //setInterval(function () {
+        //    table.ajax.reload();
+        //    $('#myDataTable').width("100%");
+        //    var _date = new Date();
+        //    $("#div_time").html('<p class="pull-right">Last Refresh : <b>' + _date.toLocaleTimeString() + '</b></p>');
+        //}, 10000);
+        //getEquipo(table, "2");//tipo Modal
+
+
+    });
+
+    function cargarDatosExamen(examen) {
+        $.ajax({
+            url: "@Url.Action("DatosExamen", "RealizarEncuesta")",
+            data: { examen: examen },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                mostrarmensaje(4, 'Ocurrio un problema y <b>no</b> se enviaron los datos al sistema');
+            },
+            success: function (data) {
+                $('#myModal .modal-body').html(data.mensaje);
+                $('#myModal').modal('toggle');
+            }
+        });
+
+    }
+    function RegistrarContraste(idcontraste) {
+        window.location.href = "@Url.Action("RealizarContraste", "RealizaContraste")" + '?contraste=' + idcontraste;
+    }
+
+ 
+</script>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="">
+            <div class="b">
+                <h2 class="box-title">Lista de Aplicaciones </h2>
+            </div>
+            <div class=" chart-responsive">
+                @*<div class="pull-right">
+                    <button class="btn btn-primary no-print" data-toggle="modal" data-target="#modalExamen">
+                        <b><i class="fa fa-search fa-2x"></i>&nbsp;&nbsp;Examen</b>
+                    </button>
+                </div>*@
+
+                <div class="">
+                    <div class="">                   
+                    </div>
+
+                    <!-- /.panel-heading -->
+                    <div class="">
+                        <div class="alert" id="msj">
+                        </div>
+                        <div class="row">
+                            <div id="div_time" class="col-lg-12">
+                            </div>
+                        </div>
+                        <br />
+                        <div class="table-responsive">
+                            <table id="myDataTable" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>N° Examen</th>
+                                        <th>Paciente</th>
+                                        <th>H. Admin.</th>
+                                        <th>Min. </th>
+                                        <th>Enfermera.</th>
+                                        <th>Estudio</th>
+                                        <th>Equipo</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Datos de Examen</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+    function AddContraste() {
+        var examen = $("#modal_nexamen").val();
+        if ($('#alert_2').length != 0)
+            $('#alert_2').remove();
+        if (examen == "")
+            $("#2").append("<div id='alert_2' class='alert alert-danger'>Ingrese un N° Examen valido</div>")
+        else {
+            $('#modalExamen').modal('toggle');
+            window.location.href = '@Url.Action("AddContraste", "RealizaContraste")?examen=' + examen;
+        }
+    }
+</script>
+<div class="modal fade" id="modalExamen" tabindex="-1" role="dialog" aria-labelledby="modalExamenLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalExamenLabel">Ingrese Número de Examen</h4>
+            </div>
+            <div class="modal-body" id="2">
+                <div class="input-group custom-search-form">
+                    <input type="number" class="form-control" id="modal_nexamen" placeholder="N° Examen...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" onclick="AddContraste();">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

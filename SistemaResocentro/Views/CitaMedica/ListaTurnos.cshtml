@@ -1,0 +1,76 @@
+﻿@model IEnumerable<SistemaResocentro.Models.listarturnoparacita_Result>
+
+@{
+    string fecha = (string)ViewBag.Fecha;
+    Layout = null;
+}
+<script type="text/javascript">
+    var count = 0;
+    $(function () {
+        $(".table-turno").DataTable({
+            "order": [[1, "asc"]],
+            "dom": 'lrtp',
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    count++;
+                    if (count==2) {
+                        var column = this;
+                        var select = $('<select class="form-control"><option value="">Todos los Equipos</option></select>')
+                            .appendTo($("#filtro_equipo_turno"))
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
+<label>Lista de Turnos @fecha</label>
+<div id="filtro_equipo_turno"></div>
+<table class="table compact table-striped table-hover table-bordered table-turno">
+    <thead>
+        <tr>
+            <th>
+                Hora
+            </th>
+            <th>
+                Equipo
+            </th>
+            <th>
+                Turno
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HORA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EQUIPO_BIOMEDICO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MED_TURNO)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-success btn-xs" onclick="setHorario('@item.COD','@item.CE','@item.HORA','@item.EQUIPO_BIOMEDICO')"><i class="fa fa-check fa-lg"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

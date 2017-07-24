@@ -1,0 +1,45 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.administracion.frmPagoMedico"
+        Title="Pago Médicos | Resocentro"  Background="{DynamicResource Windows.Background}"  Height="600" Width="700" Icon="/Resocentro_Desktop;component/img/favicon.png">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="105*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="5,10,5,5">
+            <Label Content="Seleccione Mes y Año:" VerticalContentAlignment="Center"/>
+            <ComboBox Height="23" x:Name="cboMes" Width="120" />
+            <ComboBox Height="23" x:Name="cboAño" Width="81" />
+            <Button Name="btnBuscar" Content="Buscar"  Margin="30,3,0,10" Click="btnBuscar_Click"/>
+        </StackPanel>
+        <telerik:RadGridView Name="gridMedicos" Grid.Row="1" Margin="5"  AutoGenerateColumns="False" IsReadOnly="True" ShowColumnFooters="True">
+            <telerik:RadGridView.GroupDescriptors>
+                <telerik:GroupDescriptor  Member="encuesta" DisplayContent="Encuestador" SortDirection="Ascending" />
+                <telerik:GroupDescriptor  Member="modalidad" DisplayContent="Modalidad" SortDirection="Ascending" />
+            </telerik:RadGridView.GroupDescriptors>
+
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Fecha" DataMemberBinding="{Binding fecha , StringFormat=\{0:dd/MM/yyyy HH:mm:ss\}}"/>
+                <telerik:GridViewDataColumn Header="N° Examen" GroupMemberPath="" DataMemberBinding="{Binding codigo}"/>
+                <telerik:GridViewDataColumn Header="Paciente" DataMemberBinding="{Binding paciente}"/>
+                <telerik:GridViewDataColumn Header="Estudio" DataMemberBinding="{Binding estudio}">
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:CountFunction Caption="Total de exámenes: "></telerik:CountFunction>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Header="Mod." DataMemberBinding="{Binding modalidad}"/>
+                <telerik:GridViewDataColumn Header="Encuestador" DataMemberBinding="{Binding encuesta}"/>
+                <telerik:GridViewDataColumn Header="Supervisor" DataMemberBinding="{Binding supervision}"/>
+            </telerik:RadGridView.Columns>
+            <telerik:RadContextMenu.ContextMenu>
+                <telerik:RadContextMenu>
+                    <telerik:RadMenuItem Header="Exportar Data" Click="MenuItemExport_Click"/>
+                </telerik:RadContextMenu>
+            </telerik:RadContextMenu.ContextMenu>
+        </telerik:RadGridView>
+
+
+    </Grid>
+</Window>

@@ -1,0 +1,194 @@
+tr.alert-success {
+    color: #3c763d!important;
+    background-color: #dff0d8!important;
+    border-color: #d6e9c6!important;
+}
+tr.alert-danger {
+    color: #a94442!important;
+    background-color: #f2dede!important;
+    border-color: #ebccd1!important;
+}
+tr.alert-warning {
+    color: #8a6d3b!important;
+    background-color: #fcf8e3!important;
+    border-color: #faebcc!important;
+}
+
+.body-medico{
+    background-color: #343434!important;
+    color:#fff!important;   
+}
+.main-medico{
+    background-color: #343434!important;
+    font-size:20px!important;    
+    color: #fff!important;
+}
+.btn-medico{
+    background-color: #639B9A;
+    border-color: #639B9A;
+    color: #fff;
+}
+.table-medico>.table > tbody > tr > td {
+    border-top: none;
+    padding: 0;
+     color:#fff!important;
+     font-size:20px!important;    
+}
+.table-medico>.table > thead:first-child > tr:first-child > th{
+    color:#fff!important;
+}
+.titulo_ocultar{
+    color:#fff!important;
+}
+.pregunta {
+    font-size: 1.3em;
+}
+.resaltar {
+    color: #639B9A;
+    font-weight: 600;
+}
+.main-medico .profile-info>a> span,.main-medico .list-inline>li>a{
+    color:#fff!important;
+        font-size: 14px;
+}
+.main-medico .panel-info{    
+  background-color:#343434;
+  border:0px;
+}
+.main-medico .panel-info > .panel-body{
+    background-color:transparent;
+    color:#fff!important;
+}
+.main-medico .panel-info > .panel-body>.table>thead:first-child>tr:first-child>th
+{
+    background-color:transparent;
+    color:#fff!important;
+}
+.main-medico .panel-info > .panel-body>.table> tbody > tr > td
+{
+    background-color:transparent;
+    color:#fff!important;
+}
+.panel-medico {
+  
+  -webkit-border-radius: 3px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 3px;
+  -moz-background-clip: padding;
+  border-radius: 3px;
+  background-clip: padding-box;
+  background-color:#343434;
+}
+.panel-medico > .panel-heading {
+  color: #ffffff;
+  background-color: #4b7f7e;
+  border-color: #4b7f7e;
+}
+.panel-medico > .panel-heading + .panel-collapse .panel-body {
+  border-top-color: #4b7f7e;
+}
+.panel-medico > .panel-body{
+    background-color:transparent;
+    color:#fff!important;
+}
+.panel-medico > .panel-heading > .dropdown .caret {
+  border-color: #ffffff transparent;
+}
+.panel-medico > .panel-heading > .panel-title > a {
+  color: #ffffff;
+}
+.panel-medico > .panel-heading > .panel-options > a {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  line-height: 1;
+  padding: 4px 2px;
+  -webkit-border-radius: 3px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 3px;
+  -moz-background-clip: padding;
+  border-radius: 3px;
+  background-clip: padding-box;
+  -moz-transition: all 300ms ease-in-out;
+  -o-transition: all 300ms ease-in-out;
+  -webkit-transition: all 300ms ease-in-out;
+  transition: all 300ms ease-in-out;
+}
+.panel-medico > .panel-heading > .panel-options > a.bg {
+  background-color: #484848;
+  margin-left: 5px;
+}
+.panel-medico > .panel-heading > .panel-options > a.bg:hover {
+  background-color: #505050;
+}
+.panel-medico > .panel-heading > .panel-options > a i {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+.panel-medico > .panel-heading > .panel-options > .nav-tabs {
+  position: relative;
+  top: 1px;
+  border-bottom: 1px solid #4b7f7e;
+  padding-top: 5px;
+}
+.panel-medico > .panel-heading > .panel-options > .nav-tabs > li {
+  background-color: transparent;
+}
+.panel-medico > .panel-heading > .panel-options > .nav-tabs > li > a {
+  border-color: #4b7f7e;
+  background-color: #4b7f7e;
+  padding: 8px 10px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  -webkit-border-radius: 3px 3px 0 0;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 3px 3px 0 0;
+  -moz-background-clip: padding;
+  border-radius: 3px 3px 0 0;
+  background-clip: padding-box;
+  -moz-transition: all 300ms ease-in-out;
+  -o-transition: all 300ms ease-in-out;
+  -webkit-transition: all 300ms ease-in-out;
+  transition: all 300ms ease-in-out;
+}
+.panel-medico > .panel-heading > .panel-options > .nav-tabs > li > a > i {
+  font-size: 14px;
+  line-height: 1;
+  -moz-transition: all 300ms ease-in-out;
+  -o-transition: all 300ms ease-in-out;
+  -webkit-transition: all 300ms ease-in-out;
+  transition: all 300ms ease-in-out;
+}
+.panel-medico > .panel-heading > .panel-options > .nav-tabs > li.active > a {
+  border-bottom: 1px solid #4b7f7e;
+  background-color: #4b7f7e;
+  color: #ffffff;
+}
+.panel-medico > .panel-heading > .panel-options > .nav-tabs > li.active > a > i {
+  color: #ffffff;
+}
+.panel-medico > .panel-footer {
+  background-color: #4b7f7e;
+  color: #ffffff;
+  border-top-color: #4b7f7e;
+}
+.panel-medico > .panel-footer + .panel-collapse .panel-body {
+  border-bottom-color: #4b7f7e;
+}
+.panel-medico > .panel-body + .panel-body {
+  border-top-color: #4b7f7e;
+}
+.panel-medico > .panel-heading > .panel-options > .nav-tabs > li > a {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(34, 34, 34, 0.1);
+}
+.panel-medico > .panel-heading > .panel-options > .nav-tabs > li.active > a {
+  background-color: #fff;
+  border-bottom-color: #fff;
+  color: #4b7f7e;
+}
+.panel-medico > .panel-heading > .panel-options > .nav-tabs > li.active > a i {
+  color: #4b7f7e;
+}

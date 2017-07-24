@@ -1,0 +1,152 @@
+﻿@{
+    ViewBag.Title = "ListaTrabajo";
+}
+
+<h2>Lista de Carta por Citar</h2>
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    var tabla;
+    $(function () {
+
+        tabla = $('.table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": "@Url.Action("ListaAsync", "CitaMedica")",
+            "iDisplayLength": 50,
+            //"order": [[1, "desc"]],
+            "createdRow": function (row, aData, dataIndex) {
+                $('td:eq(1)', row).addClass("align-right");
+                $('td:eq(2)', row).addClass("align-right");
+                $('td:eq(3)', row).addClass("align-right");
+                $('td:eq(4)', row).addClass("align-center");
+                if(aData[4]=="1" )
+                    $('td:eq(4)', row).addClass("bg-success");
+                else if(aData[4]=="2" )
+                    $('td:eq(4)', row).addClass("bg-warning");
+                else if (aData[4] == "3")
+                    $('td:eq(4)', row).addClass("bg-danger");
+                else { }
+            }
+        });
+        $(".esperando").remove();
+        $(".hidden").removeClass("hidden");
+        filtroCarta();
+        $('#modalAuditLlamada').on('hide.bs.modal', function (e) {
+            filtroCarta();
+        })
+        $('#modalCitarCarta').on('hide.bs.modal', function (e) {
+            filtroCarta();
+        })
+    });
+
+    function downloadAdjunto(adjunto) {
+        window.open('@Url.Action("GetAdjuntosxCartaGarantia", "CitaMedica")' + '?adjunto=' + adjunto);
+    }
+    function registrarLlamada(carta, idpaciente, telefono) {
+        $("#modalAuditLlamada-body").load("/CitaMedica/RealizarLLamadaCita?idcarta=" + carta.formartToUrl()+"&idpaciente="+idpaciente+"&telefono="+telefono, function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            } else {
+                $("#modalAuditLlamada").modal('show');
+            }
+        });
+    }
+    function citarPaciente(carta, idpaciente) {
+        $("#modalCitarCarta-body").load("/CitaMedica/CitarCarta?idcarta=" + carta.formartToUrl() + "&idpaciente=" + idpaciente, function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            } else {
+                $("#modalCitarCarta").modal('show');
+            }
+        });
+    }
+    function filtroCarta() {
+        var estado = $("#cboestadocarta").val();
+        $('.table').dataTable().fnFilter(estado);
+        $("#DataTables_Table_0_filter input").val('');
+    }
+</script>
+
+<div class="row">
+    <div class="esperando " style="text-align: center;color:#065d9d"><i class="fa fa-spinner fa-5x fa-spin"></i> <br />Cargando...</div>
+    <div class="col-md-12 ">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Estado Carta:</label>
+                    <div class="col-md-9">
+                        @Html.DropDownList("cboestadocarta", (SelectList)ViewBag.EstadoCarta, "- TODAS -", htmlAttributes: new { @class = "form-control", @onchange = "filtroCarta()" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            @@media only screen and (max-width: 800px) {
+                .tbtLista td:nth-child(4),
+                .tbtLista th:nth-child(4),
+                .tbtLista td:nth-child(5),
+                .tbtLista th:nth-child(5),
+                .tbtLista td:nth-child(6),
+                .tbtLista th:nth-child(6),
+                .tbtLista td:nth-child(7),
+                .tbtLista th:nth-child(7),
+                .tbtLista td:nth-child(8),
+                .tbtLista th:nth-child(8) {
+                    display: none;
+                }
+            }
+        </style>
+
+        <div class="col-md-12">
+            <table class="tbtLista table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Paciente
+                        </th>
+                        <th>
+                            Inicio
+                        </th>
+                        <th>
+                            Cob.
+                        </th>
+                        <th>
+                            Teléfonos
+                        </th>
+                        <th>
+                            Llam.
+                        </th>
+                        <th>
+                            Aseguradora
+                        </th>
+                        <th>
+                            Estado
+                        </th>
+                    </tr>
+                </thead>
+
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalAuditLlamada" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalAuditLlamada-Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modalAuditLlamada-body">
+        </div>
+        <!-- /.modal-content -->
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="modalCitarCarta" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalCitarCarta-Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modalCitarCarta-body">
+        </div>
+        <!-- /.modal-content -->
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>

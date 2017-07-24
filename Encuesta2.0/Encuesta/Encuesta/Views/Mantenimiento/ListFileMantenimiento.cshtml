@@ -1,0 +1,25 @@
+﻿@{
+    Layout = null;
+}
+<script src="~/js/fileExplore/jquery.easing.js"></script>
+<script src="~/js/fileExplore/jqueryFileTree.js"></script>
+<link href="~/js/fileExplore/jqueryFileTree.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#container_id').fileTree({
+            root: '/',
+            script: '@Url.Action("ListFileIncidente", "Mantenimiento")'+'?incidente=@ViewBag.Incidente',
+            expandSpeed: 1000,
+            collapseSpeed: 1000,
+            folderEvent: 'click',
+            multiFolder: true
+        }, function (file) {
+            window.open(file, '_blank');
+        });
+    });
+</script>
+
+<div id="container_id">
+
+</div>

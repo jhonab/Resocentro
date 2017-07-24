@@ -1,0 +1,6 @@
+@media print {
+    #content p {
+        font-size: 6pt;
+        color: red;
+    }
+}

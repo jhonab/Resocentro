@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = " Carta de Garantía";
+}
+
+<h2>
+    Actualizar Carta Garantía
+</h2>
+<div class="form-horizontal" >
+    <hr />
+    <div class="form-group">
+        <label class="control-label col-md-2">Paciente:</label>
+        <div class="col-md-7">
+            <input type="hidden" class="form-control validar" readonly id="codigopaciente" />
+            <input type="text" class="form-control validar" readonly id="paciente" />
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-info btn-xs" id="btnsearchPaciente" onclick="searchPaciente_modal()" type="button"><i class="fa fa-search fa-2x"></i></button>
+        </div>
+    </div>
+    <div class="row" id="content_cartas_old">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Lista de Cartas del Paciente
+                    </div>
+                </div>
+                <div class="panel-body" id="div_list_cartas">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var tipo_modal_search = 0;//0 ninguno,1 paciente
+    $(function () {
+        cerrarModalSearch();
+    });
+
+    function searchPaciente_modal() {
+        $("#modal-search_body").load("/Paciente/SearchPaciente", function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            } else {
+                tipo_modal_search = 1;//tipo modal buscar paciente
+                $("#modal-search").modal('show');
+            }
+        });
+    }
+    function cerrarModalSearch() {
+        $('#modal-search').on('hide.bs.modal', function (e) {
+            //PACIENTE
+            if (tipo_modal_search == 1) {
+                if ($("#result_idpaciente").val() != "" && $("#result_nombres").val() != "") {
+                    $("#codigopaciente").val($("#result_idpaciente").val());
+                    $("#paciente").val($("#result_nombres").val());
+                    getCartasPaciente($("#result_idpaciente").val());
+                } else {
+                    $("#codigopaciente").val("");
+                    $("#paciente").val("");
+                }
+            }
+          
+        })
+    }
+    function getCartasPaciente(idpaciente) {
+        if (idpaciente != "") {
+            $("#content_cartas_old").show();
+            $("#div_list_cartas").load("/CartaGarantia/getListCarta?idpaciente=" + idpaciente, function (response, status, xhr) {
+                if (status == "error") {
+                    toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+                }
+            });
+        }
+    }
+</script>
+<!-- /.modal-dialog to Search-->
+<div class="modal fade" id="modal-search" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal-addLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body" id="modal-search_body">
+
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

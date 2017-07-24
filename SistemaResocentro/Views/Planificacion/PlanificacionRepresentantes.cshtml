@@ -1,0 +1,243 @@
+﻿@model IEnumerable<SistemaResocentro.Models.Planificacion>
+@{
+    Layout = null;
+}
+<script>
+    // If you're adding a number of markers, you may want to
+    // drop them on the map consecutively rather than all at once.
+    // This example shows how to use setTimeout() to space
+    // your markers' animation.
+
+    var lima = new google.maps.LatLng(-12.0553442, -77.0451853);
+    var markers = [];
+    var info = [];
+    var iterator = 0;
+
+    var map;
+
+    function initialize() {
+        var mapOptions = {
+            zoom: 12,
+            center: lima
+        };
+
+        map = new google.maps.Map(document.getElementById('map-canvas'),
+                mapOptions);
+
+
+    }
+
+    function cargarVisitas(codigo, fec) {
+
+        $.ajax({
+            type: 'POST',
+            data: { promotor: codigo, fecha: fec },
+            url: '/Planificacion/getVisitasRealizadas',
+            success: function (data) {
+                setAllMap(null);
+                markers = [];
+                var len = data.length;
+
+                for (var i = 0; i < len; i++) {
+
+                    var latlng = new google.maps.LatLng(parseFloat(data[i].lat), parseFloat(data[i].lon));
+                    var marker = new google.maps.Marker({
+                        position: latlng,
+                        map: map,
+                        animation: google.maps.Animation.DROP,
+                        title: 'Representante' + data[i].promotor
+                    });
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                    markers.push(marker);
+                    var contentString = '<h5 id="firstHeading" class="firstHeading">Datos Ubicación</h5>'+
+                                         'Institucion: <b>' + data[i].clinica + '</b> <br/>' +
+                                         'Fecha: <b>' + data[i].checkin + '</b> <br/>' +
+                                         'Promotor: <b>' + data[i].promotor + '</b> <br/>' +
+                                         'Medico: <b>' + data[i].medico + '</b> <br/>' +
+                                         'Realizada Correctamente: <b>' + data[i].correcto + '</b> <br/>' +
+                                         'Comentarios: <b>' + data[i].comentarios + '</b> <br/>';
+                                         
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+                    info.push(infowindow);
+                }
+                setAllMap(map);
+            },
+            error: function () {
+                toastr.error('No se pudo cargar los Check-in del Representante', 'Error', opts);
+            }
+        });
+    }
+
+    function setAllMap(map) {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+
+            google.maps.event.addListener(markers[i], 'click', (function (i) {
+                return function () {
+                    info[i].open(map, markers[i]);
+                }
+            })(i));
+        }
+    }
+
+</script>
+<script type="text/javascript">
+    $(function () {
+        $('.lista-planificacionespromotor').DataTable();
+        initialize();
+    })
+    function registroGasto(id) {
+        $("#modal-body-gasto").load("/Planificacion/ListaPago?id=" + id, function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            } else {
+                $("#modal_gasto").modal('show');
+            }
+        });
+    }
+</script>
+
+<div class="row ">
+    <div class="col-md-7">
+
+        <div class="panel-group joined" id="list-representantes">
+            @{var lista_agrupada = Model.Select(x => new { x.codigopromotor, x.USUARIO.ShortName }).Distinct().ToList();}
+            @foreach (var item in lista_agrupada)
+            {
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#list-representantes" href="#@item.codigopromotor" class="collapsed">
+                                @item.ShortName
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="@item.codigopromotor" class="panel-collapse collapse" style="height: 0px;">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="button" onclick="cargarVisitas('@item.codigopromotor','@ViewBag.Fecha')" class="btn btn-info pull-right">Mostrar Ubicaciones&nbsp;&nbsp;<i class="fa fa-crosshairs"></i></button>
+                                </div>
+                                <div class="col-md-12">
+                                    <table class="table table-striped table-bordered table-hover lista-planificacionespromotor ">
+                                        <thead>
+                                            <tr>
+
+                                                <th style="width:100px!important">
+                                                    Hora
+                                                </th>
+                                                <th>
+                                                    Institución Médica
+                                                </th>
+                                                <th>
+                                                    Médico
+                                                </th>
+                                                <th>
+                                                    Motivo
+                                                </th>
+                                                <th style="width:100px!important">
+                                                    Gastos
+                                                </th>
+                                                <th style="width:80px!important">Visitado</th>
+                                                <th class="acciones" width="70px"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var pla in Model.Where(x => x.codigopromotor == item.codigopromotor).OrderBy(x => x.fecha).ToList())
+                                            {
+                                                <tr class="@if (pla.isRealizada)
+                                                {
+                                                               if (pla.isCorrecto)
+                                                            {
+                                                                 <text> alert-success </text>
+                                                            }
+                                                               else
+                                                               {
+                                                                 <text> alert-warning" title="@if(pla.comentarios==""){<text>No hay comentarios</text>}else{<text>@pla.comentarios</text>} </text>
+                                                            }
+
+                                                }else{
+                                                                <text> alert-danger </text>
+                                                }">
+                                                    <td style="text-align:center;">
+                                                        @pla.fecha.ToShortTimeString()
+                                                        @if (pla.checkin != null)
+                                                        {
+                                                            <b style="color:#00a651;"><i>@pla.checkin.Value.ToShortTimeString()</i></b>
+                                                        }
+
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => pla.CLINICAHOSPITAL.razonsocial)
+                                                    </td>
+                                                    <td>
+                                                        @{var medico = pla.MEDICOEXTERNO;}
+                                                        @Html.DisplayFor(modelItem => medico.apellidos) @Html.DisplayFor(modelItem => medico.nombres)
+
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => pla.motivo)
+                                                    </td>
+                                                    <td>
+                                                        <span> S/. @pla.Planificacion_Documento.Sum(x => x.total)</span>
+                                                        @if (pla.isRealizada)
+                                                        {
+                                                            <br />
+                                                            <span style="color:#00a651;"><b>S/. @pla.Planificacion_Documento.Where(x => x.isaprobado == true).Sum(x => x.total)</b></span>
+                                                        }
+
+                                                    </td>
+                                                    <td style="text-align:center;">
+
+                                                        @if (pla.checkin != null)
+                                                        {
+                                                            if (pla.isCorrecto)
+                                                            {
+                                                                <i class="fa fa-check-circle-o alert-success fa-2x"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="fa fa-warning alert-warning fa-2x"></i>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <i class="fa fa-times-circle-o alert-danger fa-2x"></i>
+                                                        }
+
+                                                    </td>
+                                                    <td>
+                                                        @if (pla.isRealizada)
+                                                        {
+                                                            <button type="button" onclick="registroGasto(@pla.id)" class="btn btn-orange btn-sm "><i class="fa fa-file-text-o fa-2x"></i></button>
+                                                        }
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-5 ">
+        <style>
+            #map-canvas {
+                width: 100%;
+                height: 600px;
+            }
+        </style>
+        <div id="map-canvas"></div>
+    </div>
+</div>

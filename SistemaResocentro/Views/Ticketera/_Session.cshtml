@@ -1,0 +1,8 @@
+﻿@model bool
+
+@if (Model)
+{
+    <button class='btn btn-success btn-sm' onclick='cambioEstado(false)'><i class='fa fa-circle'></i>On Line</button>}
+else
+{
+    <button class='btn btn-danger btn-sm' onclick='cambioEstado(true)'><i class='fa fa-circle'></i>Off Line</button>}

@@ -1,0 +1,219 @@
+﻿@{
+    ViewBag.Title = "<i class='fa fa-tint '></i> Sedación";
+    ViewBag.Titlenot = "Sedación";
+}
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="~/js/jquery.autosize.js"></script>
+<script src="~/js/getUrl.js"></script>
+
+<script src="~/js/jquery-ui.min.js"></script>
+
+<script type="text/javascript">
+    var table;
+    var myDate = new Date();
+
+    $(document).ready(function () {
+        //activacion del boton en el menu
+        $(".sidebar > .sidebar-menu > li").removeClass("active");
+        $(".sidebar > .sidebar-menu > li.p5").addClass("active");
+
+
+        $("#msj").fadeOut()//ocultar el msj
+        $('.animate').autosize();//autosizeTexbox
+        table = $('#myDataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "@Url.Action("ListaAsync", "RealizarSedacion")",
+            //"bProcessing": true,
+            "iDisplayLength": 20,
+            "lengthMenu": [[20, 25, 50, -1], [20, 25, 50, "All"]],
+            "aoColumns": [
+                            { "sName": "N Examen" },//0
+                             { "sName": "Paciente" },//1
+                             { "sName": "HAdmin." },//2
+                             { "sName": "Min." },//3
+                             { "sName": "Concicion" },//4
+                             { "sName": "Estudio" },//5
+                             { "sName": "Equipo" },//6
+                             {
+                                 "sName": "Acciones",
+                                 "mRender": function (data, type, full) {
+                                     return "";
+                                 }
+                             },//7
+                             { "sName": "isvip", "bVisible": true },//8
+                             { "sName": "sedacion", "bVisible": false },//9
+                             { "sName": "cantidad", "bVisible": false }//10
+
+
+
+            ],
+            "createdRow": function (row, aData, dataIndex) {
+
+                // si es una validacion pendiente
+                var fec_admi = new Date((aData[2]).substring(6, 10), parseInt((aData[2]).substring(3, 5)) - 1, (aData[2]).substring(0, 2), 0, 0, 0);
+                var fec_now = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0);
+
+                if (fec_admi < fec_now) {
+                    $(row).addClass('warning');
+                }
+                else {
+                    $('td:eq(3)', row).html((aData[2]).substring(11));
+                }
+                // si es Sedacion
+                if (aData[9] == "True") {
+
+                    $(row).addClass('alert-danger');
+
+                }
+                //Cantidad
+                $('td:eq(1)', row).html(aData[10]);
+                $('td:eq(2)', row).html(aData[1]);
+                // si es VIP
+                if (aData[8] == "True") {
+                    $('td:eq(2)', row).html(aData[1] + ' <i class="fa fa-star fa-lg fa-spin" style="color: #F8DB07;"></i>');
+                }
+                // minutos trascurridos
+                if (parseInt(aData[3]) > 40) {
+                    $('td:eq(4)', row).html(aData[3]).addClass('tiempo_excedente');
+                }
+                else if (parseInt(aData[3]) > 20) {
+                    $('td:eq(4)', row).html(aData[3]).addClass('tiempo_intermedio');
+                }
+                else {
+                    $('td:eq(4)', row).html(aData[3]).addClass('tiempo_correcto');
+                }
+
+
+                // realizar encuesta
+               /* if (aData[15] == "False") {//si esta listo para encuestar
+                    $('td:eq(7)', row).append('&nbsp;&nbsp;<button type="button" id="btnEncuesta" onclick="RealizarEncuesta(' + aData[0] + ');" class="btn btn-success"><i class="fa fa-edit fa-2x"></i></button>');
+
+                } else {
+                    $('td:eq(7)', row).append('&nbsp;&nbsp;<button type="button" onclick="alert();" class="btn btn-default"><i class="fa fa-fire fa-2x"></i></button>');
+
+                }*/
+
+                //agregarboton de informacion Paciente
+                $('td:eq(2)', row).append('<br /> <button type="button" onclick="cargarDatosExamen(' + aData[0] + ')"  class="btn btn-outline btn-info btn-xs" ><i class="fa fa-info-circle"></i> Info</button>');
+
+
+                $('td:eq(5)', row).html(aData[4]);
+                $('td:eq(6)', row).html(aData[5]);
+                $('td:eq(7)', row).html(aData[6]);
+
+
+                //agregarboton de registrar
+                $('td:eq(8)', row).html('<button type="button" onclick="RegistrarSedacion(' + aData[7] + ')"  class="btn btn-success" ><i class="fa fa-tint fa-lg"></i> Registrar</button>');
+
+
+            }
+        });
+        $("#div_time").html('<p class="pull-right">Last Refresh : <b>' + myDate.toLocaleTimeString() + '</b></p>');
+        $('#myDataTable').css("width", "100%!important");
+        //setInterval(function () {
+        //    table.ajax.reload();
+        //    $('#myDataTable').width("100%");
+        //    var _date = new Date();
+        //    $("#div_time").html('<p class="pull-right">Last Refresh : <b>' + _date.toLocaleTimeString() + '</b></p>');
+        //}, 10000);
+        //getEquipo(table, "2");//tipo Modal
+
+
+    });
+
+    function cargarDatosExamen(examen) {
+        $.ajax({
+            url: "@Url.Action("DatosExamen", "RealizarEncuesta")",
+            data: { examen: examen },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                mostrarmensaje(4, 'Ocurrio un problema y <b>no</b> se enviaron los datos al sistema');
+            },
+            success: function (data) {
+                $('#myModal .modal-body').html(data.mensaje);
+                $('#myModal').modal('toggle');
+            }
+        });
+
+    }
+    function RegistrarSedacion(idsedacion) {
+        window.location.href = "@Url.Action("RealizarSedacion", "RealizarSedacion")" + '?sedacion=' + idsedacion;
+    }
+
+    
+</script>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h2 class="box-title">Lista de Sedaciones </h2>
+            </div>
+            <div class="box-body chart-responsive">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Lista de Examenes 
+                   
+                    </div>
+
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="alert" id="msj">
+                        </div>
+                        <div class="row">
+                            <div id="div_time" class="col-lg-12">
+                            </div>
+                        </div>
+                        <br />
+                        <div class="table-responsive">
+                            <table id="myDataTable" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>N° Atencion</th>
+                                        <th>Cant. Exam</th>
+                                        <th>Paciente</th>
+                                        <th>H. Admin.</th>
+                                        <th>Min. </th>
+                                        <th>Médico</th>
+                                        <th>Estudio</th>
+                                        <th>Equipo</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Datos de Examen</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+

@@ -1,0 +1,312 @@
+﻿@model SistemaResocentro.ViewModel.EmpleadoViewModel
+
+@{
+    ViewBag.Title = "Editar Colaborador";
+    var pathbuddy = "http://extranet.resocentro.com:5050/PaginaWeb/PerfilesRRHH/";
+
+    string foto = "";
+
+    if (Model.emp != null)
+    {
+        if (Model.emp.pathfoto != null)
+        {
+            foto = pathbuddy+Model.emp.pathfoto;
+        }
+        else
+        {
+            foto = pathbuddy + "sin_perfil.jpg";
+        }
+
+       
+    }
+
+}
+<script src="~/js/bootstrap-switch.min.js"></script>
+<script src="~/js/validar-input.js"></script>
+<script src="~/js/Datetime/moment.js"></script>
+<script src="~/js/Datetime/moment-with-locales.js"></script>
+<script src="~/js/Datetime/bootstrap-datetimepicker.js"></script>
+<link href="~/css/Datetime/bootstrap-datetimepicker.css" rel="stylesheet" />
+<link href="~/js/jquery-ui/css/jquery-ui-1.11.4.theme.min.css" rel="stylesheet" />
+<script src="~/js/jquery-ui/js/jquery-ui-1.11.4.min.js"></script>
+<script src="~/js/script/empleado/createEmpleado.js"></script>
+<script type="text/javascript">
+    isUpdate = true;
+</script>
+<h2>Editar Colaborador</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-lg-12" id="div_empleado">
+
+            <div class="row " id="frm_empleado">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="col-md-4">
+                    <div class="profile-env">
+                        <header class="">
+                            <div class="col-md-12 text-center">
+                                <style>
+                                    .center-img {
+                                        display: block;
+                                        margin: auto;
+                                        width: 170px !important;
+                                        height: 170px !important;
+                                    }
+                                </style>
+                                <label>Foto de Profile</label>
+                                <img id="imgBuddy" src="@foto" class="img-responsive img-circle center-img">
+                                @Html.HiddenFor(x => x.emp.pathfoto)
+                                @Html.HiddenFor(x => x.emp.dni);
+                                <a href="" data-toggle="modal" data-target="#modal_cargarImg">Cambiar Imagen</a>
+                            </div>
+                        </header>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label ">Nombre</label>
+
+                        @Html.EditorFor(model => model.emp.nombres, new { htmlAttributes = new { @class = "form-control validar", @placeholder = "Nombres Completos" } })
+                        @Html.ValidationMessageFor(model => model.emp.nombres, "", new { @class = "text-danger" })
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label ">Apellidos</label>
+                        <div class="">
+                            @Html.EditorFor(model => model.emp.apellidos, new { htmlAttributes = new { @class = "form-control validar", @placeholder = "Apellidos Completos" } })
+                            @Html.ValidationMessageFor(model => model.emp.apellidos, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label ">DNI</label>
+                        <div class="">
+                            @Html.EditorFor(model => model.emp.dni_corregido, new { htmlAttributes = new { @class = "form-control validar", @placeholder = "Número de DNI", @maxlength = "8"} })
+                            @Html.ValidationMessageFor(model => model.emp.dni_corregido, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="control-label " for="fechanacimiento">Fecha Nacimiento</label>
+                        <div class='input-group date datetime'>
+
+                            <input value="@Model.emp.fechanacimiento.ToShortDateString()" class="form-control validar" data-val="true" data-val-date="The field fechanacimiento must be a date." data-val-required="El campo fechanacimiento es obligatorio." id="emp_fechanacimiento" name="emp.fechanacimiento" placeholder="dd/mm/yyyy" type="text">
+                            <span class="input-group-addon btn-info">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.emp.fechanacimiento, "", new { @class = "text-danger" })
+
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label " for="">Sexo</label>
+                        <div class="">
+                            @Html.DropDownListFor(model => model.emp.sexo, (SelectList)ViewBag.Sexo, "- Seleccione Sexo -", htmlAttributes: new { @class = "form-control validar" })
+                            @Html.ValidationMessageFor(model => model.emp.sexo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label ">Estado Civil</label>
+                        <div class="">
+                            @Html.DropDownListFor(model => model.emp.estadocivil, (SelectList)ViewBag.EstadoCivil, "- Seleccione Estado Civil-", new { @class = "form-control  validar" })
+                            @Html.ValidationMessageFor(model => model.emp.estadocivil, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                 
+                    <div class="form-group">
+                        <label class="control-label " for="fechanacimiento">Fecha Ingreso</label>
+                        <div class="input-group date datetime">
+                            <input value="@Model.emp.fechaingreso.ToShortDateString()" class="form-control validar datetime" data-val="true" data-val-date="The field fechaingreso must be a date." data-val-required="El campo fechaingreso es obligatorio." id="emp_fechaingreso" name="emp.fechaingreso" placeholder="dd/mm/yyyy" type="text">
+                            <span class="input-group-addon btn-info">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.emp.fechaingreso, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label " for="">Cargo</label>
+                        <div class="">
+                            @Html.DropDownListFor(x => x.emp.codigocargo, (SelectList)ViewBag.Cargo, "- Seleccione Cargo -", htmlAttributes: new { @class = "form-control validar" })
+                            @Html.ValidationMessageFor(model => model.emp.codigocargo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label " for="">E-mail Corporativo</label>
+                        <div class="">
+                            @Html.EditorFor(model => model.emp.email, new { htmlAttributes = new { @class = "form-control", @placeholder = "nombres.apellidos@resocentro.com" } })
+                            @Html.ValidationMessageFor(model => model.emp.email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label " for="">E-mail Personal</label>
+                        <div class="">
+                            @Html.EditorFor(model => model.emp.email_personal, new { htmlAttributes = new { @class = "form-control", @placeholder = "micorreo@dominio.com" } })
+                            @Html.ValidationMessageFor(model => model.emp.email_personal, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label " for="">Teléfono</label>
+                        <div class="">
+                            @Html.EditorFor(model => model.emp.telefono, new { htmlAttributes = new { @class = "form-control", @placeholder = "Teléfono" } })
+                            @Html.ValidationMessageFor(model => model.emp.telefono, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label " for="">Celular</label>
+                        <div class="">
+                            @Html.EditorFor(model => model.emp.celular, new { htmlAttributes = new { @class = "form-control", @placeholder = "Celular" } })
+                            @Html.ValidationMessageFor(model => model.emp.celular, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label " for="">CMP</label>
+                        <div class="">
+                            @Html.EditorFor(model => model.emp.CMP2, new { htmlAttributes = new { @class = "form-control", @placeholder = "CMP" } })
+                            @Html.ValidationMessageFor(model => model.emp.CMP2, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label " for="">RNE</label>
+                        <div class="">
+                            @Html.EditorFor(model => model.emp.RNE, new { htmlAttributes = new { @class = "form-control" }, @placeholder = "RNE" })
+                            @Html.ValidationMessageFor(model => model.emp.RNE, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Activado:</label>
+                        <div class="">
+                            <div class="make-switch "
+                                 data-on="primary"
+                                 data-on-label="<i class='fa fa-check-circle'></i>"
+                         data-off-label="<i class='fa fa-times-circle'></i>"
+                         @*data-text-label="<i class='fa fa-pencil'></i>"*@
+                    >
+                        @Html.EditorFor(model =>model.emp.isActivo)
+					</div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+        <div class="col-lg-8">
+            <fieldset>
+                <legend>Acceso a Sistema</legend>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label " for="">Usuario</label>
+                        <div class="">
+                            @Html.EditorFor(model => model.usu.siglas, new { htmlAttributes = new { @class = "form-control ui-autocomplete-input", @placeholder = "Usuario", @readonly = "" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label " for="">Clave</label>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.usu.contrasena, new {@id="codigousuario", @class = "form-control", @placeholder = "Clave", @readonly = "" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label " for="">Alias</label>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.usu.ShortName, new { @class = "form-control", @placeholder = "Clave" })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-lg-12">
+            <p>
+                <a href='@Url.Action("List")' class="btn btn-default"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;&nbsp;Regresar a la Lista</a>
+                <button id="btnregistrar" type="submit" class="btn btn-success" onclick="return validar();"><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp; Modificar </button>
+            </p>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#file-imgPerfil").fileinput({
+            uploadUrl: '@Url.Action("UploadImg", "Empleado")', // you must set a valid URL here else you will get an error
+            allowedFileExtensions: ['jpg', 'png'],
+            overwriteInitial: false,
+            maxFileSize: 1000,
+            maxFilesNum: 1,
+            allowedFileTypes: ['image'],
+            slugCallback: function (filename) {
+                return filename.replace('(', '_').replace(']', '_');
+            },
+            layoutTemplates: {
+                main1: "<div class=\'input-group {class}\'>\n" +
+                "   <div class=\'input-group-btn\'>\n" +
+            "       {browse}\n" +
+            "       {upload}\n" +
+            "       {remove}\n" +
+            "   </div>\n" +
+                "   {caption}\n" +
+                "</div>" +
+                "{preview}\n"
+
+            }
+        });
+
+        $('#file-imgPerfil').on('fileuploaded', function (event, data, previewId, index) {
+            var response = data.response, lastimg = $("#emp_pathfoto").val();
+            if (lastimg != "") {
+                $.ajax({
+                    url: "@Url.Action("deleteImgBuddy","Empleado")",
+                    method: "POST",
+                    data: { file: lastimg }
+                });
+            }
+            $("#emp_pathfoto").val(response.name);
+            $("#imgBuddy").attr("src", '@pathbuddy' + response.name)
+            $("#modal_cargarImg").modal('toggle');
+        });
+
+
+
+
+       
+
+    });
+</script>
+<div class="modal fade" id="modal_cargarImg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modal_ModalidadLabel">Cargar imagen</h4>
+            </div>
+            <div class="modal-body">
+                <input id="file-imgPerfil" type="file" multiple class="file" data-overwrite-initial="false" data-min-file-count="1">
+            </div>
+
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+

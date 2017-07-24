@@ -1,0 +1,80 @@
+﻿@model SistemaResocentro.Models.MEDICOEXTERNO
+
+@{
+    Layout = null;
+}
+<script src="~/js/script/medico/updatemedico.js"></script>
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="form-horizontal " id="div_medico">
+            <h4>Modificar Médico</h4>
+            <hr />            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Nombre:</label>
+                        <div class="col-md-9">
+
+                            @Html.EditorFor(model => model.nombres, new { htmlAttributes = new { @class = "form-control validar" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Apellidos:</label>
+                        <div class="col-md-9">
+
+                            @Html.EditorFor(model => model.apellidos, new { htmlAttributes = new { @class = "form-control validar" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">CMP:</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.cmp, new { @class = "form-control validar", @type = "text",@readonly="" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Especialidad:</label>
+                        <div class="col-md-9">
+
+                            @Html.DropDownListFor(model => model.codigoespecialidad, (SelectList)ViewBag.Especialidad, "- Seleccione -", htmlAttributes: new { @class = "form-control validar" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Teléfono:</label>
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.telefono, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Direccion:</label>
+                        <div class="col-md-9">
+
+                            @Html.TextAreaFor(model => model.direccion, new { @class = "form-control validar", @rows = "3" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="button" onclick="updateMedico()" class="btn btn-info">Guardar</button>
+        </div>
+
+    </div>
+</div>

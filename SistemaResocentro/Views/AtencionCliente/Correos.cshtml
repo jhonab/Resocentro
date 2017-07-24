@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Correos";
+}
+<div class="mail-env">
+
+
+
+    <div class="mail-body" id="mailList">
+    </div>
+    <script src="../js/Datetime/dateformat.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            cargarCorreo();
+        });
+        function cargarCorreo() {
+            $("#mailList").load("/AtencionCliente/ListConsulta", function (response, status, xhr) {
+                if (status == "error") {
+                    toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+                }
+            });
+        }
+
+        function mostrarCorreo(id) {
+            $("#cuerpo-mail").load("/AtencionCliente/getConsulta?id="+id, function (response, status, xhr) {
+                if (status == "error") {
+                    toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+                }
+                $("#myModal").modal("show");
+            });
+            cargarCorreo();
+        }
+        
+        
+        function eliminarCorreo(id) {
+            $("#idDeleteMail").val(id);
+            $("#deleteModal").modal("show");
+        }
+        function deleteCorreo(id) {
+            cargarCorreo();
+            $.ajax({
+                url: "/AtencionCliente/DeleteConsulta",
+                data: { id: id },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    toastr.error('Error al Eliminar Correo', 'Error', opts);
+                },
+                success: function (data) {
+                    $("#deleteModal").modal("hide");
+                    toastr.success('Se Eliminó el Correo', 'Exito', opts);
+                }
+            });
+            cargarCorreo();
+        }
+    </script>
+
+    <style>
+        .modal-header {
+            background: #428bca;
+        }
+        .modal-title {
+            color: #fff;
+            font-size:20px;
+        }
+    </style>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    &nbsp;
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Consulta Web N°</h4>
+                </div>
+                <div class="modal-body " id="cuerpo-mail">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="deleteModalLabel">Confirmacion de Eliminacón de Mensaje</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="idDeleteMail" value="" />
+                    ¿Desea eliminar el mensaje seleccionado?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteCorreo($('#idDeleteMail').val())">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

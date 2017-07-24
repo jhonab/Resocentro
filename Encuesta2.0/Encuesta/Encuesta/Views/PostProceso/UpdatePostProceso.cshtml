@@ -1,0 +1,300 @@
+﻿@model Encuesta.ViewModels.Tecnologo.PostProcesoViewModel
+
+@{
+    ViewBag.Title = "<i class='fa fa-check-square-o '></i> Post - Proceso";
+    ViewBag.Titlenot = "Post - Proceso";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- DataTables JavaScript -->
+
+
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="~/js/jquery.autosize.js"></script>
+<script src="~/js/jquery-ui.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#msj").fadeOut()//ocultar el msj
+        $('.animate').autosize();//autosizeTexbox
+
+        /*VIP*/
+        @if (Model.examen.ATENCION.CITA.citavip)
+        {
+            <text>
+        $("#modal_paciente").append('<i class="fa fa-star fa-lg fa-spin" style="color: #F8DB07;"></i>');
+        </text>
+        }
+
+
+        /*OCULTAR ANESTESIA CONTRASTE*/
+        mostrarDiv();
+        $("#istecnicas").change(mostrarDiv);
+
+        $('#table_estudios').dataTable({
+            "columnDefs": [
+            { "targets": [2], "visible": false, "searchable": false },
+            { "targets": [1], "searchable": false, }
+
+            ]
+        });
+
+    });
+
+    function mostrarDiv() {
+        /*tecnicas*/
+        if ($('#istecnicas').is(':checked')) {
+            $("#div_tecnicas").show();
+            $('#table_estudios').focus();
+        }
+        else
+            $("#div_tecnicas").hide();
+    }
+
+    function agregarTecnica(examen, ctec, tec) {
+        var cant = $("#cantidad").val();
+        var cequipo = $("#idequipo").val();
+        if (cequipo != "")
+            if (cant != "" && cant != "0") {
+                $("#idequipo").prop('disabled', 'disabled');
+                $("#cantidad").val('');
+                $.ajax({
+                    url: "@Url.Action("IngresarTecnica", "PostProceso")",
+                    data: { nexamen: examen, ctec: ctec, tec: tec, cant: cant, cequipo: cequipo },
+                    dataType: "json",
+                    type: "POST",
+                    error: function () {
+                        mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+                    },
+                    success: function (data) {
+                        if (data.result)
+                            mostrarTecnica(examen);
+                    }
+                });
+
+            }
+            else {
+                mostrarmensaje(4, "Ingrese la <b>cantidad de items </b>usados para la tecnica");
+                $("#cantidad").focus();
+            }
+        else
+            mostrarmensaje(4, "Seleccione el <b>equipo</b>");
+
+    }
+
+    function eliminarTecnica(npost) {
+        $.ajax({
+            url: "@Url.Action("EliminarTecnica", "PostProceso")",
+            data: { npost: npost },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+            },
+            success: function (data) {
+                if (data.result)
+                    mostrarTecnica(@Model.num_examen);
+            }
+        });
+    }
+
+    function mostrarTecnica(examen) {
+        $("#partialListTecnica").load('@Url.Action("ListarTecnicas", "PostProceso")' + '?nexamen=' + examen)
+    }
+
+
+    
+</script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h2 class="box-title">Modificar PostProceso: <b>@Model.num_examen - @Model.nom_paciente</b> </h2>
+            </div>
+            <div class="box-body chart-responsive">
+                @using (Html.BeginForm())
+                {
+                
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+                    <div class="row">
+
+                        <div class="col-lg-12">
+
+
+                            <div class="panel panel-primary">
+
+                                <div class="panel-heading">
+                                    Datos Examen
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-lg-4">
+                                        @Html.Partial("_DatosExamen", Model.examen)
+                                    </div>
+                                    <div class="col-lg-4">
+                                        @Html.Partial("_DatosPaciente", Model.paciente)
+                                    </div>
+                                    <div class="col-lg-4">
+                                        @Html.Partial("_DatosEncuesta", Model.encuesta)
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            @Html.HiddenFor(model => model.num_examen)
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="panel panel-primary">
+
+                                <div class="panel-heading">
+                                    Datos PostProceso 
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+
+                                        @*Equipo*@
+                                        <div class="col-lg-6">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Equipo
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label>Equipo: </label>
+                                                        @Html.DropDownListFor(model => model.idequipo, (SelectList)ViewBag.lstEquipo, "- Seleccione el Equipo -", new { @class = "form-control" })
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        @*Comentarios*@
+                                        <div class="col-lg-6">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Tecnicas Solicitadas
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        @if (Model.descripcion != null && Model.descripcion != "")
+                                                        {
+                                                            @Model.descripcion
+                                                        }
+                                                        else
+                                                        {
+                                                            <label>Ninguna Mencionada</label>
+                                                        }
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        @*Tecnicas*@
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Técnicas
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <div class="alert" id="msj">
+                                                        </div>
+                                                        <label>Tecnicas: </label>
+                                                        @Html.CheckBoxFor(model => model.istecnicas)
+                                                    </div>
+                                                    <div class="form-group" id="div_tecnicas">
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label>Cantidad Items: </label>
+                                                                @Html.TextBoxFor(model => model.cantidad, new { @type = "number", @class = "form-control" })
+                                                            </div>
+                                                            <div class="panel-group" id="accordion" style="font-size: smaller!important">
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        <h4 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Seleccione la técnica</a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                                                        <div class="panel-body">
+                                                                            <table class="table table-striped table-bordered table-hover" id="table_estudios">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Técnica</th>
+                                                                                        <th></th>
+                                                                                        <th>codigo</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    @foreach (var item in (List<Encuesta.Models.Estudio_PostProceso>)ViewBag.tecnicas)
+                                                                                    {
+                                                                                        <tr>
+                                                                                            <td style="padding: 1px!important">@Html.DisplayFor(modelItem => item.nombreestudio)</td>
+                                                                                            <td class="table_id" style="padding: 1px!important">
+                                                                                                <button type="button" class="btn btn-info btn-circle" onclick="agregarTecnica('@Model.num_examen','@item.codigoestudio','@item.nombreestudio')"><i class="fa fa-check"></i></button>
+                                                                                            </td>
+
+                                                                                            <td style="padding: 1px!important">@Html.DisplayFor(modelItem => item.codigoestudio)</td>
+                                                                                        </tr>
+                                                                                    }
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="panel-group" id="accordion1" style="font-size: smaller!important">
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        <h4 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion1" href="#collapsetwo">Técnicas ingresadas</a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="collapsetwo" class="panel-collapse collapse in">
+                                                                        <div class="panel-body">
+                                                                            <button type="button" class="btn btn-outline btn-primary btn-xs" onclick="mostrarTecnica('@Model.examen.codigo')"><i class="fa fa-binoculars"></i>Mostrar</button>
+                                                                            <div id="partialListTecnica">
+                                                                                @Html.Partial("_ListaPostProceso", Model.tecnicas)
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                
+                    <p style="text-align: center;">
+                        <input type="submit" class="btn btn-success" value="Registrar" />
+                        <a href='@Url.Action("ListaEspera")' class="btn btn-primary">Regresar a la Lista</a>
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

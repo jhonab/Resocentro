@@ -1,0 +1,198 @@
+﻿@model IEnumerable<SistemaResocentro.ViewModel.Carta_list_Revisar>
+
+@{
+    ViewBag.Title = "Revisar Carta Garantia";
+}
+
+<h2>Revisar Carta</h2>
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+
+<script src="~/js/Datetime/moment.js"></script>
+<script src="~/js/Datetime/moment-with-locales.js"></script>
+<script src="~/js/Datetime/bootstrap-datetimepicker.js"></script>
+<link href="~/css/Datetime/bootstrap-datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript">
+
+    $(function () {
+        var table = $(".table").DataTable({
+            "sPaginationType": "bootstrap",
+            "iDisplayLength": 100,
+            "aoColumns": [
+                 { "sName": "iscitada", "searchable": false },//0
+                 { "sName": "isadjunto", "searchable": false },//0
+                 { "sName": "estado", "searchable": false },//0
+                 { "sName": "ncarta" },//0
+                 { "sName": "nreferencia" },//0
+                 { "sName": "paciente" },//0
+                 { "sName": "aseguradora", "searchable": false },//0
+                 { "sName": "cobertura", "searchable": false },//0
+                 { "sName": "feccita" },//0
+                 { "sName": "fectramite", "searchable": false },//0
+                 { "sName": "tramitador", "searchable": false },//0
+                 { "sName": "fecupdate", "searchable": false },//0
+                 { "sName": "actualizador", "searchable": false },//0
+                 { "sName": "bton", "searchable": false },//0
+
+            ],
+        });
+
+        $('#fecha_cita').datetimepicker({
+            sideBySide: true,
+            locale: 'es',
+            format: 'DD/MM/YYYY',
+            defaultDate: "@DateTime.Now.AddDays(1).ToString("yyyy/MM/dd")",
+           @*minDate: '@DateTime.Now.ToString("yyyy/MM/dd")'*@
+        });
+    });
+    function cargarCarta() {
+        var estado = $("#cboestado").val()
+        var fecha = $("#fecha_cita>input").val().split("/");
+        var new_fecha=fecha[1] + "/" + fecha[0] + "/" + fecha[2]
+        new_fecha = new_fecha.replace("/", "%2F").replace("/", "%2F")
+        window.location.replace("/cartagarantia/RevisarCarta?estado=" + estado + "&fecha=" + new_fecha);
+    }
+</script>
+<fieldset>
+    <legend>Buscar por Estado</legend>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label col-md-2">Filtro:</label>
+            <div class="col-md-8">
+                <div class="col-md-6">
+                    @Html.DropDownList("cboestado", (SelectList)ViewBag.EstadoCarta, "- Seleccione -", new { @class = "form-control" })
+                </div>
+                <div class="col-md-6">
+                    <div id="fecha_cita" class='input-group date'>
+                        <input type="text" class=" form-control" />
+                        <span class="input-group-addon btn-blue">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-info" onclick="cargarCarta();"><i class="fa fa-search"></i>&nbsp;&nbsp; Buscar</button>
+            </div>
+        </div>
+    </div>
+</fieldset>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div id="lst_estudio" class="form-group ">
+
+            <table class="table compact table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Cit.
+                        </th>
+                        <th>
+                            Adj.
+                        </th>
+                        <th>
+                            Estado
+                        </th>
+                        <th>
+                            N° Carta
+                        </th>
+                        <th>
+                            N° Referencia
+                        </th>
+                        <th>
+                            Paciente
+                        </th>
+                        <th>
+                            Aseguradora
+                        </th>
+                        <th>
+                            Cobertura
+                        </th>
+                        <th>
+                            Fec. Cita
+                        </th>
+                        <th>
+                            Fec. Tramite
+                        </th>
+                        <th>
+                            Tramitado por
+                        </th>
+                        <th>
+                            Fec. Update
+                        </th>
+                        <th>
+                            Actualizado por
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                               
+                                @if (item.iscitado)
+                                {
+                                    <i class="fa fa-calendar fa-lg"></i>
+                                }
+                            </td>
+                            <td>
+                               @if (item.isAdjunto)
+                               {
+                                   <i class="fa fa-file-text-o fa-lg"></i>
+                               }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.estado)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.id_carta)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.num_carta)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.paciente)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.aseguradora)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.cobertura)
+                            </td>
+                            <td>
+                                @if (item.fec_cita != null)
+                                {
+                                    <span>@item.fec_cita.Value.ToShortDateString()</span>
+                                }
+                            </td>
+                            <td>
+                                @item.fechaTramite.ToShortDateString()
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.user_tramita)
+                            </td>
+                            <td>
+                                @if (item.fec_update != null)
+                                {
+                                    <span>@item.fec_update.Value.ToShortDateString()</span>
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.user_update)
+                            </td>
+
+                            <td>
+                                <a target="_blank" href="@Url.Action("UpdateCarta", "CartaGarantia", new { idcarta = item.id_carta, idpaciente = item.idpaciente, isRevisada=true })" class="btn btn-success btn-xs"><i class="fa fa-check"></i></a>
+                            </td>
+                        </tr>
+                    }
+                    @*onclick="agregarEstudio('@item.codigoestudio','@item.nombreestudio','@item.codigoclase');"*@
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

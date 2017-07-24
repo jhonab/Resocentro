@@ -1,0 +1,11 @@
+﻿<Application x:Class="Resocentro_Server.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <SolidColorBrush x:Key="Windows.Background" Color="#FF32547A"/>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="Background" Value="{StaticResource  Windows.Background}"></Setter>
+        </Style>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,79 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.Caja.impresion.frmTicketControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="frmTicketControl"  Background="White" Width="8 cm" Height="auto"  MaxWidth="8cm" SizeToContent="Height">
+    <Grid Margin="0" Height="auto" Width="7.5 cm" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid Name="grid" Height="auto" Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel Margin="10" Height="auto"/>
+            <StackPanel Grid.Row="1" Width="270" >
+                <Label Name="lblrazonsocial" Content="RESONANCIA MEDICA S.R.LTDA" Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Center"/>
+                <TextBlock Name="lbltipodocumento" TextWrapping="Wrap" Text="BOLETA DE VENTA" Margin="0,15,0,0"  Foreground="Black" FontSize="14" FontWeight="Bold" FontFamily="Arial" Padding="1" HorizontalAlignment="Center"/>
+                <Label Name="lblnumero_documento" Content="B123-12331" Foreground="Black" FontSize="12" FontWeight="Bold" FontFamily="Arial" Padding="1" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                <Label Name="lblfecha_emision" Content="FECHA DE EMISION: 15-01-2016 17:12:13" Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Left"/>
+                <Label Name="lblruc_emisor" Content="DNI: 47207591" Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Left"/>
+                <TextBlock Name="lblcliente" TextWrapping="Wrap" Text="CLIENTE: ALVAREZ BENITO JHON EFER" Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Left"/>
+                <Separator Margin="0,5,0,5"/>
+
+                <TextBlock Name="lblnumeroatencion" TextWrapping="Wrap" Text="N° ATENCIÓN: 123456" Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Left"/>
+                <TextBlock Name="lblpaciente" TextWrapping="Wrap" Text="PACIENTE: ALVAREZ BENITO JHON EFER" Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Left"/>
+                <TextBlock Name="lblcia" TextWrapping="Wrap" Text="CIA: PARTICULARES" Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Left"/>
+                <Label Name="lblcarta" Content="CARTA: 2132154645 - COB: 90% " Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Left"/>
+                <Label Name="lbltipomoneda" Content="MONEDA: SOL" Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Left"/>
+                <Label Name="lbligvporcentaje" Content="IGV:  18%" Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Left"/>
+
+                <Label  Content="==================================================" Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" Margin="0,10,0,0" HorizontalAlignment="Left"/>
+                <Label Content="Descripción                                                                         Importe" Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Left"/>
+                <Label Content="Cant.   Precio Unitario" Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Left"/>
+                <Label  Content="==================================================" Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Left"/>
+
+                <DataGrid Name="grid_items" AutoGenerateColumns="False" GridLinesVisibility="None" BorderThickness="0" HeadersVisibility="None" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn  Header="r" Width="195" MaxWidth="215" Binding="{Binding descripcion}" FontSize="9" >
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="TextWrapping" Value="Wrap" />
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Margin" Value="0" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="60" MaxWidth="60"   FontSize="9" Binding="{Binding valor}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="HorizontalAlignment" Value="Right" />
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Margin" Value="0" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <Label Name="lblexonerada" Content="Op .Exonerada     1203.01" Foreground="Black" FontSize="11" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Right" Visibility="Collapsed" Margin="0,0,15,0"/>
+                <Label Name="lblinafecta" Content="Op .Inafecta     1203.01" Foreground="Black" FontSize="11" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Right" Visibility="Collapsed" Margin="0,0,15,0"/>
+                <Label Name="lblgravada" Content="Op .Gravada     1203.01" Foreground="Black" FontSize="11" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Right" Visibility="Collapsed" Margin="0,0,15,0"/>
+                <Label Name="lbligv" Content="IGV   1,1203.01" Foreground="Black" FontSize="11" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Right" Margin="0,0,15,0" />
+                <Label Name="lbldescuento" Content="Desc. 20%     1203.01" Foreground="Black" FontSize="11" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Right" Visibility="Collapsed" Margin="0,0,15,0"/>
+                <Label Name="lbltotal" Content="Total    1203.01" Foreground="Black" FontSize="11" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Right" Margin="0,0,15,0" />
+                <Label Name="lblcajero" Content="CAJERO:  JHON ALVAREZ" Foreground="Black" FontSize="9" FontWeight="Normal" FontFamily="Arial" Padding="1" HorizontalAlignment="Right" Margin="0,0,15,0"/>
+                
+
+            </StackPanel>
+
+        </Grid>
+
+    </Grid>
+</Window>

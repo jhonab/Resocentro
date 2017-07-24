@@ -1,0 +1,99 @@
+﻿@model Encuesta.Models.Calificacion_Paciente
+
+@{
+    ViewBag.Title = "Calificar Atencion";
+}
+
+<link href="~/css/bootstrap-star-rating.css" rel="stylesheet" />
+<script src="~/js/bootstrap-star-rating.js"></script>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <style>
+        .control-label {
+            font-size: 16px;
+        }
+    </style>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Califique la atención que le brindamos </h2>
+            <h4>
+                La información que brinde en la presente encuesta es de suma importancia para poder continuar brindándole
+                una atención de calidad. Por este motivo le pedimos por favor calique sinceramente la atención que recibió
+                de las siguientes personas:
+            </h4>
+            <br />
+            @Html.HiddenFor(x => x.idCalificacion)
+            @Html.HiddenFor(x => x.numeroatencion)
+            <script type="text/javascript">
+
+                $(function () {
+                    $('.rating').on('rating.change', function (event, value, caption) {
+                        if (value <= 3) {
+                            $("#" + $(this).attr('id') + "_1").removeClass("hidden");
+
+                        }
+                        else
+                            $("#" + $(this).attr('id') + "_1").addClass("hidden");
+                    });
+                });
+            </script>
+            <div class="row ">
+                <div class="col-sm-2 col-sm-pull-2"></div>
+                <div class="col-sm-8 ">
+                    <div class="form-group">
+                        <label for="p1" class="control-label">1. Ejecutivo de Central Telefónica</label>
+                        @Html.TextBoxFor(x => x.p1, new { @class = "rating ", @data_min = "0", @data_max = "5", @data_step = "1", @stars = "2" })
+                        @Html.TextAreaFor(x => x.p1_1, new { @class = "form-control hidden ", @placeholder = "Ingrese sus comentarios" })
+                    </div>
+                    <div class="form-group">
+                        <label for="p2" class="control-label">2. Ejecutivo de atención al cliente (Counter)</label>
+                        @Html.TextBoxFor(x => x.p2, new { @class = "rating ", @data_min = "0", @data_max = "5", @data_step = "1" })
+                        @Html.TextAreaFor(x => x.p2_1, new { @class = "form-control hidden ", @placeholder = "Ingrese sus comentarios" })
+                    </div>
+                    <div class="form-group">
+                        <label for="p3" class="control-label">3. Médico entrevistador</label>
+                        @Html.TextBoxFor(x => x.p3, new { @class = "rating ", @data_min = "0", @data_max = "5", @data_step = "1" })
+                        @Html.TextAreaFor(x => x.p3_1, new { @class = "form-control hidden ", @placeholder = "Ingrese sus comentarios" })
+                    </div>
+                    <div class="form-group">
+                        <label for="p4" class="control-label">4. Tecnólogo Médico</label>
+                        @Html.TextBoxFor(x => x.p4, new { @class = "rating ", @data_min = "0", @data_max = "5", @data_step = "1" })
+                        @Html.TextAreaFor(x => x.p4_1, new { @class = "form-control hidden ", @placeholder = "Ingrese sus comentarios" })
+                    </div>
+                    <div class="form-group">
+                        <label for="p5" class="control-label">5. Enfermera</label>
+                        @Html.TextBoxFor(x => x.p5, new { @class = "rating ", @data_min = "0", @data_max = "5", @data_step = "1" })
+                        @Html.TextAreaFor(x => x.p5_1, new { @class = "form-control hidden ", @placeholder = "Ingrese sus comentarios" })
+                    </div>
+                    <div class="form-group">
+                        <label for="p6" class="control-label">6. Médico anestesiólogo</label>
+                        @Html.TextBoxFor(x => x.p6, new { @class = "rating ", @data_min = "0", @data_max = "5", @data_step = "1" })
+                        @Html.TextAreaFor(x => x.p6_1, new { @class = "form-control hidden ", @placeholder = "Ingrese sus comentarios" })
+                    </div>
+                    <div class="form-group">
+                        <label for="p7" class="control-label">7. Médico radiólogo</label>
+                        @Html.TextBoxFor(x => x.p7, new { @class = "rating ", @data_min = "0", @data_max = "5", @data_step = "1" })
+                        @Html.TextAreaFor(x => x.p7_1, new { @class = "form-control hidden ", @placeholder = "Ingrese sus comentarios" })
+                    </div>
+                    <div class="form-group">
+                        <label for="p8" class="control-label">8. Experiencia de atención en general</label>
+                        @Html.TextBoxFor(x => x.p8, new { @class = "rating ", @data_min = "0", @data_max = "5", @data_step = "1" })
+                        @Html.TextAreaFor(x => x.p8_1, new { @class = "form-control hidden ", @placeholder = "Ingrese sus comentarios" })
+                    </div>
+                </div>
+                <div class="col-sm-push-2"></div>
+            </div>
+        </div>
+    </div>
+    <a type="button" style="margin-left: 15px;" class="btn btn-defalt btn-lg no-print" href="@Url.Action("ListaCalificacion")"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;Retroceder</a>
+    <div class="pull-right">
+        <button type="submit" style="margin-right: 15px;" class="btn btn-success btn-lg no-print">Finalizar&nbsp;<i class="fa fa-arrow-circle-right fa-lg"></i></button>
+    </div>
+}
+

@@ -1,0 +1,172 @@
+﻿@{
+    ViewBag.Title = "AtencionCounter";
+    IEnumerable<SistemaResocentro.Models.TKT_List_Atencion> atenciones = (IEnumerable<SistemaResocentro.Models.TKT_List_Atencion>)ViewBag.Atenciones;
+    SistemaResocentro.Models.TKT_Counter counter = (SistemaResocentro.Models.TKT_Counter)ViewBag.Counter;
+}
+
+<h2>AtencionCounter</h2>
+
+<div class="form-horizontal">
+    <div class="row">
+        <div class="col-md-6 ">
+            <div class="form-group">
+                <label class="control-label col-md-3">Counter:</label>
+                <div class="col-md-6">
+                    @counter.USUARIO.ShortName
+                    <input type="hidden" id="idcounter" value="@counter.idcounter" />
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="div_permiso">
+        <div class="row">
+            <div class="col-md-6 ">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Sede:</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("cbosede", (SelectList)ViewBag.LltAten, "- Seleccione -", new { @onchange = "getatenciones()", @class = "form-control _cbo2" })
+                    </div>
+                    <div class="col-md-3">
+
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    function getatenciones() {
+                        var sede = $("#cbosede").val();
+                        if (sede != "") {
+                            $.ajax({
+                                url: "@Url.Action("getAtenciones", "Ticketera")",
+                                data: { sede: sede },
+                                dataType: "json",
+                                type: "POST",
+                                error: function () {
+                                    alert("error");
+                                },
+                                success: function (data) {
+                                    var items = "";
+                                    items += "<option value='' >- Seleccione -</option>";
+                                    $.each(data, function (i, item) {
+                                        items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                                    });
+                                    $("#cboatencion").html(items);
+                                }
+                            });
+                        }
+                    }
+                </script>
+                <div class="form-group">
+                    <label class="control-label col-md-3">Atencion:</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("cboatencion", (SelectList)ViewBag.Vacio, "- Seleccione -", new { @class = "form-control _cbo2" })
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-success btn-lg" onclick="addAtencion()" type="button"><i class="fa fa-plus "></i>&nbsp;&nbsp;Agregar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 ">
+                <table class="table table-striped compact table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Atencion</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbt_permiso">
+                        @foreach (var item in atenciones)
+                        {
+                            <tr>
+                                <td>
+                                    @item.TKT_Tipo_Atencion.nombre
+                                </td>
+                                <td>
+                                    <a href="javascript:deleteAtencion('@item.idList_Atencion')" class="btn btn-danger btn-xs" title="Eliminar atención"><i class="fa fa-close"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <p>
+            <a href='@Url.Action("ListaCounter")' class="btn btn-primary"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;&nbsp;Regresar a la Lista</a>
+
+        </p>
+    </div>
+</div>
+<script type="text/javascript">
+    function addAtencion() {
+        var ate = $("#cboatencion").val();
+        var cou = $("#idcounter").val();
+        if (ate != "" && cou != "") {
+            $.ajax({
+                url: "@Url.Action("addAtencion", "Ticketera")",
+                data: { counter: cou, atencion: ate },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    toastr.error('Error al agregar atencion', 'Error', opts);
+                },
+                success: function (data) {
+                    if (data) {
+                        toastr.success('Permiso atención agregado', 'Exito', opts);
+                        getPermisos();
+                    }
+                    else
+                        toastr.error('Error al agregar atención', 'Error', opts);
+                }
+            });
+
+        } else
+            toastr.error('Seleccione la atención', 'Error', opts);
+    }
+    function deleteAtencion(id) {
+        $.ajax({
+            url: "@Url.Action("deleteAtencion", "Ticketera")",
+            data: { atencion: id },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                toastr.error('Error al agregar atencion', 'Error', opts);
+            },
+            success: function (data) {
+                if (data) {
+                    toastr.success('Permiso atención eliminado', 'Exito', opts);
+                    getPermisos();
+                }
+                else
+                    toastr.error('Error al eliminar atención', 'Error', opts);
+            }
+        });
+    }
+    function getPermisos() {
+        var cou = $("#idcounter").val();
+        if (cou != "") {
+            $.ajax({
+                url: "@Url.Action("getAtencionesxCounter", "Ticketera")",
+                data: { counter: cou },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    toastr.error('Error al agregar atencion', 'Error', opts);
+                },
+                success: function (data) {
+                    var len = data.length;
+                    if (len > 0) {
+                        var items = "";
+                        for (var i = 0; i < len; i++) {
+                            items += "<tr><td>" + data[i].nombre + "</td><td><a href='javascript:deleteAtencion(" + data[i].id + ")' class='btn btn-danger btn-xs' title='Eliminar atención'><i class='fa fa-close'></i></a></td></tr>";
+                        }
+                        $("#tbt_permiso").html(items);
+                    }
+                    else
+                        toastr.error('Error al agregar atencion', 'Error', opts);
+                }
+            });
+        }
+    }
+</script>

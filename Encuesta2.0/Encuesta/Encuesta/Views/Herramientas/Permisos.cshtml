@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "<i class='fa fa-gear '></i> Herramientas";
+    ViewBag.Titlenot = "Herramientas";
+}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="~/js/permiso/permisoInt.js"></script>
+<script src="~/js/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    function mostrarAccesos() {
+        var user = $("#idusuario").val();
+
+        if (user != "") {
+            mostrarListas();
+            mostrarSede(user);
+            mostrarPermiso(user);
+        } else {
+            mostrarmensaje(2, 'Seleccione un Usuario para mostrar');
+        }
+    }
+    function mostrarSede(user) {
+        $("#partial_sede").load('@Url.Action("SedesxUsuario", "Herramientas")' + '?idusuario=' + user)
+    }
+    function mostrarPermiso(user) {
+        $("#partial_permiso").load('@Url.Action("PermisoxUsuario", "Herramientas")' + '?idusuario=' + user)
+    }
+    function eliminarsede(user, unidad, sede) {
+        if (unidad != "" && sede != "")
+            $("#partial_sede").load('@Url.Action("DeleteSede", "Herramientas")' + '?unidad=' + unidad + "&sede=" + sede + "&user=" + user);
+    }
+
+    function addSede() {
+        var cbosede = $("#idsede").val();
+        var unidad = cbosede.substring(0, 1);
+        var sede = cbosede.substring(1, 2);
+        var user = $("#idusuario").val();
+        if (unidad != "" && sede != "") {
+            $.ajax({
+                url: "@Url.Action("AddSede", "Herramientas")",
+                data: { unidad: unidad, sede: sede, user: user },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+                },
+                success: function (data) {
+                    if (data.result) {
+                        mostrarmensaje(1, 'Se registro la sede correctamente');
+                        mostrarSede(user);
+                    }
+                }
+            });
+
+        } else
+            mostrarmensaje(3, 'Seleccione un Sede para ingresar');
+    }
+    function addPermiso() {
+        var tipo = $("#idpermiso").val();
+        var per = $("#idpermiso option:selected").html();
+        var user = $("#idusuario").val();
+
+        if (tipo != "") {
+            $.ajax({
+                url: "@Url.Action("AddPermiso", "Herramientas")",
+                data: { user: user, tipo: tipo, per: per },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+                },
+                success: function (data) {
+                    if (data.result) {
+                        mostrarmensaje(1, 'Se registro el permiso correctamente');
+                        mostrarPermiso(user);
+                    }
+                    else
+                        mostrarmensaje(1, data.msj);
+                }
+            });
+
+        } else
+            mostrarmensaje(3, 'Seleccione un Permiso para ingresar');
+    }
+    function eliminarpermiso(id) {
+        if (id != "")
+            $("#partial_permiso").load('@Url.Action("DeletePermiso", "Herramientas")' + '?id=' + id);
+    }
+
+   
+</script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h2 class="box-title">Mantenimiento de Permisos </h2>
+            </div>
+            <div class="box-body chart-responsive">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <div class="row">
+                        <div class="alert" id="msj">
+                        </div>
+                        <div class="col-lg-4">
+
+
+                            <div class="form-group">
+                                <label>Usuario</label>
+                                @Html.DropDownList("idusuario", (SelectList)ViewBag.usuarios, "- Seleccione el Usuario -", new { @class = "form-control" })
+                                <button type="button" class="btn btn-info btn-sm" onclick="mostrarAccesos()" id="btncargarUser"><i class="fa fa-search"></i>&nbsp;&nbsp;Buscar</button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group" id="div_sede">
+                                <label>Sede</label>
+                                @Html.DropDownList("idsede", (SelectList)ViewBag.sedes, "- Seleccione la Sede -", new { @class = "form-control" })
+                                <button type="button" class="btn btn-sm btn-success" onclick="addSede()" id="btnAddSede"><i class="fa fa-plus"></i>&nbsp;&nbsp;Agregar</button>
+                                <div id="partial_sede">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group" id="div_permiso">
+                                <label>Permiso</label>
+                                @Html.DropDownList("idpermiso", (SelectList)ViewBag.permisos, "- Seleccione el Permiso -", new { @class = "form-control" })
+                                <button type="button" class="btn btn-sm btn-success" onclick="addPermiso()" id="btnAddPermiso"><i class="fa fa-plus"></i>&nbsp;&nbsp;Agregar</button>
+                                <div id="partial_permiso">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

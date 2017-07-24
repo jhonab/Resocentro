@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Adjuntar Archivo a la Proforma";
+}
+<div class="form-horizontal" id="div_proforma">
+    <h4>Adjuntar archivos al tramite</h4>
+    <div class="form-group">
+        <div class="col-md-12">
+            <input id="file_adjunto" type="file" class="file" data-overwrite-initial="false" data-min-file-count="1">
+        </div>
+    </div>
+
+    <div class="form-group" id="div_file">
+        <div class="col-md-12">
+            <div class="pull-right">
+                <a class="btn btn-primary btn-lg" href="@Url.Action("ImprimirProforma", "CartaGarantia", new { numeroproforma = ViewBag.Id })">Imprimir&nbsp;&nbsp;<i class="fa fa-print fa-lg"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" id="div_end">
+        <div class="col-md-12">
+            <div class="pull-right">
+                <a class="btn btn-primary btn-lg" href="@Url.Action("Createcarta", "CartaGarantia")">Finalizar&nbsp;&nbsp;<i class="fa fa-check-circle"></i></a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    $(function () {
+        var tipo=@ViewBag.Tipo;
+        if(tipo=="1"){
+            $("#div_file").show();
+            $("#div_end").hide();
+        }else{
+            $("#div_file").hide();
+            $("#div_end").show();
+        }
+        $("#file_adjunto").fileinput({
+            uploadUrl: '/CartaGarantia/AdjuntarArchivos?numero=' +@ViewBag.Id +'&tipo=@ViewBag.Tipo ', // you must set a valid URL here else you will get an error
+            allowedFileExtensions: ['pdf'],
+            overwriteInitial: false,
+            maxFileSize: 819200,
+            maxFilesNum: 1,
+            //allowedFileTypes: ['image'],
+            slugCallback: function (filename) {
+                return filename.replace('(', '_').replace(']', '_');
+            },
+            layoutTemplates: {
+                main1: "<div class=\'input-group {class}\'>\n" +
+                "   <div class=\'input-group-btn\'>\n" +
+            "       {browse}\n" +
+            "       {upload}\n" +
+            "       {remove}\n" +
+            "   </div>\n" +
+                "   {caption}\n" +
+                "</div>" +
+                "{preview}\n"
+
+            }
+        });
+    });
+</script>

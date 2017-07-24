@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Encuesta.Models.spu_getIfIsAmpliInDemand_byCodigoAmpliacion_Ultimo_Result>
+@{
+    Layout = null;
+}
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-12">
+            <h4>Datos de Ampliación </h4>
+            <hr />
+            <div class="form-group">
+                <label style="color: #000">Estudio de origen</label>
+                @ViewBag.Estudio
+            </div>
+            <div class="form-group">
+                <label style="color: #000">Solicitante</label>
+                @Html.DisplayFor(x => item.UsuarioRegistra)
+            </div>
+            @if (item.EquipoEleccion == item.EquipoAlternativo)
+            {
+                <div class="form-group">
+                    <label style="color: #000">Equipo exclusivo</label>
+                    @Html.DisplayFor(x => item.EquipoEleccion)
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label style="color: #000">Equipo Elección</label>
+                    @Html.DisplayFor(x => item.EquipoEleccion)
+                </div>
+                <div class="form-group">
+                    <label style="color: #000">Equipo Alternativo</label>
+                    @Html.DisplayFor(x => item.EquipoAlternativo)
+                </div>
+            }
+            <div class="form-group">
+                <label style="color: #000">Motivo</label>
+                @Html.DisplayFor(x => item.AmpliMotivo)
+            </div>
+            <div class="form-group">
+                <label style="color: #000">Técnica</label>
+                @Html.DisplayFor(x => item.AmpliMotivoTecnica)
+            </div>
+        </div>
+    }
+
+</div>

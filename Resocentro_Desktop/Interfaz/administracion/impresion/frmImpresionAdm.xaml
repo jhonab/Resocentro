@@ -1,0 +1,12 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.administracion.impresion.frmImpresionAdm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"
+        Title="frmImpresionAdm" Height="600" Width="800">
+    <Grid>
+        <WindowsFormsHost x:Name="windowsFormsHost1" Grid.Row="1">
+            <rv:ReportViewer x:Name="_reportViewer" ProcessingMode="Local"  />
+        </WindowsFormsHost>
+    </Grid>
+
+</Window>

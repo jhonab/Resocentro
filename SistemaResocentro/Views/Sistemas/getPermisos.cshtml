@@ -1,0 +1,33 @@
+﻿@model IEnumerable<SistemaResocentro.Models.Permiso>
+
+@{
+    Layout = null;
+}
+
+
+
+
+<table class="table  compact  table-bordered table-hover">
+    <tr>
+        <th>Id</th>
+        <th>
+            Permiso
+        </th>
+        <th style="width:20px;"></th>
+    </tr>
+
+    @foreach (var item in Model.OrderBy(x=> x.tipo_permiso))
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.tipo_permiso) 
+            </td>
+            <td> @Html.DisplayFor(modelItem => item.descripcion)
+            </td>
+            <td>
+                <button class="btn btn-danger btn-xs" onclick="deletePermiso('@item.idpermiso')"><i class="fa fa-times"></i></button>
+            </td>
+        </tr>
+    }
+
+</table>

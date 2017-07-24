@@ -1,0 +1,191 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.frmCita.frmVisorCitas"
+    xmlns:styleSelector="clr-namespace:Resocentro_Desktop.Complemento"
+    
+         Title="Visor de Citas | Resocentro" Height="700" Width="800" Background="{DynamicResource Windows.Background}"   Icon="/Resocentro_Desktop;component/img/favicon.png" ScrollViewer.CanContentScroll="True" >
+    <Window.Resources>
+        <styleSelector:SedacionStyle x:Key="keySedacion">
+            <styleSelector:SedacionStyle.nsedacion>
+                <Style TargetType="telerik:GridViewRow">
+                    <Setter Property="Background" Value="White" />
+                </Style>
+            </styleSelector:SedacionStyle.nsedacion>
+            <styleSelector:SedacionStyle.sedacion>
+                <Style TargetType="telerik:GridViewRow">
+                    <Setter Property="Background" Value="#FFF9A1A1" />
+                </Style>
+            </styleSelector:SedacionStyle.sedacion>
+        </styleSelector:SedacionStyle>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="231*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer  Grid.Row="1"  VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding data}" Name="itcLista" >
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Name="stck1"  Grid.Column="0" Margin="5,0"  >
+                                <ItemsControl 
+                ItemsSource="{Binding stk1}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <Label  Margin="0,10,0,5" Content="{Binding titulo}" FontSize="15"/>
+                                                <telerik:RadGridView  Height="300" IsReadOnly="True" ShowGroupPanel="False" CanUserResizeColumns="False" CanUserInsertRows="False" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" ItemsSource="{Binding estudios}" RowStyleSelector="{StaticResource keySedacion}" >
+                                                    <telerik:RadGridView.Columns >
+                                                        <telerik:GridViewToggleRowDetailsColumn IsEnabled="{Binding pacienteVisible}" />
+                                                        <telerik:GridViewImageColumn Header="" DataMemberBinding="{Binding imgSedacion}" Width="20" IsFilterable="False" TextAlignment="Center"  />
+                                                        <telerik:GridViewDataColumn  Header="Hora" DataMemberBinding="{Binding hora,StringFormat=\{0:HH:mm\}}"/>
+                                                        <telerik:GridViewDataColumn  Header="Paciente" DataMemberBinding="{Binding paciente}"/>
+                                                        <telerik:GridViewDataColumn  Header="Estudio" DataMemberBinding="{Binding estudio}"/>
+                                                        <telerik:GridViewDataColumn  Header="E" DataMemberBinding="{Binding estado}"/>
+                                                        <telerik:GridViewDataColumn  Header="TM" DataMemberBinding="{Binding turno}"/>
+                                                        <telerik:GridViewDataColumn  Header="N° Cita" DataMemberBinding="{Binding cita}"/>
+                                                    </telerik:RadGridView.Columns>
+                                                    <telerik:RadGridView.RowDetailsTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Margin="5">
+                                                                <Label Content="Detalle:" FontWeight="Bold" FontSize="14"></Label>
+                                                            <Grid DataContext="{Binding}" Margin="10,5" >
+                                                                <StackPanel HorizontalAlignment="Left">
+                                                                    <CheckBox IsEnabled="False" Content="Sedacion" IsChecked="{Binding sedacion}"></CheckBox>
+                                                                    <Separator/>
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                    <Label Content="Obs.:"></Label>
+                                                                            <TextBox Text="{Binding observacion}" IsEnabled="True" AcceptsReturn="True" TextWrapping="Wrap" Width="300" HorizontalScrollBarVisibility="Visible" BorderBrush="{x:Null}" Foreground="Black"/>
+                                                                    </StackPanel>
+                                                                        <Button Content="Info. Paciente" Width="auto" Padding="10,5" Margin="0,10,0,0" Click="Button_Click" CommandParameter="{Binding idpaciente}" TabIndex="{Binding cita}" Background="#FF205591"  BorderBrush="#FF205591" IsEnabled="{Binding pacienteVisible}" />
+                                                                    </StackPanel>
+
+                                                            </Grid>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </telerik:RadGridView.RowDetailsTemplate>
+
+                                                </telerik:RadGridView>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                            <StackPanel Name="stck2"  Grid.Column="1" Margin="5,0" >
+                                <ItemsControl 
+                ItemsSource="{Binding stk2}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <Label  Margin="0,10,0,5" Content="{Binding titulo}" FontSize="15"/>
+                                                <telerik:RadGridView  Height="300" IsReadOnly="True" ShowGroupPanel="False" CanUserResizeColumns="False" CanUserInsertRows="False" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" ItemsSource="{Binding estudios}" RowStyleSelector="{StaticResource keySedacion}" >
+                                                    <telerik:RadGridView.Columns >
+                                                        <telerik:GridViewToggleRowDetailsColumn IsEnabled="{Binding pacienteVisible}" />
+                                                        <telerik:GridViewImageColumn Header="" DataMemberBinding="{Binding imgSedacion}" Width="20" IsFilterable="False" TextAlignment="Center"  />
+                                                        <telerik:GridViewDataColumn  Header="Hora" DataMemberBinding="{Binding hora,StringFormat=\{0:HH:mm\}}"/>
+                                                        <telerik:GridViewDataColumn  Header="Paciente" DataMemberBinding="{Binding paciente}"/>
+                                                        <telerik:GridViewDataColumn  Header="Estudio" DataMemberBinding="{Binding estudio}"/>
+                                                        <telerik:GridViewDataColumn  Header="E" DataMemberBinding="{Binding estado}"/>
+                                                        <telerik:GridViewDataColumn  Header="TM" DataMemberBinding="{Binding turno}"/>
+                                                        <telerik:GridViewDataColumn  Header="N° Cita" DataMemberBinding="{Binding cita}"/>
+                                                    </telerik:RadGridView.Columns>
+                                                    <telerik:RadGridView.RowDetailsTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Margin="5">
+                                                                <Label Content="Detalle:" FontWeight="Bold" FontSize="14"></Label>
+                                                                <Grid DataContext="{Binding}" Margin="10,5" >
+                                                                    <StackPanel HorizontalAlignment="Left">
+                                                                        <CheckBox IsEnabled="False" Content="Sedacion" IsChecked="{Binding sedacion}"></CheckBox>
+                                                                        <Separator/>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <Label Content="Obs.:"></Label>
+                                                                            <TextBox Text="{Binding observacion}" IsEnabled="True" AcceptsReturn="True" TextWrapping="Wrap" Width="300" HorizontalScrollBarVisibility="Visible" BorderBrush="{x:Null}" Foreground="Black" IsReadOnly="True"/>
+                                                                        </StackPanel>
+                                                                        <Button Content="Info. Paciente" Width="auto" Padding="10,5" Margin="0,10,0,0" Click="Button_Click" CommandParameter="{Binding idpaciente}" TabIndex="{Binding cita}" Background="#FF205591"  IsEnabled="{Binding pacienteVisible}" BorderBrush="#FF205591" />
+                                                                    </StackPanel>
+
+                                                                </Grid>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </telerik:RadGridView.RowDetailsTemplate>
+
+                                                </telerik:RadGridView>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+
+        </ScrollViewer>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="275"/>
+                <ColumnDefinition Width="275"/>
+                <ColumnDefinition Width="106*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="5">
+                <Label Content="Fecha" />
+                <telerik:RadDatePicker VerticalAlignment="Top" Name="dtpFecha"/>
+            </StackPanel>
+            <StackPanel Margin="5" Grid.Column="1">
+                <Label Content="Empresa - Sede" />
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox Name="cboEmpresa" MinWidth="200" ></ComboBox>
+                    <Button Name="btnBuscarXEmpresa" Margin="10,0" Padding=" 10,1" Click="btnBuscarXEmpresa_Click" >
+                        <Button.Content>
+                            <Path Data="M342.392,122.987C239.49,123.006 151.319,192.921 140.685,286.729 129.343,386.789 210.561,476.166 322.073,486.305 433.726,496.357 533.008,423.562 544.399,323.418 555.741,223.444 474.71,134.106 363.15,123.929 356.177,123.295 349.252,122.986 342.392,122.987z M340.78,4E-06C352.307,-0.001703 363.944,0.518666 375.661,1.58401 563.21,18.6332 699.556,168.869 680.651,337.114 673.881,396.629 648.395,450.326 610.166,494.346L838.748,738.109C867.595,768.799 863.114,814.838 828.805,840.765 794.543,866.563 743.291,862.542 714.304,831.844L482.736,584.564C429.618,606.553 369.17,616.354 306.764,610.781 119.305,593.649 -17.2717,443.415 1.77271,275.211 19.7129,117.518 167.869,0.025549 340.78,4E-06z" Stretch="Uniform" Fill="#FF205591" Width="20" Height="20" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <TransformGroup.Children>
+                                            <RotateTransform Angle="0" />
+                                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                                        </TransformGroup.Children>
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Margin="5" Grid.Column="2">
+                <Label Content="Equipo Médico" />
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox Name="cboEquipo" MinWidth="200" ></ComboBox>
+                    <Button Name="btnBuscarXEquipo" Margin="10,0" Padding=" 10,1" Click="btnBuscarXEquipo_Click" >
+                        <Button.Content>
+                            <Path Data="M342.392,122.987C239.49,123.006 151.319,192.921 140.685,286.729 129.343,386.789 210.561,476.166 322.073,486.305 433.726,496.357 533.008,423.562 544.399,323.418 555.741,223.444 474.71,134.106 363.15,123.929 356.177,123.295 349.252,122.986 342.392,122.987z M340.78,4E-06C352.307,-0.001703 363.944,0.518666 375.661,1.58401 563.21,18.6332 699.556,168.869 680.651,337.114 673.881,396.629 648.395,450.326 610.166,494.346L838.748,738.109C867.595,768.799 863.114,814.838 828.805,840.765 794.543,866.563 743.291,862.542 714.304,831.844L482.736,584.564C429.618,606.553 369.17,616.354 306.764,610.781 119.305,593.649 -17.2717,443.415 1.77271,275.211 19.7129,117.518 167.869,0.025549 340.78,4E-06z" Stretch="Uniform" Fill="#FF205591" Width="20" Height="20" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <TransformGroup.Children>
+                                            <RotateTransform Angle="0" />
+                                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                                        </TransformGroup.Children>
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+
+    </Grid>
+</Window>

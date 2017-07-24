@@ -1,0 +1,363 @@
+﻿@model IEnumerable<Encuesta.ViewModels.CalificacionPacienteViewModels>
+@{
+    ViewBag.Title = "<i class='fa fa-line-chart'></i> Reporte";
+    ViewBag.Titlenot = "Reporte";
+}
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="~/js/plugins/KendoChart/kendo.all.min.js"></script>
+<link href="~/css/plugins/Kendochart/kendo.dataviz.min.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="">
+            <div class="">
+
+                <h2 class="box-title">Usuario:  @Membership.GetUser().UserName</h2>
+            </div>
+            <div class=" chart-responsive">
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">Filtro de Busqueda</div>
+                            </div>
+                            <div class="panel-body">
+                                @using (Html.BeginForm("ReporteCalificarAtencion", "Atencion", FormMethod.Get))
+                                {
+                                    <script type="text/javascript">
+                                        function validar() {
+                                            var msj = "";
+                                            if ($("#inicio").val() == "")
+                                                msj += "- Ingrese la fecha de inicio \n";
+                                            if ($("#fin").val() == "")
+                                                msj += "- Ingrese la fecha de termino \n";
+
+                                            if (msj == "")
+                                                return true;
+                                            else {
+                                                alert(msj);
+                                                return false;
+                                            }
+                                        }
+                                    </script>
+                                    <div class="form-group col-xs-6">
+                                        <label>Inicio:</label>
+                                        <input type="date" id="inicio" name="inicio" class="form-control" />
+                                    </div>
+                                    <div class="form-group col-xs-6">
+                                        <label>Termino:</label>
+                                        <input type="date" id="fin" name="fin" class="form-control" />
+                                    </div>
+
+                                    <input type="submit" value="Buscar" onclick="return validar();" class="btn btn-outline btn-success" />
+
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <script type="text/javascript">
+                    $(function () {
+                        
+                        $("#chart-p1").kendoChart({
+                            title: {
+                                text: "Central Telefónica"
+                            },
+                            theme: "Metro",
+                            legend: {
+                                position: "top"
+                            },
+                            seriesDefaults: {
+                                labels: {
+                                    template: "#= value # Cont. - #= category # ",
+                                    position: "outsideEnd",
+                                    visible: true,
+                                    background: "transparent"
+                                }
+                            },
+                            seriesColors: ["#777", "#d9534f", "#f0ad4e", "#5bc0de",'#337ab7','#5cb85c'],
+                            series: [{
+                                type: "donut",
+                                data: [@{for (int i = 1; i < 6;i++ )
+                                         { <text>{
+                                    @{ string texto = i == 0 ? "No Atendio" : i == 1 ? "Muy Mala" : i == 2 ? "Mala" : i == 3 ? "Regular" : i == 4 ? "Buena" : i == 5 ? "Muy Buena" : "";}
+                                    category:('@texto'),
+                                    value:@Model.Where(x => x.p1 == i).Count(), },</text>}} ]
+                            }],
+                            tooltip: {
+                                visible: true,
+                                template: " #= value # Calificaciones de tipo: #= category #"
+                            }
+
+                        });
+                        $("#chart-p2").kendoChart({
+                            title: {
+                                text: "Counter"
+                            },
+                            theme: "Metro",
+                            legend: {
+                                position: "top"
+                            },
+                            seriesDefaults: {
+                                labels: {
+                                    template: "#= value # Cont. - #= category # ",
+                                    position: "outsideEnd",
+                                    visible: true,
+                                    background: "transparent"
+                                }
+                            },
+                            seriesColors: ["#777", "#d9534f", "#f0ad4e", "#5bc0de",'#337ab7','#5cb85c'],
+                            series: [{
+                                type: "donut",
+                                data: [@{for (int i = 1; i < 6;i++ )
+                        { <text>{
+                   @{ string texto = i == 0 ? "No Atendio" : i == 1 ? "Muy Mala" : i == 2 ? "Mala" : i == 3 ? "Regular" : i == 4 ? "Buena" : i == 5 ? "Muy Buena" : "";}
+                        category:('@texto'),
+                        value:@Model.Where(x => x.p2 == i).Count(), },</text>}} ]
+                    }],
+                    tooltip: {
+                            visible: true,
+                            template: " #= value # Calificaciones de tipo: #= category #"
+                    }
+
+                        });
+                        $("#chart-p3").kendoChart({
+                            title: {
+                                text: "Médico Entrevistador"
+                            },
+                            theme: "Metro",
+                            legend: {
+                                position: "top"
+                            },
+                            seriesDefaults: {
+                                labels: {
+                                    template: "#= value # Cont. - #= category # ",
+                                    position: "outsideEnd",
+                                    visible: true,
+                                    background: "transparent"
+                                }
+                            },
+                            seriesColors: ["#777", "#d9534f", "#f0ad4e", "#5bc0de",'#337ab7','#5cb85c'],
+                            series: [{
+                                type: "donut",
+                                data: [@{for (int i = 1; i < 6;i++ )
+                        { <text>{
+                   @{ string texto = i == 0 ? "No Atendio" : i == 1 ? "Muy Mala" : i == 2 ? "Mala" : i == 3 ? "Regular" : i == 4 ? "Buena" : i == 5 ? "Muy Buena" : "";}
+                        category:('@texto'),
+                        value:@Model.Where(x => x.p3 == i).Count(), },</text>}} ]
+                    }],
+                    tooltip: {
+                            visible: true,
+                            template: " #= value # Calificaciones de tipo: #= category #"
+                    }
+
+                        });
+                        $("#chart-p4").kendoChart({
+                            title: {
+                                text: "Tecnólogo Médico"
+                            },
+                            theme: "Metro",
+                            legend: {
+                                position: "top"
+                            },
+                            seriesDefaults: {
+                                labels: {
+                                    template: "#= value # Cont. - #= category # ",
+                                    position: "outsideEnd",
+                                    visible: true,
+                                    background: "transparent"
+                                }
+                            },
+                            seriesColors: ["#777", "#d9534f", "#f0ad4e", "#5bc0de",'#337ab7','#5cb85c'],
+                            series: [{
+                                type: "donut",
+                                data: [@{for (int i = 1; i < 6;i++ )
+                        { <text>{
+                   @{ string texto = i == 0 ? "No Atendio" : i == 1 ? "Muy Mala" : i == 2 ? "Mala" : i == 3 ? "Regular" : i == 4 ? "Buena" : i == 5 ? "Muy Buena" : "";}
+                        category:('@texto'),
+                        value:@Model.Where(x => x.p4 == i).Count(), },</text>}} ]
+                    }],
+                    tooltip: {
+                            visible: true,
+                            template: " #= value # Calificaciones de tipo: #= category #"
+                    }
+
+                        });
+                        $("#chart-p5").kendoChart({
+                            title: {
+                                text: "Enfermera"
+                            },
+                            theme: "Metro",
+                            legend: {
+                                position: "top"
+                            },
+                            seriesDefaults: {
+                                labels: {
+                                    template: "#= value # Cont. - #= category # ",
+                                    position: "outsideEnd",
+                                    visible: true,
+                                    background: "transparent"
+                                }
+                            },
+                            seriesColors: ["#777", "#d9534f", "#f0ad4e", "#5bc0de",'#337ab7','#5cb85c'],
+                            series: [{
+                                type: "donut",
+                                data: [@{for (int i = 1; i < 6;i++ )
+                        { <text>{
+                   @{ string texto = i == 0 ? "No Atendio" : i == 1 ? "Muy Mala" : i == 2 ? "Mala" : i == 3 ? "Regular" : i == 4 ? "Buena" : i == 5 ? "Muy Buena" : "";}
+                        category:('@texto'),
+                        value:@Model.Where(x => x.p5 == i).Count(), },</text>}} ]
+                    }],
+                    tooltip: {
+                            visible: true,
+                            template: " #= value # Calificaciones de tipo: #= category #"
+                    }
+
+                        });
+                        $("#chart-p6").kendoChart({
+                            title: {
+                                text: "Anestesiólogo"
+                            },
+                            theme: "Metro",
+                            legend: {
+                                position: "top"
+                            },
+                            seriesDefaults: {
+                                labels: {
+                                    template: "#= value # Cont. - #= category # ",
+                                    position: "outsideEnd",
+                                    visible: true,
+                                    background: "transparent"
+                                }
+                            },
+                            seriesColors: ["#777", "#d9534f", "#f0ad4e", "#5bc0de",'#337ab7','#5cb85c'],
+                            series: [{
+                                type: "donut",
+                                data: [@{for (int i = 1; i < 6;i++ )
+                        { <text>{
+                   @{ string texto = i == 0 ? "No Atendio" : i == 1 ? "Muy Mala" : i == 2 ? "Mala" : i == 3 ? "Regular" : i == 4 ? "Buena" : i == 5 ? "Muy Buena" : "";}
+                        category:('@texto'),
+                        value:@Model.Where(x => x.p6 == i).Count(), },</text>}} ]
+                    }],
+                    tooltip: {
+                            visible: true,
+                            template: " #= value # Calificaciones de tipo: #= category #"
+                    }
+
+                        });
+                        $("#chart-p7").kendoChart({
+                            title: {
+                                text: "Médico Radiólogo"
+                            },
+                            theme: "Metro",
+                            legend: {
+                                position: "top"
+                            },
+                            seriesDefaults: {
+                                labels: {
+                                    template: "#= value # Cont. - #= category # ",
+                                    position: "outsideEnd",
+                                    visible: true,
+                                    background: "transparent"
+                                }
+                            },
+                            seriesColors: ["#777", "#d9534f", "#f0ad4e", "#5bc0de",'#337ab7','#5cb85c'],
+                            series: [{
+                                type: "donut",
+                                data: [@{for (int i = 1; i < 6;i++ )
+                        { <text>{
+                   @{ string texto = i == 0 ? "No Atendio" : i == 1 ? "Muy Mala" : i == 2 ? "Mala" : i == 3 ? "Regular" : i == 4 ? "Buena" : i == 5 ? "Muy Buena" : "";}
+                        category:('@texto'),
+                        value:@Model.Where(x => x.p7 == i).Count(), },</text>}} ]
+                    }],
+                    tooltip: {
+                            visible: true,
+                            template: " #= value # Calificaciones de tipo: #= category #"
+                    }
+
+                        });
+                        $("#chart-p8").kendoChart({
+                            title: {
+                                text: "Experiencia en General"
+                            },
+                            theme: "Metro",
+                            legend: {
+                                position: "top"
+                            },
+                            seriesDefaults: {
+                                labels: {
+                                    template: "#= value # Cont. - #= category # ",
+                                    position: "outsideEnd",
+                                    visible: true,
+                                    background: "transparent"
+                                }
+                            },
+                            seriesColors: ["#777", "#d9534f", "#f0ad4e", "#5bc0de",'#337ab7','#5cb85c'],
+                            series: [{
+                                type: "donut",
+                                data: [@{for (int i = 1; i < 6;i++ )
+                        { <text>{
+                   @{ string texto = i == 0 ? "No Atendio" : i == 1 ? "Muy Mala" : i == 2 ? "Mala" : i == 3 ? "Regular" : i == 4 ? "Buena" : i == 5 ? "Muy Buena" : "";}
+                        category:('@texto'),
+                        value:@Model.Where(x => x.p8 == i).Count(), },</text>}} ]
+                    }],
+                    tooltip: {
+                            visible: true,
+                            template: " #= value # Calificaciones de tipo: #= category #"
+                    }
+
+                    });
+                    });
+                </script>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <h3>Se entontraron @Model.Count() Registro(s)</h3>
+                            <div class="col-xs-6 col-md-4 col-lg-3">
+                                <div id="chart-p1">
+
+                                </div>
+                                
+                            </div>
+                            <div class="col-xs-6 col-md-4 col-lg-3">
+                                <div id="chart-p2">
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-4 col-lg-3">
+                                <div id="chart-p3">
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-4 col-lg-3">
+                                <div id="chart-p4">
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-4 col-lg-3">
+                                <div id="chart-p5">
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-4 col-lg-3">
+                                <div id="chart-p6">
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-4 col-lg-3">
+                                <div id="chart-p7">
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-4 col-lg-3">
+                                <div id="chart-p8">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

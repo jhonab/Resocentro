@@ -1,0 +1,94 @@
+﻿@model IEnumerable<SistemaResocentro.ViewModel.Mantenimiento.EquipoMantenimiento>
+
+@{
+    ViewBag.Title = "Lista de Equipos";
+}
+<h2>Lista de Equipos</h2>
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $(function () {
+        t0 = $(".table").DataTable({
+            "sPaginationType": "bootstrap",
+            "ordering": false
+        });
+    });
+</script>
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            <a href='@Url.Action("CrearEquipo")' class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp; Registrar Equipo</a>
+        </p>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Sucursal
+                    </th>
+                    <th>
+                        Marca
+                    </th>
+                    <th>
+                        Modelo
+                    </th>
+                    <th>
+                        S/N
+                    </th>
+                    <th>
+                        Equipo
+                    </th>
+                    <th>
+                        Modalidad
+                    </th>
+                    <th>
+                        Mantenimiento
+                    </th>
+                    <th>
+                        Activo
+                    </th>
+                    <th style="width:65px!important"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                           @Html.DisplayFor(modelItem => item.empresa) - @Html.DisplayFor(modelItem => item.sucursal)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.marca)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.modelo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.serie)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.nombreEquipo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.modalidad)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.frecuencia)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.isActivo) 
+                        </td>                        
+                        <td>
+                            <a href="@Url.Action("EditarEquipo", "Mantenimiento", new { idequipo = item.idEquipo })" title="Editar Equipo"><i class="fa fa-edit fa-lg "></i></a>
+
+                            <a href="@Url.Action("ListaIncidenteEquipo", "Mantenimiento", new { equipo = item.idEquipo })" title="Incidentes"><i class="fa fa-wrench fa-lg "></i></a>
+
+
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

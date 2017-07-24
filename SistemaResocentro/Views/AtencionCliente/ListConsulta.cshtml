@@ -1,0 +1,149 @@
+﻿@model IEnumerable<SistemaResocentro.Models.Consulta>
+@{
+    Layout = null;
+}
+<div class="mail-header">
+    <!-- title -->
+    <h3 class="mail-title">
+        Bandeja Entrada
+        <span>
+            <span class="count">
+                @{int cant = Model.Where(x => x.isAtendido == false).Count();
+                int cant_noleida = Model.Where(x => x.isLeido == false).Count(); }
+                @if (cant > 0)
+                {
+                    <text>(@cant)</text>
+                }
+            </span>
+            @if (cant_noleida > 0)
+            {
+                <span style="position:relative; width:60px">
+                    <span style="display:">
+                        <i class="fa fa-weixin fa-flip-horizontal fa-2x" style="color:#63c8cf"></i>
+                        <span style="position: absolute;
+                  padding: 2px;
+                  font-size: 10px;
+                  right: 6px;
+                  top: 6px;
+                  min-width: 17px;
+                  line-height: 12px;" class="badge badge-primary">1</span>
+                    </span>
+                </span>
+            }
+
+        </span>
+
+    </h3>
+    <div class="mail-search">
+        <button type="button" class="btn btn-success" onclick="cargarCorreo()"><i class="fa fa-refresh"></i></button>
+    </div>
+</div>
+
+<link href="../js/datatables/datatable.css" rel="stylesheet">
+<script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".table").DataTable({
+            "ordering": false
+            //"order": [[0, "desc"]]
+        });
+    });
+</script>
+<!-- mail table -->
+<table class="table mail-table ">
+    <!-- mail table header -->
+    <thead>
+        <tr>
+            <th width="5%">
+                @*<div class="checkbox checkbox-replace neon-cb-replacement">
+                        Nombre
+                    </div>*@
+            </th>
+            <th>N°</th>
+            <th>Paciente</th>
+            <th>Consulta</th>
+            <th>
+                Fecha
+
+                @*<div class="mail-select-options">Consulta</div>
+
+                    <div class="mail-pagination" colspan="2">
+                        <span>Hora</span>
+
+                    </div>*@
+            </th>
+        </tr>
+    </thead>
+
+    <!-- email list -->
+    <tbody>
+        @foreach (var item in Model.OrderBy(x=> x.isLeido).ThenByDescending(x => x.Fec_Registro.Value).ToList())
+        {
+            <tr @if (!item.isLeido) { <text> class="unread" </text>             }>
+
+                <td>
+
+
+                    @if (!item.isAtendido)
+                    {
+                        if (!item.isLeido)
+                        {
+                            <a href="#" title="Nuevo" style="color:#63c8cf"><i class="fa fa-weixin fa-flip-horizontal fa-lg"></i></a>
+                        }
+
+                        <a href="javascript:eliminarCorreo(@item.ConsultaId)" title="Eliminar" style="color:#ff0000"><i class="fa fa-trash fa-lg"></i></a>
+                    }
+                    else
+                    {
+                        <a href="#" title="Terminado" style="color:#14a527"><i class="fa fa-check fa-lg"></i></a>
+                    }
+
+                </td>
+                <td>@item.ConsultaId</td>
+                <td class="col-name">
+
+                    <a href="javascript:mostrarCorreo(@item.ConsultaId)" class="col-name">
+                        @item.Nombre @item.Apellidos <small style="color:#808080">&lt; @item.Email &gt;</small>
+                    </a>
+                </td>
+                <td class="col-subject">
+                    <a href="javascript:mostrarCorreo(@item.ConsultaId)">
+                        @if (item.Mensaje != null)
+                        {
+                            if (item.Mensaje.Length > 101)
+                            {
+                                @item.Mensaje.Substring(0, 100)<text>...</text>
+                            }
+                            else
+                            {
+                                @item.Mensaje
+                            }
+                        }
+                    </a>
+                </td>
+                <td class="col-time">
+                    <span>
+                        @if (item.Fec_Registro.Value.Year == DateTime.Now.Year && item.Fec_Registro.Value.Month == DateTime.Now.Month && item.Fec_Registro.Value.Day == DateTime.Now.Day)
+                        {
+                            <text>Hoy </text>
+                        }
+                        else if (item.Fec_Registro.Value.Year == DateTime.Now.Year && item.Fec_Registro.Value.Month == DateTime.Now.Month && item.Fec_Registro.Value.Day == DateTime.Now.Day - 1)
+                        {
+                            <text>Ayer </text>
+                        }
+                        else
+                        {
+                            @item.Fec_Registro.Value.ToShortDateString()
+                        }
+                        <br />
+                        @item.Fec_Registro.Value.ToShortTimeString()
+                    </span>
+                   
+
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

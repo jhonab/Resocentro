@@ -1,0 +1,95 @@
+﻿@model SistemaResocentro.Models.Incidente
+
+@{
+    Layout = null;
+}
+
+<label>Registro de Solicitud</label>
+<hr />
+<dl class="dl-horizontal">
+    <dt>
+        Aplicativo:
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.aplicativo)
+    </dd>
+
+    <dt>
+        Importancia:
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.importancia)
+    </dd>
+
+    <dt>
+        Incidente:
+    </dt>
+
+    <dd>
+        <strong class=" alert-danger"> @Html.DisplayFor(model => model.problema)</strong>
+    </dd>
+
+    <dt>
+        Fecha Registro:
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.fec_registro)
+    </dd>
+</dl>
+
+@if (Model.fec_lectura != null)
+{
+    <label>Atención de Solicitud</label>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Fecha Lectura:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fec_lectura)
+        </dd>
+
+        <dt>
+            Usuario Lectura:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIOLector.ShortName)
+        </dd>
+    </dl>
+}
+@if (Model.fec_termino != null)
+{
+    <label>Termino de Solicitud</label>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Fecha Termino:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fec_termino)
+        </dd>
+
+        <dt>
+            Solución:
+        </dt>
+
+        <dd>
+            <strong class=" alert-success">@Html.DisplayFor(model => model.comentarios)</strong>
+        </dd>
+        <dt>
+            Usuario Finalizao:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIOTermino.ShortName)
+        </dd>
+
+    </dl>
+}
+

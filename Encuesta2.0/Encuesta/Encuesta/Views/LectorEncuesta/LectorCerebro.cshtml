@@ -1,0 +1,1651 @@
+﻿@model Encuesta.ViewModels.Encuesta.Tipos.EncuestaCerebroViewModel
+@{
+    ViewBag.Titlenot = "Encuesta Cerebro";
+    Encuesta.Util.Variable util = new Encuesta.Util.Variable();
+}
+
+<script src="~/js/encuestas/encuestas_ini.js"></script>
+<script src="~/js/encuestas/LectorEncuesta.js"></script>
+<link href="~/css/Encuesta.css" rel="stylesheet" />
+<script src="../js/jquery.autosize.js"></script>
+<script src="~/js/jquery-ui.min.js"></script>
+<div class="row body-medico" id="div_PreEntrevista">
+    <div class="col-lg-12">
+        <div class="">
+            <div class="">
+                <h1 class=" titulo_ocultar">ENCUESTA CEREBRO </h1>
+            </div>
+            <div class=" chart-responsive">
+                @*Datos Examen*@
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <div id="Info-examen" class="panel panel-medico">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Datos Examen</h3>
+                                <div class="panel-options pull-right">
+                                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+
+                                        <div class="col-sm-5 col-lg-5">
+                                            @Html.Partial("_DatosExamenLector", Model._examen)
+                                        </div>
+                                        <div class="col-sm-5 col-lg-5">
+                                            @Html.Partial("_DatosEncuestaLector", Model._encuesta)
+                                        </div>
+                                        <div class="col-sm-2 col-lg-2">
+                                            <span>Adicional :</span>
+                                            <div class="btn-group-vertical" role="group" style="margin-bottom: 10px;">
+
+                                                @if (Model._examen.ATENCION.CITA.sedacion)
+                                                {
+                                                    <button class="btn btn-danger box-tools  pull-right no-print">SEDACION</button>
+                                                }
+                                                @if (Model._examen.ATENCION.CITA.claustrofobico)
+                                                {
+                                                    <button class="btn btn-info box-tools  pull-right no-print">CLAUSTROFOBICO</button>
+                                                }
+
+                                            </div>
+                                            <div class="btn-group-vertical" role="group" id="div_adicional">
+                                                <button class="btn btn-medico box-tools btn-sm pull-right no-print" id="btn-detalle" onclick="Mostrardetalle(false)">
+                                                    <i class="fa fa-plus fa-1x"></i>&nbsp;Detalle Encuesta
+                                                </button>
+                                                <button class="btn btn-medico box-tools btn-sm pull-right no-print" onclick="verHistorial('@Model._examen.codigo')">
+                                                    <i class="fa fa-history fa-1x"></i>&nbsp;Estudios Previos
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row" id="div_historial">
+                </div>
+                <div id="div-resumen">
+                    <div class="pregunta">
+                        @*PREGUNTA 1*@
+                        @if (Model.p1.Value)
+                        {<div class="col-md-12">
+                            - <span class="resaltar">
+                                @if (Model.p1_1)
+                                {
+                                    <text>Sufre dolores de cabeza con frecuencia</text>
+                                }
+                                @if (Model.p1_2)
+                                {
+                                    if (Model.p1_1)
+                                    {
+                                        <text>,</text>
+                                    }
+                                    <text>Interrumpe su sueño</text>
+                                }
+                            </span>
+                            @if (Model.p1_3)
+                            {
+                                if (Model.p1_1 || Model.p1_2)
+                                {
+                                    <text>,</text>
+                                }
+                                else
+                                {
+                                    <text>Tiene dolor en</text>
+                                }
+                                <text><label class="resaltar">@Model.p1_4</label></text>
+                            }.
+                        </div>
+                        }
+                        @*PREGUNTA 2*@
+                        @if (Model.p2.Value)
+                        {
+                            if (Model.p2_1.Value)
+                            {
+                                <div class="col-md-12">- Solo <span class="resaltar">tuvo una convulsión</span>.</div>
+                            }
+                            else
+                            {
+                                <div class="col-md-12">- <span class="resaltar">Tiene convulsiones</span> desde ya hace tiempo y está en tratamiento.</div>
+                            }
+                        }
+                        @*PREGUNTA 3*@
+                        @if (Model.p3.Value)
+                        {
+                            <div class="col-md-12">
+                                - <span class="resaltar">Se golpeó la cabeza</span>
+                                @if (Model.p3_1.Value)
+                                {
+                                    <text>y perdio la conciencia</text>
+                                    if (Model.p3_1_1.Value)
+                                    {
+                                        <text>inmediatamente con el trauma</text>
+                                    }
+                                    else
+                                    {
+                                        <text>minutos a horas despues del trauma</text>
+                                    }
+
+                                    if (Model.p3_1_2.Value)
+                                    {
+                                        <text>, duró menos de cinco minutos</text>
+                                    }
+                                    else
+                                    {
+                                        <text>, duró más de cinco minutos</text>
+                                    }
+                                    if (Model.p3_1_3 || Model.p3_1_4 || Model.p3_1_5)
+                                    {
+
+                                        <text>seguido de:</text>
+                                        if (Model.p3_1_3)
+                                        {
+                                            <text>amnesia transitoria</text>
+                                        }
+                                        if (Model.p3_1_4)
+                                        {
+                                            if (Model.p3_1_3)
+                                            {
+                                                <text>,</text>
+                                            }
+                                            <text>nauseas</text>
+                                        }
+                                        if (Model.p3_1_5)
+                                        {
+                                            if (Model.p3_1_4)
+                                            {
+                                                <text>,</text>
+                                            }
+                                            <text>mareos</text>}
+                                    }
+                                }.
+                            </div>
+
+                        }
+                        @*PREGUNTA 4*@
+                        @if (Model.p4.Value)
+                        {
+                            if (Model.p4_1.Value)
+                            {
+                                <div class="col-md-12">- <span class="resaltar">Tiene mareos</span> como sensacion de que las cosas dan vueltas (vértigo).</div>
+                            }
+                            else
+                            {
+                                <div class="col-md-12">- <span class="resaltar">Tiene mareos</span> como sensacion de inestabilidad al estar de pie o moverse.</div>
+                            }
+                        }
+                        @*PREGUNTA 5*@
+                        @if (Model.p5.Value)
+                        {
+                            <div class="col-md-12">
+                                - <span class="resaltar">Tuvo caidas</span> por:
+                                @if (Model.p5_1)
+                                {
+                                    <text>acción de otra persona o fuerza extrema</text>
+                                }
+                                @if (Model.p5_2)
+                                {
+                                    if (Model.p5_1)
+                                    {
+                                        <text>,</text>
+                                    }
+                                    <text>pérdida de conciencia previa</text>
+                                }
+                                @if (Model.p5_3)
+                                {
+                                    if (Model.p5_2)
+                                    {
+                                        <text>,</text>
+                                    }
+                                    <text>sensación de mareo o inestabilidad</text>
+                                }
+                                @if (Model.p5_4)
+                                {
+                                    if (Model.p5_3)
+                                    {
+                                        <text>,</text>
+                                    }
+                                    <label class="resaltar">@Model.p5_4_1;</label>
+                                }
+                            </div>
+                        }
+                        @*PREGUNTA 6*@
+                        @if (Model.p6.Value)
+                        {
+
+                            <div class="col-md-12">
+                                - Tiene <span class="resaltar">disminución de fuerza</span> en:
+                                @if ((Model.p6_1 || Model.p6_2 || Model.p6_3) || (Model.p6_4 || Model.p6_5 || Model.p6_6))
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            @if (Model.p6_1 || Model.p6_2 || Model.p6_3)
+                                            {
+                                                <div class="col-sm-6 col-lg-6">
+                                                    DERECHA
+                                                    @if (Model.p6_1)
+                                                    {
+                                                        <div class="resaltar">
+                                                            Mitad derecha del cuerpo
+                                                        </div>
+
+                                                    }
+                                                    @if (Model.p6_2)
+                                                    {
+                                                        <div class="resaltar">
+                                                            Miembro superior derecho
+                                                        </div>
+
+                                                    }
+                                                    @if (Model.p6_3)
+                                                    {
+                                                        <div class="resaltar">
+                                                            Miembro inferior derecho
+                                                        </div>
+
+                                                    }
+                                                </div>
+                                            }
+                                            @if (Model.p6_4 || Model.p6_5 || Model.p6_6)
+                                            {
+                                                <div class="col-sm-6 col-lg-6">
+                                                    IZQUIERDA
+                                                    @if (Model.p6_4)
+                                                    {
+                                                        <div class="resaltar">
+                                                            Mitad izquierda del cuerpo
+                                                        </div>
+
+                                                    }
+                                                    @if (Model.p6_5)
+                                                    {
+                                                        <div class="resaltar">
+                                                            Miembro superior izquierdo
+                                                        </div>
+
+                                                    }
+                                                    @if (Model.p6_6)
+                                                    {
+                                                        <div class="resaltar">
+                                                            Miembro inferior izquierdo
+                                                        </div>
+
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (Model.p6_7)
+                                {
+                                    if ((Model.p6_1 || Model.p6_2 || Model.p6_3) || (Model.p6_4 || Model.p6_5 || Model.p6_6))
+                                    {
+                                        <text>Ademas,</text>
+                                    }
+                                    <label class="resaltar">@Model.p6_7_1</label>
+                                }
+
+                            </div>
+
+                        }
+                        @*PREGUNTA 7*@
+                        @if (Model.p7 != null)
+                        {
+
+                            <div class="col-md-12">
+                                - Tiene:
+                                @if (Model.p7 != "")
+                                {
+                                    <label class="resaltar">@Model.p7</label>
+                                }
+                            </div>
+
+                        }
+                        @*PREGUNTA 8*@
+                        <div class="col-md-12">
+                            - Lo noto hace <span class="resaltar">@Model.p8 @util.getNombreTiempoRM(Model.p8_1)</span>.
+                        </div>
+                        @*PREGUNTA 9*@
+                        @if (Model.p9.Value)
+                        {
+                            <div class="col-md-12">
+                                - Comenzaron <span class="resaltar">subitamente(de un momento a otro)</span>,
+                                <label>@Model.p9_1</label>.
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-12">- Comenzaron <span class="resaltar">gradualmente(poco a poco)</span>.</div>
+                        }
+                        @*PREGUNTA 10*@
+                        @if (Model.p10.Value)
+                        {
+                            <div class="col-md-12">
+                                - También menciona:
+                                <label class="resaltar">@Model.p10_1</label>.
+                            </div>
+                        }
+                        @*PREGUNTA 11*@
+                        @if (Model.p11.Value)
+                        {
+                            <div class="col-md-12">
+                                - Fue operado <span class="resaltar">@Model.p11_1 veces</span> por
+                                <label class="resaltar">@Model.p11_4</label>
+                                la última hace <span class="resaltar">@Model.p11_2 @util.getNombreTiempoRM(Model.p11_3)</span>.
+                            </div>
+                        }
+                        @*PREGUNTA 12*@
+                        @if (Model.p12.Value)
+                        {
+                            <div class="col-md-12">
+                                - <span class="resaltar">Tiene estudios previos de</span>
+                                @if (Model.p12_1)
+                                {
+                                    <text><span class="resaltar">Resonancia</span> en</text>
+                                    @util.getNombreLocales(Model.p12_1_1)
+                                    <text>hace</text>
+                                    @Model.p12_1_3 <text></text> @util.getNombreTiempoRM(Model.p12_1_4)
+                                    <span class="resaltar">
+                                        por el siguiente motivo:
+                                        <label>@Model.p12_1_5</label>
+                                    </span>
+                                }
+                                @if (Model.p12_2)
+                                {
+                                    if (Model.p12_1)
+                                    {
+                                        <text>y</text>
+                                    }
+                                    <text><span class="resaltar">Tomografía</span> en</text>
+                                    @util.getNombreLocales(Model.p12_2_1)
+                                    <text>hace</text>
+                                    @Model.p12_2_3 <text></text> @util.getNombreTiempoRM(Model.p12_2_4)
+                                    <span class="resaltar">
+                                        por el siguiente motivo:
+                                        <label>@Model.p12_2_5</label>
+                                    </span>
+                                }
+                                .
+                            </div>
+                        }
+                        @*PREGUNTA 13*@
+                        @if (Model.p13A_1 == false)
+                        {
+                            <div class="col-md-12">
+                                - Orden médica menciona
+                                <label class="resaltar">@Model.p13A</label>
+                                .
+                            </div>
+                        }
+                        @if (Model.p13B_1 == false)
+                        {
+                            <div class="col-md-12">
+                                - El paciente comenta
+                                <label class="resaltar">@Model.p13B</label>
+                                .
+                            </div>
+                        }
+                        @*PREGUNTA 14*@
+                        @if (Model.p14 != "")
+                        {
+                            <div class="col-md-12">
+                                - Se desea resolver el o los siguientes problemas diagnosticados
+                                <label class="resaltar">@Model.p14</label>
+                                .
+                            </div>
+                        }
+                        @*PREGUNTA 15*@
+                        @if (Model.p15_1 || Model.p15_2 || Model.p15_3 || Model.p15_4 || Model.p15_5 || Model.p15_6 || Model.p15_7 || Model.p15_8 || Model.p15_9 || Model.p15_10 || Model.p15_11 || Model.p15_12 || Model.p15_13)
+                        {
+                            <div class="col-md-12">
+                                - Se solicitó realizar los siguientes protocolos:
+                                <span class="resaltar">
+                                    @if (Model.p15_1)
+                                    {
+                                        <text>rutinario</text>
+                                    }
+                                    @if (Model.p15_2)
+                                    {
+                                        if (Model.p15_1)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>tumor</text>
+                                    }
+                                    @if (Model.p15_3)
+                                    {
+                                        if (Model.p15_1 || Model.p15_2)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>hipófisis / region selar</text>
+                                    }
+                                    @if (Model.p15_4)
+                                    {
+                                        if (Model.p15_1 || Model.p15_2 || Model.p15_3)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>demencia</text>
+                                    }
+                                    @if (Model.p15_5)
+                                    {
+                                        if (Model.p15_1 || Model.p15_2 || Model.p15_3 || Model.p15_4)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>convulsiones</text>
+                                    }
+                                    @if (Model.p15_6)
+                                    {
+                                        if (Model.p15_1 || Model.p15_2 || Model.p15_3 || Model.p15_4 || Model.p15_5)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>vias ópticas</text>
+                                    }
+                                    @if (Model.p15_7)
+                                    {
+                                        if (Model.p15_1 || Model.p15_2 || Model.p15_3 || Model.p15_4 || Model.p15_5 || Model.p15_6)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>órgano de la audición y equilibrio</text>
+                                    }
+                                    @if (Model.p15_8)
+                                    {
+                                        if (Model.p15_1 || Model.p15_2 || Model.p15_3 || Model.p15_4 || Model.p15_5 || Model.p15_6 || Model.p15_7)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>implante coclear</text>
+                                    }
+                                    @if (Model.p15_9)
+                                    {
+                                        if (Model.p15_1 || Model.p15_2 || Model.p15_3 || Model.p15_4 || Model.p15_5 || Model.p15_6 || Model.p15_7 || Model.p15_8)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>macizo facial</text>
+                                    }
+                                    @if (Model.p15_10)
+                                    {
+                                        if (Model.p15_1 || Model.p15_2 || Model.p15_3 || Model.p15_4 || Model.p15_5 || Model.p15_6 || Model.p15_7 || Model.p15_8 || Model.p15_9)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>parkinsonismo</text>
+                                    }
+                                    @if (Model.p15_11)
+                                    {
+                                        if (Model.p15_1 || Model.p15_2 || Model.p15_3 || Model.p15_4 || Model.p15_5 || Model.p15_6 || Model.p15_7 || Model.p15_8 || Model.p15_9 || Model.p15_10)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>esterotaxia</text>
+                                    }
+                                    @if (Model.p15_12)
+                                    {
+                                        if (Model.p15_1 || Model.p15_2 || Model.p15_3 || Model.p15_4 || Model.p15_5 || Model.p15_6 || Model.p15_7 || Model.p15_8 || Model.p15_9 || Model.p15_10 || Model.p15_11)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>protocolo investigación:</text><label>@Model.p15_12_1</label>
+                                    }
+                                    @if (Model.p15_13)
+                                    {
+                                        if (Model.p15_1 || Model.p15_2 || Model.p15_3 || Model.p15_4 || Model.p15_5 || Model.p15_6 || Model.p15_7 || Model.p15_8 || Model.p15_9 || Model.p15_10 || Model.p15_11 || Model.p15_12)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <label>@Model.p15_13_1</label>
+                                    }
+                                </span>
+                                .
+                            </div>
+                        }
+                        @*PREGUNTA 16*@
+                        @if (Model.p16_1 || Model.p16_2 || Model.p16_3 || Model.p16_4 || Model.p16_5 || Model.p16_6 || Model.p16_7 || Model.p16_8 || Model.p16_9 || Model.p16_10)
+                        {
+                            <div class="col-md-12">
+                                - Se solicitó realizar los siguientes secuencias:
+                                <span class="resaltar">
+                                    @if (Model.p16_1)
+                                    {
+                                        <text>angio RM arterial</text>
+                                    }
+                                    @if (Model.p16_2)
+                                    {
+                                        if (Model.p16_1)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>angio RM venosa</text>
+                                    }
+                                    @if (Model.p16_3)
+                                    {
+                                        if (Model.p16_1 || Model.p16_2)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>difusión</text>
+                                    }
+                                    @if (Model.p16_4)
+                                    {
+                                        if (Model.p16_1 || Model.p16_2 || Model.p16_3)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>perfusión</text>
+                                    }
+                                    @if (Model.p16_5)
+                                    {
+                                        if (Model.p16_1 || Model.p16_2 || Model.p16_3 || Model.p16_4)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>SWI</text>
+                                    }
+                                    @if (Model.p16_6)
+                                    {
+                                        if (Model.p16_1 || Model.p16_2 || Model.p16_3 || Model.p16_4 || Model.p16_5)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>espectrocopía</text>
+                                    }
+                                    @if (Model.p16_7)
+                                    {
+                                        if (Model.p16_1 || Model.p16_2 || Model.p16_3 || Model.p16_4 || Model.p16_5 || Model.p16_6)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>contraste dinámico</text>
+                                    }
+                                    @if (Model.p16_8)
+                                    {
+                                        if (Model.p16_1 || Model.p16_2 || Model.p16_3 || Model.p16_4 || Model.p16_5 || Model.p16_6 || Model.p16_7)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>T2 isotrópico pares craneales</text>
+                                    }
+                                    @if (Model.p16_9)
+                                    {
+                                        if (Model.p16_1 || Model.p16_2 || Model.p16_3 || Model.p16_4 || Model.p16_5 || Model.p16_6 || Model.p16_7 || Model.p16_8)
+                                        {
+                                            <text>,</text>
+                                        }
+                                        <text>estudio de flujo de LCR</text>
+                                    }
+                                    @if (Model.p16_10)
+                                    {
+                                        if (Model.p16_1 || Model.p16_2 || Model.p16_3 || Model.p16_4 || Model.p16_5 || Model.p16_6 || Model.p16_7 || Model.p16_8 || Model.p16_9)
+                                        {
+                                            <text>,</text>
+                                        }
+
+                                        <label>@Model.p16_10_1</label>
+                                    }
+                                </span>
+                                .
+                            </div>
+                        }
+                        @*PREGUNTA 17*@
+                        @if (Model.p17 == 0)
+                        {
+                            <div class="col-md-12">-  <span class="resaltar">Se indicó </span>que se use contraste.</div>
+                        }
+                        @if (Model.p17 == 1)
+                        {
+                            <div class="col-md-12">- Se indicó  que <span class="resaltar">no </span>se use contraste.</div>
+                        }
+                        @if (Model.p17 == 2)
+                        {
+                            <div class="col-md-12">- Se indicó usar contraste  <span class="resaltar">de acuerdo a hallazgos</span>.</div>
+                        }
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div id="div-detallado">
+                    @*Molestias*@
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="">
+
+                                    @*Molestias*@
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+
+                                            <div class="panel panel-medico" data-collapsed="1">
+                                                <div class="panel-heading">
+                                                    <div class="panel-title">Principales Molestias </div>
+                                                    <div class="panel-options pull-right">
+                                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body chart-responsive">
+
+                                                    @*Pregunta 1*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>1. Dolor de Cabeza?</cite><span class="asterisco">(*)</span>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p1, "true", new { @mostrar_respuesta = "rpta_p1" }) Si
+                                                                        </label>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p1, "false", new { @ocultar_respuesta = "rpta_p1" }) No
+                                                                        </label>
+
+
+                                                                        <div class="col-md-12" id="rpta_p1">
+                                                                            <div class="checkbox">
+                                                                                <label>
+                                                                                    @Html.CheckBoxFor(model => model.p1_1, new { @name = "p1_1" }) Suelo Sufrir dolores de cabeza con frecuencia
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="checkbox">
+                                                                                <label>
+                                                                                    @Html.CheckBoxFor(model => model.p1_2, new { @name = "p1_1" }) Interrumpe mi sueño
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="checkbox">
+                                                                                <label>
+                                                                                    @Html.CheckBoxFor(model => model.p1_3, new { @mostrar_respuesta = "p1_4" }) Otros
+                                                                                </label>
+                                                                            </div>
+                                                                            @Html.TextAreaFor(model => model.p1_4, new { @placeholder = "Ingrese el dolor", @class = "form-control animate validate" })
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @*Pregunta 2*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>2. Convulsiones?</cite><span class="asterisco">(*)</span>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p2, "true", new { @mostrar_respuesta = "rpta_p2" }) Si
+                                                                        </label>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p2, "false", new { @ocultar_respuesta = "rpta_p2" }) No
+
+                                                                        </label>
+                                                                        <div class="col-md-12" id="rpta_p2">
+                                                                            <div class="radio">
+                                                                                <label>
+                                                                                    @Html.RadioButtonFor(model => model.p2_1, "true") Es la primera vez que convulsiono
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label>
+                                                                                    @Html.RadioButtonFor(model => model.p2_1, "false") Estoy en tratamiento por convulsiones desde hace tiempo
+                                                                                </label>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @*Pregunta 3*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>3. Golpe de cabeza?</cite><span class="asterisco">(*)</span>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p3, "true", new { @mostrar_respuesta = "rpta_p3" }) Si
+                                                                        </label>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p3, "false", new { @ocultar_respuesta = "rpta_p3" }) No
+                                                                        </label>
+
+                                                                        <div class="radio" id="rpta_p3">
+                                                                            <div class="col-md-12">
+                                                                                <cite>Seguido de perdida de conciencia?</cite><span class="asterisco">(*)</span>
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.RadioButtonFor(model => model.p3_1, "true", new { @mostrar_respuesta = "rpta_p3_1" }) Si
+                                                                                </label>
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.RadioButtonFor(model => model.p3_1, "false", new { @ocultar_respuesta = "rpta_p3_1" }) No
+                                                                                </label>
+
+                                                                                <div class="col-md-12" id="rpta_p3_1">
+                                                                                    <div class="">
+                                                                                        Cúando :
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="radio">
+                                                                                                <label>
+                                                                                                    @Html.RadioButtonFor(model => model.p3_1_1, "true") Inmediatamente con el trauma
+                                                                                                </label>
+                                                                                            </div>
+                                                                                            <div class="radio">
+                                                                                                <label>
+                                                                                                    @Html.RadioButtonFor(model => model.p3_1_1, "false") Minutos a horas despues del trauma
+                                                                                                </label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="">
+                                                                                        Cuánto tiempo :
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="radio">
+                                                                                                <label>
+                                                                                                    @Html.RadioButtonFor(model => model.p3_1_2, "true") Duró menos de cinco minutos
+                                                                                                </label>
+                                                                                            </div>
+                                                                                            <div class="radio">
+                                                                                                <label>
+                                                                                                    @Html.RadioButtonFor(model => model.p3_1_2, "false") Duró más de cinco minutos
+                                                                                                </label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="">
+                                                                                        Seguido de :
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="radio">
+                                                                                                <label class="checkbox-inline">
+                                                                                                    @Html.CheckBoxFor(model => model.p3_1_3) Amnesia Transitoria
+                                                                                                </label>
+                                                                                            </div>
+                                                                                            <div class="radio">
+                                                                                                <label class="checkbox-inline">
+                                                                                                    @Html.CheckBoxFor(model => model.p3_1_4) Nauseas
+                                                                                                </label>
+                                                                                            </div>
+                                                                                            <div class="radio">
+                                                                                                <label class="checkbox-inline">
+                                                                                                    @Html.CheckBoxFor(model => model.p3_1_5) Mareos
+                                                                                                </label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @*Pregunta 4*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>4. Mareos?</cite><span class="asterisco">(*)</span>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p4, "true", new { @mostrar_respuesta = "rpta_p4" }) Si
+                                                                        </label>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p4, "false", new { @ocultar_respuesta = "rpta_p4" }) No
+                                                                        </label>
+                                                                        <div class="col-md-12" id="rpta_p4">
+                                                                            <div class="radio">
+                                                                                <label>
+                                                                                    @Html.RadioButtonFor(model => model.p4_1, "true") Descrito como sensación de que las cosas dan vueltas (vértigo)
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label>
+                                                                                    @Html.RadioButtonFor(model => model.p4_1, "false") Más bien como sensación de inestabilidad al estar de pie o moverse
+                                                                                </label>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @*Pregunta 5*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>5. Caidas?</cite><span class="asterisco">(*)</span>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p5, "true", new { @mostrar_respuesta = "rpta_p5" }) Si
+                                                                        </label>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p5, "false", new { @ocultar_respuesta = "rpta_p5" }) No
+                                                                        </label>
+                                                                        <div class="col-md-12" id="rpta_p5">
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p5_1) Acción de otra persona o fuerza extrema
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p5_2) Pérdida de conciencia previa
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p5_3) Sensación de mareo o inestabilidad
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p5_4, new { @mostrar_respuesta = "p5_4_1" }) Otra razón
+                                                                                </label>
+                                                                            </div>
+                                                                            @Html.TextAreaFor(model => model.p5_4_1, new { @placeholder = "Ingrese la razón", @class = "form-control animate validate" })
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @*Pregunta 6*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>6. Disminución de fuerza?</cite><span class="asterisco">(*)</span>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p6, "true", new { @mostrar_respuesta = "rpta_p6" }) Si
+                                                                        </label>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p6, "false", new { @ocultar_respuesta = "rpta_p6" }) No
+                                                                        </label>
+                                                                        <div class="col-sm-12" id="rpta_p6">
+                                                                            <div class="col-sm-6 col-lg-6">
+                                                                                DERECHA
+                                                                                <div class="radio">
+                                                                                    <label class="checkbox-inline">
+                                                                                        @Html.CheckBoxFor(model => model.p6_1) Mitad derecha del cuerpo
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="radio">
+                                                                                    <label class="checkbox-inline">
+                                                                                        @Html.CheckBoxFor(model => model.p6_2) Miembro superior derecho
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="radio">
+                                                                                    <label class="checkbox-inline">
+                                                                                        @Html.CheckBoxFor(model => model.p6_3) Miembro inferior derecho
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-6 col-lg-6">
+                                                                                IZQUIERDA
+                                                                                <div class="radio">
+                                                                                    <label class="checkbox-inline">
+                                                                                        @Html.CheckBoxFor(model => model.p6_4) Mitad izquierda del cuerpo
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="radio">
+                                                                                    <label class="checkbox-inline">
+                                                                                        @Html.CheckBoxFor(model => model.p6_5) Miembro superior izquierdo
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="radio">
+                                                                                    <label class="checkbox-inline">
+                                                                                        @Html.CheckBoxFor(model => model.p6_6) Miembro inferior izquierdo
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-6 col-md-12">
+                                                                                <div class="radio">
+                                                                                    <label class="checkbox-inline">
+                                                                                        @Html.CheckBoxFor(model => model.p6_7, new { @mostrar_respuesta = "p6_7_1" }) Otros
+                                                                                    </label>
+                                                                                </div>
+                                                                                @Html.TextAreaFor(model => model.p6_7_1, new { @placeholder = "Ingrese el motivo", @class = "form-control animate validate" })
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @*Pregunta 7*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>7. Otros?</cite><span class="asterisco">(*)</span>
+                                                                        <div class="col-md-12">
+                                                                            @Html.TextAreaFor(model => model.p7, new { @placeholder = "Ingrese motivos de molestias", @class = "form-control animate" })
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    @*Historial Molestias*@
+
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+
+                                            <div class="panel panel-medico" data-collapsed="1">
+                                                <div class="panel-heading">
+                                                    <div class="panel-title">Historia de Molestias </div>
+                                                    <div class="panel-options pull-right">
+                                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body chart-responsive">
+                                                    @*Pregunta 8*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>8. Desde hace cuánto lo ha notado por primera vez?</cite><span class="asterisco">(*)</span>
+                                                                        <div class="col-md-12">
+                                                                            <div class="row">
+                                                                                <div class="col-sm-2 col-lg-2">
+                                                                                    @Html.TextBoxFor(model => model.p8, new { @placeholder = "Cant.", @type = "number", @min = "0", @class = "form-control" })
+                                                                                </div>
+                                                                                <div class="col-sm-4 col-lg-4">
+                                                                                    @Html.DropDownListFor(model => model.p8_1, (SelectList)ViewBag.tiempo, "- Seleccione -", new { @class = "form-control" })
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @*Pregunta 9*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>9. Comó comenzaron sus molestias?</cite><span class="asterisco">(*)</span>
+                                                                        <div class="col-md-12">
+
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.RadioButtonFor(model => model.p9, "true", new { @mostrar_respuesta = "p9_1" }) Subitamente(de un momento a otro)
+                                                                                </label>
+                                                                                @Html.TextAreaFor(model => model.p9_1, new { @placeholder = "Especifique", @class = "form-control animate validate" })
+                                                                            </div>
+
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.RadioButtonFor(model => model.p9, "false", new { @ocultar_respuesta = "p9_1" })Gradualmente(poco a poco)
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @*Pregunta 10*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>10. Antecedentes patológicos?</cite><span class="asterisco">(*)</span>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p10, "true", new { @mostrar_respuesta = "rpta_p10" }) Si
+                                                                        </label>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p10, "false", new { @ocultar_respuesta = "rpta_p10" }) No
+                                                                        </label>
+                                                                        <div class="col-md-12" id="rpta_p10">
+                                                                            @Html.TextAreaFor(model => model.p10_1, new { @placeholder = "Especifique", @class = "form-control animate validate" })
+                                                                        </div>
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Procedimientos Relacionados*@
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="">
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+
+                                            <div class="panel panel-medico" data-collapsed="1">
+                                                <div class="panel-heading">
+                                                    <div class="panel-title">Procedimientos Relacionados </div>
+                                                    <div class="panel-options pull-right">
+                                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body chart-responsive">
+                                                    @*Pregunta 11*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>11. Le han operado el cráneo antes?</cite><span class="asterisco">(*)</span>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p11, "true", new { @mostrar_respuesta = "rpta_p11" }) Si
+                                                                        </label>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p11, "false", new { @ocultar_respuesta = "rpta_p11" }) No
+                                                                        </label>
+                                                                        <div class="col-md-12" id="rpta_p11">
+                                                                            <div class="col-md-12">
+                                                                                <cite>Cuántas veces?</cite><span class="asterisco">(*)</span>
+                                                                                <div class="col-md-12">
+                                                                                    <div class="row">
+
+                                                                                        <div class="col-sm-2 col-lg-2">
+                                                                                            @Html.TextBoxFor(model => model.p11_1, new { @placeholder = "Cant.", @type = "number", @min = "0", @class = "form-control" })
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <div class="col-md-12">
+                                                                                <cite>La última aprox. hace cuanto?</cite><span class="asterisco">(*)</span>
+                                                                                <div class="col-md-12">
+                                                                                    <div class="row">
+                                                                                        <div class="col-sm-2 col-lg-2">
+                                                                                            @Html.TextBoxFor(model => model.p11_2, new { @placeholder = "Cant.", @type = "number", @min = "0", @class = "form-control" })
+                                                                                        </div>
+                                                                                        <div class="col-sm-4 col-lg-4">
+                                                                                            @Html.DropDownListFor(model => model.p11_3, (SelectList)ViewBag.tiempo, "- Seleccione -", new { @class = "form-control" })
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-12">
+                                                                                <cite>Porqué lo operaron?</cite><span class="asterisco">(*)</span>
+                                                                                <div class="col-md-12">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12">
+                                                                                            @Html.TextAreaFor(model => model.p11_4, new { @placeholder = "Especifique", @class = "form-control animate validate" })
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+
+                                                    </div>
+                                                    @*Pregunta 12*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>12.Ha tenido examenes previos del cerebro?</cite><span class="asterisco">(*)</span>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p12, "true", new { @mostrar_respuesta = "rpta_p12" }) Si
+                                                                        </label>
+                                                                        <label class="checkbox-inline">
+                                                                            @Html.RadioButtonFor(model => model.p12, "false", new { @ocultar_respuesta = "rpta_p12" }) No
+                                                                        </label>
+                                                                        <div class="col-md-12" id="rpta_p12">
+                                                                            @*RESONANCIA*@
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    @Html.CheckBoxFor(model => model.p12_1, new { @mostrar_respuesta = "rpta_p12_1" })Resonancia
+                                                                                    <div class="col-md-12" id="rpta_p12_1">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-12">
+                                                                                                <cite>El último donde?</cite><span class="asterisco">(*)</span>
+                                                                                                <div class="col-md-12">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-sm-4 col-lg-4">
+                                                                                                            @Html.DropDownListFor(model => model.p12_1_1, (SelectList)ViewBag.locales, "- Seleccione -", new { @class = "form-control", @mostrar_respuesta = "rpta_p12_1_1", @mostrar_respuesta_value = "9" })
+                                                                                                        </div>
+                                                                                                        <div class="col-sm-12 col-md-12" id="rpta_p12_1_1">
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-md-12">
+                                                                                                                    <cite>Compromiso del paciente:</cite><span class="asterisco">(*)</span>
+                                                                                                                    <div class="radio">
+                                                                                                                        <label>
+                                                                                                                            @Html.RadioButtonFor(model => model.p12_1_2, "0") El paciente y/o acompañante <b>SE COMPROMETIO</b> a traer estudios previos
+                                                                                                                        </label>
+                                                                                                                    </div>
+                                                                                                                    <div class="radio">
+                                                                                                                        <label>
+                                                                                                                            @Html.RadioButtonFor(model => model.p12_1_2, "1") El paciente y/o acompañante <b>TRATARÁ</b> de traer estudios previos
+                                                                                                                        </label>
+                                                                                                                    </div>
+                                                                                                                    <div class="radio">
+                                                                                                                        <label>
+                                                                                                                            @Html.RadioButtonFor(model => model.p12_1_2, "2") <b>NO SE PUEDE</b> conseguir estudios previos
+                                                                                                                        </label>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                            <div class="col-md-12">
+                                                                                                <cite>El último cuando?</cite><span class="asterisco">(*)</span>
+                                                                                                <div class="col-md-12">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-sm-2 col-lg-2">
+                                                                                                            @Html.TextBoxFor(model => model.p12_1_3, new { @placeholder = "Cant.", @type = "number", @min = "0", @class = "form-control" })
+                                                                                                        </div>
+                                                                                                        <div class="col-sm-4 col-lg-4">
+                                                                                                            @Html.DropDownListFor(model => model.p12_1_4, (SelectList)ViewBag.tiempo, "- Seleccione -", new { @class = "form-control" })
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                            <div class="col-md-12">
+                                                                                                <cite>Porqué?</cite><span class="asterisco">(*)</span>
+                                                                                                <div class="col-md-12">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-md-12">
+                                                                                                            @Html.TextAreaFor(model => model.p12_1_5, new { @placeholder = "Especifique", @class = "form-control animate validate" })
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                            @*TOMOGRAFIA*@
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    @Html.CheckBoxFor(model => model.p12_2, new { @mostrar_respuesta = "rpta_p12_2" }) Tomografía
+                                                                                    <div class="col-md-12" id="rpta_p12_2">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-12">
+                                                                                                <cite>El último donde?</cite><span class="asterisco">(*)</span>
+                                                                                                <div class="col-md-12">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-sm-4 col-lg-4">
+                                                                                                            @Html.DropDownListFor(model => model.p12_2_1, (SelectList)ViewBag.locales, "- Seleccione -", new { @class = "form-control", @mostrar_respuesta = "rpta_p12_2_1", @mostrar_respuesta_value = "9" })
+                                                                                                        </div>
+
+                                                                                                        <div class="col-sm-12 col-md-12" id="rpta_p12_2_1">
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-md-12">
+                                                                                                                    <cite>Compromiso del paciente:</cite><span class="asterisco">(*)</span>
+                                                                                                                    <div class="radio">
+                                                                                                                        <label>
+                                                                                                                            @Html.RadioButtonFor(model => model.p12_2_2, "0") El paciente y/o acompañante <b>SE COMPROMETIO</b> a traer estudios previos
+                                                                                                                        </label>
+                                                                                                                    </div>
+                                                                                                                    <div class="radio">
+                                                                                                                        <label>
+                                                                                                                            @Html.RadioButtonFor(model => model.p12_2_2, "1") El paciente y/o acompañante <b>TRATARÁ</b> de traer estudios previos
+                                                                                                                        </label>
+                                                                                                                    </div>
+                                                                                                                    <div class="radio">
+                                                                                                                        <label>
+                                                                                                                            @Html.RadioButtonFor(model => model.p12_2_2, "2") <b>NO SE PUEDE</b> conseguir estudios previos
+                                                                                                                        </label>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                            <div class="col-md-12">
+                                                                                                <cite>El último cuando?</cite><span class="asterisco">(*)</span>
+                                                                                                <div class="col-md-12">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-sm-2 col-lg-2">
+                                                                                                            @Html.TextBoxFor(model => model.p12_2_3, new { @placeholder = "Cant.", @type = "number", @min = "0", @class = "form-control" })
+                                                                                                        </div>
+                                                                                                        <div class="col-sm-4 col-lg-4">
+                                                                                                            @Html.DropDownListFor(model => model.p12_2_4, (SelectList)ViewBag.tiempo, "- Seleccione -", new { @class = "form-control" })
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-md-12">
+                                                                                                <cite>Porqué?</cite><span class="asterisco">(*)</span>
+                                                                                                <div class="col-md-12">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-md-12">
+                                                                                                            @Html.TextAreaFor(model => model.p12_2_5, new { @placeholder = "Especifique", @class = "form-control animate validate" })
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Preguntas a Resolver*@
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <div class="">
+                                <div class="">
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+
+                                            <div class="panel panel-medico" data-collapsed="1">
+                                                <div class="panel-heading">
+                                                    <div class="panel-title">Preguntas a Resolver </div>
+                                                    <div class="panel-options pull-right">
+                                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body chart-responsive">
+                                                    @*Pregunta 13-A*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>13-A. Ingresar lo que dice la orden médica?</cite><span class="asterisco">(*)</span>
+
+                                                                        <div class="col-md-12">
+                                                                            @Html.TextAreaFor(model => model.p13A, new { @placeholder = "Ingrese lo que dice la orden médica", @class = "form-control animate validate" })
+                                                                            @Html.CheckBoxFor(model => model.p13A_1, new { @bloquear_respuesta = "p13A" }) Orden Ilegible
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+
+                                                    </div>
+                                                    @*Pregunta 13-B*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>13-B. Ingresar lo que comenta el paciente?</cite><span class="asterisco">(*)</span>
+
+                                                                        <div class="col-md-12">
+                                                                            @Html.TextAreaFor(model => model.p13B, new { @placeholder = "Ingrese lo que comenta el paciente", @class = "form-control animate validate" })
+                                                                            @Html.CheckBoxFor(model => model.p13B_1, new { @bloquear_respuesta = "p13B" }) No precisa
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+
+                                                    </div>
+                                                    @*Pregunta 14*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>14. Luego de realizar esta historia clínica concluyo que este examen de resonancia busca resolver el o los siguientes problemas diagnosticados?</cite><span class="asterisco">(*)</span>
+
+                                                                        <div class="col-md-12">
+                                                                            @Html.TextAreaFor(model => model.p14, new { @placeholder = "Especifique", @class = "form-control animate validate" })
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    @*Indicaciones*@
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <div class="">
+                                <div class="">
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+
+                                            <div class="panel panel-medico" data-collapsed="1">
+                                                <div class="panel-heading">
+                                                    <div class="panel-title">Indicaciones </div>
+                                                    <div class="panel-options pull-right">
+                                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body chart-responsive">
+                                                    @*Pregunta 15*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>15. Solicito realizar protocolo de:</cite><span class="asterisco">(*)</span>
+
+                                                                        <div class="col-md-12" id="rpta_15">
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p15_1) Rutinario
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p15_2) Tumor
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p15_3) Hipófisis / Region selar
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p15_4) Demencia
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p15_5) Convulsiones
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p15_6) Vias Opticas
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p15_7) Organos de la audicion y equilibrio
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p15_8) Implante coclear
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p15_9) Macizo facial
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p15_10) Parkinsonismo
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p15_11) Esterotaxia
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p15_12, new { @mostrar_respuesta = "p15_12_1" })  Protocolos de Investigación
+                                                                                </label>
+                                                                                @Html.TextAreaFor(model => model.p15_12_1, new { @placeholder = "Ingrese los protocolos", @class = "form-control animate validate" })
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p15_13, new { @mostrar_respuesta = "p15_13_1" })   Otros
+                                                                                </label>
+                                                                                @Html.TextAreaFor(model => model.p15_13_1, new { @placeholder = "Ingrese los protocolos", @class = "form-control animate validate" })
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    @*Pregunta 16*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>16. Agregar secuencias de :</cite><span class="asterisco">(*)</span>
+
+                                                                        <div class="col-md-12" id="rpta_16">
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p16_1) Angio RM arterial
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p16_2) Angio RM venosa
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p16_3) Difusión
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p16_4) Perfusión
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p16_5) SWI
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p16_6) Espectrocopía
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p16_7) Contraste dinámico
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p16_8) T2 isotrópico pares craneales
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p16_9) Estudios de flujo de LCR
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label class="checkbox-inline">
+                                                                                    @Html.CheckBoxFor(model => model.p16_10, new { @mostrar_respuesta = "p16_10_1" }) Otros
+                                                                                </label>
+                                                                                @Html.TextAreaFor(model => model.p16_10_1, new { @placeholder = "Ingrese las secuencias", @class = "form-control animate validate" })
+                                                                            </div>
+
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    @*Pregunta 17*@
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div>
+                                                                        <cite>17. Administrar contraste :</cite><span class="asterisco">(*)</span>
+
+                                                                        <div class="col-md-12">
+                                                                            <div class="radio">
+                                                                                <label>
+                                                                                    @Html.RadioButtonFor(model => model.p17, "0", new { @ocultar_respuesta = "p17_1" }) Si
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label>
+                                                                                    @Html.RadioButtonFor(model => model.p17, "1", new { @mostrar_respuesta = "p17_1" })No
+                                                                                </label>
+
+
+                                                                                @Html.DropDownListFor(model => model.p17_1, (SelectList)ViewBag.contraste, "- Seleccione -", new { @class = "form-control" })
+
+
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <label>
+                                                                                    @Html.RadioButtonFor(model => model.p17, "2", new { @ocultar_respuesta = "p17_1" }) De acuerdo a hallazgos
+                                                                                </label>
+                                                                            </div>
+
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            @Html.Partial("_DatosCalificacionLector", Model._encuesta)
+        </div>
+    </div>
+</div>

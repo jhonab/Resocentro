@@ -1,0 +1,424 @@
+﻿@model SistemaResocentro.Models.TKT_Counter
+
+@{
+    ViewBag.Title = "Counter";
+}
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<div class="row" id="div_PreEntrevista">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @{ SistemaResocentro.Member.CustomMembershipUser user = Membership.GetUser(true) as SistemaResocentro.Member.CustomMembershipUser; }
+                <h1 class="panel-title titulo_ocultar">Lista de Espera de <strong>@user.UserName</strong></h1>
+                <div id="div_session">
+                    @Html.Partial("_Session", Model.isActivo)
+                </div>
+                <style>
+                    .bg-green {
+                        background: #48DA28;
+                        color: #000;
+                    }
+
+                    .bg-yellow {
+                        background: #F0E846;
+                        color: #000;
+                    }
+
+                    .bg-blue {
+                        background: #1552C0;
+                        color: #FFF;
+                    }
+
+                    .bg-red {
+                        background: #F50808;
+                        color: #FFF;
+                    }
+                </style>
+                <script type="text/javascript">
+
+                    function cambioEstado(estado) {
+                        var idcounter = '@Model.idcounter';
+                        $.ajax({
+                            url: "@Url.Action("CambioEstadoSession", "Ticketera")",
+                            data: { idcounter: idcounter, estado: estado },
+                            dataType: "json",
+                            type: "POST",
+                            error: function () {
+                                toastr.error('Ocurrio un problema y <b>no</b> se enviaron los datos al sistemas', "Error", opts);
+                            },
+                            success: function (data) {
+                                if (data.result) {
+                                    $('#div_session').html("@Html.Partial("_Session", true)");
+                                }
+                                else {
+                                    $('#div_session').html("@Html.Partial("_Session", false)");
+                                }
+                            }
+                        });
+                    }
+                    function VerificarEstado() {
+                        var idcounter = '@Model.idcounter';
+                        $.ajax({
+                            url: "@Url.Action("VerificarEstadoSession", "Ticketera")",
+                            data: { idcounter: idcounter },
+                            dataType: "json",
+                            type: "POST",
+                            error: function () {
+                                toastr.error('Ocurrio un problema y <b>no</b> se enviaron los datos al sistemas', "Error", opts);
+                            },
+                            success: function (data) {
+                                if (data.result) {
+                                    $('#div_session').html("@Html.Partial("_Session", true)");
+                                }
+                                else {
+                                    $('#div_session').html("@Html.Partial("_Session", false)");
+                                }
+                            }
+                        });
+                    }
+                </script>
+            </div>
+            <div class="panel-body chart-responsive">
+                @*Datos Examen*@
+
+                <cite>
+                    Lista Atenciones: &nbsp;<strong>
+                        @foreach (var item in Model.TKT_List_Atencion)
+                        {
+                            @item.TKT_Tipo_Atencion.nombre
+                            <text>&nbsp;&nbsp;</text>
+                        }
+                    </strong>
+                </cite>
+                <br /><br />
+                <div class="row">
+
+                    <div class="col-xs-9">
+
+                        <div class="panel-primary panel">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Lista de Paciente para Atender</h3>
+                                <div class="panel-options">
+                                    <a href="javascript:actualizarTable();" style="color:#FFF"><i class="entypo-arrows-ccw fa-lg"></i></a>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <style>
+                                            .strong {
+                                                font-size: 20px;
+                                            }
+                                        </style>
+                                        <script type="text/javascript">
+                                            var count = 0;
+                                            var table;
+                                            var _signalR;
+                                            $(document).ready(function () {
+
+                                                $.connection.hub.url = "http://extranet.resocentro.com:5052/signalr";
+                                                _signalR = $.connection.emetacHub;
+                                                $.connection.hub.start().done(function () {
+                                                });
+                                                _signalR.client.actualizarCarga = function (msj) {
+
+                                                    actualizarTable();
+
+                                                }
+                                                
+                                                _$isPaginaBloqueable = false;
+                                                cargarcombo();
+                                                $("#cbo_counter").change(cargarListaCounter);
+                                                $("#cbo_counter_asignar").change(cargarListaCounter);
+                                                table = $('#myDataTable').DataTable({
+                                                    "paging": false,
+                                                    "ordering": false,
+                                                    "info": false,
+                                                    "searching": false,
+                                                    "bServerSide": true,
+                                                    "sAjaxSource": "@Url.Action("GetListaTicket", "Ticketera")",
+                                                    //"bProcessing": true,
+
+                                                    "iDisplayLength": 20,
+                                                    "lengthMenu": [[20, 25, 50, -1], [20, 25, 50, "All"]],
+                                                    "aoColumns": [
+                                                                     { "sName": "Paciente" },//0
+                                                                     { "sName": "Tipo" },//1
+                                                                     { "sName": "Minuto" },//2
+                                                                     { "sName": "botones" },//3
+                                                                     { "sName": "idTicket", "bVisible": false },//4
+                                                                     { "sName": "estado", "bVisible": false },//5
+                                                                     { "sName": "ispreferencial", "bVisible": false },//6
+                                                                     { "sName": "isrecojo", "bVisible": false },//7
+                                                                     { "sName": "isAtendiendo", "bVisible": false },//8 false si no esta atendiendo true si esta atendiendo
+                                                                     { "sName": "isEmergencia", "bVisible": false },//9 false si Emergencia
+
+                                                    ],
+                                                    "createdRow": function (row, aData, dataIndex) {
+
+                                                        //si es preferencial
+                                                        if ((aData[6]) == "True" && count == 0) {
+                                                            $('td:eq(0)', row).html('<small class="badge bg-red" id="enc"><i class="fa fa-exclamation-circle"></i></small>&nbsp;&nbsp;&nbsp; ' + (aData[0]));
+                                                            if (table.row(row).index() != 0)
+                                                                $("td:eq(3)", row).append('&nbsp;&nbsp;&nbsp;<button type="button"  onclick="CambiarEstado(' + (aData[4]) + ',1)"  class="btn btn-outline btn-info  llamada" ><i class="fa fa-phone fa-1x"></i></button>');
+                                                            //count++;
+                                                        }
+                                                        //si es recojo
+                                                        if ((aData[7]) == "True") {
+                                                            $('td:eq(0)', row).html('<small class="badge bg-blue" id="enc"><i class="fa fa-files-o"></i></small>&nbsp;&nbsp;&nbsp; ' + (aData[0]));
+                                                        }
+
+                                                        //si es Emergencia
+
+                                                        if ((aData[9]) == "True") {
+                                                            $('td:eq(0)', row).html('<small class="badge bg-yellow" id="enc"><i class="fa fa-ambulance"></i></small>&nbsp;&nbsp;&nbsp; ' + (aData[0]));
+                                                        }
+
+                                                        //agregarboton de llamar
+                                                        if (table.row(row).index() == 0) {
+                                                            $("td:eq(3)", row).append('&nbsp;&nbsp;&nbsp;<button type="button"  onclick="CambiarEstado(' + (aData[4]) + ',1)"  class="btn btn-outline btn-info  llamada" ><i class="fa fa-phone fa-1x"></i></button>');
+
+                                                        }
+
+                                                        //$('td:eq(2)', row)
+
+                                                        if ((aData[5]) == 1 || (aData[8]) == "True") {
+                                                            $('td:eq(0)', row).append('&nbsp;&nbsp;&nbsp;<small class="badge pull-right bg-green" id="enc">A</small>');
+
+                                                            //agregarboton de terminado
+                                                            $('td:eq(3)', row).append('&nbsp;&nbsp;&nbsp;<button type="button" onclick="CambiarEstado(' + (aData[4]) + ',5)"  class="btn btn-outline btn-success " ><i class="fa fa-check-circle fa-1x"></i></button>');
+                                                            //agregarboton de cancelar
+                                                            $('td:eq(3)', row).append('&nbsp;&nbsp;&nbsp;<button type="button" onclick="CambiarEstado(' + (aData[4]) + ',4)"  class="btn btn-outline btn-danger " ><i class="fa fa-times-circle fa-1x"></i></button>');
+                                                            //Pasar a otro counter
+                                                            $("td:eq(3)", row).append('&nbsp;&nbsp;&nbsp;<button type="button"  onclick="CambiarCounter(' + (aData[4]) + ')"  class="btn btn-outline btn-warning  llamada" ><i class="fa fa-reply-all fa-1x"></i></button>');
+                                                            count++;
+
+                                                        }
+
+
+                                                    }
+                                                });
+
+
+                                               /* setInterval(function () {
+                                                    actualizarTable();
+                                                }, 30000);
+                                                */
+
+                                                $(window).bind('beforeunload', function () {
+                                                    cambioEstado(false);
+                                                    toastr.info("Sesion Cerrada", "Informacion", opts);
+                                                });
+
+                                            });
+
+                                            function actualizarTable() {
+                                                count = 0;
+                                                table.ajax.reload();
+                                                VerificarEstado();
+                                            }
+                                            function cargarcombo() {
+                                                $.ajax({
+                                                    url: "@Url.Action("CounterOnline", "Ticketera")",
+                                                    data: {},
+                                                    dataType: "json",
+                                                    type: "POST",
+                                                    error: function () {
+                                                        toastr.error('Error al cargar Counter', "Error", opts);
+                                                    },
+                                                    success: function (data) {
+                                                        var items = "";
+                                                        items += "<option value='' >- Seleccione -</option>";
+                                                        $.each(data, function (i, item) {
+                                                            items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                                                        });
+                                                        $("#cbo_counter").html(items);
+                                                        $("#cbo_counter_asignar").html(items);
+
+                                                    }
+                                                });
+                                            }
+                                            function CambiarCounter(idTicket) {
+                                                $("#txtid_ticket").val(idTicket);
+                                                $('#ReAsignarModal').modal('toggle');
+                                            }
+
+                                            function jalarPaciente(idticket) {
+                                                var idcounter = '@Model.idcounter';
+                                                $.ajax({
+                                                    url: "@Url.Action("CambiarCounter_Ticket", "Ticketera")",
+                                                    data: { idcounter: idcounter, idticket: idticket },
+                                                    dataType: "json",
+                                                    type: "POST",
+                                                    error: function () {
+                                                        toastr.error('Error al jalar Paciente', "Error", opts);
+                                                    },
+                                                    success: function (data) {
+                                                        cargarListaCounter();
+                                                        actualizarTable();
+                                                        toastr.success('Se hizo cambio de Counter', "Exito", opts);
+
+                                                    }
+                                                });
+                                            }
+
+                                            function enviarPaciente(idticket, idcounter) {
+                                                $.ajax({
+                                                    url: "@Url.Action("CambiarCounter_Ticket", "Ticketera")",
+                                                    data: { idcounter: idcounter, idticket: idticket },
+                                                    dataType: "json",
+                                                    type: "POST",
+                                                    error: function () {
+                                                        toastr.error('Error al jalar Paciente', "Error", opts);
+                                                    },
+                                                    success: function (data) {
+                                                        cargarListaCounter();
+                                                        actualizarTable();
+                                                        toastr.success('Se hizo cambio de Counter', "Exito", opts);
+                                                    }
+                                                });
+                                            }
+
+                                            function cargarListaCounter() {
+                                                var modal = false;
+                                                var idcounter = $("#cbo_counter").val();
+                                                if (idcounter == "") {
+                                                    idcounter = $("#cbo_counter_asignar").val();
+                                                    modal = true;
+                                                }
+                                                $.ajax({
+                                                    url: "@Url.Action("VisorPacientexCounter", "Ticketera")",
+                                                    data: { idcounter: idcounter },
+                                                    dataType: "json",
+                                                    type: "POST",
+                                                    error: function () {
+                                                        mostrarmensaje(4, 'Ocurrio un problema y <b>no</b> se enviaron los datos al sistemas');
+                                                    },
+                                                    success: function (data) {
+                                                        if (modal) {
+                                                            $("#div_jalar_paciente_asignar").html(data.mensaje);
+                                                            $(".jalar_pac").remove();
+                                                        } else {
+                                                            $("#div_jalar_paciente").html(data.mensaje);
+                                                        }
+
+                                                    }
+                                                });
+                                            }
+                                            function CambiarEstado(idTicket, estado) {
+
+                                                $.ajax({
+                                                    async: false,
+                                                    cache: false,
+                                                    url: "@Url.Action("CambioEstado", "Ticketera")",
+                                                    data: { idticket: idTicket, estado: estado },
+                                                    dataType: "json",
+                                                    type: "POST",
+                                                    error: function () {
+                                                        toastr.error('No se enviaron los datos', "Error", opts);
+
+                                                    },
+                                                    success: function (data) {
+                                                        actualizarTable();
+                                                        _signalR.server.callPaciente();
+                                                    }
+                                                });
+                                            }
+
+
+                                        </script>
+                                        <div class="table-responsiwve">
+                                            <table id="myDataTable" class="table table-striped compact table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Paciente</th>
+                                                        <th style="width: 110px!important">Tipo</th>
+                                                        <th style="width: 60px!important">Min </th>
+                                                        <th style="width: 200px!important"></th>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="panel-primary panel">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Otro Counter</h3>
+                                <div class="panel-options">
+                                    <a href="javascript:cargarcombo();" style="color:#FFF"><i class="entypo-arrows-ccw fa-lg"></i></a>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <select class="form-control" id="cbo_counter"></select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" id="div_jalar_paciente">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function reasignarCounter() {
+        var idTicket = $("#txtid_ticket").val();;
+        var idcounter = $("#cbo_counter_asignar").val();
+        enviarPaciente(idTicket, idcounter);
+    }
+</script>
+<div class="modal" id="ReAsignarModal" tabindex="-1" role="dialog" aria-labelledby="ReAsignarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="ReAsignarModalLabel">Reasignar Counter</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="txtid_ticket" />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-10">
+                            <select class="form-control" id="cbo_counter_asignar"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-success" onclick="cargarcombo();"><i class="fa fa-refresh"></i></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" id="div_jalar_paciente_asignar">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="reasignarCounter();">Enviar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+

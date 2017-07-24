@@ -1,0 +1,26 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.frmCarta.frmCorreoSolicitu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Historial Conversación Solicitud" Height="439" Width="517" MaxHeight="439" MaxWidth="517" MinHeight="439" MinWidth="517" Background="{DynamicResource Windows.Background}"   Icon="/Resocentro_Desktop;component/img/favicon.png" >
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28"/>
+            <RowDefinition Height="211"/>
+            <RowDefinition Height="118" />
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Content="Historial de Conversación de Solicitud"  ></Label>
+        <TextBox Margin="5" Grid.Row="1" x:Name="txtcomentarioSolicitud" IsReadOnly="True" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap" />
+
+        <Grid Grid.Row="2" Name="gridResponder">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="27"/>
+                <RowDefinition Height="97*"/>
+            </Grid.RowDefinitions>
+            <Label Content="Responder a Paciente"  />
+            <TextBox Grid.Row="1" x:Name="txtrespuesta" Margin="5" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap" />
+        </Grid>
+        <Button Content="Enviar" x:Name="btnEnviar" HorizontalAlignment="Left" Margin="409,11,0,0" Grid.Row="3" VerticalAlignment="Top" Width="90" Height="30" Click="Button_Click"/>
+        <Button Content="Cerrar" Name="btnCerrar" HorizontalAlignment="Left" Margin="10,11,0,0" Grid.Row="3" VerticalAlignment="Top" Width="90" Height="30" Click="btnCerrar_Click"/>
+    </Grid>
+</Window>

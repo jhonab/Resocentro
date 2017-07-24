@@ -1,0 +1,89 @@
+﻿@model IEnumerable<SistemaResocentro.Models.CARTAGARANTIA>
+
+@{
+    Layout = null;
+}
+<script type="text/javascript">
+
+    $(function () {
+       $(".table_cartas").DataTable({
+            "sPaginationType": "bootstrap",
+        });
+    });
+</script>
+
+<div class="col-md-12">
+    <div  class="form-group ">
+        <label>Lista de Carta </label>
+        <table class="table table_cartas compact table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Fecha Tramite
+                    </th>
+                    <th>
+                        N° Carta
+                    </th>
+                    <th>
+                        N° Referencia
+                    </th>
+                    <th>
+                        Estado
+                    </th>
+                    <th>
+                        Aseguradora
+                    </th>
+                    <th>
+                        Cobertura
+                    </th>
+                    <th>
+                        Adjunto
+                    </th>
+                    <th>
+                        Revisada
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.fechatramite.ToShortDateString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.codigocartagarantia)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.codigocartagarantia2)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.estadocarta)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.COMPANIASEGURO.descripcion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.cobertura)
+                        </td>
+                        <td>
+                            @if (item.codigodocadjunto != "")
+                            {
+                                <a href="@Url.Action("DescargarAdjunto", new { id = item.codigodocadjunto ,tipo="1"})" target="_blank" class="btn btn-primary">Descargar&nbsp;&nbsp;<i class="fa fa-cloud-download"></i> </a>
+                            }
+                        </td>
+                        <td>
+                            @item.isRevisada
+                        </td>
+                        <td>
+                           <a href="@Url.Action("UpdateCarta", "CartaGarantia", new {idcarta=item.codigocartagarantia,idpaciente=item.codigopaciente })" class="btn btn-success btn-xs"><i class="fa fa-check"></i></a>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+</table>
+    </div>
+</div>
+

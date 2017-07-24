@@ -1,0 +1,39 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.administracion.frmConfirmacionPago"
+        Background="{DynamicResource Windows.Background}"  
+        Title="frmConfirmacionPago" Height="658.375" Width="812.3">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="58*"/>
+            <RowDefinition Height="569*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Seleccione Mes y Año" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Button Content="Buscar" HorizontalAlignment="Left" Margin="400,13,0,0" VerticalAlignment="Top" Width="81" Height="22" Click="Button_Click"/>
+        <telerik:RadGridView Grid.Row="1" AutoGenerateColumns="False" Name="gridLog">
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn  Header="Archivo" DataMemberBinding="{Binding archivo}" />
+                <telerik:GridViewDataColumn Header="Fecha" DataMemberBinding="{Binding fecha, StringFormat=\{0:dd/MM/yyyy HH:mm:ss\}}" IsReadOnly="True"/>
+                <telerik:GridViewDataColumn Header="Usuario" DataMemberBinding="{Binding usuario}" IsReadOnly="True" />
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+        <ComboBox Name="cbomes" HorizontalAlignment="Left" Margin="150,13,0,0" VerticalAlignment="Top" SelectedIndex="0" Width="120">
+            <ComboBoxItem>Mes</ComboBoxItem>
+            <ComboBoxItem>Enero</ComboBoxItem>
+            <ComboBoxItem>Febrero</ComboBoxItem>
+            <ComboBoxItem>Marzo</ComboBoxItem>
+            <ComboBoxItem>Abril</ComboBoxItem>
+            <ComboBoxItem>Mayo</ComboBoxItem>
+            <ComboBoxItem>Junio</ComboBoxItem>
+            <ComboBoxItem>Julio</ComboBoxItem>
+            <ComboBoxItem>Agosto</ComboBoxItem>
+            <ComboBoxItem>Septiembre</ComboBoxItem>
+            <ComboBoxItem>Octubre</ComboBoxItem>
+            <ComboBoxItem>Noviembre</ComboBoxItem>
+            <ComboBoxItem>Diciembre</ComboBoxItem>
+        </ComboBox>
+        <ComboBox Height="23" x:Name="cboAño" Width="81" Margin="275,13,409,22" />
+
+    </Grid>
+</Window>

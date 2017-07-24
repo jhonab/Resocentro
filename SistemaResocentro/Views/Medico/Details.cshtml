@@ -1,0 +1,198 @@
+﻿@model SistemaResocentro.Models.MEDICOEXTERNO
+
+@{
+    Layout = null;
+    ViewBag.Title = "Details";
+}
+<script src="~/js/validar-input.js"></script>
+<script type="text/javascript">
+    $(function () {
+        iniciarForm();
+        ingresoForm();
+    });
+</script>
+<div class="modal-header modal-primary">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">@Model.apellidos, @Model.nombres <strong> CMP:</strong> @Model.cmp</h4>
+</div>
+<div class="modal-body" id="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Tipo Medico:</label>
+                    @Html.DropDownListFor(model => model.tipomedico, (SelectList)ViewBag.Tipo, "- Seleccione Tipo Médico -", htmlAttributes: new { @class = "form-control " })
+                    @Html.ValidationMessageFor(model => model.tipomedico, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <label>CMP/CMV/COP:</label>
+                    <div class="">
+
+                        @Html.DisplayFor(model => model.cmp, new { htmlAttributes = new { @class = "form-control validar", @maxlength = "6", @readonly = "" } })
+                        @Html.DisplayFor(model => model.cmpCorregido, new { htmlAttributes = new { @class = "form-control validar", @placeholder = "CMP Corregido", @maxlength = "6" } })
+                        @Html.ValidationMessageFor(model => model.cmp, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Apellidos:</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.apellidos, new { htmlAttributes = new { @class = "form-control validar" } })
+                        @Html.ValidationMessageFor(model => model.apellidos, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Nombres:</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.nombres, new { htmlAttributes = new { @class = "form-control validar" } })
+                        @Html.ValidationMessageFor(model => model.nombres, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Sexo:</label>
+                    <div class="">
+                        @Html.RadioButtonFor(model => model.SexoMedico, true, new { @disabled = "", @class = " validar " }) Masculino
+                        @Html.RadioButtonFor(model => model.SexoMedico, false, new { @disabled = "", @class = " validar " }) Femenino
+                        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Nacimiento:</label>
+                    <div class="">
+                        @if (Model.fechanacio != null)
+                        {
+                            @Model.fechanacio.Value.ToShortDateString()
+                        }
+                        @Html.ValidationMessageFor(model => model.fechanacio, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>DNI:</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.dniMedico, new { htmlAttributes = new { @class = "form-control validar" } })
+                        @Html.ValidationMessageFor(model => model.dniMedico, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Celular:</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.celular, new { htmlAttributes = new { @class = "form-control validar" } })
+                        @Html.ValidationMessageFor(model => model.celular, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Estado Civil:</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.estado_civil, new { htmlAttributes = new { @class = "form-control validar" } })
+                        @Html.ValidationMessageFor(model => model.estado_civil, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    <label>E-mail:</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Dirección:</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.direccion, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.direccion, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Especialidad:</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.ESPECIALIDAD.descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.codigoespecialidad, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Pago:</label>
+                    <div class="">
+                        <div class="checkbox">
+                            @Html.CheckBoxFor(model => model.isPaga, new { @disabled = "", @mostrar_respuesta = "div_pago " })
+                            @Html.ValidationMessageFor(model => model.isPaga, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div id="div_pago" class="col-md-12">
+                    <div class="form-group">
+                        <label>Emite Documento:</label>
+                        <div class="">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(model => model.isDocumento, new { @disabled = "", @mostrar_respuesta = "div_documentopago" })
+                                @Html.ValidationMessageFor(model => model.isDocumento, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $("#DocumentoPago").val("@Model.DocumentoPago");
+                        });
+                    </script>
+
+                    <div id="div_documentopago" class="col-md-12">
+                        <div class="form-group">
+                            <label>Típo Documento:</label>
+                            <div class="">
+                                @Html.DropDownListFor(model => model.DocumentoPago, (SelectList)ViewBag.DocumentoPago, htmlAttributes: new { @class = "form-control", @disabled = "" })
+                                @Html.ValidationMessageFor(model => model.DocumentoPago, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Hobby:</label>
+                    <div class="">
+                        @Html.TextAreaFor(model => model.hobby, new { @class = "form-control ", @disabled = "", @rows = "5" })
+                        @Html.ValidationMessageFor(model => model.hobby, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Activo Session Web:</label>
+                    <div class="">
+                        @Html.CheckBoxFor(model => model.isActiveWeb, new { @mostrar_respuesta = "div_sesion" })
+                        @Html.ValidationMessageFor(model => model.isActiveWeb, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div id="div_sesion" class="col-md-12">
+                    <div class="form-group">
+                        <label>Usuario:</label>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.usuario, new { @class = "form-control", @readonly = "" })
+                            @Html.ValidationMessageFor(model => model.usuario, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Clave:</label>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.clave, new { @class = "form-control", @readonly = "" })
+                            @Html.ValidationMessageFor(model => model.clave, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+</div>

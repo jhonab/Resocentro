@@ -1,0 +1,152 @@
+﻿@model IEnumerable<SistemaResocentro.Models.DetalleReporteComisionesMedico>
+
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <strong style="text-align:center">*Fecha de corte por mes del 26 al 25, según el cálculo de comisiones.</strong>
+    </div>
+
+    <div class="col-md-12">
+        <div id="chart-envio">
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div id="chart-tiposEstudios">
+
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div id="chart-procedenciaEnvio">
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+
+    var dataenvio = [{ "name": "Envios Total RES", "data": [@foreach (var item in Model.OrderBy(x => x.idReporte).Select(x => new { x.ReporteComisionesMedico.idReporte, x.ReporteComisionesMedico.fecha }).Distinct().ToList()){<text> "@Model.Where(x=> x.idReporte==item.idReporte && x.sede.Contains("Reso")).ToList().Count()", </text>}] },
+    { "name": "Envios Total EME", "data": [@foreach (var item in Model.OrderBy(x => x.idReporte).Select(x => new { x.ReporteComisionesMedico.idReporte, x.ReporteComisionesMedico.fecha }).Distinct().ToList()){<text> "@Model.Where(x=> x.idReporte==item.idReporte && x.sede.Contains("Eme")).ToList().Count()", </text>}] }];
+
+    var datatipoEstudio = [{ name: "Resonancia", data: [@foreach (var item in Model.OrderBy(x => x.idReporte).Select(x => new { x.ReporteComisionesMedico.idReporte, x.ReporteComisionesMedico.fecha }).Distinct().ToList()){<text> "@Model.Where(x=> x.idReporte==item.idReporte&&x.modalidad=="RM").ToList().Count()", </text>}] },
+        { name: "Tomografía", data: [@foreach (var item in Model.OrderBy(x => x.idReporte).Select(x => new { x.ReporteComisionesMedico.idReporte, x.ReporteComisionesMedico.fecha }).Distinct().ToList()){<text> "@Model.Where(x=> x.idReporte==item.idReporte&&x.modalidad=="TEM").ToList().Count()", </text>}] }];
+
+        var dataProcedencia = [@foreach (var item in Model.OrderBy(x => x.idReporte).Select(x => new { x.idprocedencia,x.procedencia}).Distinct().ToList()){<text> { procedencia: "@Html.Raw(item.procedencia)", cantidad: "@Model.Where(x=>x.idprocedencia==item.idprocedencia).ToList().Count()" },</text>}];
+
+        var _mesEnvio = [@foreach(var item in Model.OrderBy(x => x.idReporte).Select(x => x.ReporteComisionesMedico.fecha.Value.AddMonths(-1).ToString("MMMM")).Distinct().ToList()){<text> "@item", </text>
+        }]
+
+        var _lengthData = dataenvio[0].data.length;
+        var sumtotalP = 0;
+        for (var i = 0; i < _lengthData; i++) {
+            sumtotalP = sumtotalP + parseInt(dataenvio[0].data[i]);
+        }
+        var promedioP = parseInt(sumtotalP / _lengthData);
+        $("#chart-envio").kendoChart({
+            theme: "Bootstrap",
+            title: {
+                text: "Envios de los últimos 6 meses \n Promedio: " + promedioP,
+            },
+            legend: {
+                visible: true,
+                position: "top"
+            },
+            seriesDefaults: {
+                type: "line",
+                labels: {
+                    visible: true,
+                    format: "{0}"
+                }
+            },
+            series: dataenvio,
+            valueAxis: {
+                labels: {
+                    format: "{0}"
+                }, plotBands: [{
+                    from: promedioP,
+                    to: promedioP + 0.5,
+                    color: "#FF0000",
+                }]
+            },
+            categoryAxis: {
+                categories: _mesEnvio
+            },
+            tooltip: {
+                visible: true,
+                format: "{0}",
+                template: "   #= series.name # : #= value #  "
+            }
+        });
+        $("#chart-tiposEstudios").kendoChart({
+            theme: "Bootstrap",
+            title: {
+                text: "Tipos de Estudios enviados los últimos 6 meses",
+            },
+            legend: {
+                visible: true,
+                position: "top"
+            },
+            seriesDefaults: {
+                type: "line",
+                labels: {
+                    visible: true,
+                    format: "{0}"
+                }
+            },
+            series: datatipoEstudio,
+            valueAxis: {
+                labels: {
+                    format: "{0}"
+                }/*, plotBands: [{
+                from: 0,
+                to: 10,
+                color: "#c00",
+                opacity: 0.3
+            }]*/
+            },
+            categoryAxis: {
+                categories: _mesEnvio
+            },
+            tooltip: {
+                visible: true,
+                format: "{0}",
+                template: "   #= series.name # : #= value #  "
+            }
+        });
+
+        $("#chart-procedenciaEnvio").kendoChart({
+            theme: "Bootstrap",
+            title: {
+                text: "Procedencia de Estudios"
+            },
+            legend: {
+                visible: true,
+                position: "top"
+            },
+            seriesDefaults: {
+                type: "column",
+                labels: {
+                    visible: true,
+                    format: "{0}"
+                }
+            },
+            dataSource: {
+                data: dataProcedencia
+            },
+            series: [{
+                field: "cantidad",
+                categoryField: "procedencia"
+            }],
+            categoryAxis: {
+                baseUnit: "procedencia"
+            }, tooltip: {
+                visible: true,
+                template: " #= value #  "
+            }
+
+        });
+
+</script>

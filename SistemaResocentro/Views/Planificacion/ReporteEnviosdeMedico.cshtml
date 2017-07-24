@@ -1,0 +1,200 @@
+﻿@model IEnumerable<SistemaResocentro.Models.DetalleReporteComisionesMedico>
+@{
+    Layout = null;
+
+}
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <button type="button" class="btn btn-blue" data-toggle="modal" data-target="#modal_DetalleInfo"><i class=" fa fa-list-ul"></i>&nbsp;&nbsp;Mostrar Detalle</button>
+    </div>
+    <div class="col-md-12">
+        <strong style="text-align:center">*Según el cálculo de comisiones.</strong>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <div id="chart-envio">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div id="chart-tiposEstudios">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <div id="chart-procedenciaEnvio">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="">
+    var contenido = "<div class='modal-body'><table class='table table-striped table-bordered table-hover tableDetalle'><thead><tr><th>Fecha</th><th>N°</th><th>Paciente</th><th>Estudio</th><th>Procedencia</th><th>Sede</th><th></th></tr></thead><tbody>@foreach (var item in Model){<text><tr><td>@item.fechayhora.Value.ToShortDateString()</td><td>@item.codigo</td><td></td><td></td><td>@item.procedencia</td><td></td><td><button type='button' class='btn btn-default btn-xs' onclick='DescargarAdjunto(@item.codigo)'><i class='fa fa-download'></i></button></td></tr></text>}</tbody></table></div>";
+    $(function () {
+        $("#body_modal_DetalleInfo").html(contenido);
+        $('.tableDetalle').DataTable();
+    });
+
+</script>
+
+<script type="text/javascript">
+    var data_Total = [];
+    var data_Aceptados = [];
+    var data_Pagados = [];
+    var data_NPagados = [];
+
+    var data_RM = [];
+    var data_TEM = [];
+
+    var data_procedencia = [];
+
+    var data_mes = [];
+    $(function () {
+        @foreach (var item in Model.OrderBy(x => x.fechayhora.Value).Select(x => new { x.fechayhora.Value.Month, x.fechayhora.Value.Year }).Distinct().ToList())
+    {
+            @:data_Total.push(@Model.Where(x => x.fechayhora.Value.Month == item.Month && x.fechayhora.Value.Year == item.Year).ToList().Count());
+
+            @:data_RM.push(@Model.Where(x => x.fechayhora.Value.Month == item.Month && x.modalidad == "RM").ToList().Count());
+
+            @:data_TEM.push(@Model.Where(x => x.fechayhora.Value.Month == item.Month && x.modalidad == "TEM").ToList().Count());
+
+           var fecha = new DateTime(item.Year, item.Month, 1);
+
+            @:data_mes.push("@fecha.ToString("MMM-yy")");
+                                    }
+        @foreach (var p in Model.Select(x=> x.procedencia).OrderBy(x=> x).Distinct().ToList())
+        {
+
+            @:data_procedencia.push({name: "@Html.Raw(p)", data: [@foreach (var item in Model.OrderBy(x => x.fechayhora.Value).Select(x => new { x.fechayhora.Value.Month, x.fechayhora.Value.Year }).Distinct().ToList()){ @Model.Where(x => x.fechayhora.Value.Month == item.Month && x.fechayhora.Value.Year == item.Year && x.procedencia==p).ToList().Count() @:, 
+            }] });
+
+        }
+
+    console.log(data_procedencia);
+    console.log(dataenvio);
+    });
+    var dataenvio = [
+        { name: "Envios Total", data: data_Total }]
+
+    var datatipoEstudio = [
+        { name: "Resonancia", data: data_RM },
+        { name: "Tomografía", data: data_TEM }];
+
+
+
+    var _mesEnvio = data_mes;
+
+    $("#chart-envio").kendoChart({
+        theme: "Bootstrap",
+        title: {
+            text: "Envios de los últimos 6 meses",
+        },
+        legend: {
+            visible: true,
+            position: "top"
+        },
+        seriesDefaults: {
+            type: "line",
+            labels: {
+                visible: true,
+                format: "{0}"
+            }
+        },
+        series: dataenvio,
+        valueAxis: {
+            labels: {
+                format: "{0}"
+            }/*, plotBands: [{
+                from: 0,
+                to: 10,
+                color: "#c00",
+                opacity: 0.3
+            }]*/
+        },
+        categoryAxis: {
+            categories: _mesEnvio
+        },
+        tooltip: {
+            visible: true,
+            format: "{0}",
+            template: "   #= series.name # : #= value #  "
+        }
+    });
+    $("#chart-tiposEstudios").kendoChart({
+        theme: "Bootstrap",
+        title: {
+            text: "Tipos de Estudios enviados los últimos 6 meses",
+        },
+        legend: {
+            visible: true,
+            position: "top"
+        },
+        seriesDefaults: {
+            type: "line",
+            labels: {
+                visible: true,
+                format: "{0}"
+            }
+        },
+        series: datatipoEstudio,
+        valueAxis: {
+            labels: {
+                format: "{0}"
+            }/*, plotBands: [{
+                from: 0,
+                to: 10,
+                color: "#c00",
+                opacity: 0.3
+            }]*/
+        },
+        categoryAxis: {
+            categories: _mesEnvio
+        },
+        tooltip: {
+            visible: true,
+            format: "{0}",
+            template: "   #= series.name # : #= value #  "
+        }
+    });
+
+    $("#chart-procedenciaEnvio").kendoChart({
+        theme: "Bootstrap",
+        title: {
+            text: "Procedencia de Estudios",
+        },
+        legend: {
+            visible: true,
+            position: "top"
+        },
+        seriesDefaults: {
+            type: "line",
+            labels: {
+                visible: true,
+                format: "{0}"
+            }
+        },
+        series: data_procedencia,
+        valueAxis: {
+            labels: {
+                format: "{0}"
+            }/*, plotBands: [{
+                from: 0,
+                to: 10,
+                color: "#c00",
+                opacity: 0.3
+            }]*/
+        },
+        categoryAxis: {
+            categories: _mesEnvio
+        },
+        tooltip: {
+            visible: true,
+            format: "{0}",
+            template: "   #= series.name # : #= value #  "
+        }
+    });
+
+</script>

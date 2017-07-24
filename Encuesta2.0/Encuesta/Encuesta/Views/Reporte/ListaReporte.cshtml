@@ -1,0 +1,1053 @@
+﻿@model Encuesta.ViewModels.Reporte.ReporteViewModel
+
+@{
+    ViewBag.Title = "<i class='fa fa-line-chart'></i> Reporte";
+    ViewBag.Titlenot = "Reporte";
+}
+
+<!-- DataTables JavaScript -->
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="~/js/plugins/KendoChart/kendo.all.min.js"></script>
+<link href="~/css/plugins/Kendochart/kendo.dataviz.min.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="">
+            <div class="">
+
+                <h2 class="box-title">Usuario:  @Membership.GetUser().UserName</h2>
+            </div>
+            <div class=" chart-responsive">
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">Filtro de Busqueda</div>
+                            </div>
+                            <div class="panel-body">
+                                @using (Html.BeginForm("ListaReporte", "Reporte", FormMethod.Get))
+                                {
+                                    <script type="text/javascript">
+                                        function validar() {
+                                            var msj = "";
+                                            if ($("#i").val() == "")
+                                                msj += "- Ingrese la fecha de inicio \n";
+                                            if ($("#f").val() == "")
+                                                msj += "- Ingrese la fecha de termino \n";
+
+                                            if (msj == "")
+                                                return true;
+                                            else {
+                                                alert(msj);
+                                                return false;
+                                            }
+                                        }
+                                    </script>
+                                    <div class="form-group col-xs-6">
+                                        <label>Inicio:</label>
+                                        <input type="date" id="i" name="i" class="form-control" />
+                                    </div>
+                                    <div class="form-group col-xs-6">
+                                        <label>Termino:</label>
+                                        <input type="date" id="f" name="f" class="form-control" />
+                                    </div>
+
+                                    <input type="submit" value="Buscar" onclick="return validar();" class="btn btn-outline btn-success" />
+
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="panel-title"><i class="fa fa-line-chart fa-fw"></i>&nbsp;Reporte del : @Model.rangoFiltro</div>
+                    </div>
+                    <!-- .panel-heading -->
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel-group" id="accordion">
+
+                                    @if (Model.encuestador != null && Model.encuestador.Count > 0)
+                                    {
+                                        <script type="text/javascript">
+                                            $(document).ready(function () {
+                                                $('.encuesta').dataTable();
+                                            });
+                                        </script>
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseEncuesta">
+                                                        Encuestas Médicas
+                                                        <i class="pull-right">Total Encuestas: <b>@Model.encuestador.Count()</b></i>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseEncuesta" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <table class="table table-striped table-bordered table-hover encuesta">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>
+                                                                    Fecha
+                                                                </th>
+                                                                <th>
+                                                                    Examen
+                                                                </th>
+                                                                <th>
+                                                                    Paciente
+                                                                </th>
+                                                                <th>
+                                                                    Estudio
+                                                                </th>
+                                                                <th>
+                                                                    Equipo
+                                                                </th>
+                                                                <th>
+                                                                    Supervisor
+                                                                </th>
+                                                                <th>
+                                                                    Inicio
+                                                                </th>
+                                                                <th>
+                                                                    Fin
+                                                                </th>
+                                                                <th>
+                                                                    Duración
+                                                                </th>
+                                                                @*<th></th>*@
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var item in Model.encuestador)
+                                                            {
+                                                                <tr>
+                                                                    <td class="table_id">
+                                                                        @Html.DisplayFor(modelItem => item.fecha, "ShortDateTime")
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.examen)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.paciente)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.estudio)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.equipo)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.supervisor)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.encu_ini, "ShortTime")
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.encu_fin, "ShortTime")
+                                                                    </td>
+                                                                    <td>
+                                                                        @{ TimeSpan ts = item.encu_fin - item.encu_ini;
+                                                                        <text>
+                                                                            @ts.Minutes
+                                                                            .min
+                                                                        </text>
+                                                                        }
+                                                                    </td>
+                                                                    @* <td class="table_id">
+
+                                                                        </td>*@
+                                                                </tr>
+                                                            }
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+
+                                    @if (Model.supervisor != null && Model.supervisor.Count > 0)
+                                    {
+                                        <script>
+                                            $(document).ready(function () {
+                                                $('.supervisor').dataTable();
+                                            });
+                                        </script>
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseSupervisor">
+                                                        Supervisiones Médicas
+                                                        <i class="pull-right">Total Supervisiones: @Model.supervisor.Count()</i>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseSupervisor" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <table class="table table-striped table-bordered table-hover supervisor" id="tabla_supervisor">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>
+                                                                    Fecha
+                                                                </th>
+                                                                <th>
+                                                                    Examen
+                                                                </th>
+                                                                <th>
+                                                                    Paciente
+                                                                </th>
+                                                                <th>
+                                                                    Estudio
+                                                                </th>
+                                                                <th>
+                                                                    Equipo
+                                                                </th>
+                                                                <th>
+                                                                    Encuestador
+                                                                </th>
+                                                                <th>
+                                                                    Sol. Super.
+                                                                </th>
+                                                                <th>
+                                                                    Inicio Super.
+                                                                </th>
+                                                                <th>
+                                                                    Respuesta
+                                                                </th>
+                                                                @*<th></th>*@
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var item in Model.supervisor)
+                                                            {
+                                                                <tr>
+                                                                    <td class="table_id">
+                                                                        @Html.DisplayFor(modelItem => item.fecha, "ShortDateTime")
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.examen)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.paciente)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.estudio)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.equipo)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.encuestador)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.soli_ini, "ShortTime")
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.ini_super, "ShortTime")
+                                                                    </td>
+                                                                    <td>
+                                                                        @{ TimeSpan ts = item.ini_super - item.soli_ini;
+                                                                        <text>
+                                                                            @ts.Minutes
+                                                                            .min
+                                                                        </text>
+                                                                        }
+                                                                    </td>
+                                                                    @* <td class="table_id">
+
+                                                                        </td>*@
+                                                                </tr>
+                                                            }
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+
+                                    @if (Model.tecnologo != null && Model.tecnologo.Count > 0)
+                                    {
+                                        <style>
+                                            .parpadea {
+                                                animation-name: parpadeo;
+                                                animation-duration: 1s;
+                                                animation-timing-function: linear;
+                                                animation-iteration-count: infinite;
+                                                -webkit-animation-name: parpadeo;
+                                                -webkit-animation-duration: 1s;
+                                                -webkit-animation-timing-function: linear;
+                                                -webkit-animation-iteration-count: infinite;
+                                            }
+
+
+                                            @@-webkit-keyframes parpadeo {
+                                                0% {
+                                                    opacity: 1.0;
+                                                }
+
+                                                50% {
+                                                    opacity: 0.6;
+                                                }
+
+                                                100% {
+                                                    opacity: 1.0;
+                                                }
+                                            }
+
+                                            @@-moz-keyframes parpadeo {
+                                                0% {
+                                                    opacity: 1.0;
+                                                }
+
+                                                50% {
+                                                    opacity: 0.6;
+                                                }
+
+                                                100% {
+                                                    opacity: 1.0;
+                                                }
+                                            }
+
+                                            @@keyframes parpadeo {
+                                                0% {
+                                                    opacity: 1.0;
+                                                }
+
+                                                50% {
+                                                    opacity: 0.6;
+                                                }
+
+                                                100% {
+                                                    opacity: 1.0;
+                                                }
+                                            }
+                                        </style>
+                                        <script>
+                                            var tabla_tecnologo;
+                                            var url;
+                                            var pac;
+                                            $(document).ready(function () {
+                                                tabla_tecnologo= $('.tecnologo').DataTable();
+                                                $('#tabla_adquisicion tbody').on('contextmenu', 'td', function (e) {
+                                                    var rowIdx = tabla_tecnologo
+                                                        .cell(this)
+                                                        .index().row;
+                                                    var imagen=(tabla_tecnologo.cell(rowIdx, 8).data());
+
+                                                    if(!(imagen.indexOf("checked") >= 0)){
+                                                        var items="";
+                                                        var examen=(tabla_tecnologo.cell(rowIdx, 2).data());
+                                                        pac=(tabla_tecnologo.cell(rowIdx, 3).data()).split(" ");
+                                                        url="http://xero.resocentro.com/#PatientName="+pac[0]+"&StudyDateTime=Today"
+                                                        var modalidad=(tabla_tecnologo.cell(rowIdx, 4).data());
+                                                        if(modalidad!="")
+                                                            url="http://xero.resocentro.com/#PatientName="+pac[0]+"&StudyDateTime=Today&ModalitiesInStudy="+modalidad;
+                                                        items += '<li><a tabindex="-1" href="javascript:buscarImpax(' + examen + ');"><i class="fa fa-search fa-lg " style="color: #078EF8"></i>&nbsp;&nbsp;Buscar en Impax</a></li>'
+
+                                                        $("#contextMenu").html(items);
+                                                        $("#contextMenu").css({
+                                                            display: "block",
+                                                            left: e.pageX,
+                                                            top: e.pageY
+                                                        });
+                                                    }
+                                                    $(document).click(function () {
+                                                        $("#contextMenu").hide();
+                                                    });
+                                                    return false;
+                                                });
+                                            });
+                                            function buscarImpax(codigo ){
+                                                //$("#num_examen").val(codigo);
+                                                //$("#patientid").val("");
+                                                //$("#pac_nombre").val(pac[0]);
+                                                //$("#studies").val("");
+                                                //$('#myModal').modal("show")
+                                                window.open(url, '_blank');
+                                            }
+                                        </script>
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <div class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTecnologo">
+                                                        Adquisición de Exámenes
+
+                                                        <i class="pull-right" style="margin-right:5px;">Total:<b> @Model.tecnologo.Count()</b></i>
+                                                        <i class="pull-right" style="margin-right:5px;">Revisadas: <b>@Model.tecnologo.Where(x => x.isRevisado == true).Count()</b></i>
+                                                        <i class="pull-right" style="margin-right:5px;">Imagenes no Detectadas: <b>@Model.tecnologo.Where(x => x.imagenes == false).Count()</b></i>
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                            <div id="collapseTecnologo" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    @if (Model.isRevisado)
+                                                    {
+                                                        <a href="@Url.Action("CerrarTurno","Reporte")" class="btn btn-blue btn-block btn-lg parpadea">Confirmo la Revisión de los Siguientes Exámenes </a>
+                                                    }                                                    <table class="table table-striped table-bordered table-hover tecnologo" id="tabla_adquisicion">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>
+                                                                    Revisado
+                                                                </th>
+                                                                <th>
+                                                                    Fecha
+                                                                </th>
+                                                                <th>
+                                                                    Examen
+                                                                </th>
+                                                                <th>
+                                                                    Paciente
+                                                                </th>
+                                                                <th>
+                                                                    Mod.
+                                                                </th>
+                                                                <th>
+                                                                    Estudio
+                                                                </th>
+                                                                <th>
+                                                                    Equipo
+                                                                </th>
+                                                                <th>
+                                                                    Placas
+                                                                </th>
+                                                                <th>
+                                                                    Imagenes
+                                                                </th>
+                                                                <th>
+                                                                    PostProceso
+                                                                </th>
+                                                                <th>
+                                                                    Sedacion
+                                                                </th>
+                                                                <th>
+                                                                    Contraste
+                                                                </th>
+                                                                <th>
+                                                                    Encuestador
+                                                                </th>
+                                                                <th>
+                                                                    Supervisor
+                                                                </th>
+                                                                <th>
+                                                                    Duración
+                                                                </th>
+
+                                                                @*<th></th>*@
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var item in Model.tecnologo)
+                                                            {
+                                                                <tr>
+                                                                    <td class="table_id" style="text-align: center;">
+                                                                        @Html.DisplayFor(modelItem => item.isRevisado)
+                                                                    </td>
+                                                                    <td class="table_id">
+                                                                        @Html.DisplayFor(modelItem => item.fecha)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.examen)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.paciente)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.modalidad)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.estudio)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.equipo)
+                                                                    </td>
+                                                                    <td style="text-align: center;">
+                                                                        @Html.DisplayFor(modelItem => item.placas)
+                                                                    </td>
+                                                                    <td style="text-align: center;">
+                                                                        @Html.DisplayFor(modelItem => item.imagenes)
+                                                                    </td>
+                                                                    <td style="text-align: center;">
+                                                                        @Html.DisplayFor(modelItem => item.postproceso)
+                                                                    </td>
+                                                                    <td style="text-align: center;">
+                                                                        @Html.DisplayFor(modelItem => item.sedacion)
+                                                                    </td>
+                                                                    <td style="text-align: center;">
+                                                                        @Html.DisplayFor(modelItem => item.contraste)
+                                                                        @if (item.continuo)
+                                                                        {
+                                                                            @Html.DisplayFor(modelItem => item.continuo)
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.encuestador)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.supervisor)
+                                                                    </td>
+                                                                    <td>
+                                                                        @{ TimeSpan ts = item.tec_fin - item.tec_ini;
+                                                                        <text>
+                                                                            @ts.Minutes
+                                                                            .min
+                                                                        </text>
+                                                                        }
+                                                                    </td>
+                                                                    @* <td class="table_id">
+
+                                                                        </td>*@
+                                                                </tr>
+                                                            }
+
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (Model.postproceso != null && Model.postproceso.Count > 0)
+                                    {
+                                        <script>
+                                            $(document).ready(function () {
+                                                $('#tabla_postproceso').dataTable();
+                                            });
+                                        </script>
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapsePostProceso">PostProceso de Imágenes Médicas</a>
+                                                    <i class="pull-right">Total: @Model.postproceso.Sum(x => x.valorPro)</i>
+                                                </h4>
+                                            </div>
+                                            <div id="collapsePostProceso" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <table class="table table-striped table-bordered table-hover" id="tabla_postproceso">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>
+                                                                    Fecha
+                                                                </th>
+                                                                <th>
+                                                                    Examen
+                                                                </th>
+                                                                <th>
+                                                                    Paciente
+                                                                </th>
+                                                                <th>
+                                                                    Estudio
+                                                                </th>
+                                                                <th>
+                                                                    Técnicas
+                                                                </th>
+                                                                <th>
+                                                                    Valor
+                                                                </th>
+
+                                                                @*<th></th>*@
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var item in Model.postproceso)
+                                                            {
+                                                                <tr>
+                                                                    <td class="table_id">
+                                                                        @Html.DisplayFor(modelItem => item.fecha, "ShortDateTime")
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.examen)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.paciente)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.estudio)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.tecnica)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.valorPro)
+                                                                    </td>
+
+                                                                    @* <td class="table_id">
+
+                                                                        </td>*@
+                                                                </tr>
+                                                            }
+
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+                                    @if (Model.enfermera != null && Model.enfermera.Count > 0)
+                                    {
+                                        <script>
+                                            $(document).ready(function () {
+                                                $('#tabla_enfermera').dataTable();
+                                            });
+                                        </script>
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <div class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseenfermera">
+                                                        Aplicacion de Contraste
+                                                        <i class="pull-right">Total Contrastes: <b> @Model.enfermera.Count()</b></i>
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                            <div id="collapseenfermera" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <table class="table table-striped table-bordered table-hover" id="tabla_enfermera">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>
+                                                                    Fecha
+                                                                </th>
+                                                                <th>
+                                                                    Examen
+                                                                </th>
+                                                                <th>
+                                                                    Paciente
+                                                                </th>
+                                                                <th>
+                                                                    Estudio
+                                                                </th>
+                                                                <th>
+                                                                    Insumos
+                                                                </th>
+
+
+                                                                @*<th></th>*@
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var item in Model.enfermera)
+                                                            {
+                                                                <tr>
+                                                                    <td class="table_id">
+                                                                        @Html.DisplayFor(modelItem => item.fecha, "ShortDateTime")
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.examen)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.paciente)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.estudio)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.insumos)
+                                                                    </td>
+                                                                    @* <td class="table_id">
+
+                                                                        </td>*@
+                                                                </tr>
+                                                            }
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                       
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="">
+
+
+                                        <div class="row">
+                                            @if (Model.encuestador != null && Model.encuestador.Count > 0)
+                                        {
+                                        <script type="text/javascript">
+                                                $(document).ready(function () {
+                                                    $("#chart-encuestador").kendoChart({
+                                                        theme: "Metro",
+                                                        title: {
+                                                            text: "Grafico de Encuestas"
+                                                        },
+                                                        legend: {
+                                                            position: "top"
+                                                        },
+
+                                                        seriesDefaults: {
+                                                            labels: {
+                                                                template: "#= value # Exam. - #= category # ",
+                                                                position: "outsideEnd",
+                                                                visible: true,
+                                                                background: "transparent"
+                                                            }
+                                                        },
+                                                        series: [{
+                                                            type: "donut",
+                                                            data: [@{foreach (var item in Model.encuestador.Select(x => x.fecha.ToString("dd/MM/yy")).Distinct().ToList())
+                                                                             { <text>{
+                                                                category:('@item'),
+                                                                value:@Model.encuestador.Where(x => x.fecha.ToString("dd/MM/yy") == item).Count(), },</text>}} ]
+                                                        }],
+                                                        tooltip: {
+                                                            visible: true,
+                                                            template: " #= value # Examen(es) Encuestado(s) el #= category #"
+                                                        }
+                                                    });
+
+                                                    $("#chart-encuestador-artro").kendoChart({
+                                                        theme: "Metro",
+                                                        title: {
+                                                            text: "Grafico de Cant. de Tipos de Estudio"
+                                                        },
+                                                        legend: {
+                                                            position: "top"
+                                                        },
+
+                                                        seriesDefaults: {
+                                                            labels: {
+                                                                template: "#= value # Exam. de #= category # ",
+                                                                position: "outsideEnd",
+                                                                visible: true,
+                                                                background: "transparent"
+                                                            }
+                                                        },
+                                                        series: [{
+                                                            type: "donut",
+                                                            data: [@{foreach (var item in Model.encuestador.Select(x => x.claseestudio).Distinct().ToList())
+                                                                             { <text>{
+                                                                                 category:('@item'),
+                                                                                 value:@Model.encuestador.Where(x => x.claseestudio == item).Count(), },</text>}} ]
+                                                            }],
+                                                        tooltip: {
+                                                            visible: true,
+                                                            template: " #= value # Examen(es) de #= category #"
+                                                        }
+                                                    });
+
+                                                });
+                                        </script>
+    <div class="col-xs-6 col-md-4 col-lg-3">
+        <div id="chart-encuestador">
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-4 col-lg-3">
+        <div id="chart-encuestador-artro">
+        </div>
+    </div>
+                                        }
+                                            @if (Model.supervisor != null && Model.supervisor.Count > 0)
+                                        {
+                                        <script type="text/javascript">
+                                                $(document).ready(function () {
+                                                    $("#chart-supervisor").kendoChart({
+                                                        theme: "Metro",
+                                                        title: {
+                                                            text: "Grafico de Supervisiones"
+                                                        },
+                                                        legend: {
+                                                            position: "top"
+                                                        },
+                                                        seriesDefaults: {
+                                                            labels: {
+                                                                template: "#= value # Exam. - #= category # ",
+                                                                position: "outsideEnd",
+                                                                visible: true,
+                                                                background: "transparent"
+                                                            }
+                                                        },
+                                                        series: [{
+                                                            type: "donut",
+                                                            data: [@{foreach (var item in Model.supervisor.Select(x => x.fecha.ToString("dd/MM/yy")).Distinct().ToList())
+                                                                             { <text>{
+                                                                category:('@item'),
+                                                                value:@Model.supervisor.Where(x => x.fecha.ToString("dd/MM/yy") == item).Count(), },</text>}} ]
+                                                        }],
+                                                        tooltip: {
+                                                            visible: true,
+                                                            template: " #= value # Examen(es) Supervisado(s) el #= category #"
+                                                        }
+                                                    });
+
+                                                });
+                                        </script>
+    <div class="col-xs-6 col-md-4 col-lg-3">
+        <div id="chart-supervisor">
+        </div>
+    </div>
+                                        }
+                                            @if (Model.tecnologo != null && Model.tecnologo.Count > 0)
+                                        {
+                                        <script type="text/javascript">
+                                                $(document).ready(function () {
+
+                                                    $("#chart-tecnologo").kendoChart({
+
+                                                        title: {
+                                                            text: "Grafico de Adquisiones"
+                                                        },
+                                                        theme: "Metro",
+                                                        legend: {
+                                                            position: "top"
+                                                        },
+                                                        seriesDefaults: {
+                                                            labels: {
+                                                                template: "#= value # Exam. - #= category # ",
+                                                                position: "outsideEnd",
+                                                                visible: true,
+                                                                background: "transparent"
+                                                            }
+                                                        },
+                                                        series: [{
+                                                            type: "donut",
+                                                            data: [@{foreach (var item in Model.tecnologo.Select(x => x.fecha.ToString("dd/MM/yy")).Distinct().ToList())
+                                                                             { <text>{
+                                                                category:('@item'),
+                                                                value:@Model.tecnologo.Where(x => x.fecha.ToString("dd/MM/yy") == item).Count(), },</text>}} ]
+                                                        }],
+                                                        tooltip: {
+                                                            visible: true,
+                                                            template: " #= value # Examen(es) Realizado(s) el #= category #"
+                                                        }
+                                                    });
+                                                    $("#chart-tecnologo-imagenes").kendoChart({
+
+                                                        title: {
+                                                            text: "Grafico de Imagenes Revisadas"
+                                                        },
+                                                        theme: "Metro",
+                                                        legend: {
+                                                            position: "top"
+                                                        },
+                                                        seriesDefaults: {
+                                                            labels: {
+                                                                template: "#= value # Exam. - #= category # ",
+                                                                position: "outsideEnd",
+                                                                visible: true,
+                                                                background: "transparent"
+                                                            }
+                                                        },
+                                                        series: [{
+                                                            type: "donut",
+                                                            data: [{
+                                                                category:('Revisada'),
+                                                                value:@Model.tecnologo.Where(x => x.isRevisado==true).Count() },
+                                                            {
+                                                                category:('No Revisada'),
+                                                                value:@Model.tecnologo.Where(x =>x.isRevisado==false).Count() },]
+                                                        }],
+                                                        tooltip: {
+                                                            visible: true,
+                                                            template: " #= value # Examen(es) Revisado(s) el #= category #"
+                                                        }
+                                                    });
+                                                });
+                                        </script>
+    <div class="col-xs-6 col-md-4 col-lg-3">
+        <div id="chart-tecnologo">
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-4 col-lg-3">
+        <div id="chart-tecnologo-imagenes">
+        </div>
+    </div>
+                                        }
+                                            @if (Model.postproceso != null && Model.postproceso.Count > 0)
+                                        {
+                                        <script type="text/javascript">
+                                                $(document).ready(function () {
+                                                    $("#chart-postproceso").kendoChart({
+                                                        title: {
+                                                            text: "Grafico de Adquisiones"
+                                                        },
+                                                        theme: "Metro",
+                                                        legend: {
+                                                            position: "top"
+                                                        },
+                                                        seriesDefaults: {
+                                                            labels: {
+                                                                template: "#= value # Exam. - #= category # ",
+                                                                position: "outsideEnd",
+                                                                visible: true,
+                                                                background: "transparent"
+                                                            }
+                                                        },
+                                                        series: [{
+                                                            type: "donut",
+                                                            data: [@{foreach (var item in Model.postproceso.Select(x => x.fecha.ToString("dd/MM/yy")).Distinct().ToList())
+                                                                             { <text>{
+                                                                                 category:('@item'),
+                                                                                 value:@Model.postproceso.Where(x => x.fecha.ToString("dd/MM/yy") == item).Count(), },</text>}} ]
+                                                            }],
+                                                        tooltip: {
+                                                            visible: true,
+                                                            template: " #= value # Postproceso(s) Realizado(s) el #= category #"
+                                                        }
+                                                    });
+
+                                                });
+                                        </script>
+    <div class="col-xs-6 col-md-4 col-lg-3">
+        <div id="chart-postproceso">
+        </div>
+    </div>
+                                        }
+                                            @if (Model.enfermera != null && Model.enfermera.Count > 0)
+                                        {
+                                        <script type="text/javascript">
+                                                $(document).ready(function () {
+                                                    $("#chart-enfermeria").kendoChart({
+                                                        title: {
+                                                            text: "Grafico de Cant. de Contrastes Aplicados"
+                                                        },
+                                                        theme: "Metro",
+                                                        legend: {
+                                                            position: "top"
+                                                        },
+                                                        seriesDefaults: {
+                                                            labels: {
+                                                                template: "#= value # Cont. - #= category # ",
+                                                                position: "outsideEnd",
+                                                                visible: true,
+                                                                background: "transparent"
+                                                            }
+                                                        },
+                                                        series: [{
+                                                            type: "donut",
+                                                            data: [@{foreach (var item in Model.enfermera.Select(x => x.fecha.ToString("dd/MM/yy")).Distinct().ToList())
+                                                                             { <text>{
+                                                                category:('@item'),
+                                                                value:@Model.enfermera.Where(x => x.fecha.ToString("dd/MM/yy") == item).Count(), },</text>}} ]
+                                                        }],
+                                                        tooltip: {
+                                                            visible: true,
+                                                            template: " #= value # Contraste(s) Aplicado(s) el #= category #"
+                                                        }
+
+                                                    });
+                                                    $("#chart-enfermeria-contraste").kendoChart({
+                                                        title: {
+                                                            text: "Grafico de Tipos de Contrastes Aplicados"
+                                                        },
+                                                        theme: "Metro",
+                                                        legend: {
+                                                            position: "top"
+                                                        },
+                                                        seriesDefaults: {
+                                                            labels: {
+                                                                template: "#= value # Cont. - #= category # ",
+                                                                position: "outsideEnd",
+                                                                visible: true,
+                                                                background: "transparent"
+                                                            }
+                                                        },
+                                                        series: [{
+                                                            type: "donut",
+                                                            data: [@{foreach (var item in Model.enfermera.Select(x => x.nombreinsumos).Distinct().ToList())
+                                                                             { <text>{
+                                                                category:('@item'),
+                                                                value:@Model.enfermera.Where(x => x.nombreinsumos == item).Count(), },</text>}} ]
+                                                        }],
+                                                        tooltip: {
+                                                            visible: true,
+                                                            template: " #= value # Contraste(s) Aplicado(s) el #= category #"
+                                                        }
+
+                                                    });
+
+                                                });
+                                        </script>
+    <div class="col-xs-6 col-md-4 col-lg-3">
+        <div id="chart-enfermeria">
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-4 col-lg-3">
+        <div id="chart-enfermeria-contraste">
+        </div>
+    </div>
+                                        }
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        
+                    </div>
+                    <!-- .panel-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none"></ul>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Actualizar Link de Imagenes</h4>
+            </div>
+            <div class="modal-body">
+                <script type="text/javascript">
+                    $(function(){
+                        $("#patientid").change(generarLink);
+                        $("#studies").change(generarLink);
+                    });
+                    function generarLink(){
+                        var texto= $("#patientid").val();
+                        var studi= $("#studies").val();
+                        var _paci= $("#pac_nombre").val();
+                        if(texto!=""&& studi!=""){
+                            var _url='http://xero.resocentro.com/#tab=Display&PatientName='+_paci+'&PatientID='+texto+'&studies='+studi;
+
+                            $("#link").html('<a target="_blank" href="'+_url+'">Link Impax</a>');
+                        }
+                        else
+                            $("#link").html("");
+                    }
+                </script>
+                <input type="hidden" id="num_examen" />
+                <input type="hidden" id="pac_nombre" />
+                <div class="form-group">
+                    <label>PatientID:</label>
+                    <input type="text" id="patientid" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Studies:</label>
+                    <input type="text" id="studies" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label id="link"></label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>

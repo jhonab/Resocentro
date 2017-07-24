@@ -1,0 +1,953 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.InformacionTactica.frmReporteContable"
+    xmlns:telerikControls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
+        Title="frmReporteContable"  Height="650" Width="1000"   Background="{DynamicResource Windows.Background}" WindowState="Maximized">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <telerik:RadTabControl telerikControls:StyleManager.Theme="Windows8">
+            <telerik:RadTabItem Header="SQL">
+                <Grid  Background="{DynamicResource Windows.Background}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="119"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="355"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <telerik:RadDatePicker HorizontalAlignment="Left"  SelectedDate="{x:Static sys:DateTime.Now}" x:Name="dtpInicio" Margin="71,14,0,0" VerticalAlignment="Top" Width="92" Height="22" />
+                        <Label Content="Inicio: " HorizontalAlignment="Left" Margin="7,10,0,0" VerticalAlignment="Top" Height="26" Width="44" />
+                        <telerik:RadDatePicker HorizontalAlignment="Left"  SelectedDate="{x:Static sys:DateTime.Now}" x:Name="dtpFin" Margin="71,39,0,0" VerticalAlignment="Top" Width="92" Height="22" />
+                        <Label Content="Fin: " HorizontalAlignment="Left" Margin="7,35,0,0" VerticalAlignment="Top" Height="26" Width="31" />
+                        <Button Content="Obtener" x:Name="btnBuscar" HorizontalAlignment="Left" Margin="257,6,0,0" VerticalAlignment="Top" Width="89" Click="btnBuscar_Click" Height="24"/>
+                        <Button Content="Detalle" x:Name="btnDetalle" HorizontalAlignment="Left" Margin="257,64,0,0" VerticalAlignment="Top" Width="90" Click="btnDetaller_Click" Height="24"/>
+                        <Button Content="Exportar" x:Name="btnExport" HorizontalAlignment="Left" Margin="257,93,0,0" VerticalAlignment="Top" Width="89" Height="24" Click="btnExport_Click"/>
+                        <Button Content="Errores" x:Name="btnError" HorizontalAlignment="Left" Margin="257,35,0,0" VerticalAlignment="Top" Width="90"  Height="24" Click="btnError_Click"/>
+                        <Label Content="Empresa: " HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top" Height="26" Width="61" />
+                        <ComboBox x:Name="cboEmpresa" HorizontalAlignment="Left" Margin="71,66,0,0" VerticalAlignment="Top" Width="175" Height="22"/>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="50"/>
+                            </Grid.RowDefinitions>
+                            <GroupBox Header="Errores" Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True" Grid.Row="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="" x:Name="lblerrorfactu"/>
+                                    <Label Content="" x:Name="lblerrordeta"/>
+                                    <Label Content="" x:Name="lblerrorpend"/>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="Resumen" Foreground="White" >
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel>
+                                        <Label Content="" Padding="0" x:Name="lbltotcabs"/>
+                                        <Label Content="" Padding="0" x:Name="lbltotdets"/>
+                                    </StackPanel>
+                                    <Label/>
+                                    <StackPanel>
+                                        <Label Content="" Padding="0" x:Name="lblcabigv"/>
+                                        <Label Content="" Padding="0" x:Name="lbldetigv"/>
+                                    </StackPanel>
+                                    <Label/>
+                                    <StackPanel>
+                                        <Label Content="" Padding="0" x:Name="lblcabtot"/>
+                                        <Label Content="" Padding="0" x:Name="lbldettot"/>
+                                    </StackPanel>
+                                </StackPanel>
+
+
+                            </GroupBox>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="1" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="708*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="281*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="5"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="23"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                            
+                            <Label Content="Documentos"/>
+                                <telerik:RadGridView  Name="grid_Factura" IsReadOnly="True" ShowColumnFooters="True" ShowSearchPanel="True" RowIndicatorVisibility="Collapsed" AutoGenerateColumns="False"  RowActivated="grid_Factura_RowActivated" Grid.Row="1"  GroupRenderMode="Flat" IsSynchronizedWithCurrentItem="True" >
+                                <telerik:RadGridView.GroupDescriptors>
+                                    <telerik:GroupDescriptor Member="isSendSUNAT" DisplayContent="Enviado"
+                             SortDirection="Ascending" />
+                                    <telerik:GroupDescriptor Member="TIDORGV" DisplayContent="Tip. Doc."
+                             SortDirection="Ascending" />
+                                </telerik:RadGridView.GroupDescriptors>
+                                <telerik:RadGridView.Columns>
+                                    <telerik:GridViewCheckBoxColumn DataMemberBinding="{Binding isSendSUNAT}">
+                                        <telerik:GridViewCheckBoxColumn.Header>
+                                            <Path Data="M8.9999967,19.000015L10.999997,19.000015 10.999997,28.218237 13.577991,25.640989 14.991992,27.054981 10.041989,32.003952 5.0919858,27.054981 6.5059868,25.640989 8.9999967,28.134277z M17.040998,12.585978L21.990989,17.534948 20.576992,18.94894 17.999996,16.372683 17.999996,26.000015 15.999997,26.000015 15.999997,16.454958 13.506004,18.94894 12.092006,17.534948z M2.0000001,0L5.4900204,0C6.1470028,0,6.761993,0.32189941,7.1360164,0.8629148L8.6119991,3 26,3C27.102996,3,28,3.8969727,28,5L28,20C28,21.102905,27.102996,22,26,22L21,22 21,20 26,20 26,9.999959 9.724011,9.999959 9.3430115,10.831959C9.0190111,11.541959,8.3050114,11.999959,7.5250116,11.999959L2.0000115,11.999959 2.0000115,9.999959 7.5250116,9.999959 7.9060112,9.1679592C8.2300115,8.4579592,8.9440113,7.999959,9.724011,7.999959L26,7.999959 26,5 8.6119991,5C7.9550167,5,7.3399959,4.6779785,6.966003,4.1369629L5.4900204,2 2.0000001,2 2.0000001,20 5.9689937,20 5.9689937,22 2.0000001,22C0.89700278,22,-3.9863843E-07,21.102905,1.4210855E-13,20L1.4210855E-13,2C-3.9863843E-07,0.89697266,0.89700278,0,2.0000001,0z" Stretch="Uniform" Fill="#FFFFFFFF" Margin="0" RenderTransformOrigin="0.5,0.5" Height="20" Width="20"/>
+                                        </telerik:GridViewCheckBoxColumn.Header>
+                                    </telerik:GridViewCheckBoxColumn>
+                                    <telerik:GridViewDataColumn Header="N° ATEN"  DataMemberBinding="{Binding N_EXAMEN}" />
+                                    <telerik:GridViewDataColumn Header="CODEAUX" DataMemberBinding="{Binding CODEAUX}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:CountFunction Caption="Cant fac :" />
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="FECHA" DataMemberBinding="{Binding FECRGV}" />
+                                    <telerik:GridViewDataColumn  Header="TIP DOC" DataMemberBinding="{Binding TIDORGV}" />
+                                    <telerik:GridViewDataColumn  Header="NTIP DOC" DataMemberBinding="{Binding TDORGV}" />
+                                    <telerik:GridViewDataColumn  Header="N° DOC" DataMemberBinding="{Binding NDORGV}" />
+                                    <telerik:GridViewDataColumn  Header="MONEDA" DataMemberBinding="{Binding MONRGV}" />
+                                    <telerik:GridViewDataColumn  Header="RUC" DataMemberBinding="{Binding RUCCLI}" />
+                                    <telerik:GridViewDataColumn  Header="RAZ SOC" DataMemberBinding="{Binding RAZCLI}" />
+                                    <telerik:GridViewDataColumn  Header="MEDICO" DataMemberBinding="{Binding Medico}" />
+                                    <telerik:GridViewDataColumn  Header="PROMOTOR" DataMemberBinding="{Binding Promotor}" />
+                                    <telerik:GridViewDataColumn  Header="ESTADO" DataMemberBinding="{Binding CDCRGV}" />
+                                    <telerik:GridViewDataColumn  Header="CONCEPTO" DataMemberBinding="{Binding TERRGV}" />
+                                    <telerik:GridViewDataColumn  Header="COB" DataMemberBinding="{Binding PDSRGV}" />
+                                    <telerik:GridViewDataColumn  Header="VV SOL" DataMemberBinding="{Binding VVTRGVS}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="VVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="IGV SOL" DataMemberBinding="{Binding IGVRGVS}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="IGVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="TOT SOL" DataMemberBinding="{Binding TOTRGVS}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="TOT : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="TIP CAM" DataMemberBinding="{Binding TCARGV}" />
+                                    <telerik:GridViewDataColumn  Header="VV DOL" DataMemberBinding="{Binding VVTRGVD}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="VVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="IGV DOL" DataMemberBinding="{Binding IGVRGVD}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="IGVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="TOT DOL" DataMemberBinding="{Binding TOTRGVD}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="TOT : $." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="PACIENTE" DataMemberBinding="{Binding PACEST}" />
+                                    <telerik:GridViewDataColumn  Header="PROTOCOLO" DataMemberBinding="{Binding isProtocolo}" />
+                                    <telerik:GridViewDataColumn  Header="UNI" DataMemberBinding="{Binding CODUNI}" />
+                                    <telerik:GridViewDataColumn  Header="SUC" DataMemberBinding="{Binding CODSUC}" />
+                                    <telerik:GridViewDataColumn  Header="DIRECCION" DataMemberBinding="{Binding DIRCLI}" />
+                                    <telerik:GridViewDataColumn  Header="TELEFONO" DataMemberBinding="{Binding TELCLI}" />
+                                    <telerik:GridViewDataColumn  Header="PFLAG" DataMemberBinding="{Binding PFLAG}" />
+                                    <telerik:GridViewDataColumn  Header="SERIE" DataMemberBinding="{Binding SERIE}" />
+                                    <telerik:GridViewDataColumn  Header="CORRELATIVO" DataMemberBinding="{Binding CORRELATIVO}" />
+                                    <telerik:GridViewDataColumn  Header="FEC DOC" DataMemberBinding="{Binding DOC_FECHAEMITIO}" />
+                                    <telerik:GridViewDataColumn  Header="N° DOC" DataMemberBinding="{Binding DOC_NUMERODOC}" />
+                                    <telerik:GridViewDataColumn  Header="TIP DOC" DataMemberBinding="{Binding DOC_TIPO}" />
+                                    <telerik:GridViewDataColumn  Header="SERIE DOC" DataMemberBinding="{Binding DOC_SERIE}" />
+                                    <telerik:GridViewDataColumn  Header="CORRE DOC" DataMemberBinding="{Binding DOC_NUMERO}" />
+                                    <telerik:GridViewHyperlinkColumn  Header="PDF" IsFilterable="False" Width="30" DataMemberBinding="{Binding pdf}" />
+                                    <telerik:GridViewHyperlinkColumn  Header="ZIP" IsFilterable="False" Width="30" DataMemberBinding="{Binding zip}" />
+                                    <telerik:GridViewHyperlinkColumn  Header="RES" IsFilterable="False" Width="30" DataMemberBinding="{Binding result}" />
+                                </telerik:RadGridView.Columns>
+                                <telerik:RadContextMenu.ContextMenu>
+                                    <telerik:RadContextMenu >
+                                        <telerik:RadMenuItem Header="Ver Información" Click="Info_FAC_Click" />
+                                        <telerik:RadMenuItem Header="Exportar Excel" Click="MenuItemExportar1_Click"/>
+                                    </telerik:RadContextMenu>
+                                </telerik:RadContextMenu.ContextMenu>
+                            </telerik:RadGridView>
+                            </Grid>
+                            <GridSplitter Height="5" HorizontalAlignment="Stretch" Grid.Row="1" />
+                            <Grid Grid.Row="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="23"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Label Content="Detalle Documento" Name="lbldetalle_doc" Grid.Row="0"/>
+                                <telerik:RadGridView Grid.Row="4" x:Name="grid_Detalle" IsReadOnly="True" ShowSearchPanel="True" ShowColumnFooters="True" RowIndicatorVisibility="Collapsed" AutoGenerateColumns="False" >
+                                    <telerik:RadGridView.Columns>
+                                        <telerik:GridViewDataColumn Header="N° ATEN" DataMemberBinding="{Binding N_EXAMEN}" />
+                                        <telerik:GridViewDataColumn Header="CODEAUX" DataMemberBinding="{Binding CODEAUX}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:CountFunction Caption="Cant :" />
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="FECHA" DataMemberBinding="{Binding FECRGV}" />
+                                        <telerik:GridViewDataColumn  Header="TIP DOC" DataMemberBinding="{Binding TIDORGV}" />
+                                        <telerik:GridViewDataColumn  Header="NTIP DOC" DataMemberBinding="{Binding TDORGV}" />
+                                        <telerik:GridViewDataColumn  Header="N° DOC" DataMemberBinding="{Binding NDORGV}" />
+                                        <telerik:GridViewDataColumn  Header="MONEDA" DataMemberBinding="{Binding MONRGV}" />
+                                        <telerik:GridViewDataColumn  Header="RUC" DataMemberBinding="{Binding RUCCLI}" />
+                                        <telerik:GridViewDataColumn  Header="RAZ SOC" DataMemberBinding="{Binding RAZCLI}" />
+                                        <telerik:GridViewDataColumn  Header="ESTADO" DataMemberBinding="{Binding CDCRGV}" />
+                                        <telerik:GridViewDataColumn  Header="CONCEPTO" DataMemberBinding="{Binding TERRGV}" />
+                                        <telerik:GridViewDataColumn  Header="COB" DataMemberBinding="{Binding PDSRGV}" />
+                                        <telerik:GridViewDataColumn  Header="TIPO IGV " DataMemberBinding="{Binding tipoIGV}" />
+                                        <telerik:GridViewDataColumn  Header="VV SOL" DataMemberBinding="{Binding VVTRGVS}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="VVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="IGV SOL" DataMemberBinding="{Binding IGVRGVS}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="IGVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="TOT SOL" DataMemberBinding="{Binding TOTRGVS}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="TOT : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="TIP CAM" DataMemberBinding="{Binding TCARGV}" />
+                                        <telerik:GridViewDataColumn  Header="VV DOL" DataMemberBinding="{Binding VVTRGVD}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="VVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="IGV DOL" DataMemberBinding="{Binding IGVRGVD}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="IGVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="TOT DOL" DataMemberBinding="{Binding TOTRGVD}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="TOT : $." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="COD EST" DataMemberBinding="{Binding CODEST}" />
+                                        <telerik:GridViewDataColumn  Header="COD EST1" DataMemberBinding="{Binding CODEST1}" />
+                                        <telerik:GridViewDataColumn  Header="ESTUDIO" DataMemberBinding="{Binding ESTUDIO}" />
+                                        <telerik:GridViewDataColumn  Header="CONCEPTO" DataMemberBinding="{Binding DESEST}" />
+                                        <telerik:GridViewDataColumn  Header="CLASE" DataMemberBinding="{Binding CLAEST}" />
+                                        <telerik:GridViewDataColumn  Header="CLASE1" DataMemberBinding="{Binding CLAEST1}" />
+                                        <telerik:GridViewDataColumn  Header="PACIENTE" DataMemberBinding="{Binding PACEST}" />
+                                        <telerik:GridViewDataColumn  Header="PROTOCOLO" DataMemberBinding="{Binding isProtocolo}" />
+                                        <telerik:GridViewDataColumn  Header="UNI" DataMemberBinding="{Binding CODUNI}" />
+                                        <telerik:GridViewDataColumn  Header="SUC" DataMemberBinding="{Binding CODSUC}" />
+                                        <telerik:GridViewDataColumn  Header="DIRECCION" DataMemberBinding="{Binding DIRCLI}" />
+                                        <telerik:GridViewDataColumn  Header="TELEFONO" DataMemberBinding="{Binding TELCLI}" />
+                                        <telerik:GridViewDataColumn  Header="COD MOD" DataMemberBinding="{Binding IDMODALIDAD}" />
+                                        <telerik:GridViewDataColumn  Header="MODALIDAD" DataMemberBinding="{Binding MODALIDAD}" />
+                                        <telerik:GridViewDataColumn  Header="COD CLASE" DataMemberBinding="{Binding IDCLASE}" />
+                                        <telerik:GridViewDataColumn  Header="CLASE " DataMemberBinding="{Binding NOMBRECLASE}" />
+                                        <telerik:GridViewDataColumn  Header="MEDICO" DataMemberBinding="{Binding Medico}" />
+                                        <telerik:GridViewDataColumn  Header="PROMOTOR" DataMemberBinding="{Binding Promotor}" />
+                                    </telerik:RadGridView.Columns>
+                                    <telerik:RadContextMenu.ContextMenu>
+                                        <telerik:RadContextMenu>
+                                            <telerik:RadMenuItem Header="Exportar Excel" Click="MenuItemExportar2_Click"/>
+                                        </telerik:RadContextMenu>
+                                    </telerik:RadContextMenu.ContextMenu>
+                                </telerik:RadGridView>
+                            </Grid>
+
+                        </Grid>
+                        <GridSplitter HorizontalAlignment="Stretch" Grid.Column="1"  />
+                        <Grid Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="5"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="23"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                            <Label Content="Correlatividad Documentos"/>
+                            <telerik:RadGridView  Name="grid_correlatividad" IsReadOnly="True" ShowColumnFooters="True" ShowSearchPanel="True" RowIndicatorVisibility="Collapsed" AutoGenerateColumns="False"   Grid.Row="1">
+                                <telerik:RadGridView.GroupDescriptors>
+                                    <telerik:GroupDescriptor Member="tipodocumentoSUNAT" DisplayContent="Tip. Doc."
+                             SortDirection="Ascending" />
+                                </telerik:RadGridView.GroupDescriptors>
+                                <telerik:RadGridView.Columns>
+                                    <telerik:GridViewDataColumn Header="Tipo Doc." DataMemberBinding="{Binding tipodocumentoSUNAT}"/>
+                                    <telerik:GridViewDataColumn Header="Serie" DataMemberBinding="{Binding serie}"/>
+                                    <telerik:GridViewDataColumn Header="Ini. Corr." DataMemberBinding="{Binding inicioRango}"/>
+                                    <telerik:GridViewDataColumn Header="Fin Corr." DataMemberBinding="{Binding finRango}"/>
+                                    <telerik:GridViewDataColumn Header="Cant." DataMemberBinding="{Binding cantidad}"/>
+                                </telerik:RadGridView.Columns>
+                                <!--<telerik:RadGridView.Columns>
+                                    <telerik:GridViewDataColumn Header="N° ATEN" DataMemberBinding="{Binding N_EXAMEN}" />
+                                    <telerik:GridViewDataColumn Header="CODEAUX" DataMemberBinding="{Binding CODEAUX}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:CountFunction Caption="Cant :" />
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="FECHA" DataMemberBinding="{Binding FECRGV}" />
+                                    <telerik:GridViewDataColumn  Header="TIP DOC" DataMemberBinding="{Binding TIDORGV}" />
+                                    <telerik:GridViewDataColumn  Header="NTIP DOC" DataMemberBinding="{Binding TDORGV}" />
+                                    <telerik:GridViewDataColumn  Header="N° DOC" DataMemberBinding="{Binding NDORGV}" />
+                                    <telerik:GridViewDataColumn  Header="MONEDA" DataMemberBinding="{Binding MONRGV}" />
+                                    <telerik:GridViewDataColumn  Header="RUC" DataMemberBinding="{Binding RUCCLI}" />
+                                    <telerik:GridViewDataColumn  Header="RAZ SOC" DataMemberBinding="{Binding RAZCLI}" />
+                                    <telerik:GridViewDataColumn  Header="MEDICO" DataMemberBinding="{Binding Medico}" />
+                                    <telerik:GridViewDataColumn  Header="PROMOTOR" DataMemberBinding="{Binding Promotor}" />
+                                    <telerik:GridViewDataColumn  Header="ESTADO" DataMemberBinding="{Binding CDCRGV}" />
+                                    <telerik:GridViewDataColumn  Header="CONCEPTO" DataMemberBinding="{Binding TERRGV}" />
+                                    <telerik:GridViewDataColumn  Header="COB" DataMemberBinding="{Binding PDSRGV}" />
+                                    <telerik:GridViewDataColumn  Header="VV SOL" DataMemberBinding="{Binding VVTRGVS}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="VVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="IGV SOL" DataMemberBinding="{Binding IGVRGVS}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="IGVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="TOT SOL" DataMemberBinding="{Binding TOTRGVS}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="TOT : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="TIP CAM" DataMemberBinding="{Binding TCARGV}" />
+                                    <telerik:GridViewDataColumn  Header="VV DOL" DataMemberBinding="{Binding VVTRGVD}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="VVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="IGV DOL" DataMemberBinding="{Binding IGVRGVD}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="IGVD : $." ResultFormatString="{}{0:0,0.00}" />
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="TOT DOL" DataMemberBinding="{Binding TOTRGVD}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="TOT : $." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="PACIENTE" DataMemberBinding="{Binding PACEST}" />
+                                    <telerik:GridViewDataColumn  Header="PROTOCOLO" DataMemberBinding="{Binding isProtocolo}" />
+                                    <telerik:GridViewDataColumn  Header="UNI" DataMemberBinding="{Binding CODUNI}" />
+                                    <telerik:GridViewDataColumn  Header="SUC" DataMemberBinding="{Binding CODSUC}" />
+                                    <telerik:GridViewDataColumn  Header="DIRECCION" DataMemberBinding="{Binding DIRCLI}" />
+                                    <telerik:GridViewDataColumn  Header="TELEFONO" DataMemberBinding="{Binding TELCLI}" />
+                                    <telerik:GridViewDataColumn  Header="PFLAG" DataMemberBinding="{Binding PFLAG}" />
+                                    <telerik:GridViewDataColumn  Header="SERIE" DataMemberBinding="{Binding SERIE}" />
+                                    <telerik:GridViewDataColumn  Header="CORRELATIVO" DataMemberBinding="{Binding CORRELATIVO}" />
+                                    <telerik:GridViewDataColumn  Header="FEC DOC" DataMemberBinding="{Binding DOC_FECHAEMITIO}" />
+                                    <telerik:GridViewDataColumn  Header="N° DOC" DataMemberBinding="{Binding DOC_NUMERODOC}" />
+                                    <telerik:GridViewDataColumn  Header="TIP DOC" DataMemberBinding="{Binding DOC_TIPO}" />
+                                    <telerik:GridViewDataColumn  Header="SERIE DOC" DataMemberBinding="{Binding DOC_SERIE}" />
+                                    <telerik:GridViewDataColumn  Header="CORRE DOC" DataMemberBinding="{Binding DOC_NUMERO}" />
+                                </telerik:RadGridView.Columns>-->
+                                <telerik:RadContextMenu.ContextMenu>
+                                    <telerik:RadContextMenu >
+                                        <telerik:RadMenuItem Header="Exportar Excel" Click="MenuItemExportar3_Click"/>
+                                    </telerik:RadContextMenu>
+                                </telerik:RadContextMenu.ContextMenu>
+                            </telerik:RadGridView>
+                            </Grid>
+                            <GridSplitter Height="5" HorizontalAlignment="Stretch" Grid.Row="1" />
+                            <Grid Grid.Row="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="23"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Label Content="Documentos Inafectos " Grid.Row="0"/>
+                                <telerik:RadGridView Grid.Row="4" x:Name="grid_Inafectas" IsReadOnly="True" ShowSearchPanel="True" ShowColumnFooters="True" RowIndicatorVisibility="Collapsed" AutoGenerateColumns="False"  RowActivated="grid_Inafecta_RowActivated">
+                                    <telerik:RadGridView.Columns>
+                                        <telerik:GridViewDataColumn Header="N° ATEN" DataMemberBinding="{Binding N_EXAMEN}" />
+                                        <telerik:GridViewDataColumn Header="CODEAUX" DataMemberBinding="{Binding CODEAUX}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:CountFunction Caption="Cant :" />
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="FECHA" DataMemberBinding="{Binding FECRGV}" />
+                                        <telerik:GridViewDataColumn  Header="TIP DOC" DataMemberBinding="{Binding TIDORGV}" />
+                                        <telerik:GridViewDataColumn  Header="NTIP DOC" DataMemberBinding="{Binding TDORGV}" />
+                                        <telerik:GridViewDataColumn  Header="N° DOC" DataMemberBinding="{Binding NDORGV}" />
+                                        <telerik:GridViewDataColumn  Header="MONEDA" DataMemberBinding="{Binding MONRGV}" />
+                                        <telerik:GridViewDataColumn  Header="RUC" DataMemberBinding="{Binding RUCCLI}" />
+                                        <telerik:GridViewDataColumn  Header="RAZ SOC" DataMemberBinding="{Binding RAZCLI}" />
+                                        <telerik:GridViewDataColumn  Header="MEDICO" DataMemberBinding="{Binding Medico}" />
+                                        <telerik:GridViewDataColumn  Header="PROMOTOR" DataMemberBinding="{Binding Promotor}" />
+                                        <telerik:GridViewDataColumn  Header="ESTADO" DataMemberBinding="{Binding CDCRGV}" />
+                                        <telerik:GridViewDataColumn  Header="CONCEPTO" DataMemberBinding="{Binding TERRGV}" />
+                                        <telerik:GridViewDataColumn  Header="COB" DataMemberBinding="{Binding PDSRGV}" />
+                                        <telerik:GridViewDataColumn  Header="VV SOL" DataMemberBinding="{Binding VVTRGVS}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="VVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="IGV SOL" DataMemberBinding="{Binding IGVRGVS}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="IGVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="TOT SOL" DataMemberBinding="{Binding TOTRGVS}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="TOT : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="TIP CAM" DataMemberBinding="{Binding TCARGV}" />
+                                        <telerik:GridViewDataColumn  Header="VV DOL" DataMemberBinding="{Binding VVTRGVD}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="VVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="IGV DOL" DataMemberBinding="{Binding IGVRGVD}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="IGVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="TOT DOL" DataMemberBinding="{Binding TOTRGVD}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="TOT : $." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="PACIENTE" DataMemberBinding="{Binding PACEST}" />
+                                        <telerik:GridViewDataColumn  Header="PROTOCOLO" DataMemberBinding="{Binding isProtocolo}" />
+                                        <telerik:GridViewDataColumn  Header="UNI" DataMemberBinding="{Binding CODUNI}" />
+                                        <telerik:GridViewDataColumn  Header="SUC" DataMemberBinding="{Binding CODSUC}" />
+                                        <telerik:GridViewDataColumn  Header="DIRECCION" DataMemberBinding="{Binding DIRCLI}" />
+                                        <telerik:GridViewDataColumn  Header="TELEFONO" DataMemberBinding="{Binding TELCLI}" />
+                                        <telerik:GridViewDataColumn  Header="PFLAG" DataMemberBinding="{Binding PFLAG}" />
+                                        <telerik:GridViewDataColumn  Header="SERIE" DataMemberBinding="{Binding SERIE}" />
+                                        <telerik:GridViewDataColumn  Header="CORRELATIVO" DataMemberBinding="{Binding CORRELATIVO}" />
+                                        <telerik:GridViewDataColumn  Header="FEC DOC" DataMemberBinding="{Binding DOC_FECHAEMITIO}" />
+                                        <telerik:GridViewDataColumn  Header="N° DOC" DataMemberBinding="{Binding DOC_NUMERODOC}" />
+                                        <telerik:GridViewDataColumn  Header="TIP DOC" DataMemberBinding="{Binding DOC_TIPO}" />
+                                        <telerik:GridViewDataColumn  Header="SERIE DOC" DataMemberBinding="{Binding DOC_SERIE}" />
+                                        <telerik:GridViewDataColumn  Header="CORRE DOC" DataMemberBinding="{Binding DOC_NUMERO}" />
+                                    </telerik:RadGridView.Columns>
+                                    <telerik:RadContextMenu.ContextMenu>
+                                        <telerik:RadContextMenu >
+                                            <telerik:RadMenuItem Header="Exportar Excel" Click="MenuItemExportar4_Click"/>
+                                        </telerik:RadContextMenu>
+                                    </telerik:RadContextMenu.ContextMenu>
+                                </telerik:RadGridView>
+                            </Grid>
+
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="ORACLE">
+                <Grid  Background="{DynamicResource Windows.Background}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="119"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="50"/>
+                            </Grid.RowDefinitions>
+                            <GroupBox Header="Errores" Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True" Grid.Row="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="" x:Name="lblerrorfactuoracle"/>
+                                    <Label Content="" x:Name="lblerrordetaoracle"/>
+                                    <Label Content="" x:Name="lblerrorpendoracle"/>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="Resumen" Foreground="White" >
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel>
+                                        <Label Content="" Padding="0" x:Name="lbltotcabsoracle"/>
+                                        <Label Content="" Padding="0" x:Name="lbltotdetsoracle"/>
+                                    </StackPanel>
+                                    <Label/>
+                                    <StackPanel>
+                                        <Label Content="" Padding="0" x:Name="lblcabigvoracle"/>
+                                        <Label Content="" Padding="0" x:Name="lbldetigvoracle"/>
+                                    </StackPanel>
+                                    <Label/>
+                                    <StackPanel>
+                                        <Label Content="" Padding="0" x:Name="lblcabtotoracle"/>
+                                        <Label Content="" Padding="0" x:Name="lbldettotoracle"/>
+                                    </StackPanel>
+                                </StackPanel>
+
+
+                            </GroupBox>
+                        </Grid>
+                        <Grid Grid.Row="1" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="708*"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="281*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="5"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="23"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Content="Documentos"/>
+                                    <telerik:RadGridView Name="grid_OraCabecera" Grid.Row="1" IsReadOnly="True" ShowColumnFooters="True" ShowSearchPanel="True" RowIndicatorVisibility="Collapsed" AutoGenerateColumns="False" RowActivated="grid_OraCabecera_RowActivated" >
+                                        <telerik:RadGridView.Columns>
+                                            <telerik:GridViewDataColumn Header="N° DOC."  DataMemberBinding="{Binding num_doc}" >
+                                                <telerik:GridViewDataColumn.AggregateFunctions>
+                                                    <telerik:CountFunction Caption="Cant fac :" />
+                                                </telerik:GridViewDataColumn.AggregateFunctions>
+                                            </telerik:GridViewDataColumn>
+                                            <telerik:GridViewDataColumn Header="FECHA" DataMemberBinding="{Binding fecha}" />
+                                            <telerik:GridViewDataColumn  Header="ESTADO" DataMemberBinding="{Binding estado_string}" />
+                                            <telerik:GridViewDataColumn  Header="MONEDA" DataMemberBinding="{Binding moneda_string}" />
+                                            <telerik:GridViewDataColumn  Header="RAZ SOC" DataMemberBinding="{Binding razonsocial}" />
+                                            <telerik:GridViewDataColumn  Header="RUC" DataMemberBinding="{Binding ruc}" />
+                                            <telerik:GridViewDataColumn  Header="VV SOL" DataMemberBinding="{Binding subtotal}" >
+                                                <telerik:GridViewDataColumn.AggregateFunctions>
+                                                    <telerik:SumFunction Caption="VVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                                </telerik:GridViewDataColumn.AggregateFunctions>
+                                            </telerik:GridViewDataColumn>
+                                            <telerik:GridViewDataColumn  Header="IGV SOL" DataMemberBinding="{Binding igv}" >
+                                                <telerik:GridViewDataColumn.AggregateFunctions>
+                                                    <telerik:SumFunction Caption="IGVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                                </telerik:GridViewDataColumn.AggregateFunctions>
+                                            </telerik:GridViewDataColumn>
+                                            <telerik:GridViewDataColumn  Header="TOT SOL" DataMemberBinding="{Binding total}" >
+                                                <telerik:GridViewDataColumn.AggregateFunctions>
+                                                    <telerik:SumFunction Caption="TOT : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                                </telerik:GridViewDataColumn.AggregateFunctions>
+                                            </telerik:GridViewDataColumn>
+                                            <telerik:GridViewDataColumn  Header="TIP CAM" DataMemberBinding="{Binding tipo_cambio}" />
+                                            <telerik:GridViewDataColumn  Header="VV DOL" DataMemberBinding="{Binding subtotal}" >
+                                                <telerik:GridViewDataColumn.AggregateFunctions>
+                                                    <telerik:SumFunction Caption="VVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                                </telerik:GridViewDataColumn.AggregateFunctions>
+                                            </telerik:GridViewDataColumn>
+                                            <telerik:GridViewDataColumn  Header="IGV DOL" DataMemberBinding="{Binding igv_dolares}" >
+                                                <telerik:GridViewDataColumn.AggregateFunctions>
+                                                    <telerik:SumFunction Caption="IGVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                                </telerik:GridViewDataColumn.AggregateFunctions>
+                                            </telerik:GridViewDataColumn>
+                                            <telerik:GridViewDataColumn  Header="TOT DOL" DataMemberBinding="{Binding total_dolares}" >
+                                                <telerik:GridViewDataColumn.AggregateFunctions>
+                                                    <telerik:SumFunction Caption="TOT : $." ResultFormatString="{}{0:0,0.00}"/>
+                                                </telerik:GridViewDataColumn.AggregateFunctions>
+                                            </telerik:GridViewDataColumn>
+                                            <telerik:GridViewDataColumn  Header="UNI" DataMemberBinding="{Binding empresa}" />
+                                        </telerik:RadGridView.Columns>
+                                        <telerik:RadContextMenu.ContextMenu>
+                                            <telerik:RadContextMenu >
+                                                <telerik:RadMenuItem Header="Exportar Excel" Click="MenuItemExportarCabeceraOra_Click"/>
+                                            </telerik:RadContextMenu>
+                                        </telerik:RadContextMenu.ContextMenu>
+                                    </telerik:RadGridView>
+                                </Grid>
+
+                                <GridSplitter Height="5" HorizontalAlignment="Stretch" Grid.Row="1" />
+                                <Grid Grid.Row="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="23"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Name="lbldetalleoracle_doc" Grid.Row="0"/>
+
+                                    <telerik:RadGridView x:Name="grid_OraDetalle" Grid.Row="1" IsReadOnly="True" ShowColumnFooters="True" ShowSearchPanel="True" RowIndicatorVisibility="Collapsed" AutoGenerateColumns="False" >
+                                        <telerik:RadGridView.Columns>
+                                            <telerik:GridViewDataColumn Header="N° DOC."  DataMemberBinding="{Binding num_doc}" >
+                                                <telerik:GridViewDataColumn.AggregateFunctions>
+                                                    <telerik:CountFunction Caption="Cant fac :" />
+                                                </telerik:GridViewDataColumn.AggregateFunctions>
+                                            </telerik:GridViewDataColumn>
+                                            <telerik:GridViewDataColumn Header="CONCEPTO" DataMemberBinding="{Binding descripcion}" />
+                                            <telerik:GridViewDataColumn  Header="VV_SOL" DataMemberBinding="{Binding precio}" />
+
+                                            <telerik:GridViewDataColumn  Header="VV_DOL" DataMemberBinding="{Binding precio_dol}" />
+                                            <telerik:GridViewDataColumn  Header="REG. VENTAS" DataMemberBinding="{Binding registro_ventas}" />
+                                        </telerik:RadGridView.Columns>
+                                        <telerik:RadContextMenu.ContextMenu>
+                                            <telerik:RadContextMenu >
+                                                <telerik:RadMenuItem Header="Exportar Excel" Click="MenuItemExportarDetalleaOra_Click"/>
+                                            </telerik:RadContextMenu>
+                                        </telerik:RadContextMenu.ContextMenu>
+                                    </telerik:RadGridView>
+                                </Grid>
+                                
+                               
+                            </Grid>
+                            <GridSplitter HorizontalAlignment="Stretch" Grid.Column="1"  />
+                            <Grid Grid.Column="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="5"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="23"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                <Label Content="Correlatividad Documentos"/>
+                                <telerik:RadGridView Name="grid_correlatividadoracle" Grid.Row="1" 
+                                IsReadOnly="True" ShowColumnFooters="True" ShowSearchPanel="True" RowIndicatorVisibility="Collapsed" AutoGenerateColumns="False">
+                                    <telerik:RadGridView.GroupDescriptors>
+                                        <telerik:GroupDescriptor Member="tipodocumentoSUNAT" DisplayContent="Tip. Doc."
+                             SortDirection="Ascending" />
+                                    </telerik:RadGridView.GroupDescriptors>
+                                    <telerik:RadGridView.Columns>
+                                        <telerik:GridViewDataColumn Header="Tipo Doc." DataMemberBinding="{Binding tipodocumentoSUNAT}"/>
+                                        <telerik:GridViewDataColumn Header="Serie" DataMemberBinding="{Binding serie}"/>
+                                        <telerik:GridViewDataColumn Header="Ini. Corr." DataMemberBinding="{Binding inicioRango}"/>
+                                        <telerik:GridViewDataColumn Header="Fin Corr." DataMemberBinding="{Binding finRango}"/>
+                                        <telerik:GridViewDataColumn Header="Cant." DataMemberBinding="{Binding cantidad}"/>
+                                    </telerik:RadGridView.Columns>
+                                    <telerik:RadContextMenu.ContextMenu>
+                                        <telerik:RadContextMenu >
+                                            <telerik:RadMenuItem Header="Exportar Excel" Click="MenuItemExportar3_Click"/>
+                                        </telerik:RadContextMenu>
+                                    </telerik:RadContextMenu.ContextMenu>
+                                </telerik:RadGridView>
+                                </Grid>
+                                <GridSplitter Height="5" HorizontalAlignment="Stretch" Grid.Row="1" />
+
+                                <Grid Grid.Row="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="23"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Content="Documento con Detalle no Concuerdan " Grid.Row="0"/>
+                                <telerik:RadGridView Name="grid_NoConcuerdaOracle" Grid.Row="4" IsReadOnly="True" ShowColumnFooters="True" ShowSearchPanel="True" RowIndicatorVisibility="Collapsed" AutoGenerateColumns="False" RowActivated="grid_OraCabecera_RowActivated" >
+                                    <telerik:RadGridView.Columns>
+                                        <telerik:GridViewDataColumn Header="N° DOC."  DataMemberBinding="{Binding num_doc}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:CountFunction Caption="Cant fac :" />
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn Header="FECHA" DataMemberBinding="{Binding fecha}" />
+                                        <telerik:GridViewDataColumn  Header="ESTADO" DataMemberBinding="{Binding estado_string}" />
+                                        <telerik:GridViewDataColumn  Header="MONEDA" DataMemberBinding="{Binding moneda_string}" />
+                                        <telerik:GridViewDataColumn  Header="RAZ SOC" DataMemberBinding="{Binding razonsocial}" />
+                                        <telerik:GridViewDataColumn  Header="RUC" DataMemberBinding="{Binding ruc}" />
+                                        <telerik:GridViewDataColumn  Header="VV SOL" DataMemberBinding="{Binding subtotal}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="VVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="IGV SOL" DataMemberBinding="{Binding igv}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="IGVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="TOT SOL" DataMemberBinding="{Binding total}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="TOT : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="TIP CAM" DataMemberBinding="{Binding tipo_cambio}" />
+                                        <telerik:GridViewDataColumn  Header="VV DOL" DataMemberBinding="{Binding subtotal}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="VVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="IGV DOL" DataMemberBinding="{Binding igv_dolares}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="IGVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="TOT DOL" DataMemberBinding="{Binding total_dolares}" >
+                                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                                <telerik:SumFunction Caption="TOT : $." ResultFormatString="{}{0:0,0.00}"/>
+                                            </telerik:GridViewDataColumn.AggregateFunctions>
+                                        </telerik:GridViewDataColumn>
+                                        <telerik:GridViewDataColumn  Header="UNI" DataMemberBinding="{Binding empresa}" />
+                                    </telerik:RadGridView.Columns>
+                                    <telerik:RadContextMenu.ContextMenu>
+                                        <telerik:RadContextMenu >
+                                            <telerik:RadMenuItem Header="Exportar Excel" Click="MenuItemExportarConcuerdaOracleOra_Click"/>
+                                        </telerik:RadContextMenu>
+                                    </telerik:RadContextMenu.ContextMenu>
+                                </telerik:RadGridView>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                </Grid>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Errores">
+                <Grid Background="{DynamicResource Windows.Background}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="500*"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="400*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="192*"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="200*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="23"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Label Content="Documento con Detalle no Concuerdan"/>
+                            <telerik:RadGridView  Name="grid_NConcuerdan" IsReadOnly="True" ShowColumnFooters="True" RowIndicatorVisibility="Hidden" AutoGenerateColumns="False"  RowActivated="grid_FacturaError_RowActivated" Grid.Row="1">
+                                <telerik:RadGridView.Columns>
+                                    <telerik:GridViewDataColumn Header="N° ATEN" DataMemberBinding="{Binding N_EXAMEN}" />
+                                    <telerik:GridViewDataColumn Header="CODEAUX" DataMemberBinding="{Binding CODEAUX}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:CountFunction Caption="Cant fac :" />
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="FECHA" DataMemberBinding="{Binding FECRGV}" />
+                                    <telerik:GridViewDataColumn  Header="TIP DOC" DataMemberBinding="{Binding TIDORGV}" />
+                                    <telerik:GridViewDataColumn  Header="NTIP DOC" DataMemberBinding="{Binding TDORGV}" />
+                                    <telerik:GridViewDataColumn  Header="N° DOC" DataMemberBinding="{Binding NDORGV}" />
+                                    <telerik:GridViewDataColumn  Header="MONEDA" DataMemberBinding="{Binding MONRGV}" />
+                                    <telerik:GridViewDataColumn  Header="RUC" DataMemberBinding="{Binding RUCCLI}" />
+                                    <telerik:GridViewDataColumn  Header="RAZ SOC" DataMemberBinding="{Binding RAZCLI}" />
+                                    <telerik:GridViewDataColumn  Header="MEDICO" DataMemberBinding="{Binding Medico}" />
+                                    <telerik:GridViewDataColumn  Header="PROMOTOR" DataMemberBinding="{Binding Promotor}" />
+                                    <telerik:GridViewDataColumn  Header="ESTADO" DataMemberBinding="{Binding CDCRGV}" />
+                                    <telerik:GridViewDataColumn  Header="CONCEPTO" DataMemberBinding="{Binding TERRGV}" />
+                                    <telerik:GridViewDataColumn  Header="COB" DataMemberBinding="{Binding PDSRGV}" />
+                                    <telerik:GridViewDataColumn  Header="VV SOL" DataMemberBinding="{Binding VVTRGVS}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="VVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="IGV SOL" DataMemberBinding="{Binding IGVRGVS}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="IGVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="TOT SOL" DataMemberBinding="{Binding TOTRGVS}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="TOT : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="TIP CAM" DataMemberBinding="{Binding TCARGV}" />
+                                    <telerik:GridViewDataColumn  Header="VV DOL" DataMemberBinding="{Binding VVTRGVD}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="VVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="IGV DOL" DataMemberBinding="{Binding IGVRGVD}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="IGVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="TOT DOL" DataMemberBinding="{Binding TOTRGVD}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="TOT : $." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="PACIENTE" DataMemberBinding="{Binding PACEST}" />
+                                    <telerik:GridViewDataColumn  Header="PROTOCOLO" DataMemberBinding="{Binding isProtocolo}" />
+                                    <telerik:GridViewDataColumn  Header="UNI" DataMemberBinding="{Binding CODUNI}" />
+                                    <telerik:GridViewDataColumn  Header="SUC" DataMemberBinding="{Binding CODSUC}" />
+                                    <telerik:GridViewDataColumn  Header="DIRECCION" DataMemberBinding="{Binding DIRCLI}" />
+                                    <telerik:GridViewDataColumn  Header="TELEFONO" DataMemberBinding="{Binding TELCLI}" />
+                                    <telerik:GridViewDataColumn  Header="PFLAG" DataMemberBinding="{Binding PFLAG}" />
+                                    <telerik:GridViewDataColumn  Header="SERIE" DataMemberBinding="{Binding SERIE}" />
+                                    <telerik:GridViewDataColumn  Header="CORRELATIVO" DataMemberBinding="{Binding CORRELATIVO}" />
+                                    <telerik:GridViewDataColumn  Header="FEC DOC" DataMemberBinding="{Binding DOC_FECHAEMITIO}" />
+                                    <telerik:GridViewDataColumn  Header="N° DOC" DataMemberBinding="{Binding DOC_NUMERODOC}" />
+                                    <telerik:GridViewDataColumn  Header="TIP DOC" DataMemberBinding="{Binding DOC_TIPO}" />
+                                    <telerik:GridViewDataColumn  Header="SERIE DOC" DataMemberBinding="{Binding DOC_SERIE}" />
+                                    <telerik:GridViewDataColumn  Header="CORRE DOC" DataMemberBinding="{Binding DOC_NUMERO}" />
+                                </telerik:RadGridView.Columns>
+                                <telerik:RadContextMenu.ContextMenu>
+                                    <telerik:RadContextMenu >
+                                        <telerik:RadMenuItem Header="Exportar Excel" Click="MenuItemExportar1_Click"/>
+                                    </telerik:RadContextMenu>
+                                </telerik:RadContextMenu.ContextMenu>
+                            </telerik:RadGridView>
+                        </Grid>
+
+                        <GridSplitter Height="5" HorizontalAlignment="Stretch" Grid.Row="1" />
+
+                        <Grid Grid.Row="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="23"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label Content="Detalle Documento" Name="lbldetalle_docError" />
+                            <telerik:RadGridView Grid.Row="1" x:Name="grid_DetalleError" IsReadOnly="True" ShowColumnFooters="True" RowIndicatorVisibility="Hidden" AutoGenerateColumns="False">
+                                <telerik:RadGridView.Columns>
+                                    <telerik:GridViewDataColumn Header="N° ATEN" DataMemberBinding="{Binding N_EXAMEN}" />
+                                    <telerik:GridViewDataColumn Header="CODEAUX" DataMemberBinding="{Binding CODEAUX}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:CountFunction Caption="Cant :" />
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="FECHA" DataMemberBinding="{Binding FECRGV}" />
+                                    <telerik:GridViewDataColumn  Header="TIP DOC" DataMemberBinding="{Binding TIDORGV}" />
+                                    <telerik:GridViewDataColumn  Header="NTIP DOC" DataMemberBinding="{Binding TDORGV}" />
+                                    <telerik:GridViewDataColumn  Header="N° DOC" DataMemberBinding="{Binding NDORGV}" />
+                                    <telerik:GridViewDataColumn  Header="MONEDA" DataMemberBinding="{Binding MONRGV}" />
+                                    <telerik:GridViewDataColumn  Header="RUC" DataMemberBinding="{Binding RUCCLI}" />
+                                    <telerik:GridViewDataColumn  Header="RAZ SOC" DataMemberBinding="{Binding RAZCLI}" />
+                                    <telerik:GridViewDataColumn  Header="ESTADO" DataMemberBinding="{Binding CDCRGV}" />
+                                    <telerik:GridViewDataColumn  Header="CONCEPTO" DataMemberBinding="{Binding TERRGV}" />
+                                    <telerik:GridViewDataColumn  Header="COB" DataMemberBinding="{Binding PDSRGV}" />
+                                    <telerik:GridViewDataColumn  Header="VV SOL" DataMemberBinding="{Binding VVTRGVS}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="VVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="IGV SOL" DataMemberBinding="{Binding IGVRGVS}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="IGVS : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="TOT SOL" DataMemberBinding="{Binding TOTRGVS}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="TOT : S/." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="TIP CAM" DataMemberBinding="{Binding TCARGV}" />
+                                    <telerik:GridViewDataColumn  Header="VV DOL" DataMemberBinding="{Binding VVTRGVD}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="VVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="IGV DOL" DataMemberBinding="{Binding IGVRGVD}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="IGVD : $." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="TOT DOL" DataMemberBinding="{Binding TOTRGVD}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="TOT : $." ResultFormatString="{}{0:0,0.00}"/>
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="COD EST" DataMemberBinding="{Binding CODEST}" />
+                                    <telerik:GridViewDataColumn  Header="COD EST1" DataMemberBinding="{Binding CODEST1}" />
+                                    <telerik:GridViewDataColumn  Header="ESTUDIO" DataMemberBinding="{Binding ESTUDIO}" />
+                                    <telerik:GridViewDataColumn  Header="CONCEPTO" DataMemberBinding="{Binding DESEST}" />
+                                    <telerik:GridViewDataColumn  Header="CLASE" DataMemberBinding="{Binding CLAEST}" />
+                                    <telerik:GridViewDataColumn  Header="CLASE1" DataMemberBinding="{Binding CLAEST1}" />
+                                    <telerik:GridViewDataColumn  Header="PACIENTE" DataMemberBinding="{Binding PACEST}" />
+                                    <telerik:GridViewDataColumn  Header="UNI" DataMemberBinding="{Binding CODUNI}" />
+                                    <telerik:GridViewDataColumn  Header="SUC" DataMemberBinding="{Binding CODSUC}" />
+                                    <telerik:GridViewDataColumn  Header="DIRECCION" DataMemberBinding="{Binding DIRCLI}" />
+                                    <telerik:GridViewDataColumn  Header="TELEFONO" DataMemberBinding="{Binding TELCLI}" />
+                                    <telerik:GridViewDataColumn  Header="COD MOD" DataMemberBinding="{Binding IDMODALIDAD}" />
+                                    <telerik:GridViewDataColumn  Header="MODALIDAD" DataMemberBinding="{Binding MODALIDAD}" />
+                                    <telerik:GridViewDataColumn  Header="COD CLASE" DataMemberBinding="{Binding IDCLASE}" />
+                                    <telerik:GridViewDataColumn  Header="CLASE " DataMemberBinding="{Binding NOMBRECLASE}" />
+                                </telerik:RadGridView.Columns>
+                                <telerik:RadContextMenu.ContextMenu>
+                                    <telerik:RadContextMenu >
+                                        <telerik:RadMenuItem Header="Exportar Excel" Click="MenuItemExportar2_Click"/>
+                                    </telerik:RadContextMenu>
+                                </telerik:RadContextMenu.ContextMenu>
+                            </telerik:RadGridView>
+                        </Grid>
+
+                    </Grid>
+                    <GridSplitter Width="5" HorizontalAlignment="Stretch" Grid.Column="1"  />
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="187*"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="208*"/>
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Label Content="Discordancia Documentos"/>
+                            <telerik:RadGridView  Name="grid_DiscordanciaDocumento" IsReadOnly="True" ShowColumnFooters="True" RowIndicatorVisibility="Hidden" AutoGenerateColumns="False"  Grid.Row="1">
+                                <telerik:RadGridView.Columns>
+                                    <telerik:GridViewDataColumn Header="N° DOC" DataMemberBinding="{Binding NDOC}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:CountFunction Caption="Cant : " />
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn Header="MONTO SQL" DataMemberBinding="{Binding MONTO_SQL}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="Total : " />
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn Header="MONTO ORACLE" DataMemberBinding="{Binding MONTO_ORACLE}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="Total : " />
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="ERROR" DataMemberBinding="{Binding ERROR}" />
+                                </telerik:RadGridView.Columns>
+                                <telerik:RadContextMenu.ContextMenu>
+                                    <telerik:RadContextMenu >
+                                        <telerik:RadMenuItem Header="Exportar Excel" Click="MenuItemExportardiscoDoc_Click"/>
+                                    </telerik:RadContextMenu>
+                                </telerik:RadContextMenu.ContextMenu>
+
+                            </telerik:RadGridView>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="23"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Label Content="Discordancia Montos" />
+                            <telerik:RadGridView Grid.Row="1" x:Name="grid_DiscordanciaMontos" IsReadOnly="True" ShowColumnFooters="True" RowIndicatorVisibility="Hidden" AutoGenerateColumns="False">
+                                <telerik:RadGridView.Columns>
+                                    <telerik:GridViewDataColumn Header="N° DOC" DataMemberBinding="{Binding NDOC}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:CountFunction Caption="Cant : " />
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn Header="MONTO SQL" DataMemberBinding="{Binding MONTO_SQL}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="Total : " />
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn Header="MONTO ORACLE" DataMemberBinding="{Binding MONTO_ORACLE}" >
+                                        <telerik:GridViewDataColumn.AggregateFunctions>
+                                            <telerik:SumFunction Caption="Total : " />
+                                        </telerik:GridViewDataColumn.AggregateFunctions>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn  Header="ERROR" DataMemberBinding="{Binding ERROR}" />
+                                </telerik:RadGridView.Columns>
+                                <telerik:RadContextMenu.ContextMenu>
+                                    <telerik:RadContextMenu >
+                                        <telerik:RadMenuItem Header="Exportar Excel" Click="MenuItemExportarDiscoMonto_Click"/>
+                                    </telerik:RadContextMenu>
+                                </telerik:RadContextMenu.ContextMenu>
+                            </telerik:RadGridView>
+                        </Grid>
+
+
+
+                        <GridSplitter Height="5" HorizontalAlignment="Stretch" Grid.Row="1" />
+                    </Grid>
+                </Grid>
+            </telerik:RadTabItem>
+        </telerik:RadTabControl>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="88*"/>
+                <ColumnDefinition Width="81*"/>
+                <ColumnDefinition Width="327*"/>
+            </Grid.ColumnDefinitions>
+            <Label Name="lblestado" Content="" Padding="0" Foreground="White" Background="{x:Null}" FontWeight="Normal" FontFamily="Microsoft NeoGothic"/>
+            <telerik:RadProgressBar Name="pbStatus" telerikControls:StyleManager.Theme="Expression_Dark"  Grid.Column="1" IsIndeterminate="False" Value="0" />
+        </Grid>
+
+
+    </Grid>
+
+</Window>

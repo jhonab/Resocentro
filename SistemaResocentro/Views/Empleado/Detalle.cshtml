@@ -1,0 +1,166 @@
+﻿@model SistemaResocentro.ViewModel.EmpleadoViewModel
+
+@{
+    ViewBag.Title = "Detalle de  Empleado";
+}
+<script src="~/js/bootstrap-switch.min.js"></script>
+<script src="~/js/validar-input.js"></script>
+<h2>Detalle Empleado</h2>
+<div class="row">
+    <div class="col-lg-12" id="div_empleado">
+
+        <div class="row " id="frm_empleado">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label ">Nombre</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.emp.nombres, new { htmlAttributes = new { @class = "form-control validar", @placeholder = "Nombres Completos" } })
+                        @Html.ValidationMessageFor(model => model.emp.nombres, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label ">Apellidos</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.emp.apellidos, new { htmlAttributes = new { @class = "form-control validar", @placeholder = "Apellidos Completos" } })
+                        @Html.ValidationMessageFor(model => model.emp.apellidos, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label ">DNI</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.emp.dni, new { htmlAttributes = new { @class = "form-control validar", @placeholder = "Número de DNI", @maxlength = "8" } })
+                        @Html.ValidationMessageFor(model => model.emp.dni, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label class="control-label " for="fechanacimiento">Fecha Nacimiento</label>
+                    <div class='input-group date datetime'>
+                        @Model.emp.fechanacimiento.ToShortDateString()
+                    </div>
+                    @Html.ValidationMessageFor(model => model.emp.fechanacimiento, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label " for="">Sexo</label>
+                    <div class="">
+                        @if (Model.emp.sexo == "F") { 
+                        <text>Femenino</text>
+                        }
+                        else{
+                        <text>Masculino</text>
+                        }
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Estado Civil</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.emp.estadocivil, new { @class = "form-control  validar" })
+                        @Html.ValidationMessageFor(model => model.emp.estadocivil, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+
+                <div class="form-group">
+                    <label class="control-label " for="fechanacimiento">Fecha Ingreso</label>
+                    <div class="input-group date datetime">
+                        @Model.emp.fechaingreso.ToShortDateString()
+                    </div>
+                    @Html.ValidationMessageFor(model => model.emp.fechaingreso, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <label class="control-label " for="">Cargo</label>
+                    <div class="">
+                        @Model.emp.CARGO.descripcion
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label " for="">E-mail</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.emp.email, new { htmlAttributes = new { @class = "form-control", @placeholder = "nombres.apellidos@resocentro.com" } })
+                        @Html.ValidationMessageFor(model => model.emp.email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label " for="">CMP</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.emp.CMP2, new { htmlAttributes = new { @class = "form-control", @placeholder = "CMP" } })
+                        @Html.ValidationMessageFor(model => model.emp.CMP2, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label " for="">RNE</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.emp.RNE, new { htmlAttributes = new { @class = "form-control" }, @placeholder = "RNE" })
+                        @Html.ValidationMessageFor(model => model.emp.RNE, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Activado:</label>
+                    <div class="">
+                        <div class="make-switch "
+                             data-on="primary"
+                             data-on-label="<i class='fa fa-check-circle'></i>"
+                         data-off-label="<i class='fa fa-times-circle'></i>"
+                         @*data-text-label="<i class='fa fa-pencil'></i>"*@
+                    >
+                        @Html.DisplayFor(model =>model.emp.isActivo)
+					</div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+
+    </div>
+    <div class="col-lg-8">
+        <fieldset>
+            <legend>Acceso a Sistema</legend>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label " for="">Usuario</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.usu.siglas, new { htmlAttributes = new { @class = "form-control ui-autocomplete-input", @placeholder = "Usuario" } })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label " for="">Clave</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.usu.codigousuario, new { @class = "form-control", @placeholder = "Clave" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label " for="">Alias</label>
+                    <div class="">
+                        @Html.DisplayFor(model => model.usu.ShortName, new { @class = "form-control", @placeholder = "Clave" })
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-lg-12">
+        <p>
+            <a href='@Url.Action("List")' class="btn btn-default"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;&nbsp;Regresar a la Lista</a>
+
+        </p>
+    </div>
+</div>

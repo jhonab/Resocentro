@@ -1,0 +1,193 @@
+﻿@model SistemaResocentro.ViewModel.Pagos_Planificacion_CompaniaseguroViewModel
+
+@{
+    Layout = null;
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#Gasto").hide();
+        $("#Movilidad").hide();
+        $("#total").hide();
+
+    });
+
+    function tipo_gasto() {
+        var tipo = $("#items_tipo").val();
+        if (tipo == 1 || tipo == 4) {
+            $("#Gasto").show();
+            $("#Movilidad").hide();
+            $("#total").show();
+        } else {
+            $("#Gasto").hide();
+            $("#Movilidad").show();
+            $("#total").show();
+        }
+
+    }
+
+    function registrarGasto() {
+        navigator.geolocation.getCurrentPosition(function (latitud) { latitud_actual = latitud }, function () { toastr.error('No se pudo obtener su ubicación, vuelva a intentar por favor.', 'Error', opts); });
+        var _lati = (latitud_actual.coords.latitude.toString());
+        var _long = (latitud_actual.coords.longitude.toString());
+        var jsonObject = {
+            "idplanificacion": $("#items_idplanificacion").val(),
+            "tipo": $("#items_tipo").val(),
+            "ndocumento": $("#items_ndocumento").val(),
+            "proveedor": $("#items_proveedor").val(),
+            "categoria": $("#items_categoria").val(),
+            "persona_destino": $("#items_persona_destino").val(),
+            "origen": $("#items_origen").val(),
+            "destino": $("#items_destino").val(),
+            "total": $("#items_total").val(),
+            "latitud": _lati,
+            "longitud": _long
+        };
+        $.ajax({
+            url: '/PlanificacionCompaniaSeguro/GuardarPago',
+            data: {item:JSON.stringify(jsonObject,null,"")},
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                $("#modal-body-gasto").load("/PlanificacionCompaniaSeguro/RegistrarPago?id=" + jsonObject.idplanificacion, function (response, status, xhr) {
+                    if (status == "error") {
+                        toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+                    } 
+                });
+            },
+            error: function () {
+                toastr.error("No se registro el gasto.", "Error", opts);
+                _result = false;
+            }
+        });
+    }
+
+    function eliminarGasto(id,planificacion) {
+        $.ajax({
+            url: '/PlanificacionCompaniaSeguro/EliminarGasto',
+            data: { id: id },
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                $("#modal-body-gasto").load("/PlanificacionCompaniaSeguro/RegistrarPago?id=" + planificacion, function (response, status, xhr) {
+                    if (status == "error") {
+                        toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+                    }
+                });
+            },
+            error: function () {
+                toastr.error("No se elimino el gasto.", "Error", opts);
+                _result = false;
+            }
+        });
+    }
+</script>
+<div class="modal-header modal-primary">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Registra Gasto de Visita Médica </h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <span class="count alert-danger">**Los montos deben estar en Nuevos Soles (S/.)</span>
+        <div class="col-md-5">
+            @Html.HiddenFor(model => model.items.idplanificacion)
+            <div class="form-group">
+                <label>Tipo Gasto:</label>
+                @Html.DropDownListFor(model => model.items.tipo, (SelectList)ViewBag.Gasto, "- Seleccione el Tipo de Gasto -", new { @class = "form-control", @onchange = "tipo_gasto()" })
+                @Html.ValidationMessageFor(model => model.items.tipo)
+            </div>
+            <div id="Gasto">
+                <div class="form-group">
+                    <label>Numero Documento: </label>
+                    @Html.TextBoxFor(model => model.items.ndocumento, new { @placeholder = "Ingrese el N° Documento", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.items.ndocumento)
+                </div>
+                <div class="form-group">
+                    <label>Proveedor: </label>
+                    @Html.TextBoxFor(model => model.items.proveedor, new { @placeholder = "Ingrese el Proveedor", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.items.proveedor)
+                </div>
+                <div class="form-group">
+                    <label>Categoría: </label>
+                    @Html.DropDownListFor(model => model.items.categoria, (SelectList)ViewBag.Categoria, "- Seleccione el Tipo de Categoría -", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.items.categoria)
+                </div>
+                <div class="form-group">
+                    <label>Persona Destino: </label>
+                    @Html.TextBoxFor(model => model.items.persona_destino, new { @placeholder = "Ingrese el Destino", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.items.persona_destino)
+                </div>
+            </div>
+            <div id="Movilidad">
+                <div class="form-group">
+                    <label>Origen: </label>
+                    @Html.TextBoxFor(model => model.items.origen, new { @placeholder = "Ingrese el Origen", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.items.origen)
+                </div>
+                <div class="form-group">
+                    <label>Destino: </label>
+                    @Html.TextBoxFor(model => model.items.destino, new { @placeholder = "Ingrese el Destino", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.items.destino)
+                </div>
+            </div>
+            <div id="total" class="form-group">
+                <label>Total (S/.): </label>
+                @Html.TextBoxFor(model => model.items.total, new { @placeholder = "Ingrese el Total de Gasto", @type = "number", @step = "0.01", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.items.total)
+            </div>
+
+
+            <p class="pull-right">
+                <button type="button" onclick="registrarGasto()" class="btn btn-success">Registrar Gasto</button>
+            </p>
+
+        </div>
+
+        <div class="col-md-7">
+            <table class="table table-striped table-bordered table-hover ">
+                <thead>
+                    <tr>
+                        <th>
+                            Fecha
+                        </th>
+                        <th>
+                            Tipo
+                        </th>
+                        <th>
+                            Total
+                        </th>
+                        <th>
+                            Aprobado
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.lista)
+                    {
+                        <tr>
+                            <td>
+                                @item.fecha.ToShortDateString() @item.fecha.ToShortTimeString()
+                            </td>
+                            <td>
+                                @(new SistemaResocentro.Models.Variable().getTipoGastoPlanificacion()[item.tipo - 1].ToString().Split(',')[1].Split('=')[1].Split('}')[0])
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.total)
+                            </td>
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.isaprobado)
+                            </td>
+                            <td>
+                               <button class="btn btn-danger btn-xs" type="button" onclick="eliminarGasto(@item.id,@item.idplanificacion)"><i class="fa fa-trash-o fa-2x"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <h3 class="pull-right">Total: S/. <strong>@Model.lista.Sum(x => x.total)</strong></h3>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+</div>

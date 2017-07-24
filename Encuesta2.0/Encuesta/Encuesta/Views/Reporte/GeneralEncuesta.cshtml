@@ -1,0 +1,514 @@
+﻿@model IEnumerable<Encuesta.ViewModels.Reporte.ReporteGeneEncuestaViewModel>
+
+@{
+    ViewBag.Title = "<i class='fa fa-line-chart'></i> Reporte";
+    ViewBag.Titlenot = "Reporte";
+}
+
+<!-- DataTables JavaScript -->
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $('#dataTables-example').dataTable();
+    });
+</script>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h2 class="box-title">Reporte General Encuesta</h2>
+            </div>
+            <div class="box-body chart-responsive">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Reporte General de Encuesta
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <i class="fa fa-search fa-fw"></i>Buscar
+                            </div>
+                            <div class="panel-body">
+                                @using (Html.BeginForm("GeneralEncuesta", "Reporte", FormMethod.Post))
+                                {
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label>Periodo</label>
+
+                                            <input type="Month" id="i" name="i" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p>
+                                            <input type="submit" class=" btn btn-info " value="Buscar" />
+                                        </p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- /.grafico -->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <i class="fa fa-bar-chart-o fa-fw"></i>Gráficos
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="box box-primary">
+                                            <div class="box-header">
+                                                <h3 class="box-title">Encuestador</h3>
+                                            </div>
+                                            <div class="box-body chart-responsive">
+                                                <div id="chart-encuestador">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="box box-primary">
+                                            <div class="box-header">
+                                                <h3 class="box-title">Supervisor</h3>
+                                            </div>
+                                            <div class="box-body chart-responsive">
+                                                <div id="chart-supervisor"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="box box-primary">
+                                            <div class="box-header">
+                                                <h3 class="box-title">Tecnologo</h3>
+                                            </div>
+                                            <div class="box-body chart-responsive">
+                                                <div id="chart-tecnologo"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                Estudios
+                                            </div>
+                                            <!-- /.panel-heading -->
+                                            <div class="panel-body">
+
+                                                <div class="col-lg-6">
+                                                    <!-- DONUT CHART -->
+                                                    <div class="box box-primary">
+                                                        <div class="box-header">
+                                                            <h3 class="box-title">Cantidad de Estudios x Sedes</h3>
+                                                        </div>
+                                                        <div class="box-body chart-responsive">
+                                                            <div class="chart" id="donut_estudios" style="height: 300px; position: relative;"></div>
+                                                        </div>
+                                                        <!-- /.box-body -->
+                                                    </div>
+                                                    <!-- /.box -->
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <!-- DONUT CHART -->
+                                                    <div class="box box-primary">
+                                                        <div class="box-header">
+                                                            <h3 class="box-title">Cantidad de Estudios x Clase</h3>
+                                                        </div>
+                                                        <div class="box-body chart-responsive">
+                                                            <div class="chart" id="donut_modalidad" style="height: 300px; position: relative;"></div>
+                                                        </div>
+                                                        <!-- /.box-body -->
+                                                    </div>
+                                                    <!-- /.box -->
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="box box-primary">
+                                                        <div class="box-header">
+                                                            <h3 class="box-title">Cantidad de Estudios x Día</h3>
+                                                        </div>
+                                                        <div class="box-body chart-responsive">
+                                                            <div id="chartxdia"></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="box box-primary">
+                                                        <div class="box-header">
+                                                            <h3 class="box-title">Cantidad de Estudios x Mes</h3>
+                                                        </div>
+                                                        <div class="box-body chart-responsive">
+                                                            <div id="chartxmes"></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <!-- /.panel-body -->
+                                        </div>
+                                        <!-- /.panel -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseEncuesta"><i class="fa fa-database fa-fw"></i>Data </a>
+                                </h4>
+                            </div>
+                            <div id="collapseEncuesta" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">
+                                            Consolidado de Reporte
+                                        </div>
+                                        <!-- /.panel-heading -->
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sede
+                                                            </th>
+                                                            <th>Examen
+                                                            </th>
+                                                            <th>Fecha
+                                                            </th>
+                                                            <th>Clase
+                                                            </th>
+                                                            <th>Estudio
+                                                            </th>
+                                                            <th>Paciente
+                                                            </th>
+                                                            <th>Encuestador
+                                                            </th>
+                                                            <th>Supervisor
+                                                            </th>
+                                                            <th>Tecnologo
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.sede)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.num_encuesta)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.fecha, "ShortDateTime")
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.clase)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.estudio)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.paciente)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.encuestador)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.supervisor)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.tecnologo)
+                                                                </td>
+
+                                                            </tr>
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <!-- /.panel-body -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.Data -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<script src="~/js/plugins/KendoChart/kendo.all.min.js"></script>
+<link href="~/css/plugins/Kendochart/kendo.dataviz.min.css" rel="stylesheet" />
+<script src="~/js/plugins/morris/morris.min.js"></script>
+<script src="~/js/plugins/morris/raphael.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        var _periode='@Model.First().fecha.ToString("MMMM {0} yyyy")';
+        var lstDias = [];
+        @{
+            foreach (var item in Model.OrderBy(x => x.fecha).Select(x => x.fecha.ToString("dd/MMM")).Distinct().ToArray())
+            {  <text>lstDias.push('@item');  </text>  }        
+        }
+
+        var dataencu1 = [ @{ foreach (var item in Model.OrderBy(x => x.encuestador).Select(x => x.encuestador).Distinct().ToArray())
+                             {
+    <text>{ name: '@item', data: [   </text>foreach (var dia in Model.OrderBy(x => x.fecha).Select(x => x.fecha.Day).Distinct().ToList())
+                                            {  <text> @Model.Where(x => x.encuestador == item && x.fecha.Day == dia).Count(),  </text>  }  <text>] },  </text>  
+                             }
+}
+        ];
+        var datasuper = [ @{ foreach (var item in Model.OrderBy(x => x.supervisor).Select(x => x.supervisor).Distinct().ToArray())
+                             {
+            <text>{ name: '@item', data: [   </text>foreach (var dia in Model.OrderBy(x => x.fecha).Select(x => x.fecha.Day).Distinct().ToList())
+                                                    {  <text> @Model.Where(x => x.supervisor == item && x.fecha.Day == dia).Count(),  </text>  }  <text>] },  </text>  
+                             }
+        }
+        ];
+        var datatecno = [ @{ foreach (var item in Model.OrderBy(x => x.tecnologo).Select(x => x.tecnologo).Distinct().ToArray())
+                             {
+            <text>{ name: '@item', data: [   </text>foreach (var dia in Model.OrderBy(x => x.fecha).Select(x => x.fecha.Day).Distinct().ToList())
+                                                    {  <text> @Model.Where(x => x.tecnologo == item && x.fecha.Day == dia).Count(),  </text>  }  <text>] },  </text>  
+                             }
+        }
+        ];
+
+
+      
+
+
+
+
+
+        //alert(JSON.stringify(dataencu));
+        $("#chart-encuestador").kendoChart({
+            theme: "Metro",
+            title: {
+                text: "Reporte de Encuestadores del Mes de "+_periode.replace("{0}","del"),
+            },
+            legend: {
+                position: "bottom"
+            },
+            seriesDefaults: {
+                type: "line"
+            },
+            series: dataencu1,
+            valueAxis: {
+                labels: {
+                    format: "{0}"
+                }, plotBands: [{
+                    from: 0,
+                    to: 10,
+                    color: "#c00",
+                    opacity: 0.3
+                }]
+            },
+            categoryAxis: {
+                categories: lstDias
+            },
+            tooltip: {
+                visible: true,
+                template: "   #= series.name # : #= value #  "
+            }
+        });
+        $("#chart-supervisor").kendoChart({
+            theme: "Metro",
+            title: {
+                text: "Reporte de Supervisor del Mes de "+_periode.replace("{0}","del"),
+            },
+            legend: {
+                position: "bottom"
+            },
+            seriesDefaults: {
+                type: "line"
+            },
+            series: datasuper,
+            valueAxis: {
+                labels: {
+                    format: "{0}"
+                }, plotBands: [{
+                    from: 0,
+                    to: 10,
+                    color: "#c00",
+                    opacity: 0.3
+                }]
+            },
+            categoryAxis: {
+                categories: lstDias
+            },
+            tooltip: {
+                visible: true,
+                template: "   #= series.name # : #= value #  "
+            }
+        });
+
+        $("#chart-tecnologo").kendoChart({
+            theme: "Metro",
+            title: {
+                text: "Reporte de Tecnologo del Mes de "+_periode.replace("{0}","del")+"",
+            },
+            legend: {
+                position: "bottom"
+            },
+            seriesDefaults: {
+                type: "line"
+            },
+            series: datatecno,
+            valueAxis: {
+                labels: {
+                    format: "{0}"
+                }
+            },
+            categoryAxis: {
+                categories: lstDias
+            },
+            tooltip: {
+                visible: true,
+                template: "   #= series.name # : #= value #  "
+            }
+        });
+
+        //DONUT CHART
+        var donut = new Morris.Donut({
+            element: 'donut_estudios',
+            resize: true,
+            data: [@{
+                foreach (var item in Model.OrderBy(x => x.sede).Select(x => x.sede).Distinct().ToArray())
+                {  <text>{label:'@item',value:@Model.Where(x => x.sede == item).Count()}, </text>  }        
+        }],
+            hideHover: 'auto'
+        });
+
+        //DONUT CHART
+        var donut = new Morris.Donut({
+            element: 'donut_modalidad',
+            resize: true,
+            data: [@{
+                foreach (var item in Model.OrderBy(x => x.clase).Select(x => x.clase).Distinct().ToArray())
+                {  <text>{label:'@item',value:@Model.Where(x => x.clase == item).Count()}, </text>  }        
+        }],
+            hideHover: 'auto'
+        });
+
+
+      
+
+        $("#chartxdia").kendoChart({           
+            theme: "Metro",
+            title: {
+                text: "Grafico de Estudios x Día"
+            },
+            legend: {
+                visible: false
+            },
+            dataSource: {
+                data: [@{foreach (var item in Model.OrderBy(x => x.fecha.Day).Select(x => x.fecha.ToString("dd/MM/yyyy")).Distinct().ToList())
+                         { <text>{date:'@item.Substring(0, 2)',value:@Model.Where(x => x.fecha.ToString("dd/MM/yyyy") == item).Count(), },</text>}}]
+            },
+            series: [{
+                type: "line",
+                field: "value",
+                categoryField: "date"
+            }],
+            categoryAxis: {
+                baseUnit: "days"
+            }, tooltip: {
+                visible: true,
+                template: " #= value #  "
+            }
+
+        });
+        var month = new Array();
+        month[0] = "Enero";
+        month[1] = "Febrero";
+        month[2] = "Marzo";
+        month[3] = "Abril";
+        month[4] = "Mayo";
+        month[5] = "Junio";
+        month[6] = "Julio";
+        month[7] = "Agosto";
+        month[8] = "Septiembre";
+        month[9] = "Octubre";
+        month[10] = "Noviembre";
+        month[11] = "Diciembre";
+        var cant_back=0;
+        @{ var fecha_ini = Model.First().fecha; }
+        var ini = '@fecha_ini';
+        
+        var txt_ini=month[(new Date(@fecha_ini.Year,@fecha_ini.Month-1,@fecha_ini.Day,0,0,0,0)).getMonth()];
+        var txt_1=month[(new Date(@fecha_ini.Year,@fecha_ini.Month-2,@fecha_ini.Day,0,0,0,0)).getMonth()];
+        var txt_2=month[(new Date(@fecha_ini.Year,@fecha_ini.Month-3,@fecha_ini.Day,0,0,0,0)).getMonth()];
+        var txt_3=month[(new Date(@fecha_ini.Year,@fecha_ini.Month-4,@fecha_ini.Day,0,0,0,0)).getMonth()];
+            $.ajax({
+                url: '@Url.Action("GeneralEncuesta_Back", "Reporte")',
+                 data: { i: ini },
+                 dataType: "json",
+                 type: "POST",
+                 success: function (data) {
+                     var ini_1=data.t1;
+                     var ini_2=data.t2;
+                     var ini_3=data.t3;
+                     $("#chartxmes").kendoChart({           
+                         //theme: "Metro",
+                         title: {
+                             text: "Grafico de Estudios x Mes"
+                         },
+                         legend: {
+                             visible: true,
+                             position:"top"
+                         },
+                         seriesDefaults: {
+                             type: "column"
+                         },
+                         dataSource: {
+                             data: [ {date:txt_3,value:ini_3},
+                                 {date:txt_2,value:ini_2},
+                                 {date:txt_1,value:ini_1},
+                             {date:txt_ini,value:@Model.Count()}]
+            },
+                          series: [{
+                              field: "value",
+                              categoryField: "date"
+                          }],
+                          categoryAxis: {
+                              baseUnit: "days"
+                          }, tooltip: {
+                              visible: true,
+                              template: " #= value #  "
+                          }
+
+                      });
+                 }
+             });
+   
+
+       
+
+    });
+</script>
+
+<style>
+    .k-tooltip {
+        color: #fff!important;
+        font-weight: bold!important;
+        border-radius: 5px;
+    }
+</style>

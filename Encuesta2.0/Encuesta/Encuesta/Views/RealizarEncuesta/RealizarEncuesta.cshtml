@@ -1,0 +1,532 @@
+﻿@model Encuesta.ViewModels.Encuesta.EncuestaExamenViewModel
+
+@{
+    ViewBag.Title = "<i class='fa fa-edit'></i> Encuesta";
+    ViewBag.Titlenot = "Pre-Encuesta";
+}
+
+
+<link href="~/css/Encuesta.css" rel="stylesheet" />
+<script src="~/js/encuestas/encuestas_ini.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        mostrarDiv();
+        $("#CheckBox21").change(mostrarDiv);
+        $("#CheckBox31").change(mostrarDiv);
+        $("#isAutorizado").change(mostrarDiv);
+        $("#tipoAutorizacion").change(mostrarDiv);
+        $("#div_select_examen").hide();
+        $("#CheckBox12").change(protesis);
+    });
+    function protesis() {
+        if ($('#CheckBox12').is(':checked')) {
+            $('#CheckBox13').prop('checked', true);
+            $('#CheckBox14').prop('checked', true);
+            $('#CheckBox15').prop('checked', true);
+        }
+    }
+
+    function mostrarDiv() {
+        /*Otras Contraindicaciones*/
+        if ($('#CheckBox21').is(':checked'))
+            $("#txtOtros").show();
+        else
+            $("#txtOtros").hide();
+        /*Sedacion*/
+        if ($('#CheckBox31').is(':checked'))
+            $("#lblsedacion").show();
+        else
+            $("#lblsedacion").hide();
+        /* Autorizar*/
+        if ($('#isAutorizado').is(':checked'))
+            $("#lblautorizar").show();
+        else
+            $("#lblautorizar").hide();
+
+        /* Autorizar*/
+        if ($('#tipoAutorizacion').val() == '99')
+            $("#detalleAutorizacion").show();
+        else
+            $("#detalleAutorizacion").hide();
+
+    }
+    function seleccionarExamen(modalidad) {
+        var date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes(), new Date().getSeconds())
+        //$("input:checkbox").prop('disabled', 'disabled');
+        $("#fec_reg_fin").val(new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds());
+
+        $("#" + modalidad).hide();
+        $("#div_select_examen").show();
+
+    }
+
+</script>
+
+<div class="row" id="div_PreEntrevista">
+    <div class="col-md-12">
+        <h3 class="titulo_ocultar">Contraindicaciones </h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-dark" data-collapsed="0">
+                    <!-- panel head -->
+                    <div class="panel-heading">
+                        <div class="panel-title">Datos Examen</div>
+                    </div>
+                    <!-- panel body -->
+                    <div class="panel-body">
+                        <div class="col-xs-5 col-sm-5 col-md-5">
+                            @Html.Partial("_DatosExamen", Model._examen)
+                        </div>
+                        <div class="col-xs-5 col-sm-5 col-md-5">
+                            @Html.Partial("_DatosPaciente", Model._paciente)
+                        </div>
+
+                        <div class="col-xs-2 col-sm-2 col-md-2">
+                            <div class="btn-group-vertical">
+                                <button class="btn btn-info box-tools pull-right no-print" onclick="verHistorial('@Model._examen.codigo')">
+                                    <i class="fa fa-history fa-2x"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="row" id="div_historial">
+        </div>
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frm_encuesta" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            @Html.HiddenFor(model => model.num_examen)
+            @Html.HiddenFor(model => model.tipo_encuesta)
+            @Html.HiddenFor(model => model.numeroatencion)
+            @Html.HiddenFor(model => model.fec_reg_ini)
+            @Html.HiddenFor(model => model.fec_reg_fin)
+
+            <script type="text/javascript">
+                function SeleccionarExamen() {
+                    var _isHospitalizado = $('input[name=isHospitalizado]:checked').val();
+                    if (_isHospitalizado != undefined) {
+                        $("#modal_Hospitalizado").modal("hide");
+                        var _modalidad = "@Model.modalidad";
+                        if (_modalidad == "RM")
+                            validarRM();
+                        else
+                            validarTEM();
+                    } else {
+                        toastr.error('Seleccione si el paciente está Hospitalizado.', opts);
+                    }
+                }
+
+                function abrirmodal() {
+                    $("#modal_Hospitalizado").modal("show");
+                }
+
+            </script>
+
+            if (Model.modalidad == "RM")
+            {
+
+                <div id="div_RM" class="row">
+                    <script type="text/javascript">
+                        function validarRM() {
+                            var _isvalid = true;
+                            //validacion de SSHH
+                            if ($("#CheckBox30").is(":checked") == false) {
+                                toastr.error('Faltan datos en Variables de Control. Debe confirmar que el paciente ya fue al servicio higiénico', opts);
+                                return false;
+                            }
+                            //validacion de sedacion
+                            /*if ($("#CheckBox31").is(":checked")) {
+                                if ($("#txtNumeroConsentimiento").val().trim() == "") {
+                                    toastr.error('Faltan datos en Variables de Control. Si el paciente será sedado debe ingresar el Nro. de Consentimiento de Sedación');
+                                    $("#txtNumeroConsentimiento").focus();
+                                    return false;
+                                }
+                            }*/
+                            //validacion de otras
+                            if ($("#CheckBox21").is(":checked")) {
+                                if ($("#txtOtros").val().trim() == "") {
+                                    toastr.error('Faltan datos en Contraindicaciones. Debe detallar datos en el campo Otros', opts);
+                                    _isvalid = false;
+                                    return false;
+                                }
+                            }
+
+                            if ($("#div_check_RM input:checkbox:checked").length != 20) {
+                                if ($("#isAutorizado").is(":checked")) {
+                                    if ($("#tipoAutorizacion").val() == '') {
+                                        toastr.error('Si autoriza realizar el examen con contraindicaciones debe seleccionar el motivo', opts);
+                                        _isvalid = false;
+                                        return false;
+                                    }
+                                    if (($("#tipoAutorizacion").val() == '99') && ($("#detalleAutorizacion").val().trim() == "")) {
+                                        toastr.error('Si autoriza realizar el examen con contraindicaciones y selecciona otros debe ingresar el detalle', opts);
+                                        $("#detalleAutorizacion").focus();
+                                        _isvalid = false;
+                                        return false;
+                                    }
+
+                                    _isvalid = (confirm('Realmente desea autorizar el examen? Seleccione OK para Autorizar el Examen y continuar'));
+                                } else {
+                                    toastr.error('El paciente presenta contraindicaciones. Debe autorizar el examen para continuar', opts);
+                                    _isvalid = false;
+                                    return false;
+                                }
+                            } else {
+                                if ($("#isAutorizado").is(":checked")) {
+                                    toastr.error('El paciente no presenta contraindicaciones no es necesario Autorizar el Examen', opts);
+                                    _isvalid = false;
+                                    return false;
+                                }
+                            }
+                            if (_isvalid) {
+                                seleccionarExamen("div_RM");
+                                //return true;
+                            }
+
+                        }
+                    </script>
+
+                    <div class="col-md-12">
+                        <div class="panel panel-dark" data-collapsed="0">
+                            <div class="panel-heading">
+
+                                <div class="panel-title">
+                                    Lista de Contraindicaciones e Interferencias
+                                </div>
+
+                            </div>
+
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <p>
+                                        Informe que
+                                        <label>NO TIENE</label>. Para poder realizar el examen todas las casillas deben estar marcadas.
+                                    </p>
+                                    <div id="div_check_RM" style="margin-left: 20px;">
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.p1) Marcapaso Cardiaco
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.p2) Desfibrilador implantable
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox3) Clip aneurismático intracraneal
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox4) Holter cardiaco
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox5)Prótesis auditiva o implante coclear
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox6) Bomba para medicamentos implantada o externa (Ej: Para administrar insulina o analgésicos)
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox7) Neuroestimulador(TENS)
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox8) Grapas quirúrgicas
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox9) Barra vertebral de metal
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox10) Placas,pines,tornillos o malla de metal usados para reparación de hueso o una articulación
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox11) Fijadores externos
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox12) Prótesis articulares
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox13) Prótesis oculares
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox14) Prótesis ortopédicas de miembro inferior y/o miembro superior
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox15) Prótesis peneana
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox16) Piercing
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox17) Tatuajes y/o delineador permanente de ojos y/o labios
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox18) Bala,esquirlas metalicas o fragmentos metálicos dentro del cuerpo
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox19) Prótesis dentales
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.CheckBox20) Bracketts
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="checkbox" style="margin-left: 20px;">
+                                        <label>
+                                            @Html.CheckBoxFor(model => model.CheckBox21) Otros
+                                        </label>
+                                        <br />
+                                        <label>
+                                            @Html.TextAreaFor(model => model.txtOtros, new { @class = "form-control", @placeholder = "Ingrese las contraindicaciones", @style = "width: 300%" })
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+
+                        <div class="panel panel-dark" data-collapsed="0">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Variables de Control Médico-Administrativo
+                                </div>
+                            </div>
+
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="checkbox" style="margin-left: 20px;">
+                                    <label>
+                                        @Html.CheckBoxFor(model => model.CheckBox30) Confirmo que el paciente ya fue al servicio higenico y/o no tiene necesidades fisiológicas.
+                                    </label>
+                                </div>
+                                <div class="checkbox" style="margin-left: 20px;">
+                                    <label>
+                                        @Html.CheckBoxFor(model => model.CheckBox31, new { @disabled = "" }) Sedacion
+                                    </label>
+                                    <br />
+                                    <label id="lblsedacion">
+                                        N° de Consentimiento Informado:
+                                        @Html.TextBoxFor(model => model.txtNumeroConsentimiento, new { @class = "form-control", @placeholder = "Ingrese el N° de consentimiento informado", @type = "number", @style = "width: 260%" })
+                                    </label>
+                                </div>
+                                <div class="checkbox" style="margin-left: 20px;">
+                                    <label>
+                                        @Html.CheckBoxFor(model => model.isAutorizado)Autorizar examen (si el paciente presenta contraindicaciones o interferencias)
+                                    </label>
+                                    <br />
+                                    <label id="lblautorizar">
+                                        @Html.DropDownListFor(model => model.tipoAutorizacion, (SelectList)ViewBag.Motivos, "- Seleccione Motivo -", new { @class = "form-control" })
+                                        <br />
+                                        @Html.TextAreaFor(model => model.detalleAutorizacion, new { @class = "form-control", @placeholder = "Ingrese el motivo de autorización", @type = "text", @style = "width: 150%" })
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <a type="button" style="margin-left: 15px;" class="btn btn-default btn-lg" href="@Url.Action("ListaEspera", "RealizarEncuesta")"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;Retroceder</a>
+
+                        <div class="pull-right">
+                            <button type="button" style="margin-left: 15px;" class="btn btn-blue btn-lg" onclick="abrirmodal()">Siguiente&nbsp;<i class="fa fa-arrow-circle-right fa-lg"></i></button>
+                        </div>
+                        @*validarRM*@
+                    </div>
+
+                </div>
+            }
+            else
+            {
+                <div id="div_TEM" class="row">
+                    <script type="text/javascript">
+                        function validarTEM() {
+                            seleccionarExamen("div_TEM");
+                        }
+                    </script>
+                    <div class="col-md-12">
+                        <div class="panel panel-dark" data-collapsed="0">
+                            <div class="panel-heading">
+
+                                <div class="panel-title">
+                                    Lista de Contraindicaciones e Interferencias
+                                </div>
+
+                            </div>
+
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <p>
+                                        Informe que
+                                        <label>TIENE</label>
+                                        el Paciente.
+                                    </p>
+                                    <div class="checkbox" style="margin-left: 20px;">
+                                        <label>
+                                            @Html.CheckBoxFor(model => model.p1)Diabetes (Metformina)
+                                        </label>
+                                    </div>
+                                    <div class="checkbox" style="margin-left: 20px;">
+                                        <label>
+                                            @Html.CheckBoxFor(model => model.p2) Urea
+                                        </label>
+                                    </div>
+                                    <div class="checkbox" style="margin-left: 20px;">
+                                        <label>
+                                            @Html.CheckBoxFor(model => model.CheckBox3) Creatinina
+                                        </label>
+                                    </div>
+                                    <div class="checkbox" style="margin-left: 20px;">
+                                        <label>
+                                            @Html.CheckBoxFor(model => model.CheckBox4) Hipertensión Arterial
+                                        </label>
+                                    </div>
+                                    <div class="checkbox" style="margin-left: 20px;">
+                                        <label>
+                                            @Html.CheckBoxFor(model => model.CheckBox5) Asma
+                                        </label>
+                                    </div>
+                                    <div class="checkbox" style="margin-left: 20px;">
+                                        <label>
+                                            @Html.CheckBoxFor(model => model.CheckBox6) Hipertiroidismo
+                                        </label>
+                                    </div>
+                                    <div class="checkbox" style="margin-left: 20px;">
+                                        <label>
+                                            @Html.CheckBoxFor(model => model.CheckBox7) Alergia al yodo
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="panel panel-dark" data-collapsed="0">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Variables de Control Médico-Administrativo
+                                </div>
+                            </div>
+
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="checkbox" style="margin-left: 20px;">
+                                    <label>
+                                        @Html.CheckBoxFor(model => model.CheckBox31, new { @disabled = "" }) Sedacion
+                                    </label>
+                                    <br />
+                                    <label id="lblsedacion">
+                                        N° de Consentimiento Informado:
+                                        @Html.TextBoxFor(model => model.txtNumeroConsentimiento, new { @class = "form-control", @placeholder = "Ingrese el N° de consentimiento informado", @type = "number", @style = "width: 260%" })
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <a type="button" style="margin-left: 15px;" class="btn btn-defalt btn-lg" href="@Url.Action("ListaEspera", "RealizarEncuesta")"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;Retroceder</a>
+                        <div class="pull-right">
+                            <button type="button" style="margin-left: 15px;" class="btn btn-primary btn-lg" onclick="abrirmodal()">Siguiente&nbsp;<i class="fa fa-arrow-circle-right fa-lg"></i></button>
+                            @*validarTEM*@
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+
+            <div class="modal fade" id="modal_Hospitalizado" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Paciente Hospitalizado</h4>
+                        </div>
+                        <div class="modal-body">
+                            <cite>Paciente Hospitalizado?</cite>
+                            <label class="checkbox-inline">
+                                @Html.RadioButtonFor(model => model.isHospitalizado, "true") Si
+                            </label>
+                            <label class="checkbox-inline">
+                                @Html.RadioButtonFor(model => model.isHospitalizado, "false") No
+                            </label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" onclick="SeleccionarExamen()">Siguiente</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        }
+        <div id="div_select_examen">
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    var modalidad = '@Model.modalidad';
+                    if (modalidad == 'RM') {
+                        $("#modalidad_RM").show();
+                        $("#modalidad_TEM").hide();
+                    } else {
+                        $("#modalidad_RM").hide();
+                        $("#modalidad_TEM").show();
+                    }
+                });
+
+                function realizarEncuesta(tipo) {
+                    $("#tipo_encuesta").val(tipo);
+                    $("#frm_encuesta").submit();
+                }
+            </script>
+
+            @Html.Partial("_SeleccionExamen")
+            <a type="button" style="margin-left: 15px;" class="btn btn-default btn-lg" href="@Url.Action("ListaEspera", "RealizarEncuesta")"><i class="fa fa-arrow-circle-left fa-lg"></i>Retroceder</a>
+        </div>
+
+    </div>
+</div>

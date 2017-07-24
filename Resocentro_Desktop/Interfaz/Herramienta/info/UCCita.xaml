@@ -1,0 +1,35 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.Herramienta.info.UCCita" 
+             MinWidth="440"  Background="{DynamicResource Windows.Background}" Height="365">
+    <Grid >
+        <Label Content="N° Cita"  HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10,10,0,0"/>
+        <Label Content="Fecha Registro"  Margin="10,37,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="Fecha Cita" Padding="0" Margin="256,39,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="Usu. Tramita." Margin="10,63,0,0"  VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Label Content="Observaciones" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,89,0,0"/>
+
+
+        <TextBox IsReadOnly="True" Padding="4" Text="{Binding Num_cita}" Margin="59,10,0,0" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+        <TextBox IsReadOnly="True" Padding="4"  HorizontalAlignment="Left" Text="{Binding Fecha_registro}" VerticalAlignment="Top" Margin="107,32,0,0" />
+        <TextBox IsReadOnly="True" Padding="4" Text="{Binding Fecha_cita}" Margin="319,32,0,0" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+
+        <TextBox IsReadOnly="True" Padding="4" Text="{Binding Usuario_registra}" Margin="99,63,0,0" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+        <TextBox IsReadOnly="True" TextWrapping="Wrap" Padding="4" Text="{Binding Observaciones_cita}"  HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10,115,0,0" Height="79" Width="418" VerticalScrollBarVisibility="Auto"/>
+        <Label Content="Estudios" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,199,0,0"/>
+
+        <telerik:RadGridView Name="gridestudios" HorizontalAlignment="Left" Margin="10,230,0,0" VerticalAlignment="Top" Width="418" Height="125" ShowGroupPanel="False" ShowColumnFooters="False" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" ItemsSource="{Binding Listaestudios}">
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Codigo" DataMemberBinding="{Binding Codigoestudio}"/>
+                <telerik:GridViewDataColumn Header="Examen" DataMemberBinding="{Binding Nombreestudio}"/>
+                <telerik:GridViewDataColumn Header="Hora Cita" DataMemberBinding="{Binding Horacita}"/>
+                <telerik:GridViewDataColumn Header="E" DataMemberBinding="{Binding Estadoestudio}"/>
+                <telerik:GridViewDataColumn Header="Precio" DataMemberBinding="{Binding Precioestudio}"/>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+    </Grid>
+</UserControl>

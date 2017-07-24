@@ -1,0 +1,369 @@
+﻿@model SistemaResocentro.ViewModel.CitarCartaViewModel
+
+@{
+    Layout = null;
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+
+}
+<link href="~/js/chosen/chosen.bootstrap.css" rel="stylesheet" />
+<script src="~/js/chosen/chosen.jquery.min.js"></script>
+
+<script src="~/js/Datetime/moment.js"></script>
+<script src="~/js/Datetime/moment-with-locales.js"></script>
+<script src="~/js/Datetime/bootstrap-datetimepicker.js"></script>
+<link href="~/css/Datetime/bootstrap-datetimepicker.css" rel="stylesheet" />
+<script src="~/js/validar-input.js"></script>
+<script type="text/javascript">
+    var $estudio_select = "";
+    var cita_estudios_tabla = [@foreach (var est in Model.estudios){<text>['@est.ESTUDIO.nombreestudio', '@est.precioestudio', '', '<button type="button" class="btn btn-blue" onclick="getHorario(' +@est.codigoestudio +')">Cambiar</button>'],</text>}];
+    var cita_estudios = [@foreach (var est in Model.estudios){<text>{ codigoestudio: '@est.codigoestudio', codigoclase: '@est.codigoclase', nombreestudio: '@est.ESTUDIO.nombreestudio', codigomoneda: '@est.codigomoneda', precioestudio: '@est.precioestudio', codigoequipo: '', equipo: '', idhorario: '', horacita: 'Cambiar' },</text>}];
+
+    $(function () {
+
+
+        $("#div-turno").hide();
+
+        $("._cbo2").chosen({ width: "100%" });
+
+        $(".table-estudio").DataTable({
+            "data": cita_estudios_tabla,
+            "dom": 'rt',
+            "searching": false,
+            "paging": false,
+            "columns": [
+                { "name": "Estudio" },
+                { "name": "Precio" },
+                { "name": "Equipo" },
+                { "name": "Horario" }
+            ],
+            "destroy": true
+        });
+
+        $('#fecha_cita').datetimepicker({
+            sideBySide: true,
+            locale: 'es',
+            format: 'DD/MM/YYYY',
+            defaultDate: "@DateTime.Now.AddDays(1).ToString("yyyy/MM/dd")",
+            minDate: '@DateTime.Now.ToString("yyyy/MM/dd")'
+        });
+
+        $("#fecha_cita").on("dp.change", function (e) {
+            cargarturnos(e.date.format("MM/DD/YYYY"), $estudio_select);
+        })
+
+        $(".lst-checkbox input:checkbox").each(function () {
+            $(this).on('change', function () {
+                var div_cont = $(this).parents(".col-md-6").first();
+                if ($(this).is(":checked"))
+                    div_cont.addClass("bg-danger");
+                else
+                    div_cont.removeClass("bg-danger");
+            });
+        });
+    });
+
+    function cargarTurno() {
+        var fecha = $("#fecha_cita>input").val().split("/");
+        cargarturnos(fecha[1] + "/" + fecha[0] + "/" + fecha[2], $estudio_select);
+    }
+
+    function getHorario(estudio) {
+        $estudio_select = estudio;
+        var fecha = $("#fecha_cita>input").val().split("/");
+        cargarturnos(fecha[1] + "/" + fecha[0] + "/" + fecha[2], $estudio_select);
+    }
+    function setHorario(idhorario, idequipo, hora, equipo) {
+        for (var i = 0; i < cita_estudios.length; i++) {
+            if (cita_estudios[i].codigoestudio == $estudio_select) {
+                cita_estudios[i].horacita = hora;
+                cita_estudios[i].idhorario = idhorario;
+                cita_estudios[i].equipo = equipo;
+                cita_estudios[i].codigoequipo = idequipo;
+            }
+        }
+        actualizartabla();
+        //$("#div-turno").hide();
+
+    }
+
+    function actualizartabla() {
+        cita_estudios_tabla = [];
+        for (var i = 0; i < cita_estudios.length; i++) {
+            cita_estudios_tabla.push([
+                cita_estudios[i].nombreestudio,
+                cita_estudios[i].precioestudio,
+                cita_estudios[i].equipo,
+                '<button type="button" class="btn btn-blue" onclick="getHorario(' + cita_estudios[i].codigoestudio + ')">' + cita_estudios[i].horacita + '</button>',
+            ]);
+        }
+        $(".table-estudio").DataTable({
+            "data": cita_estudios_tabla,
+            "searching": false,
+            "paging": false,
+            "columns": [
+                { "name": "Estudio" },
+                { "name": "Precio" },
+                { "name": "Equipo" },
+                { "name": "Horario" },
+            ],
+            "destroy": true
+        });
+    }
+    function cargarturnos(fecha, estudio) {
+        var _newfec_tb1 = fecha.replace("/", "%2F").replace("/", "%2F");
+        var sede = $("#idsede").val();
+
+        $("#list-horario").load("/CitaMedica/ListaTurnos?codigoestudio=" + estudio + "&fecha=" + _newfec_tb1 + "&idsede=" + sede, function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+            else
+                $("#div-turno").show();
+        });
+    }
+
+    function registrarCita() {
+        if (validar_form('div-cita-carta'))
+            if (validar_horario()) {
+                var _fecha = $("#fecha_cita>input").val().split("/");
+                var cita = {
+                    codigopaciente: '@Model.cita.PACIENTE.codigopaciente',
+                    citavip: $("#cita_citavip").is(":checked"),
+                    sedacion: $("#cita_sedacion").is(":checked"),
+                    claustrofobico: $("#cita_claustrofobico").is(":checked"),
+                    ampliatorio: $("#cita_ampliatorio").is(":checked"),
+                    observacion: $("#cita_observacion").val(),
+                    fechareserva: _fecha[1] + "-" + _fecha[0] + "-" + _fecha[2],
+                    @if (Model.cita.CLINICAHOSPITAL != null){<text>codigoclinica: '@Model.cita.CLINICAHOSPITAL.codigoclinica',
+                    codigozona: '@Model.cita.CLINICAHOSPITAL.codigozona',</text>}else{<text>codigoclinica: $("#cita_codigoclinica").val(),</text>}
+                    codigocartagarantia: '@Model.carta.codigocartagarantia',
+                    cmp: '@Model.carta.cmp',
+                    codigocompaniaseguro: '@Model.carta.codigocompaniaseguro',
+                    ruc: '@Model.carta.ruc',
+                    codigomodalidad: '1',
+                    codigounidad: '1',
+                    montototal: 0,
+                    categoria: $("#cita_categoria").val()
+                }
+                var ecita = [];
+
+                for (var i = 0; i < cita_estudios.length; i++) {
+
+                    ecita.push({
+                        numerocita:cita_estudios[i].idhorario,
+                        codigopaciente: '@Model.cita.PACIENTE.codigopaciente',
+                        horacita: cita_estudios[i].horacita,
+                        precioestudio: cita_estudios[i].precioestudio,
+                        codigocompaniaseguro: '@Model.carta.codigocompaniaseguro',
+                        ruc: '@Model.carta.ruc',
+                        codigoequipo: cita_estudios[i].codigoequipo,
+                        codigoestudio: cita_estudios[i].codigoestudio,
+                        codigoclase: cita_estudios[i].codigoclase,
+                        codigomodalidad: cita_estudios[i].codigoestudio.substring(3, 2),
+                        codigounidad: cita_estudios[i].codigoestudio.substring(0, 1),
+                        estadoestudio: 'C',
+                        codigomoneda: cita_estudios[i].codigomoneda
+                    });
+                    cita.codigomodalidad= cita_estudios[i].codigoestudio.substring(3, 2);
+                    cita.codigounidad= cita_estudios[i].codigoestudio.substring(0, 1);
+                    console.log(cita_estudios[i].nombreestudio);
+                }
+                $.ajax({
+                    url: '/CitaMedica/RegistrarCitaCarta',
+                    data: { p1: JSON.stringify(cita, null, ""), p2: JSON.stringify(ecita, null, "") },
+                    dataType: "json",
+                    type: "POST",
+                    success: function () {
+                        $("#modalCitarCarta").modal('hide');
+                        toastr.success("Se registró la Cita correctamente para el dia " + $("#fecha_cita>input").val(), "Éxito", opts);
+                    },
+                    error: function () {
+                        toastr.error("No se puedo guardar la Cita", "Error", opts);
+                    }
+
+
+                });
+            }
+
+
+    }
+    function validar_horario() {
+        var result = true;
+        var horacita = [];
+        var sedacion = $("#cita_sedacion").is(":checked");
+        for (var i = 0; i < cita_estudios.length; i++) {
+
+            if (cita_estudios[i].horacita == 'Cambiar') {
+                toastr.error("El estudio de " + cita_estudios[i].nombreestudio + " deben tener una hora asignada", "Error", opts);
+                result = false;
+            }
+            else {
+                if (horacita.indexOf(cita_estudios[i].horacita) == -1) {
+                    horacita.push(cita_estudios[i].horacita);
+                    $.ajax({
+                        cache: false,
+                        async: false,
+                        url: '/CitaMedica/VerificarTurnoCita',
+                        data: { fecha: $("#fecha_cita>input").val() + " " + cita_estudios[i].horacita, idequipo: cita_estudios[i].codigoequipo },
+                        dataType: "json",
+                        type: "POST",
+                        success: function (data) {
+                            result = data;
+                            if (!data) {
+                                cita_estudios[i].horacita = "Cambiar";
+                                cita_estudios[i].idhorario = "";
+                                cita_estudios[i].equipo = "";
+                                cita_estudios[i].idequipo = "";
+                                toastr.error("El turno seleccionado esta ocupado para el estudio de " + cita_estudios[i].nombreestudio, "Error", opts);
+                            }
+                        },
+                        error: function () {
+                            toastr.error("No se verificó el turno", "Error", opts);
+                        }
+                    });
+                } else {
+                    cita_estudios[i].horacita = "Cambiar";
+                    cita_estudios[i].idhorario = "";
+                    cita_estudios[i].equipo = "";
+                    cita_estudios[i].idequipo = "";
+                    toastr.error("El estudio de " + cita_estudios[i].nombreestudio + " tiene la hora más de una vez", "Error", opts);
+                    result = false;
+                }
+            }
+
+            console.log(cita_estudios[i].nombreestudio);
+        }
+        actualizartabla();
+        return result;
+    }
+
+
+</script>
+
+
+<div class="modal-header modal-primary">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Registrar Cita</h4>
+</div>
+
+<div class="modal-body " id="div-cita-carta">
+    <div class="row">
+        <div class="col-md-12 bg-info">
+            <div class="form-group">
+                <h4>Paciente: </h4>
+                <h2>@Model.cita.PACIENTE.apellidos, @Model.cita.PACIENTE.nombres</h2>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="form-group">
+                <label>Aseguradora:</label>
+                <h4>@Html.DisplayFor(modelItem => modelItem.cita.COMPANIASEGURO.descripcion, new { @class = "form-control" })</h4>
+            </div>
+            @if (Model.cita.CLINICAHOSPITAL != null)
+            {
+                <div class="form-group">
+                    <label>Procedencia:</label>
+                    <h4>@Html.DisplayFor(modelItem => modelItem.cita.CLINICAHOSPITAL.razonsocial, new { @class = "form-control" })</h4>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label class="control-label ">Procedencia:</label>
+                    <div class="">
+                        @Html.DropDownListFor(model => model.cita.codigoclinica, (SelectList)ViewBag.Clinica, "- Seleccione Procedencia-", htmlAttributes: new { @class = "form-control _cbo2 validar" })
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                <label>Médico Tratante:</label>
+                <h4>@Html.DisplayFor(modelItem => modelItem.medico.apellidos, new { @class = "form-control" }), @Html.DisplayFor(modelItem => modelItem.medico.nombres, new { @class = "form-control" })</h4>
+            </div>
+            <div class="form-group">
+                <label>Sede:</label>
+                @*<div>@Html.DisplayFor(modelItem => modelItem.sede, new { @class = "form-control" })</div>*@
+                <div>@Html.DropDownListFor(model => model.idsede, (SelectList)ViewBag.UnidadNegocio, "- Seleccione Procedencia-", htmlAttributes: new { @class = "form-control _cbo2 validar", @onchange = "cargarTurno();" })</div>
+            </div>
+            <div class="form-group">
+                <label>Categoria:</label>
+                <div>@Html.DropDownListFor(model => model.cita.categoria, (SelectList)ViewBag.Categoria, "- Seleccione Categoria-", htmlAttributes: new { @class = "form-control _cbo2 validar"})</div>
+            </div>
+            <div class="form-group">
+                <label>Observaciones:</label>
+                <div>@Html.TextAreaFor(modelItem => modelItem.cita.observacion, new { @row = "3", @class = "form-control", @placeholder = "Ingrese sus observaciones o comentarios" }) </div>
+            </div>
+            <div class="form-group">
+                <label>Indicaciones:</label>
+                <div class="form-group fa-lg lst-checkbox">
+                    <div class="col-md-6">
+                        <label class="checkbox-inline" style="padding:5px 5px 5px 30px">
+                            @Html.CheckBoxFor(modelItem => modelItem.cita.sedacion)<i class="fa fa-tint"></i> Sedacion
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="checkbox-inline " style="padding:5px 5px 5px 30px">
+                            @Html.CheckBoxFor(modelItem => modelItem.cita.sedacion)
+                            <span class="fa-stack fa-lg" style="height:17px!important;width:0.7em!important;">
+                                <i class="fa fa-square-o fa-stack-2x" style="font-size:1em!important"></i>
+                                <i class="fa fa-child fa-stack-1x" style="font-size:16px!important;line-height:1em!important;"></i>
+                            </span> Claustrofóbico
+
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group fa-lg lst-checkbox">
+                    <div class="col-md-6">
+                        <label class="checkbox-inline" style="padding:5px 5px 5px 30px">
+                            @Html.CheckBoxFor(modelItem => modelItem.cita.citavip)<i class="fa fa-star"></i> Vip
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="checkbox-inline" style="padding:5px 5px 5px 30px">
+                            @Html.CheckBoxFor(modelItem => modelItem.cita.ampliatorio)<i class="fa fa-copy fa-flip-horizontal"></i> Ampliación
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <table class="table table-bordered table-striped table-hover table-estudio">
+                    <thead>
+                        <tr>
+                            <th>Estudio</th>
+                            <th>Precio</th>
+                            <th>Equipo</th>
+                            <th>Horario</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div id="div-turno" class="col-md-5">
+            <div class="form-group">
+                <label>Fecha de Cita</label>
+                <div id="fecha_cita" class='input-group date'>
+                    <input type="text" class=" form-control" />
+                    <span class="input-group-addon btn-blue">
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                </div>
+                <div id="list-horario">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+    <button type="button" class="btn btn-success" onclick="registrarCita(@Model.sede)">Guardar</button>
+</div>

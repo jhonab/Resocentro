@@ -1,0 +1,475 @@
+﻿@model Encuesta.ViewModels.Sedacion.SedacionExamenViewModel
+
+@{
+    ViewBag.Title = "<i class='fa fa-flask '></i> Sedación";
+    ViewBag.Titlenot = "Sedación";
+}
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="~/js/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#msj").fadeOut()//ocultar el msj
+        $("#div-error").hide();
+        /*VIP*/
+        @if (Model.examen.ATENCION.CITA.citavip)
+        {
+            <text>
+        $("#modal_paciente").append('<i class="fa fa-star fa-lg fa-spin" style="color: #F8DB07;"></i>');
+        </text>
+        }
+
+        $('#table_estudios').dataTable({
+            //"columnDefs": [
+            // { "targets": [2], "searchable": false },
+            //{ "targets": [3], "searchable": false },
+
+            //]
+        });
+
+    });
+    function visibleTipoError() {
+        var isaplicado = $("#chkisAplicado").prop('checked');
+        if (isaplicado)
+            $("#div-error").show();
+        else
+            $("#div-error").hide();
+    }
+
+    function agregarInsumo(idsedacion, id_sedacion) {
+        $('#hiddencontraste').val(idsedacion);
+        $('#hiddeninsumo').val(id_sedacion);
+        $('#lblStock').html("");
+        $('#txtcantidad').val("");
+        $.ajax({
+            url: "@Url.Action("getListaFrascos", "RealizarSedacion")",
+            data: { idinsumo: id_sedacion , almacen : @Model.examen.codigoestudio.Substring(0,3)},
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                alert("error");
+            },
+            success: function (data) {
+                var items = "";
+
+                items += "<option value='' >- Seleccionar Item -</option>";
+                $.each(data, function (i, item) {
+                    items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                });
+
+                $("#lstFrasco").html(items);
+
+            }
+        });
+        $('#RegistrarContrasteModal').modal('show');
+    }
+    function eliminarInsumo(id) {
+
+        $.ajax({
+            url: "@Url.Action("EliminarInsumo", "RealizarSedacion")",
+            data: { nco: id },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+            },
+            success: function (data) {
+                if (data.result)
+                    mostrarTecnica(@Model.sedacion.idsedacion);
+            }
+        });
+    }
+    function mostrarTecnica(idsedacion) {
+        $("#partialListInsumo").load('@Url.Action("ListarInsumos", "RealizarSedacion")' + '?idsedacion=' + idsedacion)
+    }
+
+   
+</script>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h2 class="box-title">Registrar Contraste </h2>
+            </div>
+            <div class="box-body chart-responsive">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    Datos Examen
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-lg-6">
+                                        @Html.Partial("_DatosExamen", Model.examen)
+                                    </div>
+                                    <div class="col-lg-6">
+                                        @Html.Partial("_DatosPaciente", Model.paciente)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-primary">
+
+                                <div class="panel-heading">
+                                    Registro Sedación
+                                </div>
+                                <div class="panel-body">
+
+                                    <div class="row">
+
+                                        <div class="col-lg-6">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Motivo de Sedación
+                                                </div>
+                                                <div class="panel-body">
+                                                    <script type="text/javascript">
+                                                        $(document).ready(function () {
+                                                            mostrarDiv();
+                                                            $("#motivosedacion").change(mostrarDiv);
+                                                        });
+
+                                                        function mostrarDiv() {
+                                                            /*sedacion*/
+                                                            if ($('#motivosedacion').val() == "Otros")
+                                                                $("#motivo_otros").show();
+                                                            else
+                                                                $("#motivo_otros").hide();
+
+                                                        }
+                                                    </script>
+                                                    <div class="form-group">
+                                                        @Html.HiddenFor(model => model.idsedacion)
+                                                        <label>Motivo Sedación: </label>
+                                                        @Html.DropDownListFor(model => model.motivosedacion, (SelectList)ViewBag.motivo_sedacion, "- Seleccione el Motivo de Sedación -", new { @class = "form-control" })
+                                                        @Html.TextBoxFor(x => x.motivo_otros, new { @class = "form-control", @placeholder = "Ingrese el motivo" })
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Tipo Sedación: </label>
+                                                        @Html.DropDownListFor(model => model.tiposedacion, (SelectList)ViewBag.tipo_sedacion, "- Seleccione el Tipo de Sedación -", new { @class = "form-control" })
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Validación de Sedación
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label>Consentimiento: </label>
+                                                        @Html.TextBoxFor(model => model.consentimiento, new { @class = "form-control", @placeholder = "Ingrese Código" })
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+
+                              
+                                            @*<div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Sedación
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label>Inicio Sedación: </label>
+                            @Html.TextBoxFor(x => x.fec_ini, new { @class = "form-control", @type = "time" })
+
+                        </div>
+                        <div class="form-group">
+                            <label>Fin Sedación: </label>
+                            @Html.TextBoxFor(x => x.fec_fin, new { @class = "form-control", @type = "time" })
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>*@
+                                        </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Registro Fármacos
+                                                </div>
+                                                <div class="panel-body">
+                                                    @*<div class="alert" id="msj">
+                                                    </div>*@
+                                                    @*<div class="row">
+                                                        <div class="col-lg-3">
+
+                                                            <div class="form-group">
+                                                                <label>Erroneo: </label>
+                                                                <input type="checkbox" id="chkisAplicado" />
+                                                            </div>
+                                                        </div>
+                                                    </div>*@
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="panel-group" id="accordion" style="font-size: smaller!important">
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        <h4 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Lista de Fármacos  </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                                                        <div class="panel-body">
+                                                                            <table class="table table-striped table-bordered table-hover" id="table_estudios">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Insumo</th>
+                                                                                        @*<th>Forma</th>
+                                                                                            <th>Unidad</th>*@
+                                                                                        <th style="text-align:center;width:40px;"></th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    @foreach (var item in (List<Encuesta.ViewModels.Sedacion.Sedacion_Insumo>)ViewBag.tecnicas)
+                                                                                    {
+                                                                                        <tr>
+                                                                                            <td style="padding: 1px!important">@Html.DisplayFor(modelItem => item.nom_sedacion)</td>
+                                                                                            @*<td style="padding: 1px!important">@Html.DisplayFor(modelItem => item.forma_presentacion)</td>
+                                                                                                <td style="padding: 1px!important">@Html.DisplayFor(modelItem => item.unidad_medida)</td>*@
+                                                                                            <td class="table_id" style="padding: 1px!important">
+                                                                                                <button type="button" class="btn btn-info btn-circle" onclick="agregarInsumo('@Model.sedacion.idsedacion','@item.idsedacion ')"><i class="fa fa-check"></i></button>
+                                                                                            </td>
+
+
+                                                                                        </tr>
+                                                                                    }
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="panel-group" id="accordion1" style="font-size: smaller!important">
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        <h4 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion1" href="#collapsetwo">Insumos ingresados</a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="collapsetwo" class="panel-collapse collapse in">
+                                                                        <div class="panel-body">
+                                                                            <button type="button" class="btn btn-outline btn-primary btn-xs" onclick="mostrarTecnica('@Model.idsedacion')"><i class="fa fa-binoculars"></i>Mostrar</button>
+                                                                            <div id="partialListInsumo">
+                                                                                @Html.Partial("_ListInsumos", Model.insumos)
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="text-align: center;">
+                        <script type="text/javascript">
+                            function validar() {
+
+                                var msj = "";
+                                if ($('#motivosedacion').val() == "")
+                                    msj += "- Seleccione el motivo de sedación\n";
+                                else if ($('#motivosedacion').val() == "Otros" && $('#motivo_otros').val() == "")
+                                    msj += "- Ingrese el motivo de sedación\n";
+                                else { }
+
+                                if ($('#tiposedacion').val() == "")
+                                    msj += "- Seleccione el Tipo de sedación\n";
+
+                                //if ($('#fec_ini').val() == "")
+                                //    msj += "- Ingrese la Hora de Inicio\n";
+
+                                //if ($('#fec_fin').val() == "")
+                                //    msj += "- Ingrese la Hora de Fin\n";
+
+                                if (msj == "")
+                                    return true;
+                                else {
+                                    alert(msj);
+                                    return false;
+                                }
+                            }
+                        </script>
+                        <input type="submit" class="btn btn-success" onclick="return validar()" value="Registrar" />
+                        <a href='@Url.Action("ListaEspera")' class="btn btn-primary">Regresar a la Lista</a>
+                    </p>
+                    @*<p style="text-align: right;">
+                        <a href="@Url.Action("Delete", new {id=Model.idsedacion })" class="btn btn-danger">Eliminar Solicitud de  Validación</a>
+                    </p>*@
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" id="+">
+
+    function validarContraste() {
+
+        var cant = $("#txtcantidad").val();
+        var idfrasco = $("#lstFrasco").val();
+        var frasco_s = $("#lstFrasco option:selected").html();
+        if (cant != "" && frasco_s != "") {
+            $.ajax({
+                url: "@Url.Action("getValidacionSedacion", "RealizarSedacion")",
+                data: { frasco: frasco_s, stock: idfrasco, cantidad: cant },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+                },
+                success: function (data) {
+
+                    if (data.result == true) {
+                        guardarContraste();
+                    }
+                    else {
+                        mostrarmensaje(4, 'Solo hay disponible ' + data.faltante + ' ' + data.medida + ' del frasco seleccionado');
+                    }
+                }
+            });
+        } else {
+            $("#txtcantidad").focus();
+            mostrarmensaje(4, 'Ingrese la cantidad que uso y el frasco');
+        }
+
+    }
+
+    function ConsultarStock(int ) {
+        var idfrasco = $("#lstFrasco").val();
+        var frasco_s = $("#lstFrasco option:selected").html();
+        $.ajax({
+            url: "@Url.Action("getStockSedacion", "RealizarSedacion")",
+            data: { frasco: frasco_s, stock: idfrasco },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+            },
+            success: function (data) {
+                $("#lblStock").html(data);
+            }
+        });
+    }
+
+    function guardarContraste() {
+
+        var cant = $("#txtcantidad").val();
+        var frasco = $("#lstFrasco option:selected").html();
+        var error = $("#tipoerror").val();
+        var idsedacion = $('#hiddencontraste').val();
+        var idinsumo = $('#lstFrasco').val();
+        var isaplicado = $("#chkisAplicado").prop('checked');
+        if (cant != "" && frasco != "") {
+            if (isaplicado && error == "") {
+                mostrarmensaje(4, 'Seleccione el tipo de error');
+            } else {
+                $.ajax({
+                    url: "@Url.Action("IngresarInsumo", "RealizarSedacion")",
+                    data: { sedacion: idsedacion, insumo: idinsumo, cant: cant, isaplicado: isaplicado, lote: frasco, error : error },
+                    dataType: "json",
+                    type: "POST",
+                    error: function () {
+                        mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+                    },
+                    success: function (data) {
+                        if (data.result) {
+                            mostrarTecnica(idsedacion);
+                            $("#txtcantidad").val("");
+                            $("#lstFrasco option:selected").html();
+                            $("#chkisAplicado").prop('checked', false);
+                            $("#tipoerror").val("");
+                            $('#RegistrarContrasteModal').modal('hide');
+                        }
+                    }
+                });
+            }
+        } else {
+            $("#txtcantidad").focus();
+            mostrarmensaje(4, 'Ingrese la cantidad que uso y el frasco');
+        }
+    }
+</script>
+<div class="modal" id="RegistrarContrasteModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="RegistrarContrasteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="AsignarModalLabel">Registrar Insumo</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="alert" id="msj">
+                    </div>
+                    <div class="col-md-6" style="display:none">
+                        <div class="form-group">
+                            <input type="hidden" id="hiddencontraste" />
+                            <input type="hidden" id="hiddeninsumo" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Cantidad: </label>
+                            <input type="number" step="any" class="form-control" id="txtcantidad" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>N° Frasco: </label>
+                            <select id="lstFrasco" class="form-control" onchange="ConsultarStock()"></select>
+                            <input type="hidden" class="form-control" id="txtlote" />
+                        </div>
+                        <div class="form-group">
+                            <label id="lblStock"> </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <br />
+                            <label>Aplicación Erronea: </label>
+
+                            <input type="checkbox" id="chkisAplicado" onchange="visibleTipoError()" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" id="div-error">
+
+                            <label>Tipo de Error: </label>
+                            @Html.DropDownListFor(model => model.tipoerror, (SelectList)ViewBag.Error, "Seleccione el tipo de Error", new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="validarContraste()">Registrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

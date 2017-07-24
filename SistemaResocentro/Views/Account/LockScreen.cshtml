@@ -1,0 +1,154 @@
+﻿@model SistemaResocentro.Models.USUARIO
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Neon Admin Panel" />
+    <meta name="author" content="" />
+
+    <title>Resocentro | LockScreen</title>
+    <link href="~/fonts/entypo/css/entypo.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/neon-theme.css" rel="stylesheet" />
+    <link href="~/css/neon-core.css" rel="stylesheet" />
+    <link href="~/css/blue.css" rel="stylesheet" />
+    <script src="~/js/jquery-1.11.0.min.js"></script>
+    <!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+</head>
+<body class="page-body login-page is-lockscreen login-form-fall loaded login-form-fall-init">
+    @{ SistemaResocentro.Member.CustomMembershipUser user = Membership.GetUser(true) as SistemaResocentro.Member.CustomMembershipUser;
+     var oRuta = "http://extranet.resocentro.com:5050/PaginaWeb/Perfiles/";  }
+    <!-- This is needed when you send requests via Ajax -->
+    <script type="text/javascript">
+    var baseurl = '';
+    var _viewbag = '@ViewBag.ReturnUrl';
+    var _siglas = '@user.siglas';
+    $(function () {
+        @if(!user.bloqueado){
+            <text>
+        if (_viewbag == "") {
+            window.location.assign("@Url.Action("Index","Home")");
+            }else
+            {
+                window.location.assign(_viewbag);
+            }
+            </text>
+              }
+    });
+    </script>
+    <div class="login-container">
+
+        <div class="login-header">
+
+            <div class="login-content">
+
+                <a href="index.html" class="logo">
+                    <img src="~/images/logo/Logo.png" style="width:100%" alt="" />
+                </a>
+                <p class="description">@user.UserName, ingresa tu contraseña para desbloquear.</p>
+                <!-- progress bar indicator -->
+                <div class="login-progressbar-indicator">
+                    <h3>0%</h3>
+                    <span>Logging in...</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="login-form">
+
+            <div class="login-content">
+
+                <div class="form-login-error">
+                    <h3>Login Incorrecto</h3>
+                    @Html.ValidationMessageFor(m => m.codigousuario)
+                </div>
+
+                <form method="post" role="form" id="form_lockscreen">
+                    <div class="form-group lockscreen-input">
+
+                        <div class="lockscreen-thumb">
+                            @if (user.pathBuddy)
+                            {
+                                oRuta = oRuta + user.ProviderUserKey.ToString() + ".png";
+
+                                <img src="@oRuta" alt="@user.UserName" width="150" height="147" class="img-circle">
+                            }
+                            else
+                            {
+                                if (user.Comment == "M")
+                                {
+                                    oRuta = oRuta + "hombre.png";
+                                }
+                                else
+                                {
+                                    oRuta = oRuta + "mujer.png";
+                                }
+
+                                <img src="@oRuta" alt="@user.UserName" width="150" height="147" class="img-circle">
+
+
+
+                            }
+                            <div class="lockscreen-progress-indicator">0%</div>
+                            <canvas width="100" height="100"></canvas>
+                        </div>
+
+                        <div class="lockscreen-details">
+                            <h4>@user.UserName</h4>
+                            <span data-login-text="Logging in...">Logged off</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="entypo-key"></i>
+                            </div>
+                            @Html.PasswordFor(model => model.codigousuario, new { @class = "form-control", @placeholder = "Contraseña", @autocomplete = "off" })
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block btn-login">
+                            <i class="entypo-login"></i>
+                            Login In
+                        </button>
+                    </div>
+                </form>
+                <div class="login-bottom-links">
+
+                    <a href="@Url.Action("Logout","Account")" class=" link">Ingrese con una cuenta diferente <i class="entypo-right-open"></i></a>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bottom Scripts -->
+    <script src="~/js/gsap/main-gsap.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/neon-api.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/neon-login.js"></script>
+
+
+</body>
+</html>

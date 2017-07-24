@@ -1,0 +1,284 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.frmHistoriaPaciente"
+    xmlns:styleSelector="clr-namespace:Resocentro_Desktop.Complemento"
+        Title="Historia de Paciente | Resocentro" Height="692" Width="1032" Background="{DynamicResource Windows.Background}"  Foreground="White" Icon="../img/favicon.png">
+    <Window.Resources>
+        <styleSelector:SeleccionCita x:Key="keySelCita">
+            <styleSelector:SeleccionCita.nseleccionado>
+                <Style TargetType="telerik:GridViewRow">
+
+                </Style>
+            </styleSelector:SeleccionCita.nseleccionado>
+            <styleSelector:SeleccionCita.seleccionado>
+                <Style TargetType="telerik:GridViewRow">
+                    <Setter Property="Background" Value="#FF84BDF7" />
+                </Style>
+            </styleSelector:SeleccionCita.seleccionado>
+        </styleSelector:SeleccionCita>
+        <styleSelector:SeleccionAdmision x:Key="keySelAdmision">
+            <styleSelector:SeleccionAdmision.nseleccionado>
+                <Style TargetType="telerik:GridViewRow">
+
+                </Style>
+            </styleSelector:SeleccionAdmision.nseleccionado>
+            <styleSelector:SeleccionAdmision.seleccionado>
+                <Style TargetType="telerik:GridViewRow">
+                    <Setter Property="Background" Value="#FF84BDF7" />
+                </Style>
+            </styleSelector:SeleccionAdmision.seleccionado>
+        </styleSelector:SeleccionAdmision>
+        <styleSelector:SeleccionPago x:Key="keySelPago">
+            <styleSelector:SeleccionPago.nseleccionado>
+                <Style TargetType="telerik:GridViewRow">
+
+                </Style>
+            </styleSelector:SeleccionPago.nseleccionado>
+            <styleSelector:SeleccionPago.seleccionado>
+                <Style TargetType="telerik:GridViewRow">
+                    <Setter Property="Background" Value="#FF84BDF7" />
+                </Style>
+            </styleSelector:SeleccionPago.seleccionado>
+        </styleSelector:SeleccionPago>
+        <styleSelector:SeleccionAdquision x:Key="keySelAdquision">
+            <styleSelector:SeleccionAdquision.nseleccionado>
+                <Style TargetType="telerik:GridViewRow">
+
+                </Style>
+            </styleSelector:SeleccionAdquision.nseleccionado>
+            <styleSelector:SeleccionAdquision.seleccionado>
+                <Style TargetType="telerik:GridViewRow">
+                    <Setter Property="Background" Value="#FF84BDF7" />
+                </Style>
+            </styleSelector:SeleccionAdquision.seleccionado>
+        </styleSelector:SeleccionAdquision>
+        <styleSelector:SeleccionCarta x:Key="keySelCarta">
+            <styleSelector:SeleccionCarta.nseleccionado>
+                <Style TargetType="telerik:GridViewRow">
+
+                </Style>
+            </styleSelector:SeleccionCarta.nseleccionado>
+            <styleSelector:SeleccionCarta.seleccionado>
+                <Style TargetType="telerik:GridViewRow">
+                    <Setter Property="Background" Value="#FF84BDF7" />
+                </Style>
+            </styleSelector:SeleccionCarta.seleccionado>
+        </styleSelector:SeleccionCarta>
+    </Window.Resources>
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="20" Height="Auto"/>
+            <RowDefinition Height="151*" />
+            <RowDefinition Height="2" />
+            <RowDefinition Height="151*"/>
+            <RowDefinition Height="2" />
+            <RowDefinition Height="151*"/>
+        </Grid.RowDefinitions>
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="170"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="170"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="96"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto" MinWidth="73"/>
+                    <ColumnDefinition Width="66"/>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="66"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Apellidos:" VerticalContentAlignment="Center" Foreground="#FFCFCFCF" Padding="0"/>
+                <TextBox x:Name="txtfiltro" Grid.Column="1" TextWrapping="Wrap" Text="" VerticalContentAlignment="Center" Margin="5,0,0,0" KeyDown="txtfiltro_KeyDown" Padding="0" CharacterCasing="Upper" TabIndex="1" FontSize="11"/>
+                <Label Content="Examen:" Grid.Column="9" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Foreground="#FFCFCFCF" Padding="0" Margin="0,0,5,0" />
+                <TextBox x:Name="txtnum_examen" Grid.Column="10" TextWrapping="Wrap" Text="" VerticalContentAlignment="Center" KeyDown="txtnum_examen_KeyDown" HorizontalContentAlignment="Right" Margin="0,0,0,0" Padding="0" TabIndex="5"/>
+                <TextBox Name="txtadmision" Grid.Column="8" TextWrapping="Wrap" Text="" VerticalContentAlignment="Center" KeyDown="txtnum_admision_KeyDown" HorizontalContentAlignment="Right" TabIndex="4" />
+                <Label Content="Admision:  " Grid.Column="7" Padding="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Foreground="#FFCFCFCF" />
+                <Label Content="Nombres:" VerticalContentAlignment="Center" Foreground="#FFCFCFCF" Padding="5,0,0,0" Grid.Column="2" />
+                <TextBox x:Name="txtnombre" Grid.Column="3" TextWrapping="Wrap" Text="" VerticalContentAlignment="Center" Margin="5,0,0,0" KeyDown="txtfiltro_KeyDown" Padding="0" CharacterCasing="Upper" TabIndex="2" FontSize="11"/>
+                <TextBox x:Name="txtDNi"  Grid.Column="5" TextWrapping="Wrap" Text="" TextAlignment="Right" VerticalContentAlignment="Center" KeyDown="txtfiltro_KeyDown" Padding="0" CharacterCasing="Upper" TabIndex="3" Margin="5,0,0,0" />
+                <Label Content="DNI:" Grid.Column="4"  VerticalContentAlignment="Center" Padding="5,0,0,0" Foreground="#FFCFCFCF"  />
+
+
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="202*"/>
+                <ColumnDefinition Width="2"/>
+                <ColumnDefinition Width="239*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label Content="Pacientes" Foreground="White" FontSize="17" Padding="0"/>
+            <Label Content="Citas" Name="lblcitas" Grid.Column="2"  Foreground="White" FontSize="17" Padding="0"/>
+            <telerik:RadGridView Grid.Row="1" x:Name="gridPacientes" ShowGroupPanel="False" IsReadOnly="True" Margin="0,0,2,0" AutoGenerateColumns="False" RowActivated="gridPacientes_RowActivated" RowIndicatorVisibility="Collapsed" FilteringMode="FilterRow" FilterOperatorsLoading="gridPacientes_FilterOperatorsLoading" SelectionUnit="Mixed" SelectionMode="Extended">
+                <telerik:RadGridView.Columns >
+                    <telerik:GridViewImageColumn Header="" DataMemberBinding="{Binding imgProtocolo}" IsFilterable="False"  />
+                    <telerik:GridViewDataColumn  Header="Cod." DataMemberBinding="{Binding codigopaciente}"/>
+                    <telerik:GridViewDataColumn  Header="Apellidos" DataMemberBinding="{Binding apellidos}"/>
+                    <telerik:GridViewDataColumn  Header="Nombres" DataMemberBinding="{Binding nombres}"/>
+                    <telerik:GridViewDataColumn  Header="N° Doc." DataMemberBinding="{Binding dni}"/>
+                    <telerik:GridViewDataColumn  Header="Tel." DataMemberBinding="{Binding telefono}"/>
+                    <telerik:GridViewDataColumn  Header="Cel." DataMemberBinding="{Binding celular}"/>
+                    <telerik:GridViewDataColumn  Header="Email" DataMemberBinding="{Binding email}"/>
+                </telerik:RadGridView.Columns>
+                <telerik:RadContextMenu.ContextMenu>
+                    <telerik:RadContextMenu Opening="RadContextMenuPaciente_Opening" >
+                        <telerik:RadMenuItem Header="Info Paciente" Click="MenuItemInfoPaciente_Click" x:Name="MenuItemInfoPaciente" />
+                        <telerik:RadMenuItem Header="Realizar Cobranza Externa" Click="MenuItemCobranzaExterna_Click" x:Name="MenuItemCobranzaExterna" Visibility="Collapsed" />
+                    </telerik:RadContextMenu>
+                </telerik:RadContextMenu.ContextMenu>
+            </telerik:RadGridView>
+            <GridSplitter Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Stretch" />
+            <telerik:RadGridView Grid.Row="1" x:Name="gridCitas" Grid.Column="2" IsReadOnly="True" Margin="2,0,0,0" AutoGenerateColumns="False"  RowStyleSelector="{StaticResource keySelCita}" ShowGroupPanel="False" RowIndicatorVisibility="Collapsed" RowActivated="gridCitas_RowActivated" EnableLostFocusSelectedState="False" SelectionUnit="Mixed" SelectionMode="Extended" >
+                <telerik:RadGridView.Columns >
+                    <telerik:GridViewDataColumn  Header="U" IsFilterable="False" DataMemberBinding="{Binding empresa}"/>
+                    <telerik:GridViewImageColumn Header="" DataMemberBinding="{Binding imgVip}" Width="20" IsFilterable="False" TextAlignment="Center"  />
+                    <telerik:GridViewImageColumn Header="" DataMemberBinding="{Binding imgSedacion}" Width="20" IsFilterable="False" TextAlignment="Center" />
+                    <telerik:GridViewDataColumn  Header="E" DataMemberBinding="{Binding estado}"/>
+                    <telerik:GridViewDataColumn  Header="Cita" DataMemberBinding="{Binding num_cita}"/>
+                    <telerik:GridViewDataColumn  Header="Fecha Cita" DataMemberBinding="{Binding fecha,StringFormat=\{0:dd/MMM/yy HH:mm\}}"/>
+                    <telerik:GridViewDataColumn  Header="Estudio" DataMemberBinding="{Binding estudio}"/>
+                    <telerik:GridViewDataColumn  Header="Equipo" DataMemberBinding="{Binding equipo}"/>
+                    <telerik:GridViewDataColumn  Header="Precio" DataMemberBinding="{Binding precio}"/>
+                    <telerik:GridViewDataColumn  Header="%Cob." DataMemberBinding="{Binding cobertura}"/>
+                    <telerik:GridViewDataColumn  Header="Clinica" DataMemberBinding="{Binding clinica}"/>
+                    <telerik:GridViewDataColumn  Header="Usu." DataMemberBinding="{Binding usuario}"/>
+                    <telerik:GridViewDataColumn  Header="Fecha Creación" DataMemberBinding="{Binding fechacreacion,StringFormat=\{0:dd/MMM/yy HH:mm\}}" Background="#7F7292E6"/>
+                    <telerik:GridViewDataColumn  Header="Obs." DataMemberBinding="{Binding obs}"/>
+                </telerik:RadGridView.Columns>
+                <telerik:RadContextMenu.ContextMenu>
+                    <telerik:RadContextMenu  Opening="RadContextMenuCita_Opening"  >
+                        <telerik:RadMenuItem Name="MenuContext_cambiarEstadoCita" Header="Cambiar Estado"  Click="MenuItemCambiarEstadoDetalle_Click" Visibility="Collapsed"/>
+                        <telerik:RadMenuItem Name="MenuContext_AsignarCortesia" Header="Asignar Descuento / Cortesia"  Click="MenuItemCortesias_Click" Visibility="Collapsed"/>
+                        <telerik:RadMenuItem  Name="MenuContext_eliminarcita" Header="Eliminar Detalle"  Click="MenuItemDeleteDetalle_Click" Visibility="Collapsed"/>
+                    </telerik:RadContextMenu>
+                </telerik:RadContextMenu.ContextMenu>
+            </telerik:RadGridView>
+        </Grid>
+        <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" />
+        <Grid Grid.Row="3" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="94*"/>
+                <ColumnDefinition Width="2"/>
+                <ColumnDefinition Width="53*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label x:Name="lbladmision" Content="Admisiones"  Foreground="White" FontSize="17" Padding="0"/>
+            <Label x:Name="lblpagos" Content="Pagos" Grid.Column="2"  Foreground="White" FontSize="17" Padding="0"/>
+            <telerik:RadGridView Grid.Row="1" x:Name="gridPagos" Grid.Column="2" IsReadOnly="True" Margin="2,0,0,0" AutoGenerateColumns="False" ShowGroupPanel="False" RowStyleSelector="{StaticResource keySelPago}" RowIndicatorVisibility="Collapsed" RowActivated="gridPagos_RowActivated" EnableLostFocusSelectedState="False" SelectionUnit="Mixed" SelectionMode="Extended">
+                <telerik:RadGridView.Columns >
+                    <telerik:GridViewHyperlinkColumn DataMemberBinding="{Binding pathFile}" Header="" Width="10" />
+                    <telerik:GridViewDataColumn  Header="E" DataMemberBinding="{Binding estado}"/>
+                    <telerik:GridViewDataColumn  Header="Empresa" DataMemberBinding="{Binding empresa}"/>
+                    <telerik:GridViewDataColumn  Header="Documento" DataMemberBinding="{Binding documento}"/>
+                    <telerik:GridViewDataColumn  Header="Número" DataMemberBinding="{Binding numero}"/>
+                    <telerik:GridViewDataColumn  Header="Total" DataMemberBinding="{Binding total}"/>
+
+                    <telerik:GridViewDataColumn  Header="Emisión" DataMemberBinding="{Binding emision,StringFormat=\{0:dd/MM/yyyy HH:mm\}}"  />
+                    <telerik:GridViewDataColumn  Header="Pago" DataMemberBinding="{Binding pago,StringFormat=\{0:dd/MM/yyyy HH:mm\}}"/>
+                </telerik:RadGridView.Columns>
+
+                <telerik:RadContextMenu.ContextMenu>
+                    <telerik:RadContextMenu Name="MenuContext_Pagos" Opening="RadContextMenuPago_Opening"  >
+                        <telerik:RadMenuItem Header="Abrir Carta" Name="MenuItemAbrirPagos" Click="MenuItemAbrirPago_Click"/>
+                    </telerik:RadContextMenu>
+                </telerik:RadContextMenu.ContextMenu>
+            </telerik:RadGridView>
+            <GridSplitter Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Stretch" />
+            <telerik:RadGridView Grid.Row="1" x:Name="gridAtenciones" IsReadOnly="True" Margin="0,0,2,0" AutoGenerateColumns="False" ShowGroupPanel="False" RowStyleSelector="{StaticResource keySelAdmision}" RowIndicatorVisibility="Collapsed" RowActivated="gridAtenciones_RowActivated" EnableLostFocusSelectedState="False" SelectionUnit="Mixed" SelectionMode="Extended">
+                <telerik:RadGridView.Columns >
+                    <telerik:GridViewDataColumn  Header="U" IsFilterable="False" DataMemberBinding="{Binding empresa}"/>
+                    <telerik:GridViewDataColumn  Header="E" DataMemberBinding="{Binding estado}"/>
+                    <telerik:GridViewDataColumn  Header="Ubicacion" DataMemberBinding="{Binding ubicacion}"/>
+                    <telerik:GridViewDataColumn  Header="Fecha" DataMemberBinding="{Binding fecha,StringFormat=\{0:dd/MM/yyyy HH:mm\}}"/>
+                    <telerik:GridViewDataColumn  Header="Atención" DataMemberBinding="{Binding atencion}"/>
+                    <telerik:GridViewDataColumn  Header="Examen" DataMemberBinding="{Binding examen}"/>
+                    <telerik:GridViewDataColumn  Header="Estudio" DataMemberBinding="{Binding estudio}"/>
+                    <telerik:GridViewDataColumn  Header="Aseguradora" DataMemberBinding="{Binding aseguradora}"/>
+                    <telerik:GridViewDataColumn  Header="Prioridad" DataMemberBinding="{Binding prioridad}"/>
+                    <telerik:GridViewDataColumn  Header="TM" DataMemberBinding="{Binding turno}"/>
+                    <telerik:GridViewDataColumn  Header="Médico Refrente" DataMemberBinding="{Binding medico}"/>
+                    <telerik:GridViewDataColumn  Header="Usu." DataMemberBinding="{Binding usuario}"/>
+                </telerik:RadGridView.Columns>
+                <telerik:RadContextMenu.ContextMenu>
+                    <telerik:RadContextMenu Name="MenuContext_Atencion" Opening="RadContextMenuAtencion_Opening"  >
+                        <telerik:RadMenuItem Name="MenuCambiarEstado" Header="Cambiar Estado"  Click="MenuItemCambiarEstadoDetalleAtencion_Click" Visibility="Collapsed"/>
+                        <telerik:RadMenuItem Name="MenuRealizarCobranza" Header="Realizar Cobranza"  Click="MenuItemRealizarCobranza_Click" Visibility="Collapsed"/>
+                        <telerik:RadMenuItem Header="Visualizar Encuesta"  Click="MenuItemEncuesta_Click"/>
+                        <telerik:RadMenuItem Header="Visualizar Adjuntos"  Click="MenuItemAdjunto_Click"/>
+                    </telerik:RadContextMenu>
+                </telerik:RadContextMenu.ContextMenu>
+            </telerik:RadGridView>
+        </Grid>
+        <GridSplitter Grid.Row="4" HorizontalAlignment="Stretch" />
+        <Grid Grid.Row="5" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="545*"/>
+                <ColumnDefinition Width="2"/>
+                <ColumnDefinition Width="337*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label x:Name="lbladquisicion" Content="Adquisiciones"  Foreground="White" FontSize="17" Padding="0"/>
+            <Label x:Name="lblcarta" Content="Cartas" Grid.Column="2"  Foreground="White" FontSize="17" Padding="0"/>
+            <telerik:RadGridView Grid.Row="1" x:Name="gridCartas" Grid.Column="2" IsReadOnly="True" Margin="2,0,0,0" AutoGenerateColumns="False" ShowGroupPanel="False" RowStyleSelector="{StaticResource keySelCarta}" RowIndicatorVisibility="Collapsed" RowActivated="gridCartas_RowActivated" EnableLostFocusSelectedState="False" SelectionUnit="Mixed" SelectionMode="Extended">
+                <telerik:RadGridView.Columns >
+                    <telerik:GridViewDataColumn  Header="U" IsFilterable="False" DataMemberBinding="{Binding empresa}"/>
+                    <telerik:GridViewImageColumn Header="" DataMemberBinding="{Binding imgRevisada}" Width="20" IsFilterable="False" TextAlignment="Center" />
+                    <telerik:GridViewDataColumn  Header="Estado" DataMemberBinding="{Binding estado}"/>
+                    <telerik:GridViewDataColumn  Header="Fecha" DataMemberBinding="{Binding fecha,StringFormat=\{0:dd/MM/yyyy HH:mm\}}"/>
+                    <telerik:GridViewDataColumn  Header="Código Carta" DataMemberBinding="{Binding id}"/>
+                    <telerik:GridViewDataColumn  Header="Número Carta" DataMemberBinding="{Binding id2}"/>
+                    <telerik:GridViewDataColumn  Header="Aseguradora" DataMemberBinding="{Binding aseguradora}"/>
+                    <telerik:GridViewDataColumn  Header="Cobertura" DataMemberBinding="{Binding cobertura}"/>
+                </telerik:RadGridView.Columns>
+
+                <telerik:RadContextMenu.ContextMenu>
+                    <telerik:RadContextMenu Name="MenuContext_Carta" Opening="RadContextMenu_Opening"  >
+                        <telerik:RadMenuItem Header="Abrir Carta" Name="MenuItemAbrirCarta" Click="MenuItemAbrir_Click"/>
+
+                    </telerik:RadContextMenu>
+                </telerik:RadContextMenu.ContextMenu>
+            </telerik:RadGridView>
+            <GridSplitter Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Stretch" />
+            <telerik:RadGridView Grid.Row="1" x:Name="gridAquisicion"  Margin="0,0,2,0" AutoGenerateColumns="False" ShowGroupPanel="False" RowStyleSelector="{StaticResource keySelAdquision}" RowIndicatorVisibility="Collapsed" RowActivated="gridAquisicion_RowActivated" EnableLostFocusSelectedState="False" SelectionUnit="Mixed" SelectionMode="Extended">
+                <telerik:RadGridView.Columns >
+                    <telerik:GridViewDataColumn  Header="U" IsFilterable="False" DataMemberBinding="{Binding empresa}"/>
+                    <telerik:GridViewDataColumn  Header="Examen" DataMemberBinding="{Binding examen}" IsReadOnly="True"/>
+                    <telerik:GridViewDataColumn  Header="Estudio" DataMemberBinding="{Binding estudio}" IsReadOnly="True"/>
+                    <telerik:GridViewDataColumn  Header="Placas" DataMemberBinding="{Binding placas}" IsReadOnly="True"/>
+                    <telerik:GridViewCheckBoxColumn  Header="Sed." DataMemberBinding="{Binding sedacion}" IsReadOnly="False"/>
+                    <telerik:GridViewCheckBoxColumn  Header="Cont." DataMemberBinding="{Binding contraste}" IsReadOnly="False"/>
+                    <telerik:GridViewDataColumn  Header="Equipo" DataMemberBinding="{Binding equipo}" IsReadOnly="True"/>
+                    <telerik:GridViewDataColumn  Header="Fecha" DataMemberBinding="{Binding fecha,StringFormat=\{0:dd/MM/yyyy HH:mm\}}"/>
+                    <telerik:GridViewDataColumn  Header="Tec." DataMemberBinding="{Binding tecnologo}" />
+                    <telerik:GridViewDataColumn  Header="Informa" DataMemberBinding="{Binding informa}"/>
+                    <telerik:GridViewDataColumn  Header="Valida" DataMemberBinding="{Binding revisa}"/>
+                </telerik:RadGridView.Columns>
+                <telerik:RadContextMenu.ContextMenu>
+                    <telerik:RadContextMenu Name="MenuContext_Aquisicion" Opening="RadContextMenuAdquisicion_Opening"  >
+                        <telerik:RadMenuItem Header="Mostrar Detalle" Click="MenuItemDetalleAdquisicion_Click"/>
+                    </telerik:RadContextMenu>
+                </telerik:RadContextMenu.ContextMenu>
+            </telerik:RadGridView>
+        </Grid>
+
+    </Grid>
+</Window>

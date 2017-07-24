@@ -1,0 +1,393 @@
+﻿@model IEnumerable<Encuesta.ViewModels.Supervisor.RevisionCalificacion>
+
+@{
+    ViewBag.Title = "<i class='fa fa-tint '></i> Listado de Calificaciones";
+    ViewBag.Titlenot = "Listado de Calificaciones";
+}
+
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<style>
+    .table > caption + thead > tr:first-child > td, .table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > td, .table > thead:first-child > tr > .bg-blue {
+        background: #7cbdeb !important;
+    }
+
+    .table > caption + thead > tr:first-child > td, .table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > td, .table > thead:first-child > tr > .bg-yellow {
+        background: #daa869 !important;
+    }
+
+    .table > caption + thead > tr:first-child > td, .table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > td, .table > thead:first-child > tr > .bg-green {
+        background: #7dd26d !important;
+    }
+
+    .hor-centro {
+        vertical-align: middle !important;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        $('.table').DataTable({});
+    });
+    function cargarreporte() {
+        var inicio = $("#inicio").val();
+        var fin = $("#inicio").val();
+        window.location.href = ('@Url.Action("ListadoSupervisiones", "SupervisarExamen")' + '?inicio=' + inicio+"&fin="+fin);
+    }
+</script><div class="row">
+    <div class="col-md-12">
+        <h2>Lista de Espera de Encuestas</h2>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Inicio:</label>
+                    <input type="date" id="inicio" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Fin:</label>
+                    <input type="date" id="fin" class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label></label>
+                    <button type="button" class=" btn btn-info " onclick="cargarreporte()" id="btncargarEncuesta"><i class="fa fa-search"></i>&nbsp;&nbsp; Buscar&nbsp;&nbsp; </button>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="table-responsive">
+                <table id="myDataTable" class="table compact table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="vertical-align:middle;" class="text-center">
+                                Fecha
+                            </th>
+                            <th rowspan="2" style="vertical-align:middle;" class="text-center">
+                                N° Examen
+                            </th>
+                            <th rowspan="2" style="vertical-align:middle;" class="text-center">
+                                Encuestador
+                            </th>
+                            <th rowspan="2" style="vertical-align:middle;" class="text-center">
+                                Tecnologo
+                            </th>
+                            <th colspan="5" class="bg-blue text-center">
+                                Supervisión
+                            </th>
+                            <th colspan="5" class="bg-yellow text-center">
+                                Informante
+                            </th>
+                            <th colspan="5" class="bg-green text-center">
+                                Validador
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="bg-blue hor-centro text-center">
+                                Encuesta
+                            </th>
+                            <th class="bg-blue hor-centro text-center">
+                                Imagen
+                            </th>
+                            <th class="bg-blue hor-centro text-center">
+                                Objetivo Clínico
+                            </th>
+                            <th class="bg-blue hor-centro text-center">
+                                Dx
+                            </th>
+                            <th class="bg-blue hor-centro text-center">
+                                Supervisor
+                            </th>
+
+                            <th class="bg-yellow hor-centro text-center">
+                                Encuesta
+                            </th>
+                            <th class="bg-yellow hor-centro text-center">
+                                Imagen
+                            </th>
+                            <th class="bg-yellow hor-centro text-center">
+                                Objetivo Clínico
+                            </th>
+                            <th class="bg-yellow hor-centro text-center">
+                                Dx
+                            </th>
+                            <th class="bg-yellow hor-centro text-center">
+                                Informante
+                            </th>
+
+                            <th class="bg-green hor-centro text-center">
+                                Encuesta
+                            </th>
+                            <th class="bg-green hor-centro text-center">
+                                Imagen
+                            </th>
+                            <th class="bg-green hor-centro text-center">
+                                Objetivo Clínico
+                            </th>
+                            <th class="bg-green hor-centro text-center">
+                                Dx
+                            </th>
+                            <th class="bg-green hor-centro text-center">
+                                Validador
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class=" hor-centro">
+                                    @item.fecha_registro.ToShortDateString()
+                                </td>
+                                <td class=" hor-centro">
+                                    @Html.DisplayFor(modelItem => item.numeroexamen)
+                                </td>
+                                <td class=" hor-centro">
+                                    @Html.DisplayFor(modelItem => item.encuestador)
+                                </td>
+                                <td class=" hor-centro">
+                                    @Html.DisplayFor(modelItem => item.tecnologo)
+                                </td>
+                                <td class="text-center hor-centro">
+                                    @if (!item.p1 == null)
+                                    {
+                                        <span><i class="fa fa-minus fa-2x alert-info"></i></span>
+                                    }
+                                    else
+                                    {
+                                        if (item.p1.Value)
+                                        {
+                                            <i class="fa fa-check fa-2x alert-success"></i>
+                                        }
+                                        else
+                                        {
+                                            <span class="alert-danger">
+                                                @Html.DisplayFor(modelItem => item.p1_motivo)
+                                            </span>
+                                        }
+                                    }
+                                </td>
+                                <td class="text-center hor-centro">
+                                    @if (!item.p2 == null)
+                                    {
+                                        <span><i class="fa fa-minus fa-2x alert-info"></i></span>
+                                    }
+                                    else
+                                    {
+                                        if (item.p2.Value)
+                                        {
+                                            <i class="fa fa-check fa-2x alert-success"></i>
+                                        }
+                                        else
+                                        {
+                                            <span class="alert-danger">
+                                                @Html.DisplayFor(modelItem => item.p2_motivo)
+                                            </span>
+                                        }
+                                    }
+                                </td>
+                                <td class="text-center hor-centro">
+                                    @if (!item.p3 == null)
+                                    {
+                                        <span><i class="fa fa-minus fa-2x alert-info"></i></span>
+                                    }
+                                    else
+                                    {
+                                        if (item.p3.Value)
+                                        {
+                                            <i class="fa fa-check fa-2x alert-success"></i>
+                                        }
+                                        else
+                                        {
+                                            <span class="alert-danger">
+                                                @Html.DisplayFor(modelItem => item.p3_motivo)
+                                            </span>
+                                        }
+                                    }
+                                </td>
+                                <td class="text-center hor-centro">
+                                    @if (item.dx_pre != "")
+                                    {
+                                        <span class="alert-danger">
+                                            @Html.DisplayFor(modelItem => item.dx_pre)
+                                        </span>
+                                    }
+                                </td>
+                                <td class="text-center hor-centro">
+                                    @Html.DisplayFor(modelItem => item.supervisor)
+                                </td>
+
+
+
+
+                                <td class="text-center hor-centro">
+                                    @if (!item.p1_inf == null)
+                                    {
+                                        <span><i class="fa fa-minus fa-2x alert-info"></i></span>
+                                    }
+                                    else
+                                    {
+                                        if (item.p1_inf.Value)
+                                        {
+                                            <i class="fa fa-check fa-2x alert-success"></i>
+                                        }
+                                        else
+                                        {
+                                            <span class="alert-danger">
+                                                @Html.DisplayFor(modelItem => item.p1_inf_motivo)
+                                            </span>
+                                        }
+                                    }
+                                </td>
+                                <td class="text-center hor-centro">
+                                    @if (!item.p2_inf == null)
+                                    {
+                                        <span><i class="fa fa-minus fa-2x alert-info"></i></span>
+                                    }
+                                    else
+                                    {
+                                        if (item.p2_inf.Value)
+                                        {
+                                            <i class="fa fa-check fa-2x alert-success"></i>
+                                        }
+                                        else
+                                        {
+                                            <span class="alert-danger">
+                                                @Html.DisplayFor(modelItem => item.p2_inf_motivo)
+                                            </span>
+                                        }
+                                    }
+                                </td>
+                                <td class="text-center hor-centro">
+                                    @if (!item.p3_inf == null)
+                                    {
+                                        <span><i class="fa fa-minus fa-2x alert-info"></i></span>
+                                    }
+                                    else
+                                    {
+                                        if (item.p3_inf.Value)
+                                        {
+                                            <i class="fa fa-check fa-2x alert-success"></i>
+                                        }
+                                        else
+                                        {
+                                            <span class="alert-danger">
+                                                @Html.DisplayFor(modelItem => item.p3_inf_motivo)
+                                            </span>
+                                        }
+                                    }
+                                </td>
+                                <td class="text-center hor-centro">
+                                    @if (!item.dx_pre_inf == null)
+                                    {
+                                        <span><i class="fa fa-minus fa-2x alert-info"></i></span>
+                                    }
+                                    else
+                                    {
+                                        if (item.dx_pre_inf.Value)
+                                        {
+                                            <i class="fa fa-check fa-2x alert-success"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-times fa-2x alert-danger"></i>
+                                        }
+                                    }
+                                </td>
+                                <td class="text-center hor-centro">
+                                    @Html.DisplayFor(modelItem => item.informante)
+                                </td>
+
+
+
+
+                                <td class="text-center hor-centro">
+                                    @if (!item.p1_val == null)
+                                    {
+                                        <span><i class="fa fa-minus fa-2x alert-info"></i></span>
+                                    }
+                                    else
+                                    {
+                                        if (item.p1_val.Value)
+                                        {
+                                            <i class="fa fa-check fa-2x alert-success"></i>
+                                        }
+                                        else
+                                        {
+                                            <span class="alert-danger">
+                                                @Html.DisplayFor(modelItem => item.p1_val_motivo)
+                                            </span>
+                                        }
+                                    }
+                                </td>
+                                <td class="text-center hor-centro">
+                                    @if (!item.p2_val == null)
+                                    {
+                                        <span><i class="fa fa-minus fa-2x alert-info"></i></span>
+                                    }
+                                    else
+                                    {
+                                        if (item.p2_val.Value)
+                                        {
+                                            <i class="fa fa-check fa-2x alert-success"></i>
+                                        }
+                                        else
+                                        {
+                                            <span class="alert-danger">
+                                                @Html.DisplayFor(modelItem => item.p2_val_motivo)
+                                            </span>
+                                        }
+                                    }
+                                </td>
+                                <td class="text-center hor-centro">
+                                    @if (!item.p3_val == null)
+                                    {
+                                        <span><i class="fa fa-minus fa-2x alert-info"></i></span>
+                                    }
+                                    else
+                                    {
+                                        if (item.p3_val.Value)
+                                        {
+                                            <i class="fa fa-check fa-2x alert-success"></i>
+                                        }
+                                        else
+                                        {
+                                            <span class="alert-danger">
+                                                @Html.DisplayFor(modelItem => item.p3_val_motivo)
+                                            </span>
+                                        }
+                                    }
+                                </td>
+                                <td class="text-center hor-centro">
+                                    @if (!item.dx_pre_val == null)
+                                    {
+                                        <span><i class="fa fa-minus fa-2x alert-info"></i></span>
+                                    }
+                                    else
+                                    {
+                                        if (item.dx_pre_val.Value)
+                                        {
+                                            <i class="fa fa-check fa-2x alert-success"></i>
+                                        }
+                                        else
+                                        {
+                                        <i class="fa fa-times fa-2x alert-danger"></i>
+                                    }
+                                    }
+                                </td>
+                                <td class="text-center hor-centro">
+                                    @Html.DisplayFor(modelItem => item.validador)
+                                </td>
+
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+﻿@model Pagos_Mes
+@{
+    Layout = null;
+}
+<script src="~/js/plugins/datatables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/datatables/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $('.table').dataTable({
+        "paging": false
+    });
+</script>
+
+@if (Model.encuesta != null && Model.encuesta.Count > 0)
+{
+    <div class="col-lg-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Encuestas
+            </div>
+            <div class="panel-body">
+
+
+
+                <table class="table table-striped table-bordered table-hover" id="tabla_encuesta">
+                    <thead>
+                        <tr>
+                            <th>
+                                Encuestador
+                            </th>
+                            <th>
+                                Modalidad
+                            </th>
+                            <th>
+                                Cant.
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.encuesta)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.encuestador)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.modalidad)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.cant_)
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+@if (Model.supervision != null && Model.supervision.Count > 0)
+{
+    <div class="col-lg-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Supervision
+            </div>
+            <div class="panel-body">
+
+
+
+                <table class="table table-striped table-bordered table-hover" id="tabla_encuesta">
+                    <thead>
+                        <tr>
+                            <th>
+                                Supervisor
+                            </th>
+                            <th>
+                                Modalidad
+                            </th>
+                            <th>
+                                Cant.
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.supervision)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.supervisor)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.modalidad)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.cant_)
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,70 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.Caja.RegistroCobranza.frmReciboProvisional"
+        Title="Recibo Provisional" Height="597" Width="400" Background="{DynamicResource Windows.Background}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="89"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="218"/>
+            <RowDefinition Height="91"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Content="N° Cita" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="49"/>
+        <TextBox x:Name="txtcita" HorizontalAlignment="Left" Height="23" Margin="62,12,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="71" KeyDown="txtcita_KeyDown" TabIndex="1"/>
+        <TextBox x:Name="lblpaciente" Foreground="#FF00FFDC"  Text="" TextWrapping="Wrap" HorizontalAlignment="Left"  Margin="10,67,0,0" VerticalAlignment="Top" Width="auto" BorderThickness="0" FontSize="16" FontWeight="Bold" Height="auto"/>
+        <Label Name="lblTCCompra" Content="TC" Width="auto" Height="auto" Margin="0,36,0,26" HorizontalContentAlignment="Right"/>
+
+        <telerik:RadGridView Name="gridEstudios" Grid.Row="1" AutoGenerateColumns="False" IsFilteringAllowed="False"  ShowGroupPanel="False" RowIndicatorVisibility="Collapsed" RowActivated="gridEstudios_RowActivated" >
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Estudio" DataMemberBinding="{Binding }" >
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:CountFunction Caption="Total:"/>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Row="2">
+            <Label Content="Monto Total (S/)" Padding="5,5,1,5"/>
+            <telerik:RadNumericUpDown Name="txtmontototal"  VerticalContentAlignment="Center" NullValue="0" LargeChange="1"  Value="0" Minimum="0" NumberDecimalDigits="2" TabIndex="3" />
+            <Label Content="" Padding="3"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal"  >
+            <StackPanel MinWidth="255" >
+                <telerik:RadGridView x:Name="gridFormaPago" AutoGenerateColumns="False" IsFilteringAllowed="False" ShowColumnFooters="True"  ShowGroupPanel="False" RowIndicatorVisibility="Collapsed" RowActivated="gridFormaPago_RowActivated" >
+                    <telerik:RadGridView.Columns>
+                        <telerik:GridViewDataColumn Header="Tarjeta" DataMemberBinding="{Binding TARJETA.descripcion}"/>
+                        <telerik:GridViewDataColumn Header="Monto" DataMemberBinding="{Binding monto}" >
+                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                <telerik:SumFunction Caption="Total:"/>
+                            </telerik:GridViewDataColumn.AggregateFunctions>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn Header="N° Ref." DataMemberBinding="{Binding numeroreferencia}"/>
+                    </telerik:RadGridView.Columns>
+                </telerik:RadGridView>
+            </StackPanel>
+            <StackPanel Margin="0,0,5,0" HorizontalAlignment="Right" >
+                <Label Content="Moneda"/>
+                <ComboBox Name="cbotipomoneda"  VerticalContentAlignment="Center" TabIndex="4" />
+                <Label Content="Monto Entregado"/>
+                <telerik:RadNumericUpDown Name="txtmontoentregado"  VerticalContentAlignment="Center" NullValue="0" LargeChange="1"  Value="0"  Padding="0" Minimum="0" NumberDecimalDigits="2" TabIndex="5" Height="16" />
+                <Label Content="Forma Pago"/>
+                <ComboBox Name="cboformapago"  VerticalContentAlignment="Center" TabIndex="6" />
+                <Label Content="N° Ref."/>
+                <TextBox Name="txtnumreferencia" Text="" TextAlignment="Right" VerticalContentAlignment="Center" MinWidth="50" TabIndex="7"  />
+                <Label/>
+                <Button Name="btnagregar" Content="Agregar" HorizontalAlignment="Right" Click="btnagregar_Click" TabIndex="8"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="4">
+            <Label Content="Motivo"/>
+            <TextBox Name="txtmotivo" CharacterCasing="Upper" MinHeight="60" TabIndex="9"/>
+        </StackPanel>
+        <Button Name="btnguardar" Content="Guardar" HorizontalAlignment="Left" Margin="84,13,0,-2" Grid.Row="5" VerticalAlignment="Top" Width="75" Height="23" Click="BtnGuardar_Click" TabIndex="10"/>
+        <Button Content="ReImprimir" HorizontalAlignment="Left" Margin="197,13,0,0" Grid.Row="5" VerticalAlignment="Top" Width="94" Height="23"   IsEnabled="{Binding IsEnabled, Converter={StaticResource isReadyOnly}, ElementName=btnguardar}" Click="Button_Click" />
+        <Button Content="Buscar Paciente" HorizontalAlignment="Left" Margin="138,15,0,0" VerticalAlignment="Top" Width="111" Click="btnPaciente_Click" Height="18" TabIndex="2"/>
+
+    </Grid>
+</Window>

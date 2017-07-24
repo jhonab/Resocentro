@@ -1,0 +1,100 @@
+﻿@model SistemaResocentro.ViewModel.Errores_SegViewModel
+
+@{
+    Layout = null;
+}
+<div class="modal-header modal-primary">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Correccion de Errores</h4>
+</div>
+<div class="modal-body">
+    <div class="">
+        @if (Model.dni != null)
+        {
+            <div class="form-group">
+                <label>N° Documento: </label>
+                <div class="">
+                    @Html.EditorFor(model => model.dni, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.dni, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+        @if (Model.edad != null)
+        {
+            <div class="form-group">
+                <label>Edad: </label>
+                <div class="">
+                    @Html.EditorFor(model => model.edad, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.edad, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+        @if (Model.talla != null)
+        {
+            <div class="form-group">
+                <label>Talla: </label>
+                <div class="">
+                    @Html.EditorFor(model => model.talla, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.talla, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+        @if (Model.peso != null)
+        {
+            <div class="form-group">
+                <label>Peso</label>
+                <div class="">
+                    @Html.EditorFor(model => model.peso, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.peso, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+        @if (Model.medico != null)
+        {
+            <div class="form-group">
+                <label>Médico Referente</label>
+                <div class="">
+                    @Html.EditorFor(model => model.medico, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.medico, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+
+        <div class="form-group">
+            <label>Cobertura</label>
+            <div class="">
+                @Html.EditorFor(model => model.carta, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.carta, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @if (Model.adjunto != null)
+        {
+            <div class="form-group">
+                <label>Adjuntos Admisión</label>
+                <div class="">
+                    @Html.EditorFor(model => model.adjunto, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.adjunto, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+        @if (Model.adjuntocarta != null)
+        {
+            <div class="form-group">
+                <label>Adjuntos Carta</label>
+                <div class="">
+                    @Html.EditorFor(model => model.adjuntocarta, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.adjuntocarta, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+       
+       
+
+
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+    <button type="button" class="btn btn-success" onclick="alert('cambio')">Guardar</button>
+</div>

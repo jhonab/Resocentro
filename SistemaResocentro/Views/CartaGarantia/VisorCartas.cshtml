@@ -1,0 +1,161 @@
+﻿@{
+    ViewBag.Title = "Visor de Cartas de Garantía";
+    }
+<h2>
+    Visor de Cartas
+
+</h2>
+<script src="~/js/Datetime/moment.js"></script>
+<script src="~/js/Datetime/moment-with-locales.js"></script>
+<script src="~/js/Datetime/bootstrap-datetimepicker.js"></script>
+<link href="~/css/Datetime/bootstrap-datetimepicker.css" rel="stylesheet" />
+<link href="~/css/progressbar.css" rel="stylesheet" />
+<script type="text/javascript">
+
+
+    $(function () {
+        $('#fec_tramite').datetimepicker({
+            locale: 'es',
+            format: 'MM/DD/YYYY',
+            
+        });
+        $('#fec_ini').datetimepicker({
+            locale: 'es',
+            format: 'MM/DD/YYYY',
+
+        });
+        $('#fec_fin').datetimepicker({
+            locale: 'es',
+            format: 'MM/DD/YYYY',
+
+        });
+    });
+
+    function buscarxtipo(tipo) {
+        var fec_tramite = $("#fec_tramite").val()
+        var fec_ini = $("#fec_ini").val()
+        var fec_fin = $("#fec_fin").val()
+        var paciente = $("#fec_tramite").val()
+        if (tipo == 1) {
+            fec_ini = '01/01/2000';
+            fec_fin = '01/01/2000';
+            paciente =""
+        }
+        if (tipo == 2) {
+            fec_tramite = '01/01/2000';
+            paciente = ""
+        }
+        if (tipo == 3) {
+            fec_tramite = '01/01/2000';
+            fec_ini = '01/01/2000';
+            fec_fin = '01/01/2000';
+        }
+        $("#div_resultado").html('<div class="row">' +
+                  '<div class="pace pace-active"><div class="pace-progress" data-progress="50" data-progress-text="50%" style="-webkit-transform: translate3d(50%, 0px, 0px); -ms-transform: translate3d(50%, 0px, 0px); transform: translate3d(50%, 0px, 0px);"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>' +
+              '</div>');
+        $("#div_resultado").load("/CartaGarantia/VisorxTipo?tipo=" + tipo + "&fecha=" + fec_tramite + "&fini=" + fec_ini + "&paciente=" + paciente + "&ffin=" + fec_fin, function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+        });
+
+    }
+</script>
+<div class="form-horizontal">
+    <hr />
+    <h4> Buscar Cartas por:</h4>
+    <ul class="nav nav-tabs bordered">
+        <!-- available classes "bordered", "right-aligned" -->
+        <li class="active">
+            <a href="#tab_fecha" data-toggle="tab">
+                <span class="visible-xs"><i class="fa fa-calendar"></i></span>
+                <span class="hidden-xs">Fecha Tramite</span>
+            </a>
+        </li>
+        <li>
+            <a href="#tab_rango" data-toggle="tab">
+                <span class="visible-xs"><i class="fa fa-calendar"></i></span>
+                <span class="hidden-xs">Rango fechas</span>
+            </a>
+        </li>
+        @*<li>
+            <a href="#tab_paciente" data-toggle="tab">
+                <span class="visible-xs"><i class="fa fa-user"></i></span>
+                <span class="hidden-xs">Paciente</span>
+            </a>
+        </li>*@
+
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_fecha">
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Fecha Tramite:</label>
+                            <div class="col-md-10">
+                                <input type="text" id="fec_tramite" placeholder="mm/dd/yyyy" class="form-control" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-md-6">
+                        <div class="form-group">
+                            <button class="btn btn-primary col-md-2" onclick="buscarxtipo(1)">Buscar <i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_rango">
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Fecha Tramite:</label>
+                            <div class="col-md-5">
+                                <input type="text" id="fec_ini" placeholder="mm/dd/yyyy" class="form-control" />
+
+                            </div>
+                            <div class="col-md-5">
+                                <input type="text" id="fec_fin" placeholder="mm/dd/yyyy" class="form-control" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-md-6">
+                        <div class="form-group">
+                            <button class="btn btn-primary col-md-2" onclick="buscarxtipo(2)">Buscar <i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        @*<div class="tab-pane" id="tab_paciente">
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Paciente:</label>
+                            <div class="col-md-10">
+                                <input type="text" id="paciente" class="form-control" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-md-6">
+                        <div class="form-group">
+                            <button class="btn btn-primary col-md-2" onclick="buscarxtipo(3)">Buscar <i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+
+    </div>
+    <div id="div_resultado">
+
+    </div>
+</div>

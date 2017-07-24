@@ -1,0 +1,98 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.frmUtil.frmPaciente"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+        Title="Paciente | Resocentro" Height="320" MinHeight="315" Width="700" Background="{DynamicResource Windows.Background}"  Foreground="White" Icon="/Resocentro_Desktop;component/img/favicon.png" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" ResizeMode="NoResize" PreviewKeyUp="Window_PreviewKeyUp" >
+
+
+    <Grid Name="grid1" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5" />
+            <RowDefinition Height="270" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1" Name="grid2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="5" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="233*" />
+            </Grid.ColumnDefinitions>
+            <Label Content="Codigo : " Name="label2" FontWeight="Bold" Foreground="White" Padding="0" />
+            <Label Content="Apellidos : " FontWeight="Bold" Name="label3" Grid.Row="1" Foreground="White"  Padding="0"/>
+            <Label Content="Nombres : " FontWeight="Bold" Name="label4" Grid.Row="2" Foreground="White"  Padding="0"/>
+            <Label Content="Fecha Nacimiento : " FontWeight="Bold" Name="label5" Grid.Row="3" Foreground="White"  Padding="0"/>
+            <Label Content="Tipo Documento : " FontWeight="Bold" Name="label6" Grid.Row="4" Foreground="White"  Padding="0"/>
+            <Label Content="N° Documento : " FontWeight="Bold" Name="label7" Grid.Row="5" Foreground="White"  Padding="0"/>
+            <Label Content="Sexo : " FontWeight="Bold" Name="label8" Grid.Row="6" Foreground="White"  Padding="0"/>
+            <Label Content="Telefono : " FontWeight="Bold" Name="label9" Grid.Row="7" Foreground="White"  Padding="0"/>
+            <Label Content="Celular : " FontWeight="Bold" Name="label10" Grid.Row="8" Foreground="White" Padding="0" />
+            <Label Content="Dirección : " FontWeight="Bold" Name="label11" Grid.Row="9" Foreground="White"  Padding="0"/>
+            <Label Content="Email : " FontWeight="Bold" Name="label12" Grid.Row="10" Foreground="White"   Padding="0"/>
+            <Label Content="Nacionalidad : " FontWeight="Bold" Name="label13" Grid.Row="11" Foreground="White" Padding="0" />
+            <Label Content="Protocolo : " FontWeight="Bold" Name="label14" Grid.Row="12" Foreground="White"  Padding="0"/>
+            <TextBox Grid.Column="1"  HorizontalAlignment="Left" Margin="7,3,0,0" Name="txtcodigo" Text="" VerticalAlignment="Top" Width="93" IsEnabled="False" FocusVisualStyle="{StaticResource MyFocusVisual}"  Padding="0" />
+            <TextBox HorizontalAlignment="Left" Margin="7,3,0,0" Name="txtapellido" Text="" VerticalAlignment="Top" Width="195" Grid.Column="1" Grid.Row="1" TabIndex="1"  FocusVisualStyle="{StaticResource MyFocusVisual}"  Padding="0" />
+            <TextBox  HorizontalAlignment="Left" Margin="7,2,0,0" Name="txtnombre" Text="" VerticalAlignment="Top" Width="172" Grid.Column="1" Grid.Row="2" TabIndex="2"  FocusVisualStyle="{StaticResource MyFocusVisual}"  Padding="0"/>
+            <DatePicker Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="8,0,0,1" Name="dtpnace" Width="171" TabIndex="3"  FocusVisualStyle="{StaticResource MyFocusVisual}"  Padding="0"/>
+            <ComboBox Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Margin="8,3,0,0" Name="cbotipo_doc" VerticalAlignment="Top" Width="149" TabIndex="4" FocusVisualStyle="{StaticResource MyFocusVisual}"  Padding="0" >
+                <!--<ComboBoxItem Content="DNI"/>
+                <ComboBoxItem Content="Carnet de Extranjeria"/>
+                <ComboBoxItem Content="RUC"/>
+                <ComboBoxItem Content="Pasaporte"/>
+                <ComboBoxItem Content="Cedula Diplomatica de Identidad "/>
+                <ComboBoxItem Content="Otros"/>-->
+            </ComboBox>
+            <TextBox  HorizontalAlignment="Left" Margin="8,2,0,0" Name="txtnumero_doc" Text="" VerticalAlignment="Top" Width="149" Grid.Column="1" Grid.Row="5" TabIndex="5" FocusVisualStyle="{StaticResource MyFocusVisual}"  Padding="0" />
+            <TextBox HorizontalAlignment="Left" Margin="8,0,0,0" Name="txttelefono" Text="" VerticalAlignment="Top" Width="149" Grid.Column="1" Grid.Row="7" TabIndex="7" FocusVisualStyle="{StaticResource MyFocusVisual}"   Padding="0"/>
+            <TextBox HorizontalAlignment="Left" Margin="8,0,0,0" Name="txtcelular" Text="" VerticalAlignment="Top" Width="149" Grid.Column="1" Grid.Row="8" TabIndex="8" FocusVisualStyle="{StaticResource MyFocusVisual}"  Padding="0" />
+            <TextBox  HorizontalAlignment="Left" Margin="8,0,0,0" Name="txtdireccion" Text="" VerticalAlignment="Top" Width="221" Grid.Column="1" Grid.Row="9" TabIndex="9" FocusVisualStyle="{StaticResource MyFocusVisual}"  Padding="0" />
+            <TextBox  HorizontalAlignment="Left" Margin="8,0,0,0" Name="txtemail" Text="" VerticalAlignment="Top" Width="221" Grid.Column="1" Grid.Row="10" TabIndex="10" FocusVisualStyle="{StaticResource MyFocusVisual}"   Padding="0"/>
+            <TextBox  HorizontalAlignment="Left" Margin="8,3,0,0" Name="txtnacionalidad" Text="Peruano" VerticalAlignment="Top" Width="101" Grid.Column="1" Grid.Row="11" TabIndex="11"  FocusVisualStyle="{StaticResource MyFocusVisual}" />
+            <CheckBox Grid.Column="1" Grid.Row="12"  HorizontalAlignment="Left" Margin="7,3,0,0" Name="cbkprotocolo" VerticalAlignment="Top" TabIndex="12"  FocusVisualStyle="{StaticResource MyFocusVisual}" Padding="0" />
+            <ComboBox Grid.Column="1" Grid.Row="6"  HorizontalAlignment="Left" Margin="8,0,0,0" Name="cbosexo" VerticalAlignment="Top" Width="152" TabIndex="6" FocusVisualStyle="{StaticResource MyFocusVisual}" Padding="0" >
+                <ComboBoxItem Content="Masculino" />
+                <ComboBoxItem Content="Femenino" />
+            </ComboBox>
+            <Button Content="Guardar"  x:Name="btnguardar" HorizontalAlignment="Left" Margin="173,1,0,0" VerticalAlignment="Top"   Click="Button_Click" Grid.Column="1" Grid.Row="12"/>
+            <Label Grid.Column="1" HorizontalAlignment="Left" Margin="352,1,0,0" Grid.Row="12"  Padding="0"   VerticalAlignment="Top" FontStyle="Italic" FontWeight="Bold" >
+                <Hyperlink NavigateUri="http://ww4.essalud.gob.pe:7777/acredita/" Click="Hyperlink_Click">
+                    <Label Content="ESSALUD" Foreground="#FF01E4FB" Padding="0" />
+                </Hyperlink>
+            </Label>
+            <Label Grid.Column="1" HorizontalAlignment="Left" Margin="409,1,0,0" Grid.Row="12"  Padding="0" Foreground="#FF01E4FB"  VerticalAlignment="Top" FontStyle="Italic"  FontWeight="Bold" >
+                <Hyperlink NavigateUri="http://www.sunat.gob.pe/cl-ti-itmrconsruc/FrameCriterioBusquedaMovil.jsp" Click="Hyperlink_Click">
+                    <Label Content="SUNAT" Foreground="#FF01E4FB" Padding="0"/>
+                </Hyperlink>
+            </Label>
+            <Label Grid.Column="1" HorizontalAlignment="Left" Margin="456,1,0,0" Grid.Row="12"  Padding="0" Foreground="#FF01E4FB"  VerticalAlignment="Top" FontStyle="Italic"  FontWeight="Bold" >
+                <Hyperlink NavigateUri="https://cel.reniec.gob.pe/valreg/valreg.do?accion=ini" Click="Hyperlink_Click">
+                    <Label Content="RENIEC" Foreground="#FF01E4FB" Padding="0"/>
+                </Hyperlink>
+            </Label>
+            <Label Grid.Column="1" HorizontalAlignment="Left" Margin="510,1,0,0" Grid.Row="12"  Padding="0" Foreground="#FF01E4FB"  VerticalAlignment="Top" FontStyle="Italic"  FontWeight="Bold" >
+                <Hyperlink NavigateUri="https://cel.reniec.gob.pe/celweb/" Click="Hyperlink_Click">
+                    <Label Content="RENIEC II" Foreground="#FF01E4FB" Padding="0"/>
+                </Hyperlink>
+            </Label>
+
+        </Grid>
+        <WebBrowser Name="wbPaciente" Grid.Row="2" Visibility="Visible"/>
+
+    </Grid>
+
+</Window>

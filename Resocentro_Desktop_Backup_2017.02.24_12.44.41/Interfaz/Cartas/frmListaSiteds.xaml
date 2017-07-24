@@ -1,0 +1,20 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.frmCarta.frmListaSiteds"
+       Title="Carta de Garantía | Resocentro"  Background="{DynamicResource Windows.Background}"   Icon="/Resocentro_Desktop;component/img/favicon.png" WindowStartupLocation="CenterScreen" Height="314" Width="749" >
+    <Grid>
+
+        <telerik:RadGridView Margin="5" Name="gridSiteds" RowActivated="gridSiteds_RowActivated" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False">
+            <telerik:RadGridView.Columns >
+                <telerik:GridViewDataColumn Header="Asegurado" DataMemberBinding="{Binding asegurado}"  />
+                <telerik:GridViewDataColumn Header="Titular" DataMemberBinding="{Binding titular}"  />
+                <telerik:GridViewDataColumn Header="Contrato" DataMemberBinding="{Binding contrato}"  />
+                <telerik:GridViewDataColumn Header="Carnet" DataMemberBinding="{Binding carnet}"  />
+                <telerik:GridViewDataColumn Header="Tipo Afiliación" DataMemberBinding="{Binding afiliacion}"  />
+                <telerik:GridViewDataColumn Header="Poliza" DataMemberBinding="{Binding poliza}"  />
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+    </Grid>
+</Window>

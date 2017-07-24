@@ -1,0 +1,11 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.Caja.impresion.frmImpAnulacion"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            Title="frmResocentro"  Background="White" Height="30cm" Width="23cm" 
+        FontFamily="Arial Unicode MS">
+    <Grid Name="grid">
+        <TextBlock Text="ANULADO" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="80"  VerticalAlignment="Center" Foreground="Black" Padding="0" FontFamily="Arial Unicode MS" TextAlignment="Center" FontWeight="Normal" Margin="10,378,10,618" Width="841"/>
+        <TextBlock x:Name="txtmotivoanulacion" Text="" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="16"  VerticalAlignment="Center" Foreground="Black" Padding="0" FontFamily="Arial Unicode MS" FontWeight="Normal" Margin="237,507,237,503" Width="387" Height="93"/>
+
+    </Grid>
+</Window>

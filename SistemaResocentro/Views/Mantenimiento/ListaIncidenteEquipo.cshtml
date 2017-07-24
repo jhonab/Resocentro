@@ -1,0 +1,168 @@
+﻿@model IEnumerable<SistemaResocentro.ViewModel.Mantenimiento.MantenimientoViewModel>
+
+@{
+    ViewBag.Title = "Lista de Incidentes";
+}
+<h2>Lista de Incidentes del Equipo <b>@ViewBag.Equipo</b></h2>
+@*<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+    <script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+    <script src="~/js/dataTables.bootstrap.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            t0 = $(".table").DataTable({
+                "sPaginationType": "bootstrap",
+                "ordering": false
+            });
+        });
+    </script>*@
+
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-tabs bordered">
+            <li class="active">
+                <a href="#incidentes" data-toggle="tab" aria-expanded="false">
+                    <span class="visible-xs"><i class="fa fa-wrench"></i></span>
+                    <span class="hidden-xs"><i class="fa fa-wrench"></i> Incidentes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="#mantenimiento" data-toggle="tab" aria-expanded="false">
+                    <span class="visible-xs"><i class="fa fa-gear"></i></span>
+                    <span class="hidden-xs"><i class="fa fa-gear"></i> Mantenimientos</span>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="incidentes">
+
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                N°
+                            </th>
+                            <th>
+                                Fecha
+                            </th>
+                            <th>
+                                Tipo Incidente
+                            </th>
+                            <th>
+                                Equipo
+                            </th>
+                            <th>
+                                Marca / Modelo
+                            </th>
+                            <th>
+                                Empresa
+                            </th>
+                            <th>
+                                Solucionado
+                            </th>
+                            <th style="width:20px!important"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Where(x => x.idTipoIncidente != 4).ToList())
+                        {
+                            <tr>
+                                <td>
+                                    @item.idIncidente
+                                </td>
+                                <td>
+                                    @item.fecha_detecta.ToShortDateString()
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.tipoIncidente)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.equipo.nombreEquipo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.equipo.marca) - @Html.DisplayFor(modelItem => item.equipo.modelo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.equipo.empresaMantenimiento.razonsocial)
+                                </td>
+                                <td>
+                                    @if (item.isSolucionado)
+                                    {
+                                        @item.fecha_solucionado.ToString("dd/MM/yy HH:mm")
+                                    }
+                                    else
+                                    {
+                                        @:PENDIENTE
+                                        }
+                                </td>
+                                <td style="width:20px!important">
+                                    <a href="@Url.Action("DetalleIncidente", "Mantenimiento", new { incidente = item.idIncidente })" title="Registrar Incidente"><i class="fa fa-clipboard fa-2x "></i></a>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="tab-pane " id="mantenimiento">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                N°
+                            </th>
+                            <th>
+                                Fecha
+                            </th>
+                            <th>
+                                Marca / Modelo
+                            </th>
+                            <th>
+                                Equipo
+                            </th>
+                            <th>
+                                Empresa
+                            </th>
+                            <th>
+                                Técnico
+                            </th>
+                            <th style="width:20px!important"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Where(x=> x.idTipoIncidente==4).ToList())
+                                            {
+                                        <tr>
+                                            <td>
+                                                @item.idIncidente
+                                            </td>
+                                            <td>
+                                                @item.fecha_detecta.ToShortDateString()
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.equipo.marca) - @Html.DisplayFor(modelItem => item.equipo.modelo)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.equipo.nombreEquipo)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.equipo.empresaMantenimiento.razonsocial)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.usuario_detecta)
+                                            </td>
+                                            <td style="width:20px!important">
+                                                <a href="@Url.Action("DetalleIncidente", "Mantenimiento", new { incidente = item.idIncidente })" title="Registrar Incidente"><i class="fa fa-clipboard fa-2x "></i></a>
+                                            </td>
+                                        </tr>
+
+                                            }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<a href='@Url.Action("ListaEquipo")' class="btn btn-default"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;&nbsp;Regresar a la Lista</a>

@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewBag.Title = "Herramientas";
+}
+<link href="~/js/chosen/chosen.bootstrap.css" rel="stylesheet" />
+<script src="~/js/chosen/chosen.jquery.min.js"></script>
+
+
+<script src="~/js/Kendochart/kendo.all.min.js"></script>
+<link href="~/css/Kendochart/kendo.dataviz.min.css" rel="stylesheet" />
+<script type="text/javascript">
+
+    $(function () {
+        $("._cbo2").chosen({ width: "100%" });
+
+        $('#modal-search').on('hide.bs.modal', function (e) {           
+                if ($("#result_cmp").val() != "" && $("#result_nombres").val() != "") {
+                    $("#txtcmp").val($("#result_cmp").val());
+                    $("#medico").val($("#result_nombres").val());
+                    cargarReportexMedico();
+                } else {
+                    $("#txtcmp").val("");
+                    $("#medico").val("");
+                }
+        })
+
+    });
+    function cargarReportexMedico() {        
+        var cmp = $("#txtcmp").val();
+        if (cmp != "")
+
+            $("#div_reporte_medico").html("Cargando...").load('/Planificacion/ReporteEnviosdeMedico', { cmp: cmp },
+                 function (response, status, xhr) {
+                     if (status == "error") {
+                         toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+                     }
+                 });
+
+    }
+    function cargarReportexProcedencia() {
+        var codigoclinica = $("#cboprocedencia").val();
+        if(codigoclinica!="")
+        $("#div_reporte_procedencia").load("/Planificacion/ReporteEnviosxProcedenciaRepresentante?id=" + codigoclinica, function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+        });
+
+    }
+
+    function searchMedico_modal() {
+        $("#modal-search_body").load("/Medico/SearchMedico", function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            } else {
+                tipo_modal_search = 2;//tipo modal buscar medico
+                $("#modal-search").modal('show');
+            }
+        });
+    }
+</script>
+<h2>Herramientas </h2>
+<div class="row">
+    <div class="col-md-12">
+
+        <ul class="nav nav-tabs bordered">
+            <!-- available classes "bordered", "right-aligned" -->
+         
+                <li id="tab2" class="active">
+                    <a href="#tab_reporteMedico" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa fa-user-md"></i></span>
+                        <span class="hidden-xs"><i class="fa fa-user-md"></i>&nbsp;&nbsp;&nbsp; Reporte de Envios por Médico </span>
+                    </a>
+                </li>               
+                <li id="tab4" class="">
+                    <a href="#tab_reporteProcedencia" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa fa-hospital-o"></i></span>
+                        <span class="hidden-xs"><i class="fa fa-hospital-o"></i>&nbsp;&nbsp;&nbsp; Reporte de Envios por Procedencia </span>
+                    </a>
+                </li>
+           
+        </ul>
+
+
+        <div class="tab-content">
+          
+                <div class="tab-pane active" id="tab_reporteMedico">
+                    <div class=" row">
+                        <div class="col-md-9" style="padding:5px 0;">
+                            <div class="form-group">
+                                <label class="col-md-3">Médico</label>
+                                <div class="col-md-9">
+                                    <div class="" style="padding:0 5px 0 0;">
+                                        @*@Html.DropDownList("cboMedico", (SelectList)ViewBag.Medicos, "- Seleccione el Médico -", htmlAttributes: new { @class = " _cbo2", @onchange = "cargarReportexMedico()" })*@
+                                        <div class="col-xs-10">
+                                            <input type="hidden" id="txtcmp"/>
+                                            <input type="text" class="form-control validar" readonly id="medico" />
+                                           
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <button class="btn btn-info btn-xs" id="btnsearchMedico" onclick="searchMedico_modal()" type="button"><i class="fa fa-search fa-2x"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_reporte_medico"></div>
+                </div>
+
+                
+                <div class="tab-pane" id="tab_reporteProcedencia">
+                    <div class=" row">
+                        <div class="col-md-9" style="padding:5px 0;">
+                            <div class="form-group">
+                                <label class="col-md-3">Procedencia</label>
+                                <div class="col-md-9">
+                                    <div class="" style="padding:0 5px 0 0;">
+                                        @Html.DropDownList("cboprocedencia", (SelectList)ViewBag.Procedencia, "- Seleccione la Procedencia -", htmlAttributes: new { @class = "form-control _cbo2", @onchange = "cargarReportexProcedencia()" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_reporte_procedencia"></div>
+                </div>
+           
+           
+        </div>
+
+
+    </div>
+</div>
+<div class="modal fade" id="modal-search" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal-addLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body" id="modal-search_body">
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

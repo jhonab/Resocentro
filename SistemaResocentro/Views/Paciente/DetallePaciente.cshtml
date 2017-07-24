@@ -1,0 +1,130 @@
+﻿@model SistemaResocentro.Models.PACIENTE
+
+@{
+    Layout = null;
+
+}
+
+<div class="modal-header modal-primary">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">@Model.apellidos, @Model.nombres </h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="" id="div_paciente">
+            @Html.HiddenFor(model => model.codigopaciente, new { @class = "form-control validar" })
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Nombre:</label>
+                        <div class="col-md-9">
+
+                            @Html.DisplayFor(model => model.nombres, new { htmlAttributes = new { @class = "form-control validar" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Apellidos:</label>
+                        <div class="col-md-9">
+
+                            @Html.DisplayFor(model => model.apellidos, new { htmlAttributes = new { @class = "form-control validar" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Nacimiento:</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Sexo:</label>
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(model => model.sexo, (SelectList)ViewBag.Sexo, "- Seleccione -", htmlAttributes: new { @class = "form-control validar" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Típo Documento:</label>
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(model => model.tipo_doc, (SelectList)ViewBag.Tdocumento, "- Seleccione -", htmlAttributes: new { @class = "form-control validar", @disabled = "" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">N° Documento:</label>
+                        <div class="col-md-9">
+
+                            @Html.DisplayFor(model => model.dni, new { htmlAttributes = new { @class = "form-control validar", @disabled = "" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Teléfono:</label>
+                        <div class="col-md-9">
+                            @Html.DisplayFor(model => model.telefono, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Celular:</label>
+                        <div class="col-md-9">
+
+                            @Html.DisplayFor(model => model.celular, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Email:</label>
+                        <div class="col-md-9">
+                            @Html.DisplayFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Nacionalidad:</label>
+                        <div class="col-md-9">
+
+                            @Html.DisplayFor(model => model.nacionalidad, new { htmlAttributes = new { @class = "form-control validar", @Value = "Peruano" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Dirección:</label>
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.direccion, new { @class = "form-control validar", @rows = "3" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="button" onclick="updatePaciente()" class="btn btn-info">Guardar</button>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,12 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.frmCita.frmConfirmacionBloquedo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         Title="Administrar Turnos | Resocentro" Height="150" MaxHeight="150" Width="300" Background="{DynamicResource Windows.Background}"   Icon="/Resocentro_Desktop;component/img/favicon.png" >
+    <Grid>
+        <Label Content="Motivo"  HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cbomotivo" Margin="10,41,10,0" VerticalAlignment="Top" Height="26"/>
+        <Button x:Name="btnBloquear" Content="Bloquar" HorizontalAlignment="Right" Margin="0,82,10,0" VerticalAlignment="Top" Width="111" Height="34" Click="btnBloquear_Click"/>
+        <Button x:Name="btnDesbloquear" Content="Desbloquear" HorizontalAlignment="Left" Margin="10,82,0,3" Width="111" Click="btnDesbloquear_Click"/>
+
+    </Grid>
+</Window>

@@ -1,0 +1,93 @@
+﻿@model IEnumerable<SistemaResocentro.ViewModel.Estudios_proforma>
+
+@{
+    Layout = null;
+}
+
+<script type="text/javascript">
+    
+    $(function () {
+        t0 = $(".t0").DataTable({
+            "sPaginationType": "bootstrap",
+            "aoColumns": [
+                 { "sName": "Codigo", "bVisible": false },//0
+                 { "sName": "Clase", "bVisible": false },//0
+                 { "sName": "Estudio" },//0
+                 { "sName": "Precio" },//0
+                 { "sName": "Acciones" },//0
+            ],
+            "createdRow": function (row, aData, dataIndex) {
+                $('tr:eq(0)', row).css("width", "0px");
+                $('tr:eq(1)', row).css("width", "0px");
+            }
+        });
+      
+
+        $('.t0 tbody').on('click', 'button.transferir', function () {
+            
+            var row = t0.row($(this).parents('tr'));
+            var rowNode = row.data();
+            rowNode[4] = '<button type="button" class="btn btn-red btn-xs delete"><i class="fa fa-times"></i></button>';
+            t1
+                .row.add(rowNode)
+                .draw();
+            getJsonEstudios();
+        });
+
+      
+    });
+
+    
+</script>
+
+<div class="row">
+    <div class="col-md-6">
+        <div id="lst_estudio" class="form-group ">
+            <label>Lista de estudios</label>
+            <table class="table t0 compact table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Codigo
+                        </th>
+                        <th>
+                            Clase
+                        </th>
+                        <th>
+                            Estudio
+                        </th>
+                        <th>
+                            Precio
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.idestudio)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.idclase)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.precio)
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-green btn-xs transferir"><i class="fa fa-check"></i></button>
+                            </td>
+                        </tr>
+                }
+                    @*onclick="agregarEstudio('@item.codigoestudio','@item.nombreestudio','@item.codigoclase');"*@
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

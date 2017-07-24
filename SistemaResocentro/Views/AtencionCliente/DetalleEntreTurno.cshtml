@@ -1,0 +1,103 @@
+﻿@model SistemaResocentro.ViewModel.SolicitudesEntreTurno
+@{
+    Layout = null;
+}
+
+
+<div class="row">
+    <div class="col-xs-4">
+        <div class="form-group">
+            <label>Solcicitante: </label>
+            <span>@Model.solicitante</span>
+        </div>
+
+        <div class="form-group">
+            <label>Motivo: </label>
+            <span>@Model.motivo</span>
+        </div>
+
+        <div class="form-group">
+            <label>Equipo: </label>
+            <span>@Model.equipo</span>
+        </div>
+
+        <div class="form-group">
+            <label>Hora Solicitada: </label>
+            <span>@Model.hora.ToString("hh:mm tt")</span>
+        </div>
+
+        <div class="form-group">
+            <label>Tramitador: </label>
+            <span>@Model.tramitador</span>
+        </div>
+        <div class="form-group">
+            <label>Comentarios: </label>
+            <p> @Model.comentarios</p>
+        </div>
+    </div>
+    <div class="col-xs-4">
+        <div class="form-group">
+            <label>Equipo: </label>
+            @Html.DropDownListFor(x => x.equipomedico, (SelectList)ViewBag.Equipo, "- Seleccione el Equipo -", new { @class = "form-control", @onchange = "cargarTunos()" })
+        </div>
+
+        <div class="form-group">
+            <label>Hora: </label>
+            <input type="time" onchange="validarHora()" name="hora_medico" id="hora_medico" class="form-control" value="@Model.hora.ToString("HH:mm")" />
+        </div>
+
+        <div class="form-group">
+            <label>Comentarios: </label>
+            @Html.TextAreaFor(x => x.comentarios_medico, new { @class = "form-control", @rows = "5" })
+        </div>
+    </div>
+    <div class="col-xs-4">
+        <label>Lista de Turnos del Equipo</label>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Hora</th>
+                    <th>Estudio</th>
+                </tr>
+            </thead>
+            <tbody id="tb_turno"></tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        cargarTunos();
+    });
+    function guardar(estado) {
+        var id=@Model.idSolicitud;
+        var hora = $("#hora_medico").val().split(":");
+        var equipo=$("#equipomedico").val();
+        var comentarios=$("#comentarios_medico").val();
+        if (estado) {
+            if(!verificarHoraCorrecta())
+                return false;
+        }
+        $.ajax({
+            url: "@Url.Action("setSolicitudEntreTurno", "AtencionCliente")?id="+id+"&e="+estado+"&eq="+equipo+"&h="+hora[0]+"&m="+hora[1]+"&c="+comentarios ,
+            data: {},
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                alert("error");
+            },
+            success: function (data) {
+                if(!data)
+                    alert("No se guardo con exito");
+                else{
+                    $('#modal_Modalidad').modal('hide');
+                }
+            }
+        });
+
+
+    }
+</script>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" onclick="guardar(false)"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;&nbsp;No Aprobar</button>
+    <button type="button" class="btn btn-success" onclick="guardar(true)"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;&nbsp;Aprobar</button>

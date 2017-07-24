@@ -1,0 +1,27 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.Cobranza.frmListaAtenciones"
+        Title="Lista de Atenciones | Resocentro" Height="600" Width="706" MinWidth="556" Background="{DynamicResource Windows.Background}" MaxHeight="600">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="53"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Content="Sede" HorizontalAlignment="Left" Margin="10,13,0,0" VerticalAlignment="Top" Height="26" Width="37"/>
+        <ComboBox Name="cbosede" HorizontalAlignment="Left" Margin="61,13,0,0" VerticalAlignment="Top" Width="173" Height="22"/>
+        <Button Name="btnbuscar" Content="Buscar" HorizontalAlignment="Right" Margin="0,10,359,0" VerticalAlignment="Top" Width="75" Height="28" Click="btnbuscar_Click"/>
+        <telerik:RadGridView AutoGenerateColumns="False" ShowGroupPanel="False" Grid.Row="1" Name="grid_Atenciones" IsReadOnly="True" RowActivated="grid_Atenciones_RowActivated" >
+            <telerik:RadGridView.Columns >
+                <telerik:GridViewImageColumn Header="" DataMemberBinding="{Binding pathEstado}" IsFilterable="False" ImageHeight="15" ImageWidth="15" IsGroupable="False" IsEnabled="False" IsReorderable="False" IsResizable="False" IsSortable="False" TextAlignment="Center"   />
+                <telerik:GridViewDataColumn  Header="Hora" DataMemberBinding="{Binding hora}" />
+                <telerik:GridViewDataColumn  Header="Paciente" DataMemberBinding="{Binding paciente}" />
+                <telerik:GridViewDataColumn  Header="N° Atención" DataMemberBinding="{Binding numeroatencion}" />
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+        <TextBox Name="txtnumeroatencion" Height="23" Margin="0,16,141,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="75" FontSize="11" IsManipulationEnabled="True" HorizontalContentAlignment="Center" HorizontalAlignment="Right" VerticalContentAlignment="Center" KeyDown="txtnumeroatencion_KeyDown"/>
+        <Label Content="Atencion" HorizontalAlignment="Right" Margin="0,13,216,0" VerticalAlignment="Top" Height="26" Width="60"/>
+        <Label Content="Examen" HorizontalAlignment="Right" Margin="0,12,85,0" VerticalAlignment="Top" Height="26" Width="54"/>
+        <TextBox x:Name="txtnumeroexamen" Height="23" Margin="0,15,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="75" FontSize="11" IsManipulationEnabled="True" HorizontalContentAlignment="Center" HorizontalAlignment="Right" VerticalContentAlignment="Center" KeyDown="txtnumeroexamen_KeyDown"/>
+    </Grid>
+</Window>

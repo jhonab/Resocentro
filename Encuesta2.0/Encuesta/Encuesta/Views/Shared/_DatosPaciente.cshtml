@@ -1,0 +1,38 @@
+﻿@model Encuesta.Models.PACIENTE
+
+<div id="modal_paciente" class="form-group">
+    <label>Paciente:</label>
+    <span>
+        @Html.DisplayFor(model => model.apellidos), @Html.DisplayFor(model => model.nombres) </span>
+</div>
+<div class="form-group">
+    <label>Edad:</label>
+
+    @{
+        string _ano;
+        if (Model.fechanace.Year < DateTime.Now.Year)
+        {
+            _ano = (DateTime.Now.Year - Model.fechanace.Year).ToString() + " años";
+        }
+        else
+        { _ano = (DateTime.Now.Month - Model.fechanace.Month).ToString() + " meses"; }
+        <text>
+        @_ano
+        </text>    }
+    &nbsp;<label>Sexo :</label>
+    @if (Model.sexo == "M")
+    {
+        <text>
+        Masculino
+        </text>
+    }
+    else
+    {
+        <text>
+        Femenino
+        </text>}
+</div>
+<div class="form-group" id="_Partial_Paciente_Procedencia">
+</div>
+<div class="form-group" id="_Partial_Paciente_Hospitalizado">
+</div>

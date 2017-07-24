@@ -1,0 +1,1695 @@
+﻿@model Encuesta.ViewModels.Encuesta.EncuestaDetalleViewModel
+
+@if (Model.comentariosTecnologo != null)
+{
+    if (Model.comentariosTecnologo != "")
+    {
+        <div class="row">
+            <div class="panel panel-medico">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Comentario del Tecnólogo</h3>
+                    <div class="panel-options pull-right">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class=" form-group">
+                                @Model.comentariosTecnologo
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+@if (Model.comentariosTecnologoAmpli != null)
+{
+    if (Model.comentariosTecnologoAmpli != "")
+    {
+        <div class="row">
+            <div class="panel panel-medico">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Comentario del Tecnólogo del Examen Ampliatorio</h3>
+                    <div class="panel-options pull-right">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class=" form-group">
+                                @Model.comentariosTecnologoAmpli
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@if (Model.isVisible)
+{
+    Encuesta.Member.CustomMembershipUser user = Membership.GetUser(true) as Encuesta.Member.CustomMembershipUser;
+    string supervisor = "";
+    string informante = "";
+
+    <script src="~/js/getUrl.js"></script>
+    <div class="row">
+        <div id="calificacion-examen" class="panel panel-medico">
+            <div class="panel-heading">
+                <div class="panel-title">Calificación Examen</div>
+                <div class="panel-options pull-right">
+                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <div class="col-sm-12 table-responsive table-medico">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th style="text-align: center;">
+                                            Supervisor<br />
+                                            <span style="font-size: 12px; display: inline">
+                                                @if (Model.supervisor == "")
+                                                {
+                                                    <span>No Tuvo</span>
+                                                }
+                                                else
+                                                {
+                                                    supervisor = Model.supervisor;
+                                                    <span>@Model.supervisor</span>
+                                                }
+                                            </span>
+                                        </th>
+                                        <th style="text-align: center;">
+                                            Informante
+                                            <br />
+                                            <span style="font-size: 12px;" id="med_inf">
+                                                @if (Model.calificacion != null && Model.calificacion.usu_reg_inf != null)
+                                                {
+                                                    informante = Model.calificacion.Informante.ShortName;
+                                                    @informante}
+                                                else
+                                                {
+                                                    <span>-</span>
+                                                }
+                                            </span>
+                                        </th>
+                                        <th style="text-align: center;" class="no-visible">
+                                            Validador
+                                            <br />
+                                            <span style="font-size: 12px;" id="med_val">
+                                                @if (Model.calificacion != null && Model.calificacion.usu_reg_val != null)
+                                                {
+                                                    @Model.calificacion.Validador.ShortName}
+                                                else
+                                                {
+                                                    <span>-</span>
+                                                }
+                                            </span>
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr>
+                                        <td>Calidad Encuesta</td>
+                                        @*Supervisor*@
+                                        <td style="text-align: center;">
+                                            @if (Model.calificacion != null && Model.calificacion.p1 != null)
+                                            {
+                                                if (Model.calificacion.p1.Value)
+                                                {
+                                                    <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.p1_1"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i>
+                                            }
+
+                                        </td>
+                                        @*Informante*@
+                                        <td style="text-align: center;">
+                                            @if (user.UserName != supervisor)
+                                            {
+                                                if (Model.calificacion != null)
+                                                {
+                                                    if (Model.calificacion.p1_informante != null)
+                                                    {
+                                                        if (Model.calificacion.p1_informante.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.p1_1_informante"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p1_inf" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,1,'cali_p1_inf','1','1');" style="padding:3px 10px;"> <i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <a id="cali_p1_inf" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,1,'cali_p1_inf','1','1');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Model.calificacion != null)
+                                                {
+                                                    if (Model.calificacion.p1_informante != null)
+                                                    {
+                                                        if (Model.calificacion.p1_informante.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.p1_1_informante"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                }
+                                            }
+                                        </td>
+                                        @*validador*@
+                                        <td style="text-align: center;" class="no-visible">
+
+                                            @if (user.UserName != informante && user.UserName != supervisor)
+                                            {
+                                                if (Model.calificacion != null)
+                                                {
+                                                    if (Model.calificacion.p1_validador != null)
+                                                    {
+                                                        if (Model.calificacion.p1_validador.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.p1_1_validador"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p1_val" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,2,'cali_p1_val','1','1');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <a id="cali_p1_val" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,2,'cali_p1_val','1','1');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Model.calificacion != null)
+                                                {
+                                                    if (Model.calificacion.p1_validador != null)
+                                                    {
+                                                        if (Model.calificacion.p1_validador.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.p1_1_validador"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr style="background: rgba(10, 217, 246, 0);">
+                                        <td style="background: rgba(10, 217, 246, 0.1);">
+                                            Calidad Imagen
+                                        </td>
+                                        @*Supervisor*@
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);">
+                                            @if (Model.calificacion != null && Model.calificacion.p2 != null)
+                                            {
+                                                if (Model.calificacion.p2.Value)
+                                                {
+                                                    <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.p2_1"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                    if (Model.calificacion.p4 != null)
+                                                    {
+                                                        if (Model.calificacion.p4 == 1)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #AAAEAA;"></i>
+                                                        }
+                                                        else if (Model.calificacion.p4 == 0)
+                                                        {
+                                                            <i class="fa fa-times" style="color: #AAAEAA;"></i>
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i>
+                                            }
+                                        </td>
+                                        @*Informante*@
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);">
+                                            @if (user.UserName != supervisor)
+                                            {
+                                                if (Model.calificacion != null)
+                                                {
+                                                    if (Model.calificacion.p2_informante != null)
+                                                    {
+                                                        if (Model.calificacion.p2_informante.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="left" title="@Model.calificacion.p2_1_informante"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p2_inf" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,1,'cali_p2_inf','2','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <a id="cali_p2_inf" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,1,'cali_p2_inf','2','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Model.calificacion != null)
+                                                {
+                                                    if (Model.calificacion.p2_informante != null)
+                                                    {
+                                                        if (Model.calificacion.p2_informante.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="left" title="@Model.calificacion.p2_1_informante"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                }
+                                            }
+                                        </td>
+                                        @*validador*@
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);" class="no-visible">
+                                            @if (user.UserName != informante && user.UserName != supervisor)
+                                            {
+                                                if (Model.calificacion != null)
+                                                {
+                                                    if (Model.calificacion.p2_validador != null)
+                                                    {
+                                                        if (Model.calificacion.p2_validador.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.p2_1_validador"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p2_val" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,2,'cali_p2_val','2','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <a id="cali_p2_val" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,2,'cali_p2_val','2','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Model.calificacion != null)
+                                                {
+                                                    if (Model.calificacion.p2_validador != null)
+                                                    {
+                                                        if (Model.calificacion.p2_validador.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.p2_1_validador"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background: rgba(10, 217, 246, 0.1);">Objetivo Clínico</td>
+                                        @*Supervisor*@
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);">
+                                            @if (Model.calificacion != null && Model.calificacion.p3 != null)
+                                            {
+                                                if (Model.calificacion.p3.Value)
+                                                {
+                                                    <i class="fa fa-check " style="color: #4cae4c;"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.p3_1"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i>
+                                            }
+                                        </td>
+                                        @*Informante*@
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);">
+                                            @if (user.UserName != supervisor)
+                                            {
+                                                if (Model.calificacion != null)
+                                                {
+                                                    if (Model.calificacion.p3_informante != null)
+                                                    {
+                                                        if (Model.calificacion.p3_informante.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="left" title="@Model.calificacion.p3_1_informante"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p3_inf" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,1,'cali_p3_inf','3','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <a id="cali_p3_inf" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,1,'cali_p3_inf','3','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Model.calificacion != null)
+                                                {
+                                                    if (Model.calificacion.p3_informante != null)
+                                                    {
+                                                        if (Model.calificacion.p3_informante.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="left" title="@Model.calificacion.p3_1_informante"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                }
+                                            }
+                                        </td>
+                                        @*validador*@
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);" class="no-visible">
+                                            @if (user.UserName != informante && user.UserName != supervisor)
+                                            {
+                                                if (Model.calificacion != null)
+                                                {
+                                                    if (Model.calificacion.p3_validador != null)
+                                                    {
+                                                        if (Model.calificacion.p3_validador.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.p3_1_validador"><i class="fa fa-times danger" style="color: #d43f3a;"></i></i>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p3_val" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,2,'cali_p3_val','3','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <a id="cali_p3_val" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,2,'cali_p3_val','3','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Model.calificacion != null)
+                                                {
+                                                    if (Model.calificacion.p3_validador != null)
+                                                    {
+                                                        if (Model.calificacion.p3_validador.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.p3_1_validador"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    @*
+                                        <tr>
+                                    *@
+                                    @*
+                                        <td style="background: rgba(10, 217, 246, 0.1);">Respuesta Tecnologo</td>*@
+                                    @*Supervisor*@
+                                    @*
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);">
+                                            @if (Model.calificacion != null && Model.calificacion.p4 != null)
+                                            {
+                                            if (Model.calificacion.p4.Value == 1)
+                                            {
+                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                            }
+                                            else if (Model.calificacion.p4.Value == 2)
+                                            {
+                                            <i class="fa fa-ban" style="color: #f0ad4e;"></i>
+                                            }
+                                            else
+                                            {
+                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.p4_1"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                            }
+                                            }
+                                            else
+                                            {
+                                            <i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i>
+                                            }
+                                        </td>*@
+                                    @*Informante*@
+                                    @*
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);">
+                                            @if (Model.calificacion != null)
+                                            {
+                                            if (Model.calificacion.p4_informante != null)
+                                            {
+                                            if (Model.calificacion.p4_informante.Value == 1)
+                                            {
+                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                            }
+                                            else if (Model.calificacion.p4_informante.Value == 2)
+                                            {
+                                            <i class="fa fa-ban" style="color: #f0ad4e;"></i>
+                                            }
+                                            else
+                                            {
+                                            <i data-toggle="tooltip" data-placement="left" title="@Model.calificacion.p4_1_informante"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                            }
+                                            }
+                                            else
+                                            {
+                                            <a id="cali_p4_inf" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta4(@Model.nexamen,1,'cali_p4_inf','4');"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                            }
+                                            }
+                                            else
+                                            {
+                                            <a id="cali_p4_inf" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta4(@Model.nexamen,1,'cali_p4_inf','4');"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                            }
+                                        </td>*@
+                                    @*validador*@
+                                    @*
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);" class="no-visible">
+                                            @if (Model.calificacion != null)
+                                            {
+                                            if (Model.calificacion.p4_ivalidador != null)
+                                            {
+                                            if (Model.calificacion.p4_ivalidador.Value == 1)
+                                            {
+                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                            }
+                                            else if (Model.calificacion.p4_ivalidador.Value == 2)
+                                            {
+                                            <i class="fa fa-ban" style="color: #f0ad4e;"></i>
+                                            }
+                                            else
+                                            {
+                                            <i data-toggle="tooltip" data-placement="left" title="@Model.calificacion.p4_1_validador"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                            }
+                                            }
+                                            else
+                                            {
+                                            <a id="cali_p4_val" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta4(@Model.nexamen,2,'cali_p4_val','4');"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                            }
+                                            }
+                                            else
+                                            {
+                                            <a id="cali_p4_val" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta4(@Model.nexamen,2,'cali_p4_val','4');"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                            }
+                                        </td>*@
+
+                                    @*
+                                        </tr>*@
+
+
+                                    @*
+                                        <tr>
+                                    *@
+                                    @*<
+                                        <td style="background: rgba(10, 217, 246, 0.1);">Conocimiento de Encuesta</td>*@
+                                    @*Supervisor*@
+                                    @*<
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);">
+                                            @if (Model.calificacion != null && Model.calificacion.p5 != null)
+                                            {
+                                            if (Model.calificacion.p5.Value)
+                                            {
+                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                            }
+                                            else
+                                            {
+                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.p5_1"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                            }
+                                            }
+                                            else
+                                            {
+                                            <i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i>
+                                            }
+                                        </td>*@
+                                    @*Informante*@
+                                    @*<
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);">
+                                            @if (Model.calificacion != null)
+                                            {
+                                            if (Model.calificacion.p5_informante != null)
+                                            {
+                                            if (Model.calificacion.p5_informante.Value)
+                                            {
+                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                            }
+                                            else
+                                            {
+                                            <i data-toggle="tooltip" data-placement="left" title="@Model.calificacion.p5_1_informante"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                            }
+                                            }
+                                            else
+                                            {
+                                            <a id="cali_p6_inf" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,1,'cali_p6_inf','6');"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                            }
+                                            }
+                                            else
+                                            {
+                                            <a id="cali_p6_inf" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,1,'cali_p6_inf','6');"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                            }
+                                        </td>*@
+                                    @*validador*@
+                                    @*<
+                                            <td style="text-align: center; background: rgba(10, 217, 246, 0.1);">
+                                                @if (Model.calificacion != null)
+                                                {
+                                                if (Model.calificacion.p5_validador != null)
+                                                {
+                                                if (Model.calificacion.p5_validador.Value)
+                                                {
+                                                <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                }
+                                                else
+                                                {
+                                                <i data-toggle="tooltip" data-placement="left" title="@Model.calificacion.p5_1_validador"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                }
+                                                }
+                                                else
+                                                {
+                                                <a id="cali_p6_val" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,2,'cali_p6_val','6');"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                }
+                                                }
+                                                else
+                                                {
+                                                <a id="cali_p6_val" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,2,'cali_p6_val','6');"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                }
+                                            </td>
+                                        </tr>*@
+                                    @if (Model.calificacion != null && Model.calificacion.anotaciones != null)
+                                    {
+                                        <tr>
+                                            <td style="margin-top: 50px;">
+                                                <span>Diagnóstico Preliminar</span>
+                                            </td>
+                                            @*Supervisor*@
+                                            <td style="text-align: center;">
+                                                @if (Model.calificacion != null && Model.calificacion.anotaciones != null)
+                                                {
+                                                    <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.anotaciones"><i class="fa fa-info danger" style="color: #00c0ef;"></i></i>
+
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i>
+                                                }
+                                            </td>
+                                            @*Informante*@
+                                            <td style="text-align: center;">
+                                                @if (user.UserName != supervisor)
+                                                {
+                                                    if (Model.calificacion != null)
+                                                    {
+                                                        if (Model.calificacion.diagnostico_info != null)
+                                                        {
+                                                            if (Model.calificacion.diagnostico_info.Value)
+                                                            {
+                                                                <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.diagnostico_inf"><i class="fa fa-times" style="color: #d43f3a;padding:3px 10px;"></i></i>
+
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <a id="cali_p5_inf" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,1,'cali_p5_inf','5','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p5_inf" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,1,'cali_p5_inf','5','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Model.calificacion != null)
+                                                    {
+                                                        if (Model.calificacion.diagnostico_info != null)
+                                                        {
+                                                            if (Model.calificacion.diagnostico_info.Value)
+                                                            {
+                                                                <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.diagnostico_inf"><i class="fa fa-times" style="color: #d43f3a;padding:3px 10px;"></i></i>
+
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                    }
+                                                }
+                                            </td>
+                                            @*validador*@
+                                            <td style="text-align: center;" class="no-visible">
+                                                @if (user.UserName != informante && user.UserName != supervisor)
+                                                {
+                                                    if (Model.calificacion != null)
+                                                    {
+                                                        if (Model.calificacion.diagnostico_vali != null)
+                                                        {
+                                                            if (Model.calificacion.diagnostico_vali.Value)
+                                                            { <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.diagnostico_val"><i class="fa fa-info danger" style="color: #00c0ef;"></i></i>
+
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <a id="cali_p5_val" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,2,'cali_p5_val','5','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p5_val" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamen,2,'cali_p5_val','5','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Model.calificacion != null)
+                                                    {
+                                                        if (Model.calificacion.diagnostico_vali != null)
+                                                        {
+                                                            if (Model.calificacion.diagnostico_vali.Value)
+                                                            { <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion.diagnostico_val"><i class="fa fa-info danger" style="color: #00c0ef;"></i></i>
+
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                    }
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    if (Model.isampliacion && Model.nexamenAmpli != 0)
+    {
+        string supervisoAmpli = "";
+        string informanteAmpli = "";
+        <div id="calificacion-examen1" class="panel panel-medico">
+            <div class="panel-heading">
+                <div class="panel-title">Calificación Examen Ampliatorio</div>
+                <div class="panel-options pull-right">
+                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+
+
+                    <div class="col-lg-12">
+
+                        <div class="col-sm-12 table-responsive table-medico">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th style="text-align: center;">
+                                            Supervisor<br />
+                                            <span style="font-size: 12px; display: inline">
+                                                @if (Model.superAmpli == "")
+                                                {
+                                                    <span>No Tuvo</span>
+                                                }
+                                                else
+                                                {
+                                                    supervisoAmpli = Model.superAmpli;
+                                                    <span>@Model.superAmpli</span>
+                                                }
+                                            </span>
+                                        </th>
+                                        <th style="text-align: center;">
+                                            Informante
+                                            <br />
+                                            <span style="font-size: 12px;" id="med_inf">
+                                                @if (Model.calificacion_Ampli != null && Model.calificacion_Ampli.usu_reg_inf != null)
+                                                {
+                                                    informanteAmpli = Model.calificacion_Ampli.Informante.ShortName;
+                                                    @informanteAmpli}
+                                                else
+                                                {
+                                                    <span>-</span>
+                                                }
+                                            </span>
+                                        </th>
+                                        <th style="text-align: center;" class="no-visible">
+                                            Validador
+                                            <br />
+                                            <span style="font-size: 12px;" id="med_val">
+                                                @if (Model.calificacion_Ampli != null && Model.calificacion_Ampli.usu_reg_val != null)
+                                                {
+                                                    @Model.calificacion_Ampli.Validador.ShortName}
+                                                else
+                                                {
+                                                    <span>-</span>
+                                                }
+                                            </span>
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr>
+                                        <td>Calidad Encuesta</td>
+                                        @*Supervisor*@
+                                        <td style="text-align: center;">
+                                            @if (Model.calificacion_Ampli != null && Model.calificacion_Ampli.p1 != null)
+                                            {
+                                                if (Model.calificacion_Ampli.p1.Value)
+                                                {
+                                                    <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.p1_1"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i>
+                                            }
+
+                                        </td>
+                                        @*Informante*@
+                                        <td style="text-align: center;">
+                                            @if (user.UserName != supervisoAmpli)
+                                            {
+                                                if (Model.calificacion_Ampli != null)
+                                                {
+                                                    if (Model.calificacion_Ampli.p1_informante != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.p1_informante.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.p1_1_informante"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p1_inf_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,1,'cali_p1_inf_ampli','1','1');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <a id="cali_p1_inf_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,1,'cali_p1_inf_ampli','1','1');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Model.calificacion_Ampli != null)
+                                                {
+                                                    if (Model.calificacion_Ampli.p1_informante != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.p1_informante.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.p1_1_informante"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                }
+                                            }
+                                        </td>
+                                        @*validador*@
+                                        <td style="text-align: center;" class="no-visible">
+
+                                            @if (user.UserName != informanteAmpli && user.UserName != supervisoAmpli)
+                                            {
+                                                if (Model.calificacion_Ampli != null)
+                                                {
+                                                    if (Model.calificacion_Ampli.p1_validador != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.p1_validador.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.p1_1_validador"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p1_val_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,2,'cali_p1_val_ampli','1','1');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <a id="cali_p1_val_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,2,'cali_p1_val_ampli','1','1');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Model.calificacion_Ampli != null)
+                                                {
+                                                    if (Model.calificacion_Ampli.p1_validador != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.p1_validador.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.p1_1_validador"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr style="background: rgba(10, 217, 246, 0);">
+                                        <td style="background: rgba(10, 217, 246, 0.1);">
+                                            Calidad Imagen
+                                        </td>
+                                        @*Supervisor*@
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);">
+                                            @if (Model.calificacion_Ampli != null && Model.calificacion_Ampli.p2 != null)
+                                            {
+                                                if (Model.calificacion_Ampli.p2.Value)
+                                                {
+                                                    <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.p2_1"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                    if (Model.calificacion_Ampli.p4 != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.p4 == 1)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #AAAEAA;"></i>
+                                                        }
+                                                        else if (Model.calificacion_Ampli.p4 == 0)
+                                                        {
+                                                            <i class="fa fa-times" style="color: #AAAEAA;"></i>
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i>
+                                            }
+                                        </td>
+                                        @*Informante*@
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);">
+                                            @if (user.UserName != supervisoAmpli)
+                                            {
+                                                if (Model.calificacion_Ampli != null)
+                                                {
+                                                    if (Model.calificacion_Ampli.p2_informante != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.p2_informante.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="left" title="@Model.calificacion_Ampli.p2_1_informante"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p2_inf_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,1,'cali_p2_inf_ampli','2','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <a id="cali_p2_inf_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,1,'cali_p2_inf_ampli','2','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Model.calificacion_Ampli != null)
+                                                {
+                                                    if (Model.calificacion_Ampli.p2_informante != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.p2_informante.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="left" title="@Model.calificacion_Ampli.p2_1_informante"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                }
+                                            }
+                                        </td>
+                                        @*validador*@
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);" class="no-visible">
+                                            @if (user.UserName != informanteAmpli && user.UserName != supervisoAmpli)
+                                            {
+                                                if (Model.calificacion_Ampli != null)
+                                                {
+                                                    if (Model.calificacion_Ampli.p2_validador != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.p2_validador.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.p2_1_validador"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p2_val_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,2,'cali_p2_val_ampli','2','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <a id="cali_p2_val_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,2,'cali_p2_val_ampli','2','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Model.calificacion_Ampli != null)
+                                                {
+                                                    if (Model.calificacion_Ampli.p2_validador != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.p2_validador.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.p2_1_validador"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background: rgba(10, 217, 246, 0.1);">Objetivo Clínico</td>
+                                        @*Supervisor*@
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);">
+                                            @if (Model.calificacion_Ampli != null && Model.calificacion_Ampli.p3 != null)
+                                            {
+                                                if (Model.calificacion_Ampli.p3.Value)
+                                                {
+                                                    <i class="fa fa-check " style="color: #4cae4c;"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.p3_1"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i>
+                                            }
+                                        </td>
+                                        @*Informante*@
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);">
+                                            @if (user.UserName != supervisoAmpli)
+                                            {
+                                                if (Model.calificacion_Ampli != null)
+                                                {
+                                                    if (Model.calificacion_Ampli.p3_informante != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.p3_informante.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="left" title="@Model.calificacion_Ampli.p3_1_informante"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p3_inf_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,1,'cali_p3_inf_ampli','3','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <a id="cali_p3_inf_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,1,'cali_p3_inf_ampli','3','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Model.calificacion_Ampli != null)
+                                                {
+                                                    if (Model.calificacion_Ampli.p3_informante != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.p3_informante.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="left" title="@Model.calificacion_Ampli.p3_1_informante"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                }
+                                            }
+                                        </td>
+                                        @*validador*@
+                                        <td style="text-align: center; background: rgba(10, 217, 246, 0.1);" class="no-visible">
+                                            @if (user.UserName != informanteAmpli && user.UserName != supervisoAmpli)
+                                            {
+                                                if (Model.calificacion_Ampli != null)
+                                                {
+                                                    if (Model.calificacion_Ampli.p3_validador != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.p3_validador.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.p3_1_validador"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p3_val_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,2,'cali_p3_val_ampli','3','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <a id="cali_p3_val_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,2,'cali_p3_val_ampli','3','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Model.calificacion_Ampli != null)
+                                                {
+                                                    if (Model.calificacion_Ampli.p3_validador != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.p3_validador.Value)
+                                                        {
+                                                            <i class="fa fa-check" style="color: #4cae4c;"></i>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.p3_1_validador"><i class="fa fa-times danger" style="color: #d43f3a;padding:3px 10px;"></i></i>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+
+
+                                    @if (Model.calificacion_Ampli != null && Model.calificacion_Ampli.anotaciones != null)
+                                    {
+                                        <tr>
+                                            <td style="margin-top: 50px;">
+                                                <span>Diagnóstico Preliminar</span>
+                                            </td>
+                                            @*Supervisor*@
+                                            <td style="text-align: center;">
+                                                @if (Model.calificacion_Ampli != null && Model.calificacion_Ampli.anotaciones != null)
+                                                {
+                                                    <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.anotaciones"><i class="fa fa-info danger" style="color: #00c0ef;"></i></i>
+
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i>
+                                                }
+                                            </td>
+                                            @*Informante*@
+                                            <td style="text-align: center;">
+                                                @if (user.UserName != supervisoAmpli)
+                                                {
+                                                    if (Model.calificacion_Ampli != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.diagnostico_info != null)
+                                                        {
+                                                            if (Model.calificacion_Ampli.diagnostico_info.Value)
+                                                            {
+                                                                <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.diagnostico_inf"><i class="fa fa-times" style="color: #d43f3a;padding:3px 10px;"></i></i>
+
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <a id="cali_p5_inf_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,1,'cali_p5_inf_ampli','5','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p5_inf_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,1,'cali_p5_inf_ampli','5','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Model.calificacion_Ampli != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.diagnostico_info != null)
+                                                        {
+                                                            if (Model.calificacion_Ampli.diagnostico_info.Value)
+                                                            {
+                                                                <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.diagnostico_inf"><i class="fa fa-times" style="color: #d43f3a;padding:3px 10px;"></i></i>
+
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                    }
+                                                }
+                                            </td>
+                                            @*validador*@
+                                            <td style="text-align: center;" class="no-visible">
+                                                @if (user.UserName != informanteAmpli && user.UserName != supervisoAmpli)
+                                                {
+                                                    if (Model.calificacion_Ampli != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.diagnostico_vali != null)
+                                                        {
+                                                            if (Model.calificacion_Ampli.diagnostico_vali.Value)
+                                                            { <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.diagnostico_val"><i class="fa fa-info danger" style="color: #00c0ef;"></i></i>
+
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <a id="cali_p5_val_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,2,'cali_p5_val_ampli','5','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a id="cali_p5_val_ampli" data-valor="" data-toggle="tooltip" data-placement="top" title="" href="javascript:setrespuestaEncuesta(@Model.nexamenAmpli,2,'cali_p5_val_ampli','5','0');" style="padding:3px 10px;"><i class="fa fa-minus " style="color: #3c8dbc;"></i></a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Model.calificacion_Ampli != null)
+                                                    {
+                                                        if (Model.calificacion_Ampli.diagnostico_vali != null)
+                                                        {
+                                                            if (Model.calificacion_Ampli.diagnostico_vali.Value)
+                                                            { <i class="fa fa-check" style="color: #4cae4c;"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i data-toggle="tooltip" data-placement="top" title="@Model.calificacion_Ampli.diagnostico_val"><i class="fa fa-info danger" style="color: #00c0ef;"></i></i>
+
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <span><i class="fa fa-ban" style="color: #d43f3a;padding:3px 10px;"></i></span>
+                                                    }
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="panel panel-medico">
+            <div class="panel-heading">
+                <h3 class="panel-title">Técnicas Registradas por el Tecnólogo</h3>
+                <div class="panel-options pull-right">
+                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class=" form-group tecnicas">
+                            @Model.tecnicas
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            var parameter = $.get("lector");
+            if (parameter != null) {
+                if (parameter == "inf")
+                    $(".no-visible").hide();
+
+            }
+            $(window).bind('beforeunload', function () {
+
+                var examen = '@Model.nexamen';
+                var xxx = "";
+                if (parameter != null) {
+
+                    $.ajax({
+                        async: false,
+                        cache: false,
+                        url: '@Url.Action("VerificarCalificacion", "SupervisarExamen")',
+                        data: { examen: examen, tipo: 1 },
+                        dataType: "json",
+                        type: "POST",
+                        success: function (data) {
+                            if (data.result.trim() == "0") {
+                                xxx = "Médico Informante\n Falta Terminar de Calificar el Examen";
+                            }
+                        },
+                        error: function () {
+                            xxx = 'False';
+                        }
+                    });
+                } else {
+
+                    $.ajax({
+                        async: false,
+                        cache: false,
+                        url: '@Url.Action("VerificarCalificacion", "SupervisarExamen")',
+                        data: { examen: examen, tipo: 2 },
+                        dataType: "json",
+                        type: "POST",
+                        success: function (data) {
+                            if (data.result.trim() == "0") {
+                                xxx = "Médico Validador\n Falta Terminar de Calificar el Examen";
+                            }
+                        },
+                        error: function () {
+                            xxx = 'False';
+                        }
+                    });
+                }
+                @if (Model.isampliacion)
+                {
+                    <text>
+                examen = '@Model.nexamenAmpli';
+                if (parameter != null) {
+
+                    $.ajax({
+                        async: false,
+                        cache: false,
+                        url: '@Url.Action("VerificarCalificacion", "SupervisarExamen")',
+                        data: { examen: examen, tipo: 1 },
+                        dataType: "json",
+                        type: "POST",
+                        success: function (data) {
+                            if (data.result.trim() == "0") {
+                                xxx = "Médico Informante\n Falta Terminar de Calificar el Examen";
+                            }
+                        },
+                        error: function () {
+                            xxx = 'False';
+                        }
+                    });
+                } else {
+
+                    $.ajax({
+                        async: false,
+                        cache: false,
+                        url: '@Url.Action("VerificarCalificacion", "SupervisarExamen")',
+                        data: { examen: examen, tipo: 2 },
+                        dataType: "json",
+                        type: "POST",
+                        success: function (data) {
+                            if (data.result.trim() == "0") {
+                                xxx = "Médico Validador\n Falta Terminar de Calificar el Examen";
+                            }
+                        },
+                        error: function () {
+                            xxx = 'False';
+                        }
+                    });
+                }
+                </text>
+            }
+                if (xxx != "")
+                    return xxx;
+            });
+
+
+            $('#AsignarModal').on('hidden.bs.modal', function (e) {
+                var texto = $("#txt_esecifique").val();
+                if (texto != "") {
+                    var preg = $("#pregunta").val();
+                    if (preg != "") {
+                        var examen = $("#nexamen").val();
+                        var tipo = $("#tipo").val();
+                        calificacionEncuesta(preg, examen, tipo, false, texto, 0);
+                        if (tipo == 1)
+                            $("#cali_p" + preg + "_inf").attr("data-original-title", texto);
+                        else
+                            $("#cali_p" + preg + "_val").attr("data-original-title", texto);
+                    }
+                }
+            })
+        });
+
+        function VerificarCalificacion(tipo) {
+            var examen = '@Model.nexamen';
+            $.ajax({
+                async: false,
+                cache: false,
+                url: '@Url.Action("VerificarCalificacion", "SupervisarExamen")',
+                data: { examen: examen, tipo: tipo },
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    return data.result;
+                },
+                error: function () {
+                    return 'False';
+                }
+            });
+        }
+
+
+
+
+        function setrespuestaEncuesta(nexamen, tipo, id, pregunta,isFirst) {
+            var _value = ($("#" + id).attr("data-valor"));
+            if (_value == "") {
+                $("#" + id).html('<i class="fa fa-check" style="color: #4cae4c;"></i>')
+                $("#" + id).attr("data-valor", 'True');
+                calificacionEncuesta(pregunta, nexamen, tipo, true, "", 0);
+            }
+            else if (_value == "True") {
+                if (tipo == 1) {
+                    $("#AsignarModalLabel").html("Calicicacion de Informante");
+                }
+                else {
+                    $("#AsignarModalLabel").html("Calicicacion de Validador");
+                }
+                if (pregunta != 5) {
+                    $("#nexamen").val("" + nexamen);
+                    $("#tipo").val("" + tipo);
+                    $("#pregunta").val(pregunta);
+                    $('#AsignarModal').modal('toggle');
+                } else {
+                    if (tipo == 1)
+                        $("#cali_p" + pregunta + "_inf").attr("data-original-title", "");
+                    else
+                        $("#cali_p" + pregunta + "_val").attr("data-original-title", "");
+                    calificacionEncuesta(pregunta, nexamen, tipo, false, "", 0);
+                }
+                $("#" + id).html('<i class="fa fa-times " style="color: #d43f3a;padding:3px 10px;"></i>')
+                $("#" + id).attr("data-valor", 'False');
+            } else {
+                $("#" + id).html('<i class="fa fa-minus " style="color: #3c8dbc;"></i>')
+                $("#" + id).attr("data-valor", '');
+                calificacionEncuesta(pregunta, nexamen, tipo, null, "", 0);
+            }
+            if (isFirst=='1') {
+                if (_value == "") {
+                    if (tipo == 1) {
+                        $("#cali_p2_inf").html('<i class="fa fa-check" style="color: #4cae4c;"></i>')
+                        $("#cali_p2_inf").attr("data-valor", 'True');
+                        calificacionEncuesta(2, nexamen, tipo, true, "", 0);
+
+                        $("#cali_p3_inf").html('<i class="fa fa-check" style="color: #4cae4c;"></i>')
+                        $("#cali_p3_inf").attr("data-valor", 'True');
+                        calificacionEncuesta(3, nexamen, tipo, true, "", 0);
+
+                        $("#cali_p5_inf").html('<i class="fa fa-check" style="color: #4cae4c;"></i>')
+                        $("#cali_p5_inf").attr("data-valor", 'True');
+                        calificacionEncuesta(5, nexamen, tipo, true, "", 0);
+                    }
+                    if (tipo == 2) {
+                        $("#cali_p2_val").html('<i class="fa fa-check" style="color: #4cae4c;"></i>')
+                        $("#cali_p2_val").attr("data-valor", 'True');
+                        calificacionEncuesta(2, nexamen, tipo, true, "", 0);
+
+                        $("#cali_p3_val").html('<i class="fa fa-check" style="color: #4cae4c;"></i>')
+                        $("#cali_p3_val").attr("data-valor", 'True');
+                        calificacionEncuesta(3, nexamen, tipo, true, "", 0);
+
+                        $("#cali_p5_val").html('<i class="fa fa-check" style="color: #4cae4c;"></i>')
+                        $("#cali_p5_val").attr("data-valor", 'True');
+                        calificacionEncuesta(5, nexamen, tipo, true, "", 0);
+                    }
+                }
+            }
+        }
+        function setrespuestaEncuesta4(nexamen, tipo, id, pregunta) {
+            var _value = ($("#" + id).attr("data-valor"));
+            if (_value == "") {
+                $("#" + id).html('<i class="fa fa-check" style="color: #4cae4c;"></i>')
+                $("#" + id).attr("data-valor", '1');
+                calificacionEncuesta(pregunta, nexamen, tipo, true, "", 1);
+            }
+            else if (_value == "1") {
+                if (tipo == 1) {
+                    $("#AsignarModalLabel").html("Calicicacion de Informante");
+                }
+                else {
+                    $("#AsignarModalLabel").html("Calicicacion de Validador");
+                }
+                $("#nexamen").val("" + nexamen);
+                $("#tipo").val("" + tipo);
+                $("#pregunta").val(pregunta);
+                $('#AsignarModal').modal('toggle');
+                $("#" + id).html('<i class="fa fa-times " style="color: #d43f3a;padding:3px 10px;"></i>')
+                $("#" + id).attr("data-valor", '0');
+            } else if (_value == "0") {
+                $("#" + id).html('<i class="fa fa-ban " style="color: #f0ad4e;"></i>')
+                $("#" + id).attr("data-valor", '2');
+                calificacionEncuesta(pregunta, nexamen, tipo, null, "", 2);
+            } else {
+                $("#" + id).html('<i class="fa fa-minus " style="color: #3c8dbc;"></i>')
+                $("#" + id).attr("data-valor", '');
+                calificacionEncuesta(pregunta, nexamen, tipo, null, "", 10);
+            }
+        }
+
+        function calificacionEncuesta(pregunta, examen, tipo, rpta, rpta_det, rpta4) {
+            $.ajax({
+                url: '@Url.Action("ChangeCalificacionEncuesta", "SupervisarExamen")',
+                data: { pregunta: pregunta, examen: examen, tipo: tipo, rpta: rpta, rpta_det: rpta_det, rpta4: rpta4 },
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    if (tipo == 1)
+                        $("#med_inf").html(data.data);
+                    else
+                        $("#med_val").html(data.data);
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        }
+    </script>
+    <div class="modal" id="AsignarModal" tabindex="-1" role="dialog" aria-labelledby="AsignarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background: #343434;border: 1px solid rgba(0,0,0,.2);">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" style="color: #fff;" id="AsignarModalLabel">Calificación de Examen</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" id="nexamen" />
+                        <input type="hidden" id="tipo" />
+                        <input type="hidden" id="pregunta" />
+                        <label>Especifíque:</label>
+                        <textarea id="txt_esecifique" placeholder="Especifíque respuesta" class="form-control"></textarea>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-medico" data-dismiss="modal">Enviar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+}
+

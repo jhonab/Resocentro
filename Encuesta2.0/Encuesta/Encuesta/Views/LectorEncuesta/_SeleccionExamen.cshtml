@@ -1,0 +1,406 @@
+﻿<div class="row">
+
+
+    <div class="col-lg-12" id="modalidad_RM">
+        <div class="col-lg-6">
+            <img src="../../img/hombre.png" alt="#" />
+            <!--cerebro -->
+            <a class="select_exam cerebro" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Cerebro));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Hombro -->
+            <a class="select_exam hombro_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.HombroDerecho));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam hombro_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.HombroIzquierdo));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Brazo -->
+            <a class="select_exam brazo_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.BrazoDerecho));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam brazo_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.BrazoIzquierdo));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Codo -->
+            <a class="select_exam codo_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Cododerecha));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam codo_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Codoizquierda));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Antrebrazo -->
+            <a class="select_exam antebrazo_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.AntebrazoDerecho));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam antebrazo_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.AntebrazoIzquierdo));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Mano -->
+            <!--DETALLE-->
+            <a class="select_exam mano_d" href="javascript:cargardetalle(1);"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam mano_i" href="javascript:cargardetalle(2);"><i class="fa fa-bullseye fa-4x"></i></a>
+
+            @if (Model.sexo == "F")
+            {
+                <!--Mama -->
+                <a class="select_exam mama_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.MamaDerecha));"><i class="fa fa-bullseye fa-4x"></i></a>
+                <a class="select_exam mama_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.MamaIzquierda));"><i class="fa fa-bullseye fa-4x"></i></a>
+            }
+            <!--Columna -->
+            <!--DETALLE-->
+            <a class="select_exam columna" href="javascript:cargardetalle(3);"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Abdomen -->
+            <a class="select_exam abdomen" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Abdomen));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Cadera -->
+            <a class="select_exam cadera_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Caderaderecha));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam cadera_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Caderaizquierda));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Muslo -->
+            <a class="select_exam muslo_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.MusloDerecho));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam muslo_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.MusloIzquierdo));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Rodilla -->
+            <a class="select_exam rodilla_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.RodillaDerecha));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam rodilla_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.RodillaIzquierda));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Pierna-->
+            <a class="select_exam pierna_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.PiernaDerecho));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam pierna_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.PiernaIzquierdo));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Pie-->i
+            <!--DETALLE-->
+            <a class="select_exam pie_d" href="javascript:cargardetalle(4);"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam pie_i" href="javascript:cargardetalle(5);"><i class="fa fa-bullseye fa-4x"></i></a>
+
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <div>
+                    <button class="btn btn-primary btn-block  btn-lg" onclick="realizarEncuesta(37)">ONCOLÓGICO</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary btn-block  btn-lg" onclick="realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Generica)">MASCOTA</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary btn-block  btn-lg" onclick="realizarEncuesta(57)">OTROS</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2"></div>
+        <script type="text/javascript">
+            function cargardetalle(tipo) {
+                //1 --> MANO DERECHA
+                //2 --> MANO IZQUIERDA
+                //3 --> COLUMNA
+                //4 --> PIE DERECHA
+                //5 --> PIE IZQUIERDA
+                var html = "";
+                if (tipo == 1) {
+                    html = "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.MeniqueDerecho) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Meñique</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.AnularDerecho) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Anular</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.MedioDerecho) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Medio</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.IndiceDerecho) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Indice</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.PulgarDerecho) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Pulgar</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.MunecaDerecha) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Muñeca</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.ManoDerecha) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Mano</a></div>";
+                }
+                if (tipo == 2) {
+                    html = "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.MeniqueIzquierdo) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Meñique</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.AnularIzquierdo) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Anular</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.MedioIzquierdo) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Medio</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.IndiceIzquierdo) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Indice</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.PulgarIzquierdo) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Pulgar</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.MunecaIzquierdo) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Muñeca</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.ManoIzquierdo) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Mano</a></div>";
+                }
+                if (tipo == 3) {
+                    html = "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.ColumnaCervical) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Cervical</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.ColumnaCervicoDorsal) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Cervico Dorsal</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.ColumnaDorsal) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Dorsal</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.ColumnaDorsoLumbar) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Dorsal Lumbar</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.ColumnaLumboSacra) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Lumbo Sacra</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.ColumnaSacroCoxis) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Sacro Coxis</a></div>";
+                }
+                if (tipo == 4) {
+                    html = "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.TobilloDerecho) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Tobillo</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.PieDerecho) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Pie</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.DedosDerecho) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Dedos</a></div>";
+                }
+                if (tipo == 5) {
+                    html = "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.TobilloIzquierdo) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Tobillo</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.PieIzquierdo) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Pie</a>&nbsp;&nbsp;</div>" +
+                                                       "<div><a class='btn btn-primary btn-lg btn-block' href='javascript:realizarEncuesta(" +@((int)Encuesta.Util.EncuestaType.DedosIzquierdo) +");'><i class='fa fa-check'></i>&nbsp;&nbsp; Dedos</a></div>";
+                    }
+
+                    if (html != "") {
+                        $('#body_DetalleExamen').html(html);
+                        $('#modal_DetalleExamen').modal('toggle');
+                    }
+                }
+        </script>
+    </div>
+
+
+
+    <div class="col-lg-12" id="modalidad_TEM">
+        <div class="col-lg-6">
+            <img src="../../img/hombre.png" alt="#" />
+            <!--Cerebro -->
+            <a class="select_exam cerebro" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.AngiotemCerebral));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Hombro -->
+            <a class="select_exam hombro_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.HombroDerecho));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam hombro_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.HombroIzquierdo));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Codo -->
+            <a class="select_exam codo_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Cododerecha));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam codo_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Codoizquierda));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Muñeca-->
+            <a class="select_exam mano_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.MunecaDerecha));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam mano_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.MunecaIzquierdo));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Aorta-->
+            <a class="select_exam angiotem_aorta" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.AngiotemAorta));"><i class="fa fa-bullseye fa-4x"></i></a>
+             <!--Coronario-->
+            <a class="select_exam mama_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.AngiotemCoronario));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Columna-->
+            <a class="select_exam columna" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.NeuroCerebro))"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Colonoscopia -->
+            <a class="select_exam abdomen" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Colonoscopia));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Cadera -->
+            <a class="select_exam cadera_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Caderaderecha));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam cadera_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Caderaizquierda));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Rodilla -->
+            <a class="select_exam rodilla_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.RodillaDerecha));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam rodilla_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.RodillaIzquierda));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <!--Tobillo-->
+            <a class="select_exam pie_d" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.TobilloDerecho));"><i class="fa fa-bullseye fa-4x"></i></a>
+            <a class="select_exam pie_i" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.TobilloIzquierdo));"><i class="fa fa-bullseye fa-4x"></i></a>
+        </div>
+        @*<div class="col-lg-6">
+            <div class="form-group">
+
+                <div style="margin-bottom: 5px">
+                    <button class="btn btn-primary btn-block btn-lg" onclick="realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Oncologico))">ONCOLÓGICO</button>
+                </div>
+                <div style="margin-bottom: 5px">
+                    <button class="btn btn-primary btn-block btn-lg" onclick="realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Colonoscopia))">COLONOSCOPIA</button>
+                </div>
+                <div style="margin-bottom: 5px">
+                    <button class="btn btn-primary btn-block btn-lg" onclick="realizarEncuesta(@((int)Encuesta.Util.EncuestaType.AngiotemCoronario))">ANGIOTEM CORONARIO</button>
+                </div>
+                <div style="margin-bottom: 5px">
+                    <button class="btn btn-primary btn-block btn-lg" onclick="realizarEncuesta(@((int)Encuesta.Util.EncuestaType.AngiotemAorta))">ANGIOTEM AORTA Y CARÓTIDAS</button>
+                </div>
+                <div style="margin-bottom: 5px">
+                    <button class="btn btn-primary btn-block btn-lg" onclick="realizarEncuesta(@((int)Encuesta.Util.EncuestaType.AngiotemCerebral))">ANGIOTEM CEREBRAL</button>
+                </div>
+                <div style="margin-bottom: 5px">
+                    <button class="btn btn-primary btn-block btn-lg" onclick="realizarEncuesta(@((int)Encuesta.Util.EncuestaType.MusculoEsqueletico))">MÚSCULO ESQUELETICO</button>
+                </div>
+                <div style="margin-bottom: 5px">
+                    <button class="btn btn-primary btn-block btn-lg" onclick="realizarEncuesta(@((int)Encuesta.Util.EncuestaType.NeuroCerebro))">NEURO CEREBRO - COLUMNA</button>
+                </div>
+                <div style="margin-bottom: 5px">
+                    <button class="btn btn-primary btn-block btn-lg" onclick="realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Generica))">GENÉRICA</button>
+                </div>
+                <div style="margin-bottom: 5px">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading " style="background-color: #3c8dbc">
+                                <h4 class="panel-title btn-primary">
+                                    <a data-toggle="collapse" style="color: #fff !important" class="btn btn-primary btn-block btn-lg" data-parent="#accordion" href="#collapseOne">ARTRO</a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse ">
+                                <div class="panel-body">
+
+                                    <div class="panel-group" id="accordion_artro">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading ">
+                                                <h4 class="panel-title ">
+                                                    <a data-toggle="collapse" data-parent="#accordion_artro" class="btn-block" href="#collapseSuperior">SUPERIOR</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseSuperior" class="panel-collapse collapse ">
+                                                <div class="panel-body">
+
+                                                    <div class="panel-group" id="accordion_superior">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading ">
+                                                                <h4 class="panel-title ">
+                                                                    <a data-toggle="collapse" data-parent="#accordion_superior" class="btn-block" href="#collapseHombro">HOMBRO</a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseHombro" class="panel-collapse collapse ">
+                                                                <div class="panel-body">
+                                                                    <table class="table">
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a class="btn-block" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.HombroDerecho));">DERECHO</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a class="btn-block" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.HombroIzquierdo));">IZQUIERDO</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading ">
+                                                                <h4 class="panel-title ">
+                                                                    <a data-toggle="collapse" data-parent="#accordion_superior" class="btn-block" href="#collapseCodo">CODO</a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseCodo" class="panel-collapse collapse ">
+                                                                <div class="panel-body">
+                                                                    <table class="table">
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a class="btn-block" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Cododerecha));">DERECHO</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a class="btn-block" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Codoizquierda));">IZQUIERDO</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading ">
+                                                                <h4 class="panel-title ">
+                                                                    <a data-toggle="collapse" data-parent="#accordion_superior" class="btn-block" href="#collapseMuneca">MUÑECA</a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseMuneca" class="panel-collapse collapse ">
+                                                                <div class="panel-body">
+                                                                    <table class="table">
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a class="btn-block" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.MunecaDerecha));">DERECHO</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a class="btn-block" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.MunecaIzquierdo));">IZQUIERDO</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading ">
+                                                <h4 class="panel-title ">
+                                                    <a data-toggle="collapse" data-parent="#accordion_artro" class="btn-block" href="#collapseInferior">INFERIOR</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseInferior" class="panel-collapse collapse ">
+                                                <div class="panel-body">
+
+                                                    <div class="panel-group" id="accordion_inferior">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading ">
+                                                                <h4 class="panel-title ">
+                                                                    <a data-toggle="collapse" data-parent="#accordion_inferior" class="btn-block" href="#collapseCadera">CADERA</a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseCadera" class="panel-collapse collapse ">
+                                                                <div class="panel-body">
+                                                                    <table class="table">
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a class="btn-block" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Caderaderecha));">DERECHO</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a class="btn-block" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Caderaizquierda));">IZQUIERDO</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading ">
+                                                                <h4 class="panel-title ">
+                                                                    <a data-toggle="collapse" data-parent="#accordion_inferior" class="btn-block" href="#collapseRodilla">RODILLA</a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseRodilla" class="panel-collapse collapse ">
+                                                                <div class="panel-body">
+                                                                    <table class="table">
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a class="btn-block" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.RodillaDerecha));" >DERECHO</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a class="btn-block" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.RodillaIzquierda));">IZQUIERDO</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading ">
+                                                                <h4 class="panel-title ">
+                                                                    <a data-toggle="collapse" data-parent="#accordion_inferior" class="btn-block" href="#collapseTobillo">TOBILLO</a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseTobillo" class="panel-collapse collapse ">
+                                                                <div class="panel-body">
+                                                                    <table class="table">
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a class="btn-block" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.TobilloDerecho));">DERECHO</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a class="btn-block" href="javascript:realizarEncuesta(@((int)Encuesta.Util.EncuestaType.TobilloIzquierdo));">IZQUIERDO</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>*@
+        <div class="col-lg-6">
+            <div class="form-group">
+                <div>
+                    <button class="btn btn-primary btn-block  btn-lg" onclick="realizarEncuesta(@((int)Encuesta.Util.EncuestaType.MusculoEsqueletico))">MÚSCULO ESQUELETICO</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary btn-block  btn-lg" onclick="realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Oncologico))">ONCOLÓGICO</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary btn-block  btn-lg" onclick="realizarEncuesta(@((int)Encuesta.Util.EncuestaType.Generica))">GENÉRICA</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+
+</div>
+<div class="modal fade" id="modal_DetalleExamen" tabindex="-1" role="dialog" aria-labelledby="modal_DetalleExamenLabel" aria-hidden="true">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modal_DetalleExamenLabel">Seleccione el segmento a examinar</h4>
+            </div>
+            <div class="modal-body" id="body_DetalleExamen">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

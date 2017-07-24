@@ -1,0 +1,81 @@
+﻿@model IEnumerable<SistemaResocentro.Models.TKT_Tipo_Atencion>
+
+@{
+    ViewBag.Title = "Lista Atenciones";
+    IEnumerable<SistemaResocentro.Models.SUCURSAL> sedes = (IEnumerable<SistemaResocentro.Models.SUCURSAL>)ViewBag.Sede;
+}
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+
+<script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $(function () {
+        t0 = $(".table").DataTable({
+            "sPaginationType": "bootstrap"
+        });
+    });
+</script>
+<h2>Lista de Tipo de Atenciones</h2>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="">
+
+            <p>
+                <a href='@Url.Action("RegistrarTipoAtencion")' class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp; Registrar Tipo de Atención</a>
+            </p>
+            <table class="table table-striped compact table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Nombre
+                        </th>
+                        <th>
+                            Sede
+                        </th>
+                        <th style="width:70px">
+                            Eliminado
+                        </th>
+                        <th style="width:70px">
+                            Visible
+                        </th>
+                        <th style="width:70px">
+                            Emergencia
+                        </th>
+                        <th style="width:70px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.nombre)
+                            </td>
+                            <td>
+                                @sedes.SingleOrDefault(x => x.codigosucursal == item.idsede).ShortDesc
+                            </td>
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.isEliminado)
+                            </td>
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.isVisible)
+                            </td>
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.isEmergencia)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("EditarTipoAtencion", new { id = item.id_tipo_aten })"><i class="fa fa-edit fa-lg"></i> </a>
+                                |
+                                <a href="@Url.Action("EliminarTipoAtencion", new { id = item.id_tipo_aten })">
+                                    <i class="fa fa-trash fa-lg " style="color:#ff0000"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

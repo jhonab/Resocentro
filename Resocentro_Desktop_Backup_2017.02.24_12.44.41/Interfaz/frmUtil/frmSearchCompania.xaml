@@ -1,0 +1,30 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.frmUtil.frmSearchCompania"
+        Title="Buscar Empresa" Height="500" Width="744"  Background="{DynamicResource Windows.Background}" WindowStyle="ToolWindow">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="29"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBox x:Name="txtruc" HorizontalAlignment="Left"  Margin="173,6,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"  Width="270" KeyDown="txtruc_KeyDown" Padding="0" CharacterCasing="Upper" Height="18"/>
+        <Button Content="Agregar" x:Name="btnAgregar" HorizontalAlignment="Right" Margin="0,6,10,0" VerticalAlignment="Top" Width="75"  Click="btnAgregar_Click" Height="18" />
+
+        <telerik:RadGridView Grid.Row="1" Name="gridEmpresas" ShowGroupPanel="False" AutoGenerateColumns="False" RowActivated="gridEmpresas_RowActivated">
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="RUC" DataMemberBinding="{Binding ruc}"/>
+                <telerik:GridViewDataColumn Header="Aseguradora" DataMemberBinding="{Binding aseguradora}"/>
+                <telerik:GridViewDataColumn Header="Razon Social" DataMemberBinding="{Binding razonsocial}"/>
+                <telerik:GridViewDataColumn Header="Direccion" DataMemberBinding="{Binding direccion}"/>
+            </telerik:RadGridView.Columns>
+            <telerik:RadContextMenu.ContextMenu>
+                <telerik:RadContextMenu Opening="RadContextMenu_Opening" >
+                    <telerik:RadMenuItem Header="Modificar Aseguradora" Click="MenuItemModificarAseguradora_Click" x:Name="MenuItemModificarAseguradora" />
+                </telerik:RadContextMenu>
+            </telerik:RadContextMenu.ContextMenu>
+        </telerik:RadGridView>
+        <Label Content="Ingreso Razón Social o RUC:" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Padding="0" Height="16" Width="158" />
+
+    </Grid>
+</Window>

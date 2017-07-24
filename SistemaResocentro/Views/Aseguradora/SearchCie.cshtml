@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+}
+<script src="~/js/script/aseguradora/searchcie.js"></script>
+<link href="~/css/progressbar.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="form-horizontal ">
+            <h4>Buscar CIE 10</h4>
+            <hr />
+
+            <input type="hidden" id="result_cie" />
+            <input type="hidden" id="result_nombres" />
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label class="control-label col-md-2">Filtro:</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" id="filtro" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <button class="btn btn-info btn-xs" onclick="getCie()" type="button"><i class="fa fa-search fa-2x"></i></button>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group" id="table_cie">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+</div>

@@ -1,0 +1,223 @@
+﻿@model IEnumerable<SistemaResocentro.Models.Planificacion_CompaniaSeguro>
+@{
+    bool visible = (bool)ViewBag.Visible;
+    string clave = (string)ViewBag.Restringido;
+    Layout = null;
+    ViewBag.Title = "VisitasxDia";
+}
+<script>
+    // If you're adding a number of markers, you may want to
+    // drop them on the map consecutively rather than all at once.
+    // This example shows how to use setTimeout() to space
+    // your markers' animation.
+
+    //var lima = new google.maps.LatLng(-12.0553442, -77.0451853);
+    //var markers = [];
+    //var info = [];
+    //var iterator = 0;
+
+    //var map;
+
+    //function initialize() {
+    //    var mapOptions = {
+    //        zoom: 12,
+    //        center: lima
+    //    };
+
+    //    map = new google.maps.Map(document.getElementById('map-canvas'),
+    //            mapOptions);
+    //    //cargarVisitas();
+
+    //}
+
+    @*function cargarVisitas() {
+        setAllMap(null);
+        markers = [];
+
+        @foreach (var item in Model){
+            if (!item.isRealizada){
+            if (item.CLINICAHOSPITAL.latitud != null && item.CLINICAHOSPITAL.longitud != null){
+                <text>
+        var latlng = new google.maps.LatLng(parseFloat('@item.CLINICAHOSPITAL.latitud'), parseFloat('@item.CLINICAHOSPITAL.longitud'));
+        var marker = new google.maps.Marker({
+            position: latlng,
+            @if(item.CLINICAHOSPITAL.tipo.Contains("nica")){
+            <text>icon: '../../images/markers/marker_clinica.png',</text>
+            }else if(item.CLINICAHOSPITAL.tipo.Contains("hospital")){
+            <text>icon: '../../images/markers/marker_hospital.png',</text>
+            }else{
+            <text>icon: '../../images/markers/marker_otros.png',</text>
+            }
+            animation: google.maps.Animation.DROP,
+            map: map
+
+
+        });
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        markers.push(marker);
+        var contentString = '<h5 id="firstHeading" class="firstHeading">Datos Visita Médica</h5>' +
+                             'Institución: <b>' + '@item.CLINICAHOSPITAL.razonsocial' + '</b> <br/>' +
+                             'Médico: <b>' + '@item.MEDICOEXTERNO.apellidos ' + '@item.MEDICOEXTERNO.nombres' + '</b> <br/>' +
+                             'Motivo: <b>' + '@item.motivo' + '</b> <br/>' +
+                             'Hora: <b>' + '@item.fecha.ToShortTimeString()' + '</b> <br/>';
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        info.push(infowindow);
+        </text>
+        }
+        }
+        }
+
+
+        setAllMap(map);
+    }*@
+
+    //function setAllMap(map) {
+    //    for (var i = 0; i < markers.length; i++) {
+    //        markers[i].setMap(map);
+
+    //        google.maps.event.addListener(markers[i], 'click', (function (i) {
+    //            return function () {
+    //                info[i].open(map, markers[i]);
+    //            }
+    //        })(i));
+    //    }
+    //}
+</script>
+<script type="text/javascript">
+    var tabla;
+    var latitud_actual;
+    $(function () {
+        tabla = $('.table_planificacion').DataTable();
+        $(".esperando").remove();
+        initialize();
+    });
+
+    function registraGasto(id) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (latitud) { latitud_actual = latitud }, function () { toastr.error('No se pudo obtener su ubicación, vuelva a intentar por favor.', 'Error', opts); });
+            toastr.info(' Ubicación Localzada.', 'Información', opts);
+            $("#modal-body-gasto").load("/PlanificacionCompaniaSeguro/RegistrarPago?id=" + id, function (response, status, xhr) {
+                if (status == "error") {
+                    toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+                } else {
+                    $("#modal_gasto").modal('show');
+                }
+            });
+        }
+    }
+    function confirmarCheckin(id) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (latitud) { latitud_actual = latitud }, function () { toastr.error('No se pudo obtener su ubicación, vuelva a intentar por favor.', 'Error', opts); });
+            toastr.info(' Ubicación Localzada.', 'Información', opts);
+            $("#modal-body-chekin").load("/PlanificacionCompaniaSeguro/ConfirmarCheckin?id=" + id, function (response, status, xhr) {
+                if (status == "error") {
+                    toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+                } else {
+                    $("#modal_checkin").modal('show');
+                }
+            });
+        }
+
+    }
+</script>
+<style>
+    .realizado{
+        background-color: #dff0d8!important;
+    }
+</style>
+<div class="row ">
+    <div class="col-xs-12 ">
+        <table class="table table-striped table-bordered table-hover table_planificacion">
+            <thead>
+                <tr>
+                    <th style="width:90px">
+                        Hora
+                    </th>
+                    <th>
+                        Compañía de Seguro
+                    </th>
+                    <th>
+                        Colaborador
+                    </th>
+                    <th>
+                        Motivo
+                    </th>
+                    @if (visible)
+                    {
+                        <th class="acciones" width="100px"></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderBy(x => x.fecha).ToList())
+                {
+                    <tr @if (item.isRealizada) { <text> class="realizado" </text>   }>
+                        <td style="text-align:center;">
+                            @if (item.isRealizada)
+                            {
+                                <i class="fa fa-check-circle fa-3x" style="color:#00a651;"></i>
+                            }
+                            else
+                            {
+                                @item.fecha.ToShortTimeString()
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.COMPANIASEGURO.descripcion)
+                        </td>
+                        <td>
+                            @{var medico = item.Colaborador;}
+                            @Html.DisplayFor(modelItem => medico.apellidos) @Html.DisplayFor(modelItem => medico.nombres)
+                            @*<button type="button" class="btn btn-info btn-sm pull-right" title="Actualizar Datos"><i class="fa fa-edit fa-2x"></i></button>*@
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.motivo)
+                        </td>
+                        @if (visible)
+                        {
+                            if (item.fecha.Date == DateTime.Now.Date)
+                            {
+                                var monto = item.Planificacion_CompaniaSeguro_Documento.Where(m => m.idplanificacion == item.id).Select(m => m.total).Sum().ToString();
+                                <td style="text-align:center" class="acciones">
+                                    @if (!item.isRealizada)
+                                    {
+                                        <button class="btn btn-blue btn-sm" onclick="confirmarCheckin(@item.id)" title="Hacer Chek-in" type="button"><i class="fa fa-crosshairs fa-2x"></i></button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-sm btn-success" type="button" onclick="registraGasto(@item.id)" title="Gastos">
+                                            @if (monto == "0")
+                                            {
+                                                <span><i class="fa fa-money fa-2x"></i></span>
+                                            }
+                                            else
+                                            {
+                                                <span>S/. @monto</span>
+                                            }
+                                        </button>
+                                    }
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        }
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-xs-12 ">
+        <style>
+            #map-canvas {
+                width: 100%;
+                height: 330px;
+            }
+        </style>
+        <div id="map-canvas"></div>
+    </div>
+</div>

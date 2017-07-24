@@ -1,0 +1,1589 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D7314766-6769-4462-9FDA-ACA2937132B4}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Resocentro_Desktop</RootNamespace>
+    <AssemblyName>Resocentro_Desktop</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>F:\Site\App\SistemaResocentro\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>http://localhost:5050/SistemaResocentro/</InstallUrl>
+    <SupportUrl>http://localhost:5050/Prerequisitos-App/</SupportUrl>
+    <ErrorReportUrl>http://192.168.0.40:5050/sistemaresocentro/publish.htm</ErrorReportUrl>
+    <TargetCulture>es-PE</TargetCulture>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <TrustUrlParameters>true</TrustUrlParameters>
+    <ApplicationRevision>12</ApplicationRevision>
+    <ApplicationVersion>3.3.1.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BootstrapperComponentsUrl>http://localhost:5050/Prerequisitos-App</BootstrapperComponentsUrl>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>img\favicon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>F64D9100B76C09EE26AB3F6CC3F61BFD7B674928</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BarcodeLib.Barcode.ASP.NET, Version=5.0.0.30712, Culture=neutral, PublicKeyToken=f1ec954ce2c30e4e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>library\BarcodeLib.Barcode.ASP.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Gma.QrCodeNet.Encoding, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QrCode.Net.0.4.0.0\lib\net45\Gma.QrCodeNet.Encoding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.9\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.9\lib\itextsharp.xmlworker.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Cors, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Cors.3.0.1\lib\net45\Microsoft.Owin.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Diagnostics, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Diagnostics.2.1.0\lib\net40\Microsoft.Owin.Diagnostics.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.HttpListener, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.HttpListener.2.1.0\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Hosting, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Hosting.2.1.0\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OnBarcode.Barcode.ASPNET, Version=6.0.0.41022, Culture=neutral, PublicKeyToken=a775cebcbc8b82dd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>library\OnBarcode.Barcode.ASPNET.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.24160719\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero2" />
+    <Reference Include="ReachFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Cors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.0.0\lib\net45\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls, Version=2016.3.1024.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.Windows.Controls.Chart, Version=2016.3.1024.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.Windows.Controls.Charting, Version=2016.3.1024.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.Windows.Controls.Data, Version=2016.3.1024.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.Windows.Controls.DataVisualization, Version=2016.3.1024.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2016.3.1024.45\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Diagrams, Version=2016.3.1024.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2016.3.1024.45\Telerik.Windows.Controls.Diagrams.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.GridView, Version=2016.3.1024.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2016.3.1024.45\Telerik.Windows.Controls.GridView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.ImageEditor, Version=2016.3.1024.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2016.3.1024.45\Telerik.Windows.Controls.ImageEditor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Input, Version=2016.3.1024.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.Windows.Controls.Navigation, Version=2016.3.1024.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.Windows.Controls.RibbonView, Version=2016.3.1024.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2016.3.1024.45\Telerik.Windows.Controls.RibbonView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Data, Version=2016.3.1024.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2016.3.1024.45\Telerik.Windows.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Diagrams.Core, Version=2016.3.1024.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2016.3.1024.45\Telerik.Windows.Diagrams.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Complemento\BrushColorConverter.cs" />
+    <Compile Include="CustomFilter\CustomFilterBehavior.cs" />
+    <Compile Include="CustomFilter\CustomFilterDescriptor.cs" />
+    <Compile Include="DAO\AdministracionDAO.cs" />
+    <Compile Include="DAO\AL_Almacen.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\AL_Enfermeria.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\AL_Insum.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\AL_Stock_Current.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\AL_Stock_Diario.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\AL_Stock_Item.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\ASEGURADORA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\ATENCION.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\AtencionClienteDAO.cs" />
+    <Compile Include="DAO\AUDITORIA_CARTAS_GARANTIA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\CARGO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\CARTAGARANTIA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\CG_Log.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\CG_SolicituCarta_Historial.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\CG_SolicitudCarta.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\CIE.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\CITA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\CitaDAO.cs" />
+    <Compile Include="DAO\CLASE.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\CLINICAHOSPITAL.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\COBRANZACIASEGURO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\CobranzaDAO.cs" />
+    <Compile Include="DAO\COMPANIASEGURO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\Com_Medico.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\ConfirmacionLecturaPago.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\Confirmacion_Cita.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\CONTROL_SEDACION.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\DETALLEDOCUMENTO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\DetalleFacturaGlobal.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\DETALLEPROFORMA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\DOCESCANEADO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\DOCUMENTO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\DocumentoDAO.cs" />
+    <Compile Include="DAO\EMPLEADO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\EQUIPO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\EQUIPO_ESTUDIO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\ESCANADMISION.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\ESTUDIO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\ESTUDIO_CARTAGAR.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\ESTUDIO_COMPANIA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\EXAMENXATENCION.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\EXAMENXCITA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\FacturaDetalleLote.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\FacturaGlobal.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\FacturaLote.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\FIZCALIZACION.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\FORMADEPAGO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\HORARIO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\InfoTacticaDAO.cs" />
+    <Compile Include="DAO\LIBROCAJA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\MEDICOEXTERNO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\MessageBoxTemporal.cs" />
+    <Compile Include="DAO\ModelReporte.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelReporte.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\ModelReporte.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelReporte.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\ModelReporte.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelReporte.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\MONEDA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\Motivo_Entre_Turno.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\PACIENTE.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\PagosDAO.cs" />
+    <Compile Include="DAO\Permiso.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\PrintDAO.cs" />
+    <Compile Include="DAO\PROFORMA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\ReporteContabilidad.cs">
+      <DependentUpon>ModelReporte.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\reporte_produccionGrafica_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\reporte_VentasGrafica_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\RESULTADODELIVERY.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\RGVCAFACII_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\RGVCAFAC_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\RGVFACTU_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\ServiceSunat.cs" />
+    <Compile Include="DAO\spu_reporteCobranza_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\TIPOCAMBIO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\TIPO_DOCUMENTO_IDENTIDAD.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\TKT_Counter.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\TKT_Historial.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\TKT_List_Atencion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\TKT_Ticketera.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\TKT_Tipo_Atencion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entitys\AtencionClienteEntitys.cs" />
+    <Compile Include="Entitys\ResultadosEntity.cs" />
+    <Compile Include="DAO\SERIE.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\SitedProducto.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\Solicitud_Entre_Turno.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\SUCURSAL.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\SUCURSALXUSUARIO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\Sunasa_Cobertura.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\TARJETA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\TipoMedico.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\UBIGEO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\UNIDADNEGOCIO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\USUARIO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entitys\AdministracionEntitys.cs" />
+    <Compile Include="Entitys\CartaEntity.cs" />
+    <Compile Include="Entitys\CitaEntity.cs" />
+    <Compile Include="Entitys\CobranzaEntity.cs" />
+    <Compile Include="Entitys\DocumentoEntity.cs" />
+    <Compile Include="frmCambiarNombre.xaml.cs">
+      <DependentUpon>frmCambiarNombre.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\administracion\frmAsignacionContraste.xaml.cs">
+      <DependentUpon>frmAsignacionContraste.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\administracion\frmConfirmacionPago.xaml.cs">
+      <DependentUpon>frmConfirmacionPago.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\administracion\frmPagoAnestesiolog.xaml.cs">
+      <DependentUpon>frmPagoAnestesiolog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\administracion\frmPagoMedico.xaml.cs">
+      <DependentUpon>frmPagoMedico.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\administracion\frmPagoPostProceso.xaml.cs">
+      <DependentUpon>frmPagoPostProceso.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\administracion\frmPagoTecnologo.xaml.cs">
+      <DependentUpon>frmPagoTecnologo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\administracion\frmRegistroSedaciones.xaml.cs">
+      <DependentUpon>frmRegistroSedaciones.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\AtencionCliente\frmConfirmarCita.xaml.cs">
+      <DependentUpon>frmConfirmarCita.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\AtencionCliente\frmConfirmarDatosEnvioCorreo.xaml.cs">
+      <DependentUpon>frmConfirmarDatosEnvioCorreo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\AtencionCliente\frmEntregarResultado.xaml.cs">
+      <DependentUpon>frmEntregarResultado.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\AtencionCliente\frmListaConfirmacion.xaml.cs">
+      <DependentUpon>frmListaConfirmacion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\AtencionCliente\frmListaResultado.xaml.cs">
+      <DependentUpon>frmListaResultado.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\AtencionCliente\frmTicketera.xaml.cs">
+      <DependentUpon>frmTicketera.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmAddAtencion.xaml.cs">
+      <DependentUpon>frmAddAtencion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmCierreCaja.xaml.cs">
+      <DependentUpon>frmCierreCaja.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmConsultaBetaSunat.xaml.cs">
+      <DependentUpon>frmConsultaBetaSunat.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmDetalleFacGlobal.xaml.cs">
+      <DependentUpon>frmDetalleFacGlobal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmDocumentosEmitidos.xaml.cs">
+      <DependentUpon>frmDocumentosEmitidos.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\Cobranza\frmGenearCaraturaFactura.xaml.cs">
+      <DependentUpon>frmGenearCaraturaFactura.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmIGV.xaml.cs">
+      <DependentUpon>frmIGV.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmMantFacGlobal.xaml.cs">
+      <DependentUpon>frmMantFacGlobal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\Cobranza\frmRegistarFechaRecepcion.xaml.cs">
+      <DependentUpon>frmRegistarFechaRecepcion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\Cobranza\frmUploadFacturas.xaml.cs">
+      <DependentUpon>frmUploadFacturas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\impresion\frmCaratula.xaml.cs">
+      <DependentUpon>frmCaratula.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\impresion\frmPlanillaCobranza.xaml.cs">
+      <DependentUpon>frmPlanillaCobranza.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\impresion\frmTicketControl.xaml.cs">
+      <DependentUpon>frmTicketControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\RegistroCobranza\frmFacturacionEspecial.xaml.cs">
+      <DependentUpon>frmFacturacionEspecial.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmListaFacturacionGlobal.xaml.cs">
+      <DependentUpon>frmListaFacturacionGlobal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmRegistrarFormaPago.xaml.cs">
+      <DependentUpon>frmRegistrarFormaPago.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmRepoteNoFacturado.xaml.cs">
+      <DependentUpon>frmRepoteNoFacturado.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmSelecionarSede.xaml.cs">
+      <DependentUpon>frmSelecionarSede.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmTarifario.xaml.cs">
+      <DependentUpon>frmTarifario.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\RegistroCobranza\frnFacturaGlobal.xaml.cs">
+      <DependentUpon>frnFacturaGlobal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\RegistroCobranza\frnNotasdeCreditoDebito.xaml.cs">
+      <DependentUpon>frnNotasdeCreditoDebito.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\impresion\frmBoletaResocentro.xaml.cs">
+      <DependentUpon>frmBoletaResocentro.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\impresion\frmImpAnulacion.xaml.cs">
+      <DependentUpon>frmImpAnulacion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\impresion\frmResocentro.xaml.cs">
+      <DependentUpon>frmResocentro.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\impresion\frmResultadosOnline.xaml.cs">
+      <DependentUpon>frmResultadosOnline.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmDatosCarta.xaml.cs">
+      <DependentUpon>frmDatosCarta.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmListaSiteds.xaml.cs">
+      <DependentUpon>frmListaSiteds.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmLogCarta.xaml.cs">
+      <DependentUpon>frmLogCarta.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmObsRevision.xaml.cs">
+      <DependentUpon>frmObsRevision.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmPrintProforma.xaml.cs">
+      <DependentUpon>frmPrintProforma.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmReporteSedacionesCarta.xaml.cs">
+      <DependentUpon>frmReporteSedacionesCarta.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmRevisionCarta.xaml.cs">
+      <DependentUpon>frmRevisionCarta.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmVisorCarta.xaml.cs">
+      <DependentUpon>frmVisorCarta.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\AtencionCliente\frmBloqueoTurno.xaml.cs">
+      <DependentUpon>frmBloqueoTurno.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\AtencionCliente\frmCita.xaml.cs">
+      <DependentUpon>frmCita.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\AtencionCliente\frmConfirmacionBloquedo.xaml.cs">
+      <DependentUpon>frmConfirmacionBloquedo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\AtencionCliente\frmListaCarta.xaml.cs">
+      <DependentUpon>frmListaCarta.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\AtencionCliente\frmRegistarLlamada.xaml.cs">
+      <DependentUpon>frmRegistarLlamada.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\AtencionCliente\frmSolicitarEntreTurno.xaml.cs">
+      <DependentUpon>frmSolicitarEntreTurno.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\AtencionCliente\frmTurnoMedico.xaml.cs">
+      <DependentUpon>frmTurnoMedico.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\AtencionCliente\frmVisorCitas.xaml.cs">
+      <DependentUpon>frmVisorCitas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmBajaDocumentos.xaml.cs">
+      <DependentUpon>frmBajaDocumentos.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmListaAtenciones.xaml.cs">
+      <DependentUpon>frmListaAtenciones.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\RegistroCobranza\frmRegistrarCobranza.xaml.cs">
+      <DependentUpon>frmRegistrarCobranza.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\RegistroCobranza\frmResumenBoletas.xaml.cs">
+      <DependentUpon>frmResumenBoletas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmSeleccionarModalidad.xaml.cs">
+      <DependentUpon>frmSeleccionarModalidad.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\impresion\frmTicketComprobante.xaml.cs">
+      <DependentUpon>frmTicketComprobante.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Caja\frmListaFacturacion.xaml.cs">
+      <DependentUpon>frmListaFacturacion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\Print\frmPrintProforma.xaml.cs">
+      <DependentUpon>frmPrintProforma.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmAdquisicion.xaml.cs">
+      <DependentUpon>frmAdquisicion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmCambiarImagen.xaml.cs">
+      <DependentUpon>frmCambiarImagen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmDocumento\frmDocumento.xaml.cs">
+      <DependentUpon>frmDocumento.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Complemento\SelectorsStyle.cs" />
+    <Compile Include="Interfaz\Caja\frmSetPrecioFacGlobal.xaml.cs">
+      <DependentUpon>frmSetPrecioFacGlobal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmCompania.xaml.cs">
+      <DependentUpon>frmCompania.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmMedico.xaml.cs">
+      <DependentUpon>frmMedico.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmSearchCompania.xaml.cs">
+      <DependentUpon>frmSearchCompania.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmSearchFacturas.xaml.cs">
+      <DependentUpon>frmSearchFacturas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\InformacionTactica\frmReporteProduccion.xaml.cs">
+      <DependentUpon>frmReporteProduccion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\InformacionTactica\frmReporteVentas.xaml.cs">
+      <DependentUpon>frmReporteVentas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\InformacionTactica\ReporteContable\frmDetalleReporteContable.xaml.cs">
+      <DependentUpon>frmDetalleReporteContable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\InformacionTactica\ReporteContable\frmErrorReporteContable.xaml.cs">
+      <DependentUpon>frmErrorReporteContable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\InformacionTactica\frmReporteContable.xaml.cs">
+      <DependentUpon>frmReporteContable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Sistemas\frmEliminarZipFac.xaml.cs">
+      <DependentUpon>frmEliminarZipFac.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Sistemas\frmVerificarBaja.xaml.cs">
+      <DependentUpon>frmVerificarBaja.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ServiceSunatEMEConsulta\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ServiceSunatRESOConsulta\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\SunatServiceEmetac\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\SunatServiceResocentro\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
+    <Page Include="frmCambiarNombre.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\administracion\frmAsignacionContraste.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\administracion\frmConfirmacionPago.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\administracion\frmPagoAnestesiolog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\administracion\frmPagoMedico.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\administracion\frmPagoPostProceso.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\administracion\frmPagoTecnologo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\administracion\frmRegistroSedaciones.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\AtencionCliente\frmConfirmarCita.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\AtencionCliente\frmConfirmarDatosEnvioCorreo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\AtencionCliente\frmEntregarResultado.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\AtencionCliente\frmListaConfirmacion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\AtencionCliente\frmListaResultado.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\AtencionCliente\frmTicketera.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmAddAtencion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmCierreCaja.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmConsultaBetaSunat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmDetalleFacGlobal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmDocumentosEmitidos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\Cobranza\frmGenearCaraturaFactura.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmIGV.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmMantFacGlobal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\Cobranza\frmRegistarFechaRecepcion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\Cobranza\frmUploadFacturas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\impresion\frmCaratula.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\impresion\frmPlanillaCobranza.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\impresion\frmTicketControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\RegistroCobranza\frmFacturacionEspecial.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmListaFacturacionGlobal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmRegistrarFormaPago.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmRepoteNoFacturado.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmSelecionarSede.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmTarifario.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\RegistroCobranza\frnFacturaGlobal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\RegistroCobranza\frnNotasdeCreditoDebito.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\impresion\frmBoletaResocentro.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\impresion\frmImpAnulacion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\impresion\frmResocentro.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\impresion\frmResultadosOnline.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmDatosCarta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmListaSiteds.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmLogCarta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmObsRevision.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmPrintProforma.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmReporteSedacionesCarta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmRevisionCarta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmVisorCarta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\AtencionCliente\frmBloqueoTurno.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\AtencionCliente\frmCita.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\AtencionCliente\frmConfirmacionBloquedo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\AtencionCliente\frmListaCarta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\AtencionCliente\frmRegistarLlamada.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\AtencionCliente\frmSolicitarEntreTurno.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\AtencionCliente\frmTurnoMedico.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\AtencionCliente\frmVisorCitas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmBajaDocumentos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmListaAtenciones.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\RegistroCobranza\frmRegistrarCobranza.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\RegistroCobranza\frmResumenBoletas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmSeleccionarModalidad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\impresion\frmTicketComprobante.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmListaFacturacion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\Print\frmPrintProforma.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmAdquisicion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmCambiarImagen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmDocumento\frmDocumento.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmHistoriaPaciente.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmCarta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmCobertura.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmCorreoSolicitu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmListaSolicitudesWeb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="frmMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmListProforma.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmProforma.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frmSetPrecioFacGlobal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmSearchBeneficio.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Cartas\frmSolicitudWeb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmCambiarClave.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmCambiarEstadoCita.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmCancelarExamen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmCompania.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmMedico.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmPaciente.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmSearchAseguradora.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmSearchCie.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmSearchClinica.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmSearchCompania.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmSearchFacturas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmSearchInsumo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmSearchEstudio.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmSearchMedico.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmSearchPaciente.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmSearchProducto.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\frmUtil\frmSearchUbigeo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\InformacionTactica\frmReporteProduccion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\InformacionTactica\frmReporteVentas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\InformacionTactica\ReporteContable\frmDetalleReporteContable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\InformacionTactica\ReporteContable\frmErrorReporteContable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\InformacionTactica\frmReporteContable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Sistemas\frmEliminarZipFac.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Sistemas\frmVerificarBaja.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DAO\AccountDAO.cs" />
+    <Compile Include="DAO\CartaDAO.cs" />
+    <Compile Include="DAO\EAtencionDAO.cs" />
+    <Compile Include="DAO\EstudiosDAO.cs" />
+    <Compile Include="DAO\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\PacienteDAO.cs" />
+    <Compile Include="DAO\Tool.cs" />
+    <Compile Include="DAO\UtilDAO.cs" />
+    <Compile Include="Entitys\PacienteEntity.cs" />
+    <Compile Include="Entitys\UtilEntitys.cs" />
+    <Compile Include="Interfaz\frmHistoriaPaciente.xaml.cs">
+      <DependentUpon>frmHistoriaPaciente.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmCarta.xaml.cs">
+      <DependentUpon>frmCarta.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmCobertura.xaml.cs">
+      <DependentUpon>frmCobertura.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmCorreoSolicitu.xaml.cs">
+      <DependentUpon>frmCorreoSolicitu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmListaSolicitudesWeb.xaml.cs">
+      <DependentUpon>frmListaSolicitudesWeb.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="frmMenu.xaml.cs">
+      <DependentUpon>frmMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmListProforma.xaml.cs">
+      <DependentUpon>frmListProforma.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmProforma.xaml.cs">
+      <DependentUpon>frmProforma.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmSearchBeneficio.xaml.cs">
+      <DependentUpon>frmSearchBeneficio.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Cartas\frmSolicitudWeb.xaml.cs">
+      <DependentUpon>frmSolicitudWeb.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmCambiarClave.xaml.cs">
+      <DependentUpon>frmCambiarClave.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmCambiarEstadoCita.xaml.cs">
+      <DependentUpon>frmCambiarEstadoCita.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmCancelarExamen.xaml.cs">
+      <DependentUpon>frmCancelarExamen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmPaciente.xaml.cs">
+      <DependentUpon>frmPaciente.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmSearchAseguradora.xaml.cs">
+      <DependentUpon>frmSearchAseguradora.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmSearchCie.xaml.cs">
+      <DependentUpon>frmSearchCie.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmSearchClinica.xaml.cs">
+      <DependentUpon>frmSearchClinica.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmSearchInsumo.xaml.cs">
+      <DependentUpon>frmSearchInsumo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmSearchEstudio.xaml.cs">
+      <DependentUpon>frmSearchEstudio.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmSearchMedico.xaml.cs">
+      <DependentUpon>frmSearchMedico.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmSearchPaciente.xaml.cs">
+      <DependentUpon>frmSearchPaciente.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmSearchProducto.xaml.cs">
+      <DependentUpon>frmSearchProducto.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\frmUtil\frmSearchUbigeo.xaml.cs">
+      <DependentUpon>frmSearchUbigeo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Window1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Interfaz\Caja\impresion\Caratula.rdlc" />
+    <EmbeddedResource Include="Interfaz\Caja\impresion\PlanillaCobranza.rdlc" />
+    <EmbeddedResource Include="Interfaz\Caja\ReporteCierreCaja.rdlc" />
+    <EmbeddedResource Include="Properties\Licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EntityDeploy Include="DAO\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DAO\Cer-Emet\EMETAC.cer">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DAO\Cer-Emet\MPS20160829351646.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DAO\Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+    </None>
+    <None Include="DAO\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DAO\Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.cs</LastGenOutput>
+    </None>
+    <EntityDeploy Include="DAO\ModelReporte.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelReporte.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DAO\ModelReporte.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelReporte.edmx</DependentUpon>
+      <LastGenOutput>ModelReporte.Context.cs</LastGenOutput>
+    </None>
+    <None Include="DAO\ModelReporte.edmx.diagram">
+      <DependentUpon>ModelReporte.edmx</DependentUpon>
+    </None>
+    <None Include="DAO\ModelReporte.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelReporte.edmx</DependentUpon>
+      <LastGenOutput>ModelReporte.cs</LastGenOutput>
+    </None>
+    <None Include="DAO\Cer-Reso\MPS20151222232684.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DAO\Cer-Reso\RESOCENTRO.cer">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\DataSources\CaratulaEntity.datasource" />
+    <None Include="Properties\DataSources\Resocentro_Desktop.Entitys.CobranzaViewModel.datasource" />
+    <None Include="Properties\DataSources\Resocentro_Desktop.Entitys.DocumentosCancelacion.datasource" />
+    <None Include="Properties\DataSources\Resocentro_Desktop.Entitys.DocumentosRecepcion.datasource" />
+    <None Include="Properties\DataSources\Resocentro_Desktop.Entitys.ReporteCierreCaja.datasource" />
+    <None Include="Service References\ServiceSunatEMEConsulta\billConsultService.wsdl" />
+    <None Include="Service References\ServiceSunatEMEConsulta\billConsultService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceSunatEMEConsulta\billConsultService1.wsdl" />
+    <None Include="Service References\ServiceSunatEMEConsulta\Resocentro_Desktop.ServiceSunatEMEConsulta.getStatusCdrResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceSunatEMEConsulta\Resocentro_Desktop.ServiceSunatEMEConsulta.getStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceSunatEMEConsulta\Resocentro_Desktop.ServiceSunatEMEConsulta.statusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceSunatRESOConsulta\billConsultService.wsdl" />
+    <None Include="Service References\ServiceSunatRESOConsulta\billConsultService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceSunatRESOConsulta\billConsultService1.wsdl" />
+    <None Include="Service References\ServiceSunatRESOConsulta\Resocentro_Desktop.ServiceSunatRESOConsulta.getStatusCdrResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceSunatRESOConsulta\Resocentro_Desktop.ServiceSunatRESOConsulta.getStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceSunatRESOConsulta\Resocentro_Desktop.ServiceSunatRESOConsulta.statusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SunatServiceEmetac\billService.wsdl" />
+    <None Include="Service References\SunatServiceEmetac\billService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\SunatServiceEmetac\billService1.wsdl" />
+    <None Include="Service References\SunatServiceEmetac\Resocentro_Desktop.SunatServiceEmetac.getStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SunatServiceEmetac\Resocentro_Desktop.SunatServiceEmetac.sendBillResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SunatServiceEmetac\Resocentro_Desktop.SunatServiceEmetac.sendPackResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SunatServiceEmetac\Resocentro_Desktop.SunatServiceEmetac.sendSummaryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SunatServiceEmetac\Resocentro_Desktop.SunatServiceEmetac.statusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SunatServiceResocentro\billService.wsdl" />
+    <None Include="Service References\SunatServiceResocentro\billService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\SunatServiceResocentro\billService1.wsdl" />
+    <None Include="Service References\SunatServiceResocentro\Resocentro_Desktop.SunatServiceResocentro.getStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SunatServiceResocentro\Resocentro_Desktop.SunatServiceResocentro.sendBillResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SunatServiceResocentro\Resocentro_Desktop.SunatServiceResocentro.sendPackResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SunatServiceResocentro\Resocentro_Desktop.SunatServiceResocentro.sendSummaryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SunatServiceResocentro\Resocentro_Desktop.SunatServiceResocentro.statusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <Resource Include="fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="fonts\glyphicons-halflings-regular.eot" />
+    <None Include="fonts\glyphicons-halflings-regular.woff" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\Logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\favicon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\Logo_Azul.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceSunatEMEConsulta\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServiceSunatEMEConsulta\configuration.svcinfo" />
+    <None Include="Service References\ServiceSunatEMEConsulta\configuration91.svcinfo" />
+    <None Include="Service References\ServiceSunatRESOConsulta\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServiceSunatRESOConsulta\configuration.svcinfo" />
+    <None Include="Service References\ServiceSunatRESOConsulta\configuration91.svcinfo" />
+    <None Include="Service References\SunatServiceEmetac\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\SunatServiceEmetac\configuration.svcinfo" />
+    <None Include="Service References\SunatServiceEmetac\configuration91.svcinfo" />
+    <None Include="Service References\SunatServiceResocentro\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\SunatServiceResocentro\configuration.svcinfo" />
+    <None Include="Service References\SunatServiceResocentro\configuration91.svcinfo" />
+    <Resource Include="img\IMG_2641.JPG" />
+    <Resource Include="img\estadoEncuesta\check.png" />
+    <Resource Include="img\profile.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="img\logo_emetac.png" />
+    <Resource Include="img\check-red.png" />
+    <Content Include="library\BarcodeLib.Barcode.ASP.NET.dll" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="library\OnBarcode.Barcode.ASPNET.dll" />
+    <Resource Include="PDF417Bar\bgplomo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="img\bgplomo.png" />
+    <Resource Include="img\file.png" />
+    <Resource Include="img\hombre.png" />
+    <Resource Include="img\mujer.png" />
+    <Resource Include="img\check.png" />
+    <Resource Include="img\cancelar.png" />
+    <Resource Include="img\buscar.png" />
+    <Resource Include="img\sedacion.png" />
+    <Resource Include="img\vip.png" />
+    <Resource Include="img\protocolo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 y x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <FileAssociation Include=".reso">
+      <Visible>False</Visible>
+      <Description>Sistema Resocentro</Description>
+      <Progid>Reso.Sist</Progid>
+      <DefaultIcon>img\favicon.ico</DefaultIcon>
+    </FileAssociation>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ServiceSunatEMEConsulta\" />
+    <WCFMetadataStorage Include="Service References\ServiceSunatRESOConsulta\" />
+    <WCFMetadataStorage Include="Service References\SunatServiceEmetac\" />
+    <WCFMetadataStorage Include="Service References\SunatServiceResocentro\" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

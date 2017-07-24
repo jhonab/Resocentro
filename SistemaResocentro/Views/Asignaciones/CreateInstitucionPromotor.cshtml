@@ -1,0 +1,94 @@
+﻿@model SistemaResocentro.Models.Institucion_Promotor
+
+@{
+    Layout = null;
+    ViewBag.Title = "Create";
+}
+
+
+<script src="~/js/validar-input.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("._cbo2").chosen({ width: "100%" });
+    });
+    
+    function validar() {
+        
+        var idinstitucion = $("#codigoclinica").val();
+        var codigopromotor = $("#codigopromotor").val();
+        
+        if (idinstitucion == "" || codigopromotor == "") {
+            removeHasAll("codigoclinica");
+            removeHasAll("codigopromotor");
+            if (idinstitucion == "")
+                addError("codigoclinica");
+            if (codigopromotor == "")
+                addError("codigopromotor");
+            return false;
+        } 
+        
+        if (!validarAsignacionPromotor(idinstitucion, codigopromotor))
+          return false;
+        return true;
+    }
+    function validarAsignacionPromotor(idinstitucion, codigopromotor) {
+        var _result = true;
+        
+        $.ajax({
+            async: false,
+            cache: false,
+            url: '/Asignaciones/validarAsignacionInstitucionPromotor',
+            data: { idInstitucion: idinstitucion, promotor: codigopromotor },
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                if (!data) {
+                    removeHasAll("codigopromotor");
+                    addError("codigopromotor");
+                    toastr.error("La Institución Médica ya se asignó a otro Representante Médico", "Error", opts);
+                    _result = false;
+                }
+            },
+            error: function () {
+                toastr.error("No se pudo validar la asignación", "Error", opts);
+                _result = false;
+            }
+        });
+        return _result;
+    }
+</script>
+<div class="modal-header modal-primary">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Asignar Representante Médico a Institución Médica</h4>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <div class="row">
+            <div id="">
+                <div class="col-md-12">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <label>Institución Médica</label>
+                        <div class="">
+                            @Html.DropDownListFor(model => model.codigoclinica, (SelectList)ViewBag.Instituciones, "- Seleccione la Institución Médica -", htmlAttributes: new { @class = "form-control _cbo2" })
+                            @Html.ValidationMessageFor(model => model.codigoclinica, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Representante</label>
+                        <div class="">
+                            @Html.DropDownListFor(model => model.codigopromotor, (SelectList)ViewBag.Promotor, "- Seleccione el Representant -", htmlAttributes: new { @class = "form-control _cbo2" })
+                            @Html.ValidationMessageFor(model => model.codigopromotor, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button id="btnregistrar" type="submit" class="btn btn-success" onclick="return validar();"><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp; Registrar </button>
+    </div>
+}

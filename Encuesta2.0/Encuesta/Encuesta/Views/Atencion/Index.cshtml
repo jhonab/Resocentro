@@ -1,0 +1,278 @@
+﻿@model IEnumerable<Encuesta.Models.EXAMENXATENCION>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.codigo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ATENCION.cmp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.codigopaciente)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.numerocita)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.codigocompaniaseguro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ruc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.codigoequipo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.horaatencion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.codigoestudio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.codigoclase)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.codigomodalidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.codigounidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.estadoestudio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.prioridad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.turnomedico)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.encu_tipo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.codigoequipoFinal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EstadoInforme)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.motivo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.otros_motivos)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.usu_cancela)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecha_cancela)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAcopied)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAmpliInDemand)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AmpliCodigo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CodigoDeEstudioOrigen)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isLocked)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EstadoEncuesta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.equipoAsignado)
+        </th>
+        <th>
+           
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GrupoMedico)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isImpax)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fec_Rev_Impax)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.usu_Rev_Impax)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAudible)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserTemporal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsMoreThanOnePage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UrlXero)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsTranscriInDemand)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MedProceAtro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsDictado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AmpliMotivo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.codigo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ATENCION.cmp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.codigopaciente)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.numerocita)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.codigocompaniaseguro)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ruc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.codigoequipo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.horaatencion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.codigoestudio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.codigoclase)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.codigomodalidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.codigounidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.estadoestudio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.prioridad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.turnomedico)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.encu_tipo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.codigoequipoFinal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstadoInforme)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.motivo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.otros_motivos)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.usu_cancela)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecha_cancela)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAcopied)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAmpliInDemand)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AmpliCodigo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CodigoDeEstudioOrigen)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.isLocked)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstadoEncuesta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.equipoAsignado)
+        </td>
+        <td>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GrupoMedico)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.isImpax)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fec_Rev_Impax)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.usu_Rev_Impax)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAudible)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserTemporal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsMoreThanOnePage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UrlXero)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsTranscriInDemand)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MedProceAtro)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsDictado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AmpliMotivo)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

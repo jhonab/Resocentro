@@ -1,0 +1,32 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Data" x:Class="Resocentro_Desktop.Interfaz.Facturacion.frmListaFacturacion"
+        Title="Lista de Atenciones por Facturar a Empresas" Height="535" Width="810"  Background="{DynamicResource Windows.Background}" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <ComboBox x:Name="cbosucursal" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top" Width="163" Height="22"/>
+
+        <telerik:RadDatePicker x:Name="rdtfecha"  HorizontalAlignment="Left" Height="22" Margin="188,10,0,0" VerticalAlignment="Top" Width="163"/>
+        <Button x:Name="btnBuscar" Content="Buscar" HorizontalAlignment="Right" Margin="0,4,10,0" VerticalAlignment="Top" Width="75" Height="28" Click="btnBuscar_Click"/>
+        <telerik:RadGridView x:Name="gridAtenciones" ShowColumnFooters="True" Grid.Row="1" Margin="5" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" SelectionMode="Extended" ShowGroupPanel="False" SelectionUnit="FullRow" RowActivated="gridAtenciones_RowActivated" IsReadOnly="True">
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Sede" DataMemberBinding="{Binding sede}"/>
+                <telerik:GridViewDataColumn Header="Admision" DataMemberBinding="{Binding numeroatencion}">
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:CountFunction Caption="Total : "/>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Header="Documento" DataMemberBinding="{Binding numerodocumento}"/>
+                <telerik:GridViewDataColumn Header="Paciente" DataMemberBinding="{Binding paciente}" SortingState="Ascending" />
+                <telerik:GridViewDataColumn Header="Aseguradora" DataMemberBinding="{Binding companiaseguro}"/>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+        <Label x:Name="lblresumen" Content="" HorizontalAlignment="Left"  Grid.Row="2" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

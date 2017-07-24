@@ -1,0 +1,93 @@
+﻿@model IEnumerable<SistemaResocentro.ViewModel.Estudios_proforma>
+<script type="text/javascript">
+    var t1;
+    var t0;
+    $(function () {
+        t1 = $(".t1").DataTable({
+            "sPaginationType": "bootstrap",
+            "aoColumns": [
+                 { "sName": "Codigo", "bVisible": false },//0
+                 { "sName": "Clase", "bVisible": false },//0
+                 { "sName": "Estudio" },//0
+                 { "sName": "Cobertura" },//0
+                 { "sName": "Precio" },//0
+                 { "sName": "Acciones" },//0
+            ],
+        });
+        $('.t1 tbody').on('click', 'button.delete', function () {
+            t1
+                .row($(this).parents('tr'))
+                .remove()
+                .draw();
+            getJsonEstudios();
+        });
+    });
+
+    function deleteAllEstudios() {
+        t1.clear().draw();
+        if (t0 != null)
+            t0.clear().draw();
+        getJsonEstudios();
+    }
+
+    function getJsonEstudios() {
+        var len = t1.rows().data().length;
+        var _estudios = [];
+        t1.rows().data().each(function (value, ind) {
+            var jsonObject = {
+                "idestudio": value[0],
+                "idclase": value[1],
+                "nombre": value[2],
+                "cob": value[3],
+                "precio": value[4]
+            };
+            _estudios.push(jsonObject);
+
+        });
+        $("#estudios").val(JSON.stringify(_estudios, null, ""));
+    }
+</script>
+
+<div class="col-md-6">
+    <div id="lst_estudio_add" class="form-group ">
+        <label class="control-label ">Lista de Estudios Agregados</label>
+        <table class="table t1 compact table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Codigo
+                    </th>
+                    <th>
+                        Clase
+                    </th>
+                    <th>
+                        Estudio
+                    </th>
+                    <th>
+                        %Cob
+                    </th>
+                    <th>
+                        Precio
+                    </th>
+                    <th style="width: 22px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.idestudio</td>
+                            <td>@item.idclase</td>
+                            <td>@item.nombre</td>
+                            <td>@item.cob</td>
+                            <td>@item.precio</td>
+                            <td><button type="button" class="btn btn-red btn-xs delete"><i class="fa fa-times"></i></button></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

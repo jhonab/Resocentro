@@ -1,0 +1,84 @@
+﻿@model Encuesta.Models.USUARIO
+
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" href="../img/fondo/icono.ico">
+    <title>Sistema Medico - Resocentro</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../css/styles.css" rel="stylesheet" />
+
+    <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../font-awesome-4-2/css/font-awesome.min.css" rel="stylesheet" />
+
+
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.backstretch.min.js"></script>
+</head>
+
+<body>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            /*
+                Background slideshow
+            */
+            $.backstretch([
+             "../img/fondo/fondo.jpg"
+            ,"../img/fondo/bg_ipad.jpg"
+            , "../img/fondo/3.png"
+            ], { duration: 3000, fade: 750 });
+        });
+    </script>
+    <div>
+
+
+        @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+        {
+            @Html.AntiForgeryToken()
+            
+       
+            <div class="page-container">
+                <div class="fondo-logo">
+                    <img src="../img/Logo_Azul.png" alt="Resocentro">
+                </div>
+                <div class="container-login">
+                    <div class="frmLogin">
+                        <div class="text">
+                            <div class="input-group">
+                                <span class="input-group-addon "><i class="fa fa-user"></i></span>
+                                @Html.TextBoxFor(model => model.siglas, new { @class = "form-control", @placeholder = "Usuario" })
+                            </div>
+                        </div>
+                        <div class="text">
+                            <div class="input-group">
+                                <span class="input-group-addon "><i class="fa fa-key"></i></span>
+                                @Html.PasswordFor(model => model.codigousuario, new { @class = "form-control", @placeholder = "Contraseña" })
+                                @Html.ValidationMessageFor(m => m.codigousuario)
+
+                            </div>
+                        </div>
+                        @Html.ValidationSummary(true)
+
+
+                        <input type="submit" value="Ingresar" />
+                        <div>
+                            <br />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+    
+        }
+    </div>
+</body>
+</html>

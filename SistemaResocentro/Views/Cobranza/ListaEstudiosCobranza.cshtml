@@ -1,0 +1,131 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th style="width:30px!important"></th>
+                    <th style="display:none;"></th>
+                    <th style="width:30px;vertical-align: middle;text-align:center;">
+                        Cant.
+                    </th>
+                    <th style="vertical-align: middle;">
+                        Descripción
+                    </th>
+                    <th style="text-align:center">
+                        Valor<br />Unitario
+                    </th>
+                    @if (!Model.encabezado.razSocialAseguradora.ToLower().Contains("particular"))
+                    {
+                        <th style="text-align:center;vertical-align: middle;">
+                            % Coaseguro
+                        </th>
+                        <th style="text-align:center;vertical-align: middle;">
+                            Coaseguro
+                        </th>
+                    }
+                    <th style="text-align:center;vertical-align: middle;">
+                        Desc.<br />Cortesia
+                    </th>
+                    <th style="text-align:center">
+                        Valor<br />Bruto
+                    </th>
+                    <th style="text-align:center;vertical-align: middle;">
+                        IGV
+                    </th>
+                    <th style="text-align:center">
+                        Valor<br />Venta
+                    </th>
+
+                </tr>
+            </thead>
+            @foreach (var item in Model.detalle)
+            {
+                <tbody>
+                    <tr>
+                        <td style="text-align:center">
+                            <a class="btn btn-danger btn-xs" d href="#"><i class="fa fa-times"></i></a>
+                        </td>
+                        <td style="display:none;">@item.codigoitem</td>
+                        <td style="text-align:center">@item.cantidad</td>
+                        <td>@item.descripcion</td>
+                        <td style="text-align:right">@item.simboloMoneda @item.valorUnitario.ToString("######0.00")</td>
+                        @if (!Model.encabezado.razSocialAseguradora.ToLower().Contains("particular"))
+                        {
+                            <td style="text-align:center">@item.porcentajeCoaseguro%</td>
+                            <td style="text-align:right">@item.simboloMoneda @item.descxCoaseguro.ToString("######0.00")</td>
+                        }
+                        <td style="text-align:right">@item.simboloMoneda @item.descxItem.ToString("######0.00")</td>
+                        <td style="text-align:right">@item.simboloMoneda @item.valorVenta.ToString("######0.00")</td>
+                        <td style="text-align:right">@item.simboloMoneda @item.igvItem.ToString("######0.00")</td>
+                        <td style="text-align:right">@item.simboloMoneda @((item.totalventa).ToString("######0.00"))</td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+</div>
+
+@if (!Model.encabezado.razSocialAseguradora.ToLower().Contains("particular"))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th style="width:30px!important"></th>
+                        <th style="display:none;"></th>
+                        <th style="width:30px;vertical-align: middle;text-align:center;">
+                            Cant.
+                        </th>
+                        <th style="vertical-align: middle;">
+                            Descripción
+                        </th>
+                        <th style="text-align:center">
+                            Valor<br />Unitario
+                        </th>
+                        <th style="text-align:center;vertical-align: middle;">
+                            % Seguro
+                        </th>
+                        <th style="text-align:center;vertical-align: middle;">
+                            Seguro
+                        </th>
+                        <th style="text-align:center">
+                            Valor<br />Bruto
+                        </th>
+                        <th style="text-align:center;vertical-align: middle;">
+                            IGV
+                        </th>
+                        <th style="text-align:center">
+                            Valor<br />Venta
+                        </th>
+
+                    </tr>
+                </thead>
+                @foreach (var item in Model.detalle)
+                {
+                    <tbody>
+                        <tr>
+                            <td style="text-align:center">
+                                <a class="btn btn-danger btn-xs" d href="#"><i class="fa fa-times"></i></a>
+                            </td>
+                            <td style="display:none;">@item.codigoitem</td>
+                            <td style="text-align:center">@item.cantidad</td>
+                            <td>@item.descripcion</td>
+                            <td style="text-align:right">@item.simboloMoneda @item.valorUnitario.ToString("######0.00")</td>
+                            <td style="text-align:center">@item.porcentajeSeguro%</td>
+                            <td style="text-align:right">@item.simboloMoneda @item.descxSeguro.ToString("######0.00")</td>
+                            <td style="text-align:right">@item.simboloMoneda @item.valorVentaSeguro.ToString("######0.00")</td>
+                            <td style="text-align:right">@item.simboloMoneda @item.igvItemSeguro.ToString("######0.00")</td>
+                            <td style="text-align:right">@item.simboloMoneda @((item.totalventaSeguro).ToString("######0.00"))</td>
+                        </tr>
+                    </tbody>
+                }
+            </table>
+        </div>
+    </div>
+}
+

@@ -1,0 +1,432 @@
+﻿@model Encuesta.ViewModels.Supervisor.SupervisarExamenViewModel
+@{
+    ViewBag.Title = "Calificacion Encuesta";
+}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="well">
+            <h2 id="titulo_ocultar">Calificacion Encuesta</h2>
+            @Html.Partial("_Change")
+            <div class="row">
+
+                <div class="col-lg-12">
+
+                    <div class="panel panel-primary">
+
+                        <div class="panel-heading">
+                            Datos Examen
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-lg-4">
+                                @Html.Partial("_DatosExamen", Model.examen)
+                            </div>
+                            <div class="col-lg-4">
+                                @Html.Partial("_DatosPaciente", Model.paciente)
+                            </div>
+                            <div class="col-lg-4">
+                                @Html.Partial("_DatosEncuesta", Model.encuesta)
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="panel panel-primary">
+
+                        <div class="panel-heading">
+                            Supervisión Examen
+                            <div class="pull-right">
+                                <input type="button" class="btn btn-outline btn-warning" data-toggle="modal" data-target="#myModal" value="Cambiar Calificacion" />
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                @if (Model.isEncuestaVisible)
+                                {<div class="col-lg-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Encuesta
+                                        </div>
+                                        <div class="panel-body">
+
+                                            <div class="form-group">
+                                                <label>Calificación Encuesta:</label>
+                                                @if (Model.p1.Value)
+                                                {
+                                                    <span>Optimo </span>
+                                                }
+                                                else
+                                                {
+                                                    <span>No Optimo, @Model.p1_1</span>
+                                                }
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+
+                                @if (!Model.isEncuestaVisible)
+                                {
+                                    <script src="~/js/getUrl.js"></script>
+                                    <script type="text/javascript">
+                                        $(document).ready(function () {
+                                            $("#modelEncuesta_btnEncuesta").hide();
+                                            ocultarTextDetalle();
+                                            $("input[name=p1]").change(ocultarTextDetalle);
+                                        });
+                                        function ocultarTextDetalle() {
+                                            //P1
+                                            if ($('input:radio[name=p1]:checked').val() == "false")
+                                                $("#p1_1").show();
+                                            else
+                                                $("#p1_1").hide();
+                                        }
+
+                                        function AbrirEncuesta() {
+                                            $("#isInencuesta").val("True");
+                                            window.open('/LectorEncuesta/LectorEncuesta?examen=' + @Model.examen.codigo+'&isVisible=false', '_blank');
+                                        }
+
+                                        function validar() {
+
+                                            var _msj = "";
+                                            var _IsValid = true;
+
+                                            if ($("input:radio[name=p1]:checked").val() != undefined) {
+                                                if ($('input:radio[name=p1]:checked').val() == "false" && $("#p1_1").val().trim() == "") {
+                                                    _IsValid = false;
+                                                    _msj += "Pregunta 1: Especifique la calificaión\n";
+                                                }
+                                            }
+                                            else {
+                                                _IsValid = false;
+                                                _msj += "Pregunta 1: Seleccionar respuesta\n";
+                                            }
+                                            var parameter = $.get("impax");
+                                            if (parameter != null) {
+                                                $("#impax").val("True");
+                                            }
+
+                                            if (_IsValid == false) {
+                                                alert('Falta completar datos.\nVerifique las preguntas: \n' + _msj);
+                                                return false;
+                                            }
+
+                                            return true;
+                                        }
+
+                                    </script>
+                                   
+                                    <div class="col-lg-6">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                Encuesta
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label>Encuesta: </label>
+                                                    <button type="button" onclick="AbrirEncuesta()" class="btn btn-outline btn-primary fa-2x "><i class="fa fa-file-text "></i></button>
+
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p>
+                                                        <label>Califica las preguntas clinicas como:</label>
+                                                    </p>
+                                                    <p>
+                                                        @using (Html.BeginForm("SupervicionExterna", "SupervisarExamen", FormMethod.Post))
+                                                        {
+                                                            @Html.AntiForgeryToken()
+                                                            @Html.ValidationSummary(true)
+                                                            <input type="hidden" id="isInencuesta" name="isInencuesta" value="False" />
+                                                            <input type="hidden"  name="examen" value="@Model.num_examen" />
+                                                            <input type="hidden" id="impax" name="modo" value="False" />
+                                                            <input name="p1" type="radio" value="true">
+                                                            <text>Optimo</text>
+                                                            <input name="p1" type="radio" value="false">
+                                                            <text>No Optimo</text>
+                                                            <input class="form-control" id="p1_1" name="p1_1" placeholder="Ingrese el motivo " type="text" value="" style="display: none;">
+                                                            <br />
+                                                            <input type="submit" onclick="return validar()" class="btn btn-outline btn-default" value="Guardar" />
+                                                        }
+                                                    </p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    
+
+                                }
+                            </div>
+                            <div class="row">
+                                @if (Model.isTecnologoVisible)
+                                { 
+                                    <div class="col-lg-6">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                Tecnologo
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label>Calificación de las Imagenes:</label>
+                                                    @if (Model.p2.Value)
+                                                    {
+                                                        <span>Optimo </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>No Optimo, @Model.p2_1</span>
+                                                    }
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Calificación del cumplimiento de los objetivos clinicos:</label>
+                                                    @if (Model.p3.Value)
+                                                    {
+                                                        <span>Optimo </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>No Optimo, @Model.p3_1</span>
+                                                    }
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Calificación del Tecnólogo:</label>
+                                                    @if (Model.p4.Value == 1)
+                                                    {
+                                                        <span>Optimo </span>
+                                                    }
+                                                    else if (Model.p4.Value == 2)
+                                                    {
+                                                        <span>No Aplica </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>No Optimo, @Model.p4_1</span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                            
+                                }
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Diagnostico Preliminar
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <span>@Html.DisplayFor(model => model.diagnostico) </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Datos -->
+<div class="modal fade" style="color: #000!important;" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modal_CancelarLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        @using (Html.BeginForm("CambioCalificacion", "SupervisarExamen", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="modal_ModalidadLabel">Cambiar Calificación</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="modo" name="modo" value="False" />
+                    <input type="hidden"  name="num_examen" value="@Model.num_examen" />
+                    <div class='form-group'>
+                        <label style="color: #000!important; background-color: #fff!important;">Tipo Médico : </label>
+                        <select id="tipo_cambio" name="tipo_cambio" class="form-control">
+                            <option value="0">- seleccione Médico -</option>
+                            <option value="1">Informante</option>
+                            <option value="2">Validador</option>
+                        </select>
+                    </div>
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            ocultarTextDetalle();
+                            $("input[name=p1_cambio]").change(ocultarTextDetalle);
+                            $("input[name=p2_cambio]").change(ocultarTextDetalle);
+                            $("input[name=p3_cambio]").change(ocultarTextDetalle);
+                            $("input[name=p4_cambio]").change(ocultarTextDetalle);
+
+                        });
+
+                        function ocultarTextDetalle() {
+                            //P1
+                            if ($('input:radio[name=p1_cambio]:checked').val() == "false")
+                                $("#p1_1_cambio").show();
+                            else
+                                $("#p1_1_cambio").hide();
+                            //P2
+                            if ($('input:radio[name=p2_cambio]:checked').val() == "false")
+                                $("#p2_1_cambio").show();
+                            else
+                                $("#p2_1_cambio").hide();
+                            //P3
+                            if ($('input:radio[name=p3_cambio]:checked').val() == "false")
+                                $("#p3_1_cambio").show();
+                            else
+                                $("#p3_1_cambio").hide();
+                            //P4
+                            if ($('input:radio[name=p4_cambio]:checked').val() == "0")
+                                $("#p4_1_cambio").show();
+                            else
+                                $("#p4_1_cambio").hide();
+
+                        }
+
+
+                    </script>
+                    <div class="form-group">
+                        <p>
+                            <label style="color: #000!important; background-color: #fff!important;">Califica las preguntas clinicas como:</label>
+                        </p>
+                        <p>
+                            @Html.RadioButtonFor(b => b.p1_cambio, "true") Optimo
+                                                        @Html.RadioButtonFor(b => b.p1_cambio, "false") No Optimo
+                                                        @Html.TextBoxFor(b => b.p1_1_cambio, new { @placeholder = "Ingrese el motivo ", @class = "form-control" })
+                        </p>
+                    </div>
+                    <div class="form-group">
+
+                        <p>
+                            <label style="color: #000!important; background-color: #fff!important;">
+                                Aceptable calidad técnica de todas las secuencias de adquisición (contraste, ruidom resolución espacial)
+                            </label>
+                        </p>
+                        <p style="font-weight: normal;">
+                            @Html.RadioButtonFor(b => b.p2_cambio, "true") Optimo
+                                                            @Html.RadioButtonFor(b => b.p2_cambio, "false") No Optimo
+                                                            @Html.TextBoxFor(b => b.p2_1_cambio, new { @placeholder = "Ingrese el motivo ", @class = "form-control" })
+                        </p>
+
+                    </div>
+                    <div class="form-group">
+                        <p>
+                            <label style="color: #000!important; background-color: #fff!important;">
+                                Cumplimiento de los objetivos clinicos del examen (pregunta clinica derivada de la entrevista del paciente y en respuesta a contenido de la orden médica)</label>
+                        </p>
+                        <p style="font-weight: normal;">
+                            @Html.RadioButtonFor(b => b.p3_cambio, "true") Optimo
+                                                            @Html.RadioButtonFor(b => b.p3_cambio, "false") No Optimo
+                                                            @Html.TextBoxFor(b => b.p3_1_cambio, new { @placeholder = "Ingrese el motivo ", @class = "form-control" })
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <p>
+                            <label style="color: #000!important; background-color: #fff!important;">Adecuada respuesta del tecnólogo ante artefactos e inconvenientes en general ocurridos durante el examen</label>
+                        </p>
+                        <p style="font-weight: normal;">
+                            @Html.RadioButtonFor(b => b.p4_cambio, "1") Optimo
+                                                            @Html.RadioButtonFor(b => b.p4_cambio, "0") No Optimo
+                                                            @Html.RadioButtonFor(b => b.p4_cambio, "2") No Aplica
+                                                            @Html.TextBoxFor(b => b.p4_1_cambio, new { @placeholder = "Ingrese el motivo ", @class = "form-control" })
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-success" onclick="return validarCambio();">Guardar</button>
+                </div>
+            </div>
+        }
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+    function validarCambio() {
+        var _msj = "";
+        var _IsValid = true;
+        //TIPO
+        if ($("#tipo_cambio").val() == 0) {
+            _IsValid = false;
+            _msj += "Seleccione el Tipo de Médico\n";
+        }
+
+        //P1
+        if ($("input:radio[name=p1_cambio]:checked").val() != undefined) {
+            if ($('input:radio[name=p1_cambio]:checked').val() == "false" && $("#p1_1_cambio").val().trim() == "") {
+                _IsValid = false;
+                _msj += "Pregunta 1: Especifique la calificaión\n";
+            }
+        } else {
+            _IsValid = false;
+            _msj += "Pregunta 1: Seleccionar respuesta\n";
+        }
+
+
+        //p2
+        if ($("input:radio[name=p2_cambio]:checked").val() != undefined) {
+            if ($('input:radio[name=p2_cambio]:checked').val() == "false" && $("#p2_1_cambio").val().trim() == "") {
+                _IsValid = false;
+                _msj += "Pregunta 2: Especifique la calificaión\n";
+            }
+        } else {
+            _IsValid = false;
+            _msj += "Pregunta 2: Seleccionar respuesta\n";
+        }
+
+        //p3
+        if ($("input:radio[name=p3_cambio]:checked").val() != undefined) {
+            if ($('input:radio[name=p3_cambio]:checked').val() == "false" && $("#p3_1_cambio").val().trim() == "") {
+                _IsValid = false;
+                _msj += "Pregunta 3: Especifique la calificaión\n";
+            }
+        } else {
+            _IsValid = false;
+            _msj += "Pregunta 3: Seleccionar respuesta\n";
+        }
+
+        //P4
+        if ($("input:radio[name=p4_cambio]:checked").val() != undefined) {
+            if ($('input:radio[name=p4_cambio]:checked').val() == "0" && $("#p4_1_cambio").val().trim() == "") {
+                _IsValid = false;
+                _msj += "Pregunta 4: Especifique la calificaión\n";
+            }
+
+        } else {
+            _IsValid = false;
+            _msj += "Pregunta 4: Seleccionar respuesta\n";
+        }
+        var parameter = $.get("impax");
+        if (parameter != null) {
+            $("#modo").val("True");
+        }
+
+        if (_IsValid == false) {
+            alert('Falta completar datos.\nVerifique las preguntas: \n' + _msj);
+            return false;
+        }
+
+        $('#myModal').modal('toggle');
+        return true;
+
+
+    }
+</script>

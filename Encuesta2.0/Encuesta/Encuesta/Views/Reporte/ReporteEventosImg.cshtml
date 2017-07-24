@@ -1,0 +1,256 @@
+﻿@model Encuesta.ViewModels.Reporte.DataReporteSedacion
+@{
+    ViewBag.Title = "<i class='fa fa-area-chart fa-lg'></i> Reporte Eventos";
+    ViewBag.Titlenot = "Reporte Eventos";
+}
+<link href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.min.css" rel="stylesheet">
+<link href="http://cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.4/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
+<link href="https://www.datatables.net/release-datatables/media/css/jquery.dataTables.css" rel="stylesheet">
+<link href="https://www.datatables.net/release-datatables/extensions/TableTools/css/dataTables.tableTools.css" rel="stylesheet">
+<link href="lib/bootstrap-filterable.css" rel="stylesheet" type="text/css">
+<script src="~/js/plugins/jquery.js"></script>
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.tableTools.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#table_reporte').dataTable();
+
+        $('#table_resumen').dataTable();
+    });
+</script>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Filtro de Fecha
+                </div>
+                <div class="panel-body">
+
+
+                    @using (Html.BeginForm("ReporteEventos", "Reporte", FormMethod.Get))
+                    {
+                    <script type="text/javascript">
+                    
+            function validar() {
+                var msj = "";
+                if ($("#i").val() == "")
+                    msj += "- Ingrese la fecha de inicio \n";
+                if ($("#f").val() == "")
+                    msj += "- Ingrese la fecha de termino \n";
+
+                if (msj == "")
+                    return true;
+                else {
+                    alert(msj);
+                    return false;
+                }
+            }
+</script>
+
+                    <div class="form-group col-lg-6">
+                        <label>Inicio:</label>
+                        <input type="date" id="i" name="i" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label>Termino:</label>
+                        <input type="date" id="f" name="f" class="form-control" />
+                    </div>
+
+                    <input type="submit" value="Buscar" onclick="return validar();" class="btn btn-outline btn-success"/>
+                }
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel-group" id="accordion">
+            @foreach (var item in Model.detalle.Select(x => x.sede).Distinct().ToList())
+            {
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_@item">Sede @item </a>
+                        </h4>
+                    </div>
+                    <div id="collapse_@item" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="panel-group" id="accordion1">
+                                @foreach (var it in Model.detalle.Where(x => x.sede == item).Select(x => x.producto).Distinct().ToList())
+                                {
+                                    var lista = Model.detalle.Where(x => x.sede == item && x.producto == it).ToList();
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse1" data-parent="#accordion1" href="#collapse1_@it">Insumo @it </a>
+                                            </h4>
+                                        </div>
+
+                                        <div class="panel-body">
+                                            <table id="tabla_data" class="table table-striped table-bordered table-hover ">
+                                                <thead>
+                                                    <tr>
+
+                                                        <th>
+                                                            Fec. Atención
+                                                        </th>
+                                                        <th>
+                                                            Fec. Sedación
+                                                        </th>
+                                                        <th>
+                                                            Sede
+                                                        </th>
+                                                        <th>
+                                                            N° Examen
+                                                        </th>
+                                                        <th>
+                                                            Paciente
+                                                        </th>
+                                                        <th>
+                                                            Edad
+                                                        </th>
+                                                        <th>
+                                                            Peso
+                                                        </th>
+                                                        <th>
+                                                            Estudio
+                                                        </th>
+                                                        <th>
+                                                            Estado
+                                                        </th>
+                                                        <th>
+                                                            Equipo
+                                                        </th>
+                                                        <th>
+                                                            Anestesiólogo
+                                                        </th>
+                                                        <th>
+                                                            Tipo Sedación
+                                                        </th>
+                                                        <th>
+                                                            Motivo
+                                                        </th>
+                                                        <th>
+                                                            Otros
+                                                        </th>
+                                                        <th>
+                                                            Producto
+                                                        </th>
+                                                        <th>
+                                                            Cantidad
+                                                        </th>
+                                                        <th>
+                                                            N° Frasco
+                                                        </th>
+                                                        <th>
+                                                            Aplicado
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item1 in lista)
+                                                    {
+                                                        <tr>
+                                                            <td>@item1.fecha</td>
+                                                            <td>@item1.fec_aplica</td>
+                                                            <td>@item1.sede </td>
+                                                            <td>@item1.codigo </td>
+                                                            <td>@item1.paciente </td>
+                                                            <td>@item1.edad  </td>
+                                                            <td>@item1.peso   </td>
+                                                            <td>@item1.nombreestudio </td>
+                                                            <td>@item1.estadoestudio </td>
+                                                            <td>@item1.equipo  </td>
+                                                            <td>@item1.anestecia  </td>
+                                                            <td>@item1.tipo_seda  </td>
+                                                            <td>@item1.motivo_seda  </td>
+                                                            <td>@item1.otros_seda  </td>
+                                                            <td>@item1.producto  </td>
+                                                            <td style="text-align:right">@item1.cantidad ml </td>
+                                                            <td style="text-align:right">@item1.lote  </td>
+                                                            <td style="text-align:right">@item1.aplicado  </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Resumen - Reporte Sedación
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-11">
+                        <table id="table_resumem" class="table table-striped table-bordered table-hover table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Insumo
+                                    </th>
+                                    <th>
+                                        Frascos Salida
+                                    </th>
+                                    <th>
+                                        U. Medida Salida
+                                    </th>
+                                    <th>
+                                        Frascos Usados
+                                    </th>
+                                    <th>
+                                        U. Medida Usados
+                                    </th>
+                                    <th>
+                                        Frascos Saldo
+                                    </th>
+                                    <th>
+                                        U. Medida Saldo
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.resumen)
+                                {
+                                    <tr>
+                                        <td>@item.insumo</td>
+                                        <td>@item.frascoSalida </td>
+                                        <td>@item.umedidaSalida </td>
+                                        <td>@item.frascoUsado </td>
+                                        <td>@item.umedidaUsado  </td>
+                                        <td>@item.frascoSaldo   </td>
+                                        <td>@item.umedidaSaldo </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

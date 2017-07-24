@@ -1,0 +1,150 @@
+﻿@model SistemaResocentro.Models.PACIENTE
+
+@{
+    Layout = null;
+    
+    }
+
+<script src="~/js/Datetime/moment.js"></script>
+<script src="~/js/Datetime/moment-with-locales.js"></script>
+<script src="~/js/Datetime/bootstrap-datetimepicker.js"></script>
+<script src="~/js/script/paciente/updatepaciente.js"></script>
+<link href="~/css/Datetime/bootstrap-datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(function () {
+        $('#fechanace').datetimepicker({
+            locale: 'es',
+            @if (Model.fechanace != null)
+            {
+            <text>defaultDate: '@Model.fechanace.ToString("yyyy/MM/dd")', </text>
+            }            
+            maxDate: '@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")',
+            format: 'DD/MM/YYYY',
+        });
+    });
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="form-horizontal " id="div_paciente">
+            <h4>Modificar Paciente</h4>
+            <hr />
+
+
+            @Html.HiddenFor(model => model.codigopaciente, new { @class = "form-control validar" })
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Nombre:</label>
+                        <div class="col-md-9">
+
+                            @Html.EditorFor(model => model.nombres, new { htmlAttributes = new { @class = "form-control validar" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Apellidos:</label>
+                        <div class="col-md-9">
+
+                            @Html.EditorFor(model => model.apellidos, new { htmlAttributes = new { @class = "form-control validar" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Nacimiento:</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.fechanace, new { @class = "form-control validar", @type = "text"})
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Sexo:</label>
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(model => model.sexo, (SelectList)ViewBag.Sexo, "- Seleccione -", htmlAttributes: new { @class = "form-control validar" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Típo Documento:</label>
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(model => model.tipo_doc,  (SelectList)ViewBag.Tdocumento, "- Seleccione -", htmlAttributes: new { @class = "form-control validar", @disabled = "" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">N° Documento:</label>
+                        <div class="col-md-9">
+
+                            @Html.EditorFor(model => model.dni, new { htmlAttributes = new { @class = "form-control validar", @disabled = "" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Teléfono:</label>
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.telefono, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Celular:</label>
+                        <div class="col-md-9">
+
+                            @Html.EditorFor(model => model.celular, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Email:</label>
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Nacionalidad:</label>
+                        <div class="col-md-9">
+
+                            @Html.EditorFor(model => model.nacionalidad, new { htmlAttributes = new { @class = "form-control validar", @Value = "Peruano" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Dirección:</label>
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.direccion, new { @class = "form-control validar", @rows = "3" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="button" onclick="updatePaciente()" class="btn btn-info">Guardar</button>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,427 @@
+﻿@model SistemaResocentro.ViewModel.CartaGarantiaViewModel
+@{
+    ViewBag.Title = "Actualizar Carta Garantia";
+}
+
+
+<h2>
+    <i class="fa fa-bookmark"></i>&nbsp; Actualizar Carta Garantía
+    @if (Model.carta.PACIENTE != null)
+    {
+        <text>-</text>
+        <span id="paciente"> @Model.carta.PACIENTE.apellidos, @Model.carta.PACIENTE.nombres</span>
+        <button class="btn btn-success btn-xs" id="btnupdatePaciente" onclick="updatePaciente_modal()" type="button"><i class="fa fa-pencil fa-2x"></i></button>
+    }
+</h2>
+
+
+<script type="text/javascript">
+    $(function () {
+        $("._cbo2").select2({
+            placeholder: "Select a state",
+            allowClear: true
+        });
+    });
+</script>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal" id="div_carta">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        @Html.HiddenFor(x => x.carta.codigopaciente)
+        @Html.HiddenFor(x => x.isRevisada)
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            Datos Paciente
+                        </div>
+                    </div>
+                    @Html.HiddenFor(x => x.carta.codigopaciente)
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">N° Carta:</label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.carta.codigocartagarantia, new { htmlAttributes = new { @class = "form-control validar", @placeholder = "N° de Carta" } })
+                                @Html.ValidationMessageFor(model => model.carta.codigocartagarantia, "", new { @class = "text-danger" })
+                            </div>
+
+
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">N° Referencia:</label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.carta.codigocartagarantia2, new { htmlAttributes = new { @class = "form-control", @placeholder = "N° de Referencia" } })
+                                @Html.ValidationMessageFor(model => model.carta.codigocartagarantia2, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">N° Carnet:</label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.carta.numerocarnetseguro, new { htmlAttributes = new { @class = "form-control", @placeholder = "N° de Carnet de Asegurado" } })
+                                @Html.ValidationMessageFor(model => model.carta.numerocarnetseguro, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Titular:</label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.carta.titular, new { htmlAttributes = new { @class = "form-control", @placeholder = "Titular" } })
+                                @Html.ValidationMessageFor(model => model.carta.titular, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Contratante:</label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.carta.contratante, new { htmlAttributes = new { @class = "form-control", @placeholder = "Contratante" } })
+                                @Html.ValidationMessageFor(model => model.carta.contratante, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Poliza:</label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.carta.poliza, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poliza" } })
+                                @Html.ValidationMessageFor(model => model.carta.poliza, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Tipo Afiliación:</label>
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.carta.TipoAfiliacion, (SelectList)ViewBag.TipoAseguradora, "- Seleccione -", htmlAttributes: new { @class = "form-control _cbo2 validar" })
+                                @Html.ValidationMessageFor(model => model.carta.TipoAfiliacion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            Datos Aseguradora
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Aseguradora:</label>
+                            <div class="col-md-10">
+
+                                @Html.DropDownListFor(model => model.carta.codigocompaniaseguro, (SelectList)ViewBag.Aseguradora, "- Seleccione -", htmlAttributes: new { @class = "form-control _cbo2 validar", @readonly = "" })
+                                @Html.ValidationMessageFor(model => model.carta.codigocompaniaseguro, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Procedencia:</label>
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.carta.codigoclinica, (SelectList)ViewBag.Clinica, "- Seleccione -", htmlAttributes: new { @class = "form-control _cbo2 validar" })
+                                @Html.ValidationMessageFor(model => model.carta.codigoclinica, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Procedencia Negocio:</label>
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.carta.codigoclinica2, (SelectList)ViewBag.Clinica, "- Seleccione -", htmlAttributes: new { @class = "form-control _cbo2 validar" })
+                                @Html.ValidationMessageFor(model => model.carta.codigoclinica2, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group" id="div_producto">
+                            <label class="control-label col-md-2">Producto:</label>
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.carta.SitedCodigoProducto, (SelectList)ViewBag.Producto, "- Seleccione -", htmlAttributes: new { @class = "form-control _cbo2" })
+                                @Html.ValidationMessageFor(model => model.carta.SitedCodigoProducto, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group" id="div_beneficio">
+                            <label class="control-label col-md-2">Beneficio:</label>
+                            <div class="col-md-7">
+                                @Html.HiddenFor(model => model.carta.Sunasa_CoberturaId, new { @class = "" })
+                                <input type="text" id="beneficio" value="@ViewBag.Beneficio" readonly class="form-control" />
+                                @Html.ValidationMessageFor(model => model.carta.cie, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-info btn-xs" id="btnsearchCIE" onclick="searchBeneficio_modal()" type="button"><i class="fa fa-search fa-2x"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">CIE 10:</label>
+                            <div class="col-md-7">
+                                @Html.HiddenFor(model => model.carta.cie, new { @class = "" })
+                                <input type="text" id="cie" value="@ViewBag.CIE" readonly class="form-control" />
+                                @Html.ValidationMessageFor(model => model.carta.cie, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-info btn-xs" id="btnsearchCIE" onclick="searchCIE_modal()" type="button"><i class="fa fa-search fa-2x"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Cobertura:</label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.carta.cobertura, new { htmlAttributes = new { @type = "text", @class = "form-control validar" } })
+                                @Html.ValidationMessageFor(model => model.carta.cobertura, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            Datos Estudio
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Estado Carta:</label>
+                                    <div class="col-md-10">
+                                        @Html.DropDownListFor(model => model.carta.estadocarta, (SelectList)ViewBag.EstadoCarta, "- Seleccione -", htmlAttributes: new { @class = "form-control _cbo2 validar" })
+                                    </div>
+                                </div>
+                            </div>
+                            @Html.HiddenFor(model => model.carta.cmp, new { htmlAttributes = new { @class = "form-control validar" } })
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Medico Tratante:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control validar" value="@ViewBag.Medico" readonly id="medico" />
+                                        @Html.ValidationMessageFor(model => model.carta.cmp, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-3 ">
+                                        <button class="btn btn-info btn-xs" id="btnsearchMedico" onclick="searchMedico_modal()" type="button"><i class="fa fa-search fa-2x"></i></button>
+                                        <button class="btn btn-success btn-xs" id="btnaddMedico" onclick="addMedico_modal()" type="button"><i class="fa fa-plus fa-2x"></i></button>
+                                        <button class="btn btn-success btn-xs" id="btnupdateMedico" onclick="updateMedico_modal()" type="button"><i class="fa fa-pencil fa-2x"></i></button>
+                                        <button class="btn btn-danger btn-xs" id="btndeleteMedico" onclick="deleteMedico_modal()" type="button"><i class="fa fa-eraser fa-2x"></i></button>
+                                    </div>
+                                </div>
+
+                                @*<div class="form-group">
+                                        <label class="control-label col-md-2">Medico Tratante:</label>
+                                        <div class="col-md-10">
+                                            @Html.DropDownListFor(model => model.cmp, (SelectList)ViewBag.Medico, "- Seleccione -", htmlAttributes: new { @class = "form-control _cbo2" })
+                                        </div>
+                                    </div>*@
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Unidad Negocio:</label>
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("cbounidadnegocio", (SelectList)ViewBag.UnidadNegocio, "- Seleccione -", htmlAttributes: new { @class = "form-control _cbo2 ", @disabled = "" })
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Modalidad:</label>
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("cbomodalidad", (SelectList)ViewBag.Modalidad, "- Seleccione -", htmlAttributes: new { @class = "form-control _cbo2 " })
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Clase:</label>
+                                    <div class="col-md-10">
+
+                                        @Html.DropDownList("cboclase", (SelectList)ViewBag.Clase, "- Seleccione -", htmlAttributes: new { @class = "form-control _cbo2 " })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="col-md-9">
+
+                                        <button type="button" class="btn btn-info" onclick="cargarEstudios();"><i class="fa fa-search"></i> Buscar Estudio</button>
+                                    </div>
+                                    <label class="control-label col-md-3"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <link href="~/js/datatables/datatable.css" rel="stylesheet" />
+                                <script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+                                <script src="~/js/dataTables.bootstrap.js"></script>
+                                @Html.HiddenFor(model => model.estudios, new { @class = "validar" })
+                                @Html.Partial("_setEstudio", Model.list_estudios)
+                                <div id="lst_estudio">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Observaciones:</label>
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(model => model.carta.seguimiento, new { @class = "form-control", @placeholder = "Observaciones", @rows = "5" })
+                                        @Html.ValidationMessageFor(model => model.carta.seguimiento, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Datos Adjuntos:</label>
+                                    <div class="col-md-10">
+                                        <div class="col-md-5">
+                                            @Html.HiddenFor(x => x.idAdjunto)
+                                            @if (Model.Adjunto != "")
+                                            {
+                                                @Html.HiddenFor(model => model.carta.codigodocadjunto, new { @Value = Model.idAdjunto })
+
+    <a href="@Url.Action("DescargarAdjunto", new { id = Model.idAdjunto ,tipo="1"})" title="Descargar Adjunto: @Model.Adjunto" class="btn  btn-default" style="padding:10px;">
+
+        <i class=" fa fa-download fa-2x"></i>&nbsp;&nbsp; Descargar
+
+    </a>
+                                                <br />
+    <button type="button" title="Modificar Adjunto: @Model.Adjunto" class="btn btn-info " data-toggle="modal" data-target="#modal-updateAdjunto"><i class="fa fa-exchange fa-2x"></i>&nbsp;&nbsp;Modificar</button>
+
+
+
+    <div class="modal fade" id="modal-updateAdjunto" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal-updateAdjuntoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Modificar Documento</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input id="file_adjunto" type="file" class="file" data-overwrite-initial="false" data-min-file-count="1">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+                                                <script type="text/javascript">
+                                                    $(function () {
+                                                        $("#file_adjunto").fileinput({
+                                                            uploadUrl: '/CartaGarantia/UpdaterArchivos?idDoc=' + '@Model.idAdjunto', // you must set a valid URL here else you will get an error
+                                                            allowedFileExtensions: ['pdf'],
+                                                            overwriteInitial: false,
+                                                            maxFileSize: 819200,
+                                                            maxFilesNum: 1,
+                                                            //allowedFileTypes: ['image'],
+                                                            slugCallback: function (filename) {
+                                                                return filename.replace('(', '_').replace(']', '_');
+                                                            },
+                                                            layoutTemplates: {
+                                                                main1: "<div class=\'input-group {class}\'>\n" +
+                                                                "   <div class=\'input-group-btn\'>\n" +
+                                                            "       {browse}\n" +
+                                                            "       {upload}\n" +
+                                                            "       {remove}\n" +
+                                                            "   </div>\n" +
+                                                                "   {caption}\n" +
+                                                                "</div>" +
+                                                                "{preview}\n"
+
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
+                                            }
+                                            else
+                                            {
+                                                <code><label lass="control-label">No Tiene Documentos Adjuntos!</label></code>
+                                            }
+                                        </div>
+                                        <div class="col-md-7">
+                                            @if (Model.isRevisada != null)
+                                                {
+                                            <div class="form-group">
+                                                <label class="control-label fa-lg col-md-4">Revisada:</label>
+                                                <div class="col-md-8">
+                                                    <div class="make-switch switch-large"
+                                                         data-on="success" data-off="danger"
+                                                         data-on-label="<i class='fa fa-check-circle'></i>"
+                         data-off-label="<i class='fa fa-times-circle'></i>"
+                         @*data-text-label="<i class='fa fa-pencil'></i>"*@
+                    >
+                        @Html.EditorFor(model => model.carta.isRevisada.Value)
+					</div>
+                                                </div>
+                                            </div>
+                                                }
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="pull-right">
+
+                    <button type="submit" class="btn btn-primary btn-lg" onclick="return validarCartaC();"> Siguiente&nbsp;&nbsp;<i class="fa fa-arrow-circle-right fa-lg"></i></button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+<script src="~/js/bootstrap-switch.min.js"></script>
+
+<link href="../js/select2/select2-bootstrap.css" rel="stylesheet" />
+<link href="../js/select2/select2.css" rel="stylesheet" />
+<script src="../js/select2/select2.min.js"></script>
+<script src="~/js/script/carta/updateCarta.js"></script>
+
+
+<!-- /.modal-dialog to Add -->
+<div class="modal fade" id="modal-add" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal-addLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body" id="modal-add_body">
+
+            </div>
+
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<!-- /.modal-dialog to Search-->
+<div class="modal fade" id="modal-search" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal-addLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body" id="modal-search_body">
+
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+

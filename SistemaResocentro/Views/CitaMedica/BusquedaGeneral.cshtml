@@ -1,0 +1,579 @@
+﻿@model SistemaResocentro.ViewModel.BusquedaGeneralViewModel
+@{
+    string error = (string)ViewBag.Error;
+    ViewBag.Title = "BusquedaGeneral";
+}
+
+<h2>Busqueda General de Pacientes</h2>
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<style>
+    table tbody tr {
+        cursor: pointer;
+    }
+
+    .bg-resaltar {
+        background: #c5e8f7 !important;
+    }
+
+    .bg-sedacion {
+        background: #EDA8A8 !important;
+    }
+
+    .not-padding {
+        padding: 0 !important;
+    }
+</style>
+
+<div class="row" style="padding-bottom:20px;">
+    <div class="col-lg-12">
+        <div class="col-md-8 ">
+            <div class="form-group">
+                <div class="col-lg-6">
+                    <label class="">Apellidos: </label>
+                    <div class="">
+                        @Html.TextBoxFor(x => x.apellidos, new { @class = "form-control", @placeholder = "Ingrese los Apellidos" })
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <label class="">Nombres: </label>
+                    <div class="">
+                        @Html.TextBoxFor(x => x.nombres, new { @class = "form-control", @placeholder = "Ingrese los Nombre" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label style="color:#fff;" class="">: </label>
+            <div>
+                <button class="btn btn-info" type="button" onclick="buscarpaciente()"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;Buscar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@if (error != null)
+{
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="alert alert-info"><strong>No se encontro</strong> ninguna coincidencia con el texto ingresado.</div>
+        </div>
+    </div>
+}
+<div class="esperando " style="text-align: center;color:#065d9d"><i class="fa fa-spinner fa-5x fa-spin"></i> <br />Cargando...</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class=" col-lg-5">
+            <div class="panel minimal minimal-gray panel-shadow">
+                <div class="panel-heading">
+                    <div class="panel-title ">Pacientes</div>
+                </div>
+                <div class="panel-body">
+                    <table id="tb_paciente" class="table table-bordered table-responsive table-striped tab-hover">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Protocolo</th>
+                                <th>Apellidos</th>
+                                <th>Nombres</th>
+                                <th>DNI</th>
+                                <th>Teléfonos</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-7">
+            <div class="panel minimal minimal-gray panel-shadow">
+                <div class="panel-heading">
+                    <div class="panel-title" id="lbl_tbcita">Citas</div>
+                </div>
+                <div class="panel-body">
+                    <table id="tb_cita" class="table table-bordered table-striped tab-hover">
+                        <thead>
+                            <tr>
+                                <th>E</th>
+                                <th style="width:30px!important;">vip</th>
+                                <th style="width:30px!important;"></th>
+                                <th>N° Cita</th>
+                                <th>Estudio</th>
+                                <th>Fecha</th>
+                                <th>Precio</th>
+                                <th>Procedencia</th>
+                                <th>%Cob</th>
+                                <th>Equipo</th>
+                                <th>Observaciones</th>
+                                <th>User</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-lg-7">
+            <div class="panel minimal minimal-gray panel-shadow">
+                <div class="panel-heading">
+                    <div class="panel-title" id="lbl_tbadmin">Admisiones</div>
+                </div>
+                <div class="panel-body">
+                    <table id="tb_admin" class="table table-bordered table-striped tab-hover">
+                        <thead>
+                            <tr>
+                                <th>E</th>
+                                <th>Ubicación</th>
+                                <th>Fecha</th>
+                                <th>Atención</th>
+                                <th>Examen</th>
+                                <th>Estudio</th>
+                                <th>Aseguradora</th>
+                                <th>Prioridad</th>
+                                <th>Médico Referente</th>
+                                <th>Turno</th>
+                                <th>User</th>
+                                <th>Cita</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class=" col-lg-5">
+            <div class="panel minimal minimal-gray panel-shadow">
+                <div class="panel-heading">
+                    <div class="panel-title" id="lbl_tbcarta">Cartas</div>
+                </div>
+                <div class="panel-body">
+                    <table id="tb_carta" class="table table-bordered table-responsive table-striped tab-hover">
+                        <thead>
+                            <tr>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                                <th>Codigo</th>
+                                <th>N° Referencia</th>
+                                <th>Aseguradora</th>
+                                <th>Cob.</th>
+                                <th>Cita</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-lg-6">
+            <div class="panel minimal minimal-gray panel-shadow">
+                <div class="panel-heading">
+                    <div class="panel-title" id="lbl_tbadquisicion">Adquisiciones</div>
+                </div>
+                <div class="panel-body">
+                    <table id="tb_adquisicion" class="table table-bordered table-striped tab-hover">
+                        <thead>
+                            <tr>
+                                <th>Examen</th>
+                                <th>Estudio</th>
+                                <th>Placas</th>
+                                <th>Sedacion</th>
+                                <th>Contraste</th>
+                                <th>Equipo</th>
+                                <th>Fecha</th>
+                                <th>Tecnologo</th>
+                                <th>Cita</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class=" col-lg-6">
+            <div class="panel minimal minimal-gray panel-shadow">
+                <div class="panel-heading">
+                    <div class="panel-title" id="lbl_tbpagos">Pagos</div>
+                </div>
+                <div class="panel-body">
+                    <table id="tb_pagos" class="table table-bordered table-responsive table-striped tab-hover">
+                        <thead>
+                            <tr>
+                                <th>E</th>
+                                <th>Empresa</th>
+                                <th>Emision</th>
+                                <th>Pago</th>
+                                <th>Documento</th>
+                                <th>Numero</th>
+                                <th>Total</th>
+                                <th>Cita</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+     @if(Model.lstPacientes.Count>0){
+         <text>var paciente_estudios_tabla = [@foreach (var c in Model.lstPacientes){<text>['@c.codigopaciente', '@c.IsProtocolo', '@c.apellidos', '@c.nombres', '@c.dni', '@c.telefono &nbsp;&nbsp; @c.celular'],</text>}];</text>
+         }else{<text>var paciente_estudios_tabla = [];</text>}
+    @if(Model.lstCita.Count>0){
+    <text>var cita_estudios_tabla = [@foreach (var c in Model.lstCita){<text>['@c.estado', '@c.vip', '@c.sedacion', '@c.num_cita', '@c.estudio', '@c.fecha', '@c.precio', '@c.clinica', '@c.cobertura', '@c.equipo', '@c.obs.Trim().ToLower()', '@c.usuario'],</text>}];</text>
+    }else{<text>var cita_estudios_tabla = [];</text>}
+
+    @if(Model.lstCita.Count>0){
+      <text>var admin_estudios_tabla = [@foreach (var c in Model.lstAdmision){<text>['@c.estado', '@c.ubicacion', '@c.fecha', '@c.atencion', '@c.examen', '@c.estudio', '@c.aseguradora', '@c.prioridad', '@c.medico', '@c.turno', '@c.usuario', '@c.cita'],</text>}];</text>
+    }else{<text>var admin_estudios_tabla = [];</text>}
+
+    @if(Model.lstCita.Count>0){
+          <text>var carta_estudios_tabla = [@foreach (var c in Model.lstcarta){<text>['@c.estado', '@c.fecha.ToShortDateString()', '@c.id', '@c.id2', '@c.aseguradora', '@c.cobertura', '@c.cita', '@c.isadjunto', '@c.idpaciente'],</text>}];</text>
+    }else{<text>var carta_estudios_tabla = [];</text>}
+
+    @if(Model.lstCita.Count>0){
+      <text>var pagos_estudios_tabla = [@foreach (var c in Model.lstdocumento){<text>['@c.estado', '@c.empresa', '@c.emision', '@c.pago', '@c.documento', '@c.numero', '@c.total', '@c.cita'],</text>}];</text>
+    }else{<text>var pagos_estudios_tabla = [];</text>}
+
+    @if(Model.lstCita.Count>0){
+      <text>var adquisicion_estudios_tabla = [@foreach (var c in Model.lstAdquisicion){<text>['@c.examen', '@c.estudio', '@c.placas', '@c.sedacion', '@c.contraste', '@c.equipo', '@c.fecha', '@c.tecnologo', '@c.cita'],</text>}];</text>
+    }else{<text>var adquisicion_estudios_tabla = [];</text>}
+
+    $(function () {
+        $('#apellidos').keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                var _ape = $('#apellidos').val();
+                if (_ape != "")
+                    if (_ape.length > 5)
+                        buscarpaciente();
+                    else
+                        toastr.warning("Ingrese más carecteres para realizar la busqueda", "Advertencia", opts);
+                else
+                    toastr.warning("Ingrese el apellido para hacer la busqueda", "Advertencia", opts);
+            }
+        });
+        $('#nombres').keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                var _ape = $('#nombres').val();
+                if (_ape != "")
+                    if (_ape.length > 5)
+                        buscarpaciente();
+                    else
+                        toastr.warning("Ingrese más carecteres para realizar la busqueda", "Advertencia", opts);
+                else
+                    toastr.warning("Ingrese el nombre para hacer la busqueda", "Advertencia", opts);
+            }
+        });
+        initialPaciente();
+        cargarTablas('');
+
+        //////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////
+        $(".esperando").hide();
+
+    });
+    function initialPaciente() {
+        if (paciente_estudios_tabla.length > 0) {
+            $("#tb_paciente").DataTable({
+                "data": paciente_estudios_tabla,
+                "dom": '<"col-md-6 not-padding"l><"col-md-6 not-padding"f>rtp',
+                "displayLength": 5,
+                "order": [[1, "asc"]],
+                "columns": [
+                               { "name": "id" },
+                               { "name": "protocolo", 'visible': false },
+                               { "name": "apellidos" },
+                               { "name": "nombre" },
+                               { "name": "dni" },
+                               { "name": "telefono" }
+
+                ],
+                "createdRow": function (row, aData, dataIndex) {
+                    $(row).on("dblclick", function () {
+                        cargarDataPaciente(aData[0], aData[2] + ' ' + aData[3]);
+                    });
+                    if (aData[1] == "True") {
+                        $('td:eq(1)', row).html('<i class="fa fa-university fa-lg"  ></i>&nbsp;&nbsp;' + aData[2]);
+                    }
+                    $('td:eq(0)', row).html("<a href='javascript:cargarDataPaciente("+aData[0]+ ",\"" +aData[2]+" "+ aData[3]+ "\")' class='btn btn-success btn-xs' target='_blank'><i class='fa fa-check'></i></a>&nbsp;&nbsp;" + aData[0]);
+                },
+                "destroy": true,
+            });
+        }
+    }
+    function cargarDataPaciente(idpaciente, nombre) {
+        $(".esperando").show();
+        getInfoPaciente(idpaciente, nombre);
+    }
+    function cargarTablas(cita) {
+        if (cita_estudios_tabla.length > 0) {
+            $("#tb_cita").DataTable({
+                "data": cita_estudios_tabla,
+                "dom": 'lrtp',
+                "displayLength": 5,
+                "ordering": false,
+                "columns": [
+                    { "name": "estado" },
+                    { "name": "vip", 'visible': false },
+                    { "name": "sedacion" },
+                    { "name": "cita" },
+                    { "name": "estudio" },
+                    { "name": "fecha" },
+                    { "name": "precio" },
+                    { "name": "clinica" },
+                    { "name": "cobertura" },
+                    { "name": "equipo" },
+                    { "name": "observaciones" },
+                    { "name": "user" }
+
+
+                ],
+                "createdRow": function (row, aData, dataIndex) {
+                    if (aData[3] == cita)
+                        $(row).addClass('bg-resaltar');
+                    $(row).on("dblclick", function () {
+                        resaltarTable(aData[3]);
+                    });
+
+                    $('td:eq(1)', row).html('');
+                    if (aData[1] == "True") {
+                        $('td:eq(1)', row).append('<i class="fa fa-star fa-lg"  ></i>');
+                    }
+                    if (aData[2] == "True") {
+                        $('td:eq(1)', row).append('<i class="fa fa-tint fa-lg" ></i>');
+                        $(row).addClass('bg-sedacion');
+                    }
+
+                },
+                "destroy": true,
+            });
+        }
+        if (admin_estudios_tabla.length > 0) {
+            $("#tb_admin").DataTable({
+                "data": admin_estudios_tabla,
+                "dom": 'lrtp',
+                "displayLength": 5,
+                "ordering": false,
+                "columns": [
+                    { "name": "estado" },
+                    { "name": "ubicacion" },
+                    { "name": "fecha" },
+                    { "name": "atencion" },
+                    { "name": "examen" },
+                    { "name": "estudio" },
+                    { "name": "aseguradora" },
+                    { "name": "prioridad" },
+                    { "name": "medico" },
+                    { "name": "usuario" },
+                    { "name": "turno" },
+                    { "name": "cita", "visible": false }
+
+                ],
+                "createdRow": function (row, aData, dataIndex) {
+                    $('td:eq(1)', row).html('<a href="javascript:descargarAdjunto(' + aData[4] + ')"><i   class="fa fa-download fa-lg"  ></i></a>' + aData[1]);
+                    if (aData[11] == cita)
+                        $(row).addClass('bg-resaltar');
+
+                    $(row).on("dblclick", function () {
+                        resaltarTable(aData[11]);
+                    });
+                },
+                "destroy": true
+            });
+        }
+
+        if (carta_estudios_tabla.length > 0) {
+            $("#tb_carta").DataTable({
+                "data": carta_estudios_tabla,
+                "dom": 'lrtp',
+                "displayLength": 5,
+                "ordering": false,
+                "columns": [
+                    { "name": "estado" },
+                    { "name": "fecha" },
+                    { "name": "codigo" },
+                    { "name": "referencia" },
+                    { "name": "aseguradora" },
+                    { "name": "cobertura" },
+                    { "name": "cita", "visible": false },
+                    { "name": "isAdjunto" }
+                ],
+                "createdRow": function (row, aData, dataIndex) {
+                    if (aData[7] != "" && aData[7] != " ") {
+                        $('td:eq(0)', row).html('<a href="/Herramientas/getCartaAdjutno' + '?id=' + aData[7] + '&tipo=1" target="_blank"><i   class="fa fa-download fa-lg"  ></i></a>&nbsp;&nbsp;' + aData[0]);
+                        
+                    }
+                    $('td:eq(6)', row).html('<a href="/CartaGarantia/UpdateCarta?idcarta=' + aData[2] + '&amp;idpaciente=' + aData[8] + '" class="btn btn-success btn-xs" target="_blank"><i class="fa fa-check"></i></a>');
+                    if (aData[6] == cita)
+                        $(row).addClass('bg-resaltar');
+                    $(row).on("dblclick", function () {
+                        resaltarTable(aData[6]);
+                    });
+                },
+                "destroy": true
+            });
+        }
+        if (pagos_estudios_tabla.length > 0) {
+            $("#tb_pagos").DataTable({
+                "data": pagos_estudios_tabla,
+                "dom": 'lrtp',
+                "displayLength": 5,
+                "ordering": false,
+                "columns": [
+                    { "name": "estado" },
+                    { "name": "empresa" },
+                    { "name": "emision" },
+                    { "name": "pago" },
+                    { "name": "documento" },
+                    { "name": "numero" },
+                    { "name": "total" },
+                    { "name": "cita", "visible": false },
+
+                ],
+                "createdRow": function (row, aData, dataIndex) {
+                    if (aData[7] == cita)
+                        $(row).addClass('bg-resaltar');
+                    $(row).on("dblclick", function () {
+                        resaltarTable(aData[7]);
+                    });
+                },
+                "destroy": true
+            });
+        }
+        if (adquisicion_estudios_tabla.length > 0) {
+            $("#tb_adquisicion").DataTable({
+                "data": adquisicion_estudios_tabla,
+                "dom": 'lrtp',
+                "displayLength": 5,
+                "ordering": false,
+                "columns": [
+                    { "name": "examen" },
+                    { "name": "estudio" },
+                    { "name": "placas" },
+                    { "name": "sedacion" },
+                    { "name": "contraste" },
+                    { "name": "equipo" },
+                    { "name": "fecha" },
+                    { "name": "tecnologo" },
+                    { "name": "cita", "visible": false },
+
+                ],
+                "createdRow": function (row, aData, dataIndex) {
+                    if (aData[8] == cita)
+                        $(row).addClass('bg-resaltar');
+                    $(row).on("dblclick", function () {
+                        resaltarTable(aData[8]);
+                    });
+                },
+                "destroy": true
+            });
+        }
+    }
+    function resaltarTable(filtro) {
+        cargarTablas(filtro);
+    }
+    function buscarpaciente() {
+        $(".esperando").show();
+        var apellido = $("#apellidos").val();
+        var nombre = $("#nombres").val();
+        if (apellido != "" || nombre != "") {
+            $.ajax({
+                async: false,
+                cache: false,
+                url: '/CitaMedica/getlistaPaciente',
+                data: { t: 1, p1: apellido, p2: nombre },
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    paciente_estudios_tabla = data;
+                    toastr.success("Se cargo la data", "Exito", opts);
+
+                    initialPaciente();
+                },
+                error: function () {
+                    toastr.error("No se puedo obtener la lista", "Error", opts);
+                }
+
+
+            });
+            $(".esperando").hide();
+        }
+    }
+    function getInfoPaciente(paciente, nombre) {
+        $("#lbl_tbcita").html("Cita : <b>" + nombre + '</b>');
+        $("#lbl_tbadmin").html("Admisiones : <b>" + nombre + '</b>');
+        $("#lbl_tbcarta").html("Cartas : <b>" + nombre + '</b>');
+        $("#lbl_tbadquisicion").html("Adquisiciones : <b>" + nombre + '</b>');
+        $("#lbl_tbpago").html("Documentos : <b>" + nombre + '</b>');
+        toastr.success("Se cargo la data", "Exito", opts);
+
+        $.ajax({
+            async: false,
+            cache: false,
+            url: '/CitaMedica/getDataPaciente',
+            data: { codigopaciente: paciente },
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+
+                cita_estudios_tabla = data.cita;
+                admin_estudios_tabla = data.admin;
+                carta_estudios_tabla = data.carta;
+                pagos_estudios_tabla = data.pagos;
+                adquisicion_estudios_tabla = data.adquisicion;
+                cargarTablas('');
+            },
+            error: function () {
+                toastr.error("No se pudo obtener la data", "Error", opts);
+            }
+
+
+        });
+
+        $(".esperando").hide();
+    }
+
+    function descargarAdjunto(examen) {
+        $.ajax({
+            url: '@Url.Action("isFile", "Herramientas")',
+            data: { exam: examen },
+            dataType: 'json',
+            type: 'POST',
+            success: function (data) {
+                if (data.result) {
+                    if (data.doc)
+                        window.open('@Url.Action("GetAdjuntos", "Herramientas")' + '?examen=' + examen + '&tipo=1');
+                    if (data.carta)
+                        window.open('@Url.Action("GetAdjuntos", "Herramientas")' + '?examen=' + examen + '&tipo=2');
+                } else {
+                    toastr.error('No existen Documentos.', 'Error', opts);
+                }
+
+            },
+            error: function () {
+                toastr.error('No se pudo comprobar si existen Documentos.', 'Error', opts);
+            }
+        });
+    }
+</script>

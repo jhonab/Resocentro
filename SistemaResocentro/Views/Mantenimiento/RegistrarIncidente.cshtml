@@ -1,0 +1,141 @@
+﻿@model SistemaResocentro.ViewModel.Mantenimiento.MantenimientoViewModel
+
+@{
+    ViewBag.Title = "Registrar Incidente";
+}
+
+<h2>Registro de Incidente</h2>
+<script src="~/js/validar-input.js"></script>
+<script src="~/js/linq.min.js"></script>
+<script type="text/javascript">
+    var Equipos =  @JavaScriptConvert.SerializeObject(ViewBag.Equipo);
+
+    $(function () {
+        iniciarForm();
+        ingresoForm();
+    });
+    function cargarModalidad() {
+        var sede = $("#cbosede").val();
+        if (sede != undefined && sede != "") {
+            var uniqueModality = [];
+            var items = "";
+            items += "<option value=''>- Seleccione Modalidad -</option>";
+            uniqueModality=Enumerable.From(Equipos)
+                .Where(function(x){return x.idEmpresa*100+x.idSede==sede})
+                .Select(function(x){return x})
+                .Distinct(function(x){return x.idModalidad})
+                .OrderBy(function(x){return x.modalidad})
+                .ToArray();
+            $.each(uniqueModality, function (i, item) {
+                items += "<option value=\"" + item.idModalidad + "\">" + item.modalidad + "</option>";
+            });
+            $("#cbomodalidad").html(items);
+        }
+    }
+    function cargarEquipo() {
+        var sede = $("#cbosede").val();
+        var modalidad = $("#cbomodalidad").val();
+        if (sede != undefined && sede != "" && modalidad != undefined && modalidad != "") {
+            var uniqueModality = [];
+            var items = "";
+            items += "<option value=''>- Seleccione Equipo -</option>";
+
+            $.each(Enumerable.From(Equipos)
+                .Where(function(x){return x.idEmpresa*100+x.idSede==sede && x.idModalidad==modalidad})
+                .Select(function(x){return x})
+                .OrderBy(function(x){return x.nombreEquipo})
+                .ToArray()
+                , function (i, item) {
+                    items += "<option value=\"" + item.idEquipo + "\">" + item.nombreEquipo + "</option>";
+                });
+            $("#idEquipo").html(items);
+        }
+    }
+    function validar(){
+        return validar_form("div_incidente");
+    }
+</script>
+<div id="div_incidente">
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label ">Ubicación:</label>
+                <div class="">
+                    @Html.DropDownList("cbosede", (SelectList)ViewBag.Sedes, "- Seleccione Ubicación -", new { @class = "form-control validar", @onchange = "cargarModalidad()" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label ">Modalidad:</label>
+                <div class="">
+                    @Html.DropDownList("cbomodalidad", (SelectList)ViewBag.Vacio, "- Seleccione Ubicación -", new { @class = "form-control validar", @onchange = "cargarEquipo()" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label ">Equipo:</label>
+                <div class="">
+                    @Html.DropDownListFor(x => x.idEquipo, (SelectList)ViewBag.Vacio, "- Seleccione Modalidad -", new { @class = "form-control validar" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label ">Tipo Incidente:</label>
+
+                <div class="">
+                    @Html.DropDownListFor(x => x.idTipoIncidente, (SelectList)ViewBag.TipoIncidente, "- Seleccione Tipo Incidente -", new { @class = "form-control validar" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label ">Incidente Reportado:</label>
+
+                <div class="">
+                    @Html.TextAreaFor(x => x.falla_detectada, new { @class = "form-control validar", @rows = "5", @placeholder = "Ingrese el Incidente" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label ">Estado de Equipo:</label>
+
+                <div class="">
+                    @Html.DropDownListFor(x => x.estadoequipo, (SelectList)ViewBag.EstadoEquipo, "- Seleccione Estado Equipo -", new { @class = "form-control validar" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label ">Numero de Contacto:</label>
+
+                <div class="">
+                    @Html.TextBoxFor(x => x.telefono, new { @class = "form-control validar",  @placeholder = "Ingrese el Celular o Teléfono" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label ">Solucionado</label>
+                @Html.CheckBoxFor(model => model.isSolucionado, new { @mostrar_respuesta = "div_solucion" })
+            </div>
+
+            <div id="div_solucion">
+               
+                <div class="form-group">
+                    <label class="control-label ">Solución:</label>
+                    <div class="">
+                        @Html.TextAreaFor(x => x.solucion, new { @class = "form-control", @rows = "5", @placeholder = "Ingrese la solución" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="pull-right">                        
+                        <button id="btnregistrar" type="submit" class="btn btn-success" onclick="return validar();"><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp; Registrar </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    }
+</div>

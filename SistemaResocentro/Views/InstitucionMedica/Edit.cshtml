@@ -1,0 +1,275 @@
+﻿@model SistemaResocentro.Models.CLINICAHOSPITAL
+
+@{
+    Layout = null;
+    ViewBag.Title = "Institución Médica";
+}
+<style>
+    #map-canvas {
+        width: 100%;
+        height: 330px;
+    }
+</style>
+<script>
+    // If you're adding a number of markers, you may want to
+    // drop them on the map consecutively rather than all at once.
+    // This example shows how to use setTimeout() to space
+    // your markers' animation.
+
+    var lima = new google.maps.LatLng(-12.0553442, -77.0451853);
+    var geocoder;
+    var markers = [];
+    var info = [];
+    var iterator = 0;
+
+    var map;
+
+    function initialize() {
+        geocoder = new google.maps.Geocoder();
+        var mapOptions = {
+            zoom: 12,
+            center: lima
+        };
+
+        map = new google.maps.Map(document.getElementById('map-canvas'),
+                mapOptions);
+        // This event listener will call addMarker() when the map is clicked.
+        google.maps.event.addListener(map, 'click', function (event) {
+            addMarker(event.latLng);
+        });
+        @if (Model.latitud != null && Model.longitud != null)
+        {
+            <text>mostrar('@Model.latitud', '@Model.longitud', '@Model.razonsocial');</text>
+        }
+
+    }
+
+    // Add a marker to the map and push to the array.
+    function addMarker(location) {
+
+        if (markers.length == 0) {
+            var marker = new google.maps.Marker({
+                position: location,
+                animation: google.maps.Animation.DROP,
+                map: map
+            });
+            markers.push(marker);
+            var lo = document.getElementById('longitud');
+            var la = document.getElementById('latitud');
+            la.value = location.lat();// toString()
+            lo.value = location.lng();
+
+            geocoder.geocode({ 'latLng': location }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[0]) {
+                        $("#direccion").val(results[0].address_components[1].short_name + ". " + results[0].address_components[0].short_name + " " + results[0].address_components[2].short_name);
+
+                    } else {
+                        toastr.error('No results found', "Error", opts);
+                    }
+                } else {
+                    toastr.error('Geocoder failed due to: ' + status, "Error", opts);
+                }
+            });
+            toastr.success("Ubicación Seleccionada", "Exito", opts);
+        }
+    }
+
+    // Sets the map on all markers in the array.
+    function setAllMap(map) {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+
+            google.maps.event.addListener(markers[i], 'click', (function (i) {
+                return function () {
+                    info[i].open(map, markers[i]);
+                }
+            })(i));
+        }
+    }
+    // Deletes all markers in the array by removing references to them.
+    function deleteMarkers() {
+        setAllMap(null);
+        markers = [];
+        var lo = document.getElementById('longitud');
+        var la = document.getElementById('latitud');
+        la.value = "";// toString()
+        lo.value = "";
+        toastr.info("Ubicación borrada", "Exito", opts);
+    }
+
+
+    function mostrar(latitud, longitud, nombre) {
+        setAllMap(null);
+        markers = [];
+        info = [];
+        if (latitud != "" && longitud != "") {
+
+            var latlng = new google.maps.LatLng(parseFloat(latitud), parseFloat(longitud));
+            markers.push(new google.maps.Marker({
+                position: latlng,
+                map: map,
+                draggable: false,
+                animation: google.maps.Animation.DROP,
+                title: "Institución " + nombre
+            }));
+
+            var contentString = '<h5 id="firstHeading" class="firstHeading">Datos Ubicación</h5>' +
+                                 'Institución: <b>' + nombre + '</b> <br/>';
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+            info.push(infowindow);
+            google.maps.event.addListener(markers[0], 'click', (function () {
+                return function () {
+                    info[0].open(map, markers[0]);
+                }
+            })(0));
+        }
+
+    }
+
+</script>
+<script src="~/js/validar-input.js"></script>
+<script type="text/javascript">
+    function validar() {
+        return (validarRUC("rucClinica") && validar_form("div-institucion"));
+    }
+</script>
+
+
+
+
+
+<div class="modal-header modal-primary">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Editar @Model.tipo @Model.razonsocial </h4>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <div class="row">
+            <div id="div-institucion">
+                <div class="col-md-12">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Id:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.codigoclinica, new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+                                @Html.ValidationMessageFor(model => model.codigoclinica, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tipo:</label>
+                            <div class="">
+                                @Html.DropDownListFor(model => model.tipo, (SelectList)ViewBag.TipoInstitucion, "- Seleccione Tipo de Institución -", new { @class = "form-control validar" })
+                                @Html.ValidationMessageFor(model => model.tipo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Razón Social:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.razonsocial, new { htmlAttributes = new { @class = "form-control  validar" } })
+                                @Html.ValidationMessageFor(model => model.razonsocial, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>RUC:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.rucClinica, new { htmlAttributes = new { @class = "form-control solo-numeros", @maxlength = "11" } })
+                                @Html.ValidationMessageFor(model => model.rucClinica, "", new { @class = "text-danger" })
+                            </div>
+                            <small><a target="_blank" href="http://www.sunat.gob.pe/cl-ti-itmrconsruc/jcrS00Alias">Consultar RUC</a></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Código Ipress:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.CodigoIpress, new { htmlAttributes = new { @class = "form-control  solo-numeros", @maxlength = "7" } })
+                                @Html.ValidationMessageFor(model => model.CodigoIpress, "", new { @class = "text-danger" })
+                            </div>
+                            <small><a target="_blank" href="http://app12.susalud.gob.pe/views/ConsultaPorNombreOficial.aspx">Consultar Código Ipress</a></small>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Teléfono:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.telefono, new { htmlAttributes = new { @class = "form-control validar solo-numeros" } })
+                                @Html.ValidationMessageFor(model => model.telefono, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Celular:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.celular, new { htmlAttributes = new { @class = "form-control solo-numeros" } })
+                                @Html.ValidationMessageFor(model => model.celular, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", @type = "email" } })
+                                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Web:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.web, new { htmlAttributes = new { @class = "form-control", @type = "url" } })
+                                @Html.ValidationMessageFor(model => model.web, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label>Dirección:</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.direccion, new { htmlAttributes = new { @class = "form-control  validar" } })
+                                @Html.ValidationMessageFor(model => model.direccion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>Latitud:</label>
+                                <div class="">
+                                    @Html.EditorFor(model => model.latitud, new { htmlAttributes = new { @class = "form-control  validar", @readonly = "" } })
+                                    @Html.ValidationMessageFor(model => model.latitud, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Longitud:</label>
+                                <div class="">
+                                    @Html.EditorFor(model => model.longitud, new { htmlAttributes = new { @class = "form-control  validar", @readonly = "" } })
+                                    @Html.ValidationMessageFor(model => model.longitud, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input onclick="deleteMarkers();" type="button" class="btn btn-info" value="Borrar Markers">
+                            </div>
+                            <div id="map-canvas" class="col-lg-12w"></div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button id="btnregistrar" type="submit" class="btn btn-success" onclick="return validar();"><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp; Modificar </button>
+    </div>
+}

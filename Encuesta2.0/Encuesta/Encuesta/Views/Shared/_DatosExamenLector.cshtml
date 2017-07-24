@@ -1,0 +1,146 @@
+﻿@model Encuesta.Models.EXAMENXATENCION
+<script type="text/javascript">
+    $(document).ready(function () {
+        verHistorial('@Model.codigo');
+        verificarAdjunto();
+        $("#_Partial_Encuesta_Procedencia").html("<label>@Model.ATENCION.CITA.COMPANIASEGURO.descripcion </label>");
+         @{string _hos = Model.prioridad != "URGENTE" ? "-":Model.prioridadMotivo;}
+      
+            $("#_Partial_Encuesta_Hospitalizado").html("<label class='resaltar'> @_hos</label> ");
+      
+        @if(Model.IsAmpliInDemand!=null){
+            if (!Model.IsAmpliInDemand.Value) {
+            <text> $('#div_adicional').append('<button type="button" onclick="mostrarAmpliacion();" class="btn btn-outline btn-medico  box-tools btn-sm pull-right no-print "><i class="fa fa-files-o fa-1x"></i>&nbsp; Motivo Ampliación </button>');
+        mostrarAmpliacion();
+        </text>
+        }
+        }
+
+    });
+
+    function verificarAdjunto() {
+        var exa = '@Model.codigo';
+
+        $.ajax({
+            url: '@Url.Action("isFile", "Adjuntos")',
+            data: { exam: exa },
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                if (data.result) {
+                    $('#div_adicional').prepend('<button type="button" onclick="DescargarAdjunto(' + exa + ',' + data.doc + ',' + data.carta + ');" class="btn btn-outline btn-medico  box-tools btn-sm pull-right no-print "><i class="fa fa-paperclip fa-flip-horizontal fa-flip-vertical fa-1x"></i>&nbsp; Orden Médica </button>');
+                }
+
+            }
+        });
+    }
+
+    function DescargarAdjunto(examen, doc, carta) {
+        if (carta) {
+            window.open('@Url.Action("Getfile", "Adjuntos")' + '?examen=' + examen + '&tipo=2');
+        }
+
+        if (doc) {
+            window.open('@Url.Action("Getfile", "Adjuntos")' + '?examen=' + examen + '&tipo=1');
+        }
+
+    }
+
+    function seleccionarApellido() {
+        var aux = $("#apellido_copy")
+
+        // Selecciona el contenido del campo
+        aux.select();
+
+        // Copia el texto seleccionado
+        document.execCommand("copy");
+
+        toastr.info("Se copió el <b>Apellido del Paciente</b> al portapapeles","", opts);
+        //$("#apellido_copy").select();
+        //var currColor = $('.apellido').css("color");
+        //var currBackColor = $('.apellido').css("background-color");
+        //$(".apellido").css('background-color', '#177CCA');
+        //$(".apellido").css('color', '#FFF');
+        //$("#apellido_copy").focusout(function () {
+
+        //    $(".apellido").css('background-color', currBackColor);
+        //    $(".apellido").css('color', currColor);
+        //});
+    };
+</script>
+<div class="table-medico">
+    <table class="table">
+        <tbody>
+            <!---->
+            <tr>
+                <td style="width: 95px;">
+                    <span>Examen :</span>
+                </td>
+                <td>
+                    <label class="resaltar">@Html.DisplayFor(model => model.codigo) </label>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 95px;">
+                    <span>Estudio :</span>
+                </td>
+                <td>
+                    <label class="resaltar">@Html.DisplayFor(model => model.ESTUDIO.nombreestudio) </label>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 95px;">
+                    <span>Paciente :</span>
+                </td>
+                <td>
+                    <label class="resaltar">
+                        <span class="apellido">@Html.DisplayFor(model => model.ATENCION.PACIENTE.apellidos), @Html.DisplayFor(model => model.ATENCION.PACIENTE.nombres)</span><br />
+                        <input type="text" style="width:0.1px;border:0;padding:0;" id="apellido_copy" value="@Model.ATENCION.PACIENTE.apellidos" />
+                        <button class="btncopy popover-primary" style="background-color:#343434;border:0px;padding:0px" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Copiar Apellidos del Paciente" onclick="seleccionarApellido()"><i class="fa fa-cut fa-flip-horizontal" style="color: #fff; border-radius: 5px; -moz-border-radius: 5px; border: 1px solid #fff; text-align: center; width: 35px; padding: 5px; height: 35px"></i></button>
+
+                        <i class="popover-primary" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="@Model.ATENCION.PACIENTE.telefono / @Model.ATENCION.PACIENTE.celular" style="text-align:center;width:35px;"><i class="fa fa-phone" style="color: #fff; border-radius: 5px; -moz-border-radius: 5px; border: 1px solid #fff; text-align: center; width: 35px; padding: 5px; height: 35px"></i></i>
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width: 95px;">
+                    <span>Edad : </span>
+                </td>
+                <td>
+                    <label style="width: 80px;">
+                        @{
+                        string _ano;
+                        if (Model.ATENCION.PACIENTE.fechanace.Year < DateTime.Now.Year)
+                        {
+                            _ano = (DateTime.Now.Year - Model.ATENCION.PACIENTE.fechanace.Year).ToString() + " años";
+                        }
+                        else
+                        { _ano = (DateTime.Now.Month - Model.ATENCION.PACIENTE.fechanace.Month).ToString() + " meses"; }
+                        <text>
+                            @_ano
+                        </text>    }
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 95px;">
+                    <span>Talla :</span>
+                </td>
+                <td>
+                    <label style="width: 80px;">@Model.ATENCION.talla Mt.</label>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 95px;">
+                    <span>Peso :</span>
+                </td>
+                <td>
+                    <label>@Html.DisplayFor(model => model.ATENCION.peso) kg.</label>
+
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>

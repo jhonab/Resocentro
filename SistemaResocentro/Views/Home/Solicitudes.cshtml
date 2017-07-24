@@ -1,0 +1,121 @@
+﻿@model IEnumerable<SistemaResocentro.Models.Incidente>
+
+@{
+    ViewBag.Title = "Solicitudes";
+}
+
+<h2>Solicitudes Realizadas</h2>
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<style>
+   table tbody tr {
+        cursor: pointer;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        var table = $(".table").DataTable({
+            "sPaginationType": "bootstrap",
+            "ordering": false
+        });
+    });
+
+    function showDetalle(solicitud) {
+        $("#modal_Solicitud-body").load("/Home/getSolicitudes?solicitud=" + solicitud, function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+            $("#modal_Solicitud").modal("show");
+        });
+    }
+</script>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table compact table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Aplicativo
+                    </th>
+                    <th>
+                        Importancia
+                    </th>
+                    <th>
+                        Fecha Registro
+                    </th>
+                    <th>
+                        Asignado a
+                    </th>
+                    <th>
+                        Estado
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr onclick="showDetalle('@item.idIncidente')">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.aplicativo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.importancia)
+                        </td>
+                        <td>
+                            @item.fec_registro.Value
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.USUARIOLector.ShortName)
+                        </td>
+                        <td>
+                            @if (item.estado == "T")
+                            {
+                                <text>Terminado
+                                    <i class="fa fa-list-alt fa-lg"></i>
+                                </text>
+                            }
+                            else if (item.estado == "P")
+                            {
+                                <text>Pendiente</text>
+                            }
+                            else if (item.estado == "L")
+                            {
+                                <text>Leído</text>
+                            }
+                            else if (item.estado == "N")
+                            {
+                                <text>Nuevo</text>
+                            }
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_Solicitud" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="modal_SolicitudLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modal_SistemasLabel">Detalle de Soliciud</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12" id="modal_Solicitud-body">
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

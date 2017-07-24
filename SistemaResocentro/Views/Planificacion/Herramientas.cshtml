@@ -1,0 +1,344 @@
+﻿@{
+    ViewBag.Title = "Herramientas";
+}
+<script src="~/js/Datetime/moment.js"></script>
+<script src="~/js/Datetime/moment-with-locales.js"></script>
+<script src="~/js/Datetime/bootstrap-datetimepicker.js"></script>
+<link href="~/css/Datetime/bootstrap-datetimepicker.css" rel="stylesheet" />
+
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+
+<link href="~/js/chosen/chosen.bootstrap.css" rel="stylesheet" />
+<script src="~/js/chosen/chosen.jquery.min.js"></script>
+
+<script src="~/js/Kendochart/kendo.all.min.js"></script>
+<link href="~/css/Kendochart/kendo.dataviz.min.css" rel="stylesheet" />
+<script type="text/javascript">
+
+    $(function () {
+        $(function () {
+            $("._cbo2").chosen({ width: "100%" });
+        });
+
+        //cargarvisitas
+
+        $('#fecha_visita').datetimepicker({
+            sideBySide: true,
+            locale: 'es',
+            format: 'DD/MM/YYYY'
+        });
+        $("#fecha_visita").on("dp.change", function (e) {
+            cargarVisitasTab1(e.date.format("MM/DD/YYYY"));
+        })
+        $('#fecha_ubicacion').datetimepicker({
+            sideBySide: true,
+            locale: 'es',
+            format: 'DD/MM/YYYY',
+        });
+        $("#fecha_ubicacion").on("dp.change", function (e) {
+            cargarUbicacionT3(e.date.format("MM/DD/YYYY"));
+        })
+        $('#modal_gasto').on('hidden.bs.modal', function (e) {
+            var fecha = $("#fecha_visita>input").val().split("/");
+            cargarVisitasTab1(fecha[1] + "/" + fecha[0] + "/" + fecha[2]);
+        })
+    });
+    function cargarVisitasTab1(fecha_tb1) {
+        var _newfec_tb1 = fecha_tb1.replace("/", "%2F").replace("/", "%2F");
+        $("#list_planificacion").load("/Planificacion/PlanificacionRepresentantes?fecha=" + _newfec_tb1, function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+        });
+    }
+    function cargarUbicacionT3(fecha_tb3) {
+        var _newfec_tb3 = fecha_tb3.replace("/", "%2F").replace("/", "%2F");
+        $("#div_ubicaciones_registradas").load("/Planificacion/UbicacionesRegistradasPromotores?fecha=" + _newfec_tb3, function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+        });
+    }
+    function cargarReportexMedico() {
+        var cmp = $("#cboMedico").val().toString();      
+        $("#div_reporte_medico").html("Cargando...").load('/Planificacion/ReporteEnviosdeMedico',{cmp: cmp},
+                 function (response, status, xhr) {
+                     if (status == "error") {
+                         toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+                     }
+                 });
+
+    }
+    function cleanReportexMedicoAnual() {
+        $("#div_reporte_medicoAnual").load("/Planificacion/ReporteEnviosdeMedicoAnual", function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+        });
+    }
+    function cargarReportexMedicoAnual() {
+        var cmp = $("#cboMedicoAno").val();
+        var ano = $("#cboano").val();
+        $.ajax({
+            url: "@Url.Action("ReporteEnviosdeMedicoAnualData", "Planificacion")",
+            data: { cmp: cmp, ano: ano },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                toastr.error("No se cargo la infor del Médico.", "Error", opts);
+            },
+            success: function (data) {
+                toastr.success("Se cargo la infor del Médico.", "Exito", opts);
+                addYearReporteAnualMedico(data);
+            }
+        });
+
+    }
+    function cargarReportexProcedencia() {
+        var codigoclinica = $("#cboprocedencia").val();
+        $("#div_reporte_procedencia").load("/Planificacion/ReporteEnviosxProcedencia?id=" + codigoclinica, function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+        });
+
+    }
+
+</script>
+<h2>Herramientas </h2>
+<div class="row">
+    <div class="col-md-12">
+
+        <ul class="nav nav-tabs bordered">
+            <!-- available classes "bordered", "right-aligned" -->
+            @if (User.IsInRole("21"))
+            {
+                <li id="tab1" class="">
+                    <a href="#tab_planificacion" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa fa-calendar"></i></span>
+                        <span class="hidden-xs"><i class="fa fa-calendar"></i>&nbsp;&nbsp;&nbsp; Revisar Planificación Representantes</span>
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("22"))
+            {
+                <li id="tab2" class="">
+                    <a href="#tab_reporteMedico" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa fa-user-md"></i></span>
+                        <span class="hidden-xs"><i class="fa fa-user-md"></i>&nbsp;&nbsp;&nbsp; Reporte de Envios por Médico </span>
+                    </a>
+                </li>
+    <li id="tab5" class="">
+        <a href="#tab_reporteMedicoAnual" data-toggle="tab">
+            <span class="visible-xs"><i class="fa fa-history"></i></span>
+            <span class="hidden-xs"><i class="fa fa-history"></i>&nbsp;&nbsp;&nbsp; Reporte Anual de Médico </span>
+        </a>
+    </li>
+            }
+            @if (User.IsInRole("23"))
+            {
+                <li id="tab4" class="">
+                    <a href="#tab_reporteProcedencia" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa fa-hospital-o"></i></span>
+                        <span class="hidden-xs"><i class="fa fa-hospital-o"></i>&nbsp;&nbsp;&nbsp; Reporte de Envios por Procedencia </span>
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("24"))
+            {
+                <li id="tab3" class="">
+                    <a href="#tab_ubicacion" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa fa-crosshairs"></i></span>
+                        <span class="hidden-xs"><i class="fa fa-crosshairs"></i>&nbsp;&nbsp;&nbsp; Ubicaciones Registradas </span>
+                    </a>
+                </li>
+            }
+        </ul>
+
+
+        <div class="tab-content">
+            @if (User.IsInRole("21"))
+            {
+                <div class="tab-pane " id="tab_planificacion">
+                    <div class=" row">
+                        <div class="col-md-9" style="padding:5px 0;">
+                            <div class="form-group">
+                                <label class="col-md-3">Fecha de Busqueda</label>
+                                <div class="col-md-5">
+                                    <div class="" style="padding:0 5px 0 0;">
+                                        <div id="fecha_visita" class='input-group date'>
+                                            <input type="text" class=" form-control" />
+                                            <span class="input-group-addon btn-blue">
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="list_planificacion"></div>
+                </div>
+            }
+            @if (User.IsInRole("22"))
+            {
+                <div class="tab-pane" id="tab_reporteMedico">
+                    <div class=" row">
+                        <div class="col-md-9" style="padding:5px 0;">
+                            <div class="form-group">
+                                <label class="col-md-3">Médico</label>
+                                <div class="col-md-9">
+                                    <div class="" style="padding:0 5px 0 0;">
+                                        @Html.DropDownList("cboMedico", (SelectList)ViewBag.Medicos, "- Seleccione el Médico -", htmlAttributes: new { @class = "form-control _cbo2", @onchange="cargarReportexMedico()" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_reporte_medico"></div>
+                </div>
+
+    <div class="tab-pane" id="tab_reporteMedicoAnual">
+        <div class=" row">
+            <div class="col-md-8" style="padding:5px 0;">
+                <div class="form-group">
+                    <label class="col-md-3">Médico</label>
+                    <div class="col-md-9">
+                        <div class="" style="padding:0 5px 0 0;">
+                            @Html.DropDownList("cboMedicoAno", (SelectList)ViewBag.Medicos, "- Seleccione el Médico -", htmlAttributes: new { @class = "form-control _cbo2", @onchange = "cleanReportexMedicoAnual()" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><div class="row">
+            <div class="col-md-8" style="padding:5px 0;">
+                <div class="form-group">
+                    <label class="col-md-3">Año</label>
+                    <div class="col-md-9">
+                        <div class="" style="padding:0 5px 0 0;">
+                            @Html.DropDownList("cboano", (SelectList)ViewBag.Year, "- Seleccione el Año -", htmlAttributes: new { @class = "form-control _cbo2", @onchange = "cargarReportexMedicoAnual()" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="div_reporte_medicoAnual"></div>
+    </div>
+            }            
+            @if (User.IsInRole("23"))
+            {
+                <div class="tab-pane" id="tab_reporteProcedencia">
+                    <div class=" row">
+                        <div class="col-md-9" style="padding:5px 0;">
+                            <div class="form-group">
+                                <label class="col-md-3">Procedencia</label>
+                                <div class="col-md-9">
+                                    <div class="" style="padding:0 5px 0 0;">
+                                        @Html.DropDownList("cboprocedencia", (SelectList)ViewBag.Procedencia, "- Seleccione la Procedencia -", htmlAttributes: new { @class = "form-control _cbo2", @onchange = "cargarReportexProcedencia()" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_reporte_procedencia"></div>
+                </div>
+            }
+            @if (User.IsInRole("24"))
+            {
+                <div class="tab-pane" id="tab_ubicacion">
+                    <div class=" row">
+                        <div class="col-md-9" style="padding:5px 0;">
+                            <div class="form-group">
+                                <label class="col-md-3">Fecha de Busqueda</label>
+                                <div class="col-md-5">
+                                    <div class="" style="padding:0 5px 0 0;">
+                                        <div id="fecha_ubicacion" class='input-group date'>
+                                            <input type="text" class=" form-control" />
+                                            <span class="input-group-addon btn-blue">
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_ubicaciones_registradas"></div>
+                </div>
+            }
+        </div>
+
+
+    </div>
+</div>
+
+<div class="modal fade" id="modal_gasto" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal_gasto-Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modal-body-gasto">
+        </div>
+        <!-- /.modal-content -->
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="modal_DetalleInfo" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal_DetalleInfo-Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Detalle del Reporte </h4>
+            </div>
+            <div class="modal-body" id="body_modal_DetalleInfo">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="modal_DetalleInfoProcedencia" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal_DetalleInfoProcedencia-Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Detalle del Reporte </h4>
+            </div>
+            <div class="modal-body" id="body_modal_DetalleInfoProcedencia">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script type='text/javascript'>
+    
+    function DescargarAdjunto(codigo) {
+        $.ajax({
+            url: '@Url.Action("isFile", "Planificacion")',
+            data: { exam: codigo },
+            dataType: 'json',
+            type: 'POST',
+            success: function (data) {
+                if (data.result) {
+                    if (data.doc)
+                        window.open('@Url.Action("GetAdjuntos", "Planificacion")' + '?examen=' + codigo + '&tipo=1');
+                    if (data.carta)
+                        window.open('@Url.Action("GetAdjuntos", "Planificacion")' + '?examen=' + codigo + '&tipo=2');
+                } else {
+                    toastr.error('No existen Documentos.', 'Error', opts);
+                }
+
+            },
+            error: function () {
+                toastr.error('No se pudo comprobar si existen Documentos.', 'Error', opts);
+            }
+        });
+    }
+</script>

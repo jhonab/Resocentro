@@ -1,0 +1,401 @@
+﻿@model IEnumerable<Encuesta.ViewModels.Supervisor.SupervisarExamenViewModel>
+
+@{
+    ViewBag.Title = "<i class='fa fa-check-square-o '></i> Supervisión";
+    ViewBag.Titlenot = "Supervisión";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- DataTables JavaScript -->
+
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="~/js/jquery.autosize.js"></script>
+<script src="~/js/getUrl.js"></script>
+
+<script src="~/js/jquery-ui.min.js"></script>
+
+<script>
+    var table;
+    var myDate = new Date();
+
+    $(document).ready(function () {
+
+
+        $("#msj").fadeOut()//ocultar el msj
+        $('.animate').autosize();//autosizeTexbox
+        table = $('#myDataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "@Url.Action("ListaAsync", "SupervisarExamen")",
+            //"bProcessing": true,
+            "iDisplayLength": 20,
+            "lengthMenu": [[20, 25, 50, -1], [20, 25, 50, "All"]],
+            "aoColumns": [
+                             { "sName": "N Examen" },//0
+                             { "sName": "Paciente" },//1
+                             { "sName": "HCita", "bVisible": false },//2
+                             { "sName": "HAdmin." },//3
+                             { "sName": "Min."},//4
+                             { "sName": "Concicion", "bVisible": false },//5
+                             { "sName": "Estudio" },//6
+                             { "sName": "Equipo" },//7
+                             {
+                                 "sName": "Acciones",
+                                 "mRender": function (data, type, full) {
+                                     return "";
+                                 }
+                             },//8
+                             { "sName": "isvip", "bVisible": false },//9
+                             { "sName": "sedacion", "bVisible": false },//10
+                             { "sName": "docEscan", "bVisible": false },//11
+                             { "sName": "docEscan", "bVisible": false },//12
+                             { "sName": "isSupervisable", "bVisible": false }//13
+
+            ],
+            "createdRow": function (row, aData, dataIndex) {
+                //celdad a ocultar
+                /* $('td:eq(5)', row).addClass('ocultar1');
+                 $('td:eq(5)', row).css('d', 'd');
+                 */
+
+
+                // si es una validacion pendiente
+                var fec_admi = new Date((aData[3]).substring(6, 10), parseInt((aData[3]).substring(3, 5)) - 1, (aData[3]).substring(0, 2), 0, 0, 0);
+                var fec_now = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0);
+                if (fec_admi < fec_now) {
+                    $(row).addClass('warning');
+                }
+                else {
+                    $('td:eq(2)', row).html((aData[3]).substring(11));
+                }
+                // si es Sedacion
+                if (aData[10] == "True") {
+                    $(row).addClass('danger alert-danger');
+                }
+                // si es VIP
+                if (aData[9] == "True") {
+                    $('td:eq(1)', row).html(aData[1] + ' <i class="fa fa-star fa-lg fa-spin" style="color: #F8DB07;"></i>');
+                }
+                // minutos trascurridos
+                $('td:eq(3)', row).addClass('texto-medio');
+                if (parseInt(aData[4]) > 40) {
+                    $('td:eq(3)', row).addClass('tiempo_excedente');
+                }
+                else if (parseInt(aData[4]) > 20) {
+                    $('td:eq(3)', row).addClass('tiempo_intermedio');
+                }
+                else {
+                    $('td:eq(3)', row).addClass('tiempo_correcto');
+                }
+
+                // Adjuntos
+                if (aData[11] == "True" || aData[12] == "True") {
+                    $('td:eq(1)', row).append('&nbsp;&nbsp;<button type="button" onclick="DescargarAdjunto(' + aData[0] + ',' + aData[11].toString().toLowerCase() + ',' + aData[12].toString().toLowerCase() + ');" class="btn btn-outline btn-primary btn-xs "><i class="fa fa-paperclip fa-2x"></i> </button>');
+
+                }
+
+                //agregar botn para supervisar
+
+                if (aData[13] == "True") {
+                $('td:eq(6)', row).html('&nbsp;&nbsp;<button type="button" onclick="supervisarExamen(' + aData[0] + ')"  class="btn btn-success" ><i class="fa fa-check-square-o fa-2x"></i></button>');
+                } else {
+                    $('td:eq(6)', row).html('&nbsp;&nbsp;<button type="button" onclick="supervisarExamen(' + aData[0] + ')"  class="btn btn-primary" ><i class="fa fa-check-square-o fa-2x"></i></button>');
+
+                }
+                //agregar botn para Cancelar
+                $('td:eq(0)', row).append('<br /><button type="button" onclick="ModalCancelarExamen(' + aData[0] + ')"  class="btn btn-outline  btn-danger btn-xs"><i class="fa fa-times-circle"></i> Cancelar</button>');
+
+                //agregarboton de informacion Paciente
+                $('td:eq(1)', row).append('<br /> <button type="button" onclick="cargarDatosExamen(' + aData[0] + ',1)"  class="btn btn-outline btn-info btn-xs" ><i class="fa fa-info-circle"></i> Info</button>');
+                //agregarboton de informacion Paciente
+                if (aData[6].indexOf("Ampliacion") > -1) {
+                    $('td:eq(1)', row).append('<button type="button" onclick="cargarInfoAmpliacion(' + aData[0] + ')"  class="btn btn-outline btn-warning btn-xs" ><i class="fa fa-info-circle"></i> Ampliación</button>');
+                }
+                //agregarboton de informacion Encuesta
+                //$('td:eq(6)', row).append('<br /> <input type="button" onclick="verEncuesta(' + aData[0] + ')"  class="btn btn-outline btn-default btn-xs" value="Encuesta"/>');
+            }
+        });
+
+        $("#div_time").html('<p class="pull-right">Last Refresh : <b>' + myDate.toLocaleTimeString() + '</b></p>');
+        $('#myDataTable').css("width", "100%!important");
+        //setInterval(function () {
+        //    table.ajax.reload();
+        //    $('#myDataTable').width("100%");
+        //    var _date = new Date();
+        //    $("#div_time").html('<p class="pull-right">Last Refresh : <b>' + _date.toLocaleTimeString() + '</b></p>');
+        //}, 5000);
+
+        //getEquipo(table, "2");//tipo Modal
+
+
+    });
+    function cargarTabla() {
+        table.ajax.reload();
+        var _date = new Date();
+        $("#div_time").html('<p class="pull-right">Last Refresh : <b>' + _date.toLocaleTimeString() + '</b></p>');
+    }
+    function supervisarExamen(examen) {
+        window.location.href = "@Url.Action("SupervisarExamen", "SupervisarExamen")" + '?examen=' + examen;
+    }
+    function DescargarAdjunto(examen, doc, carta) {
+        if (doc) {
+            window.open('@Url.Action("Getfile", "Adjuntos")' + '?examen=' + examen + '&tipo=1');
+        }
+        if (carta) {
+            window.open('@Url.Action("Getfile", "Adjuntos")' + '?examen=' + examen + '&tipo=2');
+        }
+    }
+    function verEncuesta(examen) {
+        var _equipo = $("#lstEquipo").val();
+        if (_equipo != '') {
+            window.open('/LectorEncuesta/LectorEncuesta?examen=' + examen+'&isVisible=false', '_blank');
+        } else {
+
+            mostrarmensaje(4, 'Seleccione el <b>Equipo</b> para enviar los datos ');
+        }
+    }
+
+    function ModalCancelarExamen(examen) {
+        $('#inputhidden_id').val(examen);
+        $('#modal_Cancelar').modal('toggle');
+    }
+
+    function cargarInfoAmpliacion(examen) {
+
+        var _equipo = $("#lstEquipo").val();
+        if (_equipo != '') {
+            $("#myModalAmpliacion .modal-body").load("/RealizarEncuesta/getAmpliacioninfo?examen=" + examen, function (response, status, xhr) {
+                if (status == "error") {
+                    mostrarmensaje(4, 'Error:\n' + xhr.status + " " + xhr.statusText);
+                }
+                $('#myModalAmpliacion').modal('show');
+            });
+        }
+        else {
+
+            mostrarmensaje(4, 'Seleccione el <b>Equipo</b> para enviar los datos ');
+        }
+    }
+
+    function cargarDatosExamen(examen) {
+
+        var _equipo = $("#lstEquipo").val();
+        if (_equipo != '') {
+            $.ajax({
+                url: "@Url.Action("DatosExamen", "SupervisarExamen")",
+                data: { examen: examen },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, 'Ocurrio un problema y <b>no</b> se enviaron los datos al sistema');
+                },
+                success: function (data) {
+
+                    $('#myModal .modal-body').html(data.mensaje);
+                    $('#myModal').modal('toggle');
+
+                }
+            });
+        }
+        else {
+
+            mostrarmensaje(4, 'Seleccione el <b>Equipo</b> para enviar los datos ');
+        }
+    }
+
+
+
+
+</script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="">
+            <div class="">
+                <h2 class="">Lista de Espera de Supervisiones </h2>
+            </div>
+            <div class="chart-responsive">
+
+                <div class="">
+                    <div class="">
+
+                    </div>
+
+                    <!-- /.panel-heading -->
+                    <div class="">
+                        <div class="alert" id="msj">
+                        </div>
+                        <div class="row">
+
+                            <div class="pull-right">
+                                <button class="btn btn-default no-print" onclick="cargarTabla()">
+                                    <b><i class="fa fa-refresh fa-spin fa-lg"></i></b>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="div_time" class=""></div>
+                        </div>
+                        <div class="row">
+                            <div class="table-responsive">
+                                <table id="myDataTable" class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>N° Examen</th>
+                                            <th>Paciente</th>
+                                            <th>H. Cita</th>
+                                            <th>H. Admin.</th>
+                                            <th>Min. </th>
+                                            <th>Cond.</th>
+                                            <th>Estudio</th>
+                                            <th>Equipo</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Datos -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Datos de Examen</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#txtmotivo").hide();
+        cargarTecnologo();
+        $("#ddlMotivos").change(function () {
+            if ($("#ddlMotivos").val() != "99")
+                $("#txtmotivo").hide();
+            else $("#txtmotivo").show();
+        });
+    });
+    function cargarTecnologo() {
+        var tip = 3
+        if (tip > 0)
+            $.ajax({
+                url: "@Url.Action("getCancelaciones", "Herramientas")",
+                data: { tipo: tip },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, "Ocurrio un error con el procesamiento, vuelva a interntarlo");
+                },
+                success: function (data) {
+                    var items = "";
+                    items += "<option value=''>- Seleccione el Motivo -</option>";
+                    $.each(data, function (i, item) {
+                        items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                    });
+
+                    $("#ddlMotivos").html(items);
+                }
+            });
+    }
+    function CancelarExamen(examen) {
+        var motivo = $("#ddlMotivos option:selected").text();
+        var detalle = $("#txtmotivo").val();
+        var all = false;
+        if ($("#all").is(':checked'))
+            all = true;
+        var pasa = true;
+        if ($("#ddlMotivos").val() == "0") {
+            pasa = false;
+            mostrarmensaje(4, "Debe seleccionar un  motivo");
+        }
+        if ($("#ddlMotivos").val() == "99" && detalle == "") {
+            pasa = false;
+            mostrarmensaje(4, "Debe ingresar un  motivo");
+        }
+        if (pasa) {
+            $.ajax({
+                url: "@Url.Action("CancelarExamen", "SupervisarExamen")",
+                data: { examen: examen, all: all, motivo: motivo, detalle: detalle },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, 'Ocurrio un problema y <b>no</b> se enviaron los datos al sistema');
+                },
+                success: function (data) {
+                    mostrarmensaje(1, 'Se cancelo el estudio');
+                    table.ajax.reload();
+                }
+            });
+        }
+
+    }
+</script>
+
+<!-- Modal Datos -->
+<div class="modal fade" id="modal_Cancelar" tabindex="-1" role="dialog" aria-labelledby="modal_CancelarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modal_ModalidadLabel">Confirmar Cancelación de Examen</h4>
+            </div>
+            <div class="modal-body" id="_2">
+                <input type="hidden" id="inputhidden_id" />
+                <div class='form-group'>
+                    <label>Motivo Cancelacion: </label>
+                    <select id="ddlMotivos" class="form-control"></select>
+                    Cancelar todos los estudios
+                    <input type="checkbox" id="all" />
+                    <br />
+                    <textarea class="form-control animate" id="txtmotivo" placeholder="Ingrese el motivo de cancelación"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" onclick="CancelarExamen($('#inputhidden_id').val())" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="myModalAmpliacion" tabindex="-1" role="dialog" aria-labelledby="myModalAmpliacionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

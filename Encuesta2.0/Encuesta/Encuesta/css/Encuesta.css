@@ -1,0 +1,191 @@
+﻿table>tbody>tr>td.texto-medio{
+    text-align:center;
+    vertical-align:middle;
+}
+table>tbody>tr>td.texto-medioV{
+    
+    vertical-align:middle;    
+}
+table>tbody>tr>td.tiempo_excedente {
+    background-color: #f00!important;
+    color:#fff!important;
+    font-weight: bold;
+}
+table>tbody>tr>td.center {
+  text-align:center;
+}
+table>tbody>tr>td.tiempo_intermedio {
+    background-color: #ead000!important;
+    color:#000!important;
+    font-weight: bold;
+}
+
+table>tbody>tr>td.tiempo_correcto {
+    background-color: #3f8522!important;
+    color:#fff!important;
+    font-weight: bold;
+}
+
+.disableAnchor {
+    display: none!important;
+}
+
+.validacion_Pendiente {
+    background-color: #fa4747;
+}
+
+.row-centered {
+    text-align: center;
+}
+
+.select_exam {
+    position: absolute;
+    color: #538eb5;
+}
+
+.cerebro {
+    top: 20px;
+    left: 178px;
+}
+
+.hombro_d {
+    top: 170px;
+    left: 60px;
+}
+
+.hombro_i {
+    top: 180px;
+    left: 310px;
+}
+
+.brazo_d {
+    top: 265px;
+    left: 63px;
+}
+
+.brazo_i {
+    top: 275px;
+    left: 316px;
+}
+
+.codo_d {
+    top: 340px;
+    left: 25px;
+}
+
+.codo_i {
+    top: 350px;
+    left: 327px;
+}
+
+.antebrazo_d {
+    top: 410px;
+    left: 47px;
+}
+
+.antebrazo_i {
+    top: 420px;
+    left: 327px;
+}
+
+.mano_d {
+    top: 500px;
+    left: 35px;
+}
+
+.mano_i {
+    top: 510px;
+    left: 327px;
+}
+
+.mama_d {
+    top: 265px;
+    left: 130px;
+}
+
+.mama_i {
+    top: 265px;
+    left: 240px;
+}
+
+.columna {
+    top: 300px;
+    left: 181px;
+}
+
+.abdomen {
+    top: 390px;
+    left: 177px;
+}
+
+.cadera_d {
+    top: 435px;
+    left: 120px;
+}
+
+.cadera_i {
+    top: 435px;
+    left: 260px;
+}
+
+.muslo_d {
+    top: 560px;
+    left: 130px;
+}
+
+.muslo_i {
+    top: 560px;
+    left: 235px;
+}
+
+.rodilla_d {
+    top: 690px;
+    left: 130px;
+}
+
+.rodilla_i {
+    top: 695px;
+    left: 235px;
+}
+
+.pierna_d {
+    top: 800px;
+    left: 130px;
+}
+
+.pierna_i {
+    top: 805px;
+    left: 235px;
+}
+
+.pie_d {
+    top: 910px;
+    left: 120px;
+}
+
+.pie_i {
+    top: 920px;
+    left: 225px;
+}
+
+/*TEM*/
+.angiotem_aorta {
+    top: 210px;
+    left: 220px;
+}
+
+
+
+
+
+.asterisco {
+    color: Red;
+    font-size: small;
+}
+
+.MessageValidation {
+    color: Red;
+    font-size: 0.8em;
+    padding-right: 15px;
+    padding-left: 15px;
+}

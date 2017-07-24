@@ -1,0 +1,41 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.frmUtil.frmSearchPaciente"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+        Title="Buscar Paciente | Resocentro" Height="400" Width="800" Background="{DynamicResource Windows.Background}"  Foreground="White" Icon="/Resocentro_Desktop;component/img/favicon.png" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" PreviewKeyUp="Window_PreviewKeyUp" >
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="219*"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Apellido : " Margin="0,2,0,8" VerticalContentAlignment="Center" Padding="0" HorizontalAlignment="Left" Width="60"/>
+        <TextBox x:Name="txtfiltro" Margin="61,2,0,0" VerticalContentAlignment="Center"   KeyDown="txtfiltro_KeyDown" FocusVisualStyle="{StaticResource MyFocusVisual}" Padding="0" CharacterCasing="Upper" HorizontalAlignment="Left" Width="170" Height="25" VerticalAlignment="Top" TabIndex="1"/>
+        <Button Content="Buscar" Margin="643,3,0,0" x:Name="btnBuscar" Padding="10,2" VerticalAlignment="Top" Click="btnBuscar_Click" TabIndex="4" FocusVisualStyle="{StaticResource MyFocusVisual}" HorizontalAlignment="Left" Width="72" />
+        <Button Content="Agregar" TabIndex="5" Margin="720,3,0,0" x:Name="btnAgregar" Padding="10,2"  VerticalAlignment="Top" Click="btnAgregar_Click" FocusVisualStyle="{StaticResource MyFocusVisual}" Height="22" HorizontalAlignment="Left" Width="72"/>
+       
+        <telerik:RadGridView Name="gridPacientes" TabIndex="6" Margin="5,5,5,0" Grid.Row="2" ShowGroupPanel="False" FocusVisualStyle="{StaticResource MyFocusVisual}" AutoGenerateColumns="False" RowActivated="gridPacientes_RowActivated" FilteringMode="FilterRow" FilterOperatorsLoading="gridPacientes_FilterOperatorsLoading">
+            <telerik:RadGridView.Columns >
+                <telerik:GridViewDataColumn  Header="Código" DataMemberBinding="{Binding codigopaciente}" IsReadOnly="True" />
+                <telerik:GridViewDataColumn  Header="Apellidos" DataMemberBinding="{Binding apellidos}" IsReadOnly="True" />
+                <telerik:GridViewDataColumn  Header="Nombres" DataMemberBinding="{Binding nombres}" IsReadOnly="True" >
+
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn  Header="DNI" DataMemberBinding="{Binding dni}" IsReadOnly="True" />
+                <telerik:GridViewDataColumn  Header="Teléfono" DataMemberBinding="{Binding telefono}" IsReadOnly="True" />
+                <telerik:GridViewDataColumn  Header="Celular" DataMemberBinding="{Binding celular}" IsReadOnly="True" />
+            </telerik:RadGridView.Columns>
+            <telerik:RadContextMenu.ContextMenu>
+                <telerik:RadContextMenu Opening="RadContextMenuPaciente_Opening" >
+                    <telerik:RadMenuItem Header="Info Paciente" Click="MenuItemInfoPaciente_Click" x:Name="MenuItemInfoPaciente" />
+                </telerik:RadContextMenu>
+            </telerik:RadContextMenu.ContextMenu>
+        </telerik:RadGridView>
+        <Label Content="Nombres : " Margin="236,6,0,6"  VerticalContentAlignment="Center" Padding="0" HorizontalAlignment="Left" Width="62"/>
+        <TextBox x:Name="txtnombre" Margin="303,2,0,3" VerticalContentAlignment="Center"  KeyDown="txtfiltro_KeyDown" FocusVisualStyle="{StaticResource MyFocusVisual}" Padding="0" Width="170" CharacterCasing="Upper" HorizontalAlignment="Left" TabIndex="2"/>
+        <Label Content="DNI: " Margin="478,8,285,4" VerticalContentAlignment="Center" Padding="0"/>
+        <TextBox x:Name="txtdni" Margin="512,2,0,0" VerticalContentAlignment="Center" CharacterCasing="Upper" KeyDown="txtfiltro_KeyDown" FocusVisualStyle="{StaticResource MyFocusVisual}" Padding="0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="96" TabIndex="3"/>
+
+    </Grid>
+</Window>

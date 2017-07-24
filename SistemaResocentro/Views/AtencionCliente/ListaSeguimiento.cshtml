@@ -1,0 +1,860 @@
+﻿@{
+    ViewBag.Title = "Seguimiento de Producción";
+}
+
+
+<h2>Seguimiento de Producción</h2>
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+
+<script src="~/js/Datetime/moment.js"></script>
+<script src="~/js/Datetime/moment-with-locales.js"></script>
+<script src="~/js/Datetime/bootstrap-datetimepicker.js"></script>
+<link href="~/css/Datetime/bootstrap-datetimepicker.css" rel="stylesheet" />
+
+<link href="~/js/chosen/chosen.bootstrap.css" rel="stylesheet" />
+<script src="~/js/chosen/chosen.jquery.min.js"></script>
+
+<style>
+    .table .chosen-container .chosen-results li {
+        padding: 1px;
+    }
+
+    .table .chosen-container .chosen-results li {
+        font-size: 10px;
+    }
+
+    .table .chosen-container-single .chosen-single {
+        height: 20px;
+        line-height: 20px;
+    }
+
+        .table .chosen-container-single .chosen-single div b {
+            background: url(../../js/chosen/chosen-sprite.png) no-repeat 0 0px;
+        }
+
+    table tbody tr {
+        cursor: pointer;
+    }
+
+    .bg-resaltar {
+        background: #c5e8f7 !important;
+    }
+
+    .bg-sedacion {
+        background: #EDA8A8 !important;
+    }
+
+    .bg-error {
+        background: rgba(255, 0, 0, 0.3) !important;
+    }
+
+    .bg-advertencia {
+        background: #EDA8A8 !important;
+    }
+
+    .not-padding {
+        padding: 0 !important;
+    }
+
+    .centro {
+        text-align: center !important;
+    }
+
+    .table > tbody > tr > td {
+        padding: 3px 2px;
+        font-size: 11px;
+    }
+
+    .table > thead > tr > th {
+        font-size: 11px;
+    }
+</style>
+<script type="text/javascript">
+    var examenes = [];
+    var refreshInterval;
+    $(function () {
+
+        iniciarForm();
+        ingresoForm();
+        $(".esperando").hide();
+
+        $('#dtInicio').datetimepicker({
+            sideBySide: true,
+            locale: 'es',
+            defaultDate: '@DateTime.Now.ToString("MM/dd/yyyy")',
+            maxDate: '@DateTime.Now.ToString("MM/dd/yyyy")',
+            format: 'DD/MM/YYYY'
+        });
+        $('#dtFin').datetimepicker({
+            sideBySide: true,
+            locale: 'es',
+            defaultDate: '@DateTime.Now.ToString("MM/dd/yyyy")',
+            maxDate: '@DateTime.Now.ToString("MM/dd/yyyy")',
+            format: 'DD/MM/YYYY'
+        });
+
+        $("#dtInicio").on("dp.change", function (e) {
+            $('#dtFin').data("DateTimePicker").minDate(e.date);
+        });
+        $("#dtFin").on("dp.change", function (e) {
+            $('#dtInicio').data("DateTimePicker").maxDate(e.date);
+        });
+
+        $(".page-container").addClass("sidebar-collapsed");
+
+        setIntervalRefresh();
+        getSeguimiento();
+
+
+    });
+    function setIntervalRefresh() {
+
+        var _val = $("#chkrefresh").is(":checked");
+        var _time = parseFloat($("#txttime").val());
+        clearInterval(refreshInterval);
+
+        if (_val)
+            refreshInterval = setInterval(function () { getSeguimiento(); }, (_time * 60000));
+    }
+    function getSeguimiento() {
+        $(".esperando").show();
+        var inicio = $("#dtInicio>input").val();
+        var fin = $("#dtFin>input").val();
+        if (inicio != "" && fin != "")
+            getData('1', inicio, fin);
+        else {
+            toastr.error("Ingrese un rango correcto", "Error", opts);
+            $(".esperando").hide();
+        }
+
+    }
+    function getData(empresa, inicio, fin) {
+        var estado = getEstados().toString();
+        if (estado != "") {
+            $.ajax({
+                url: '/AtencionCliente/ListaSegAsync',
+                data: { empresa: empresa, inicio: inicio, fin: fin, estado: estado },
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    examenes = data;
+                    cargarTabla();
+                    $(".esperando").hide();
+                },
+                error: function () {
+                    toastr.error("No se pudo obtener la data", "Error", opts);
+                    $(".esperando").hide();
+                }
+            });
+        } else {
+            toastr.warning("Seleccione por lo menos un Estado", "Error", opts);
+            $(".esperando").hide();
+        }
+    }
+    function cargarTabla() {
+        if (true) {
+            var count = 0;
+            var _fechas = [];
+            $("#tb_paciente").DataTable({
+                "data": examenes,
+                "displayLength": 50,
+                "dom": '<"col-md-6 not-padding"l><"col-md-6 not-padding"f>rtp',
+                "order": [[2, "asc"]],
+                "columns": [
+                    { "name": "error", "visible": false },//0
+                    { "name": "adjunto" },//1
+                    { "name": "adjuntoCarta" },//2
+                    { "name": "fecha" },//3
+                    { "name": "examen" },//4
+                    { "name": "estado" },//5
+                    { "name": "sucursal" },//6
+                    { "name": "tpaciente" },//7
+                    { "name": "tdocumento" },//8
+                    { "name": "ndocumento" },//9
+                    { "name": "paciente" },//10
+                    { "name": "sexo" },//11
+                    { "name": "nacimiento" },//12
+                    { "name": "isprotocolo" },//13
+                    { "name": "edad" },//14
+                    { "name": "peso" },//15
+                    { "name": "talla" },//16
+                    { "name": "aseguradora" },//17
+                    { "name": "clinica" },//18--
+                    { "name": "medico" },//19
+                    { "name": "estudio" },//20
+                    { "name": "cobertura" },//21
+                    { "name": "documento" },//22
+                ],
+                "createdRow": function (row, aData, dataIndex) {
+                    var _error = false;
+                    $('td:eq(0)', row).addClass("centro");
+                    $('td:eq(1)', row).addClass("centro");
+                    $('td:eq(3)', row).addClass("centro");
+                    $('td:eq(4)', row).addClass("centro");
+                    $('td:eq(5)', row).addClass("centro");
+                    $('td:eq(6)', row).addClass("centro");
+                    $('td:eq(7)', row).addClass("centro");
+                    $('td:eq(10)', row).addClass("centro");
+                    $('td:eq(11)', row).addClass("centro");
+                    $('td:eq(13)', row).addClass("centro");
+                    $('td:eq(14)', row).addClass("centro");
+                    $('td:eq(15)', row).addClass("centro");
+                    $('td:eq(20)', row).addClass("centro");
+
+                    var error = JSON.parse(aData[0]);
+
+                    //Examen
+                    $('td:eq(3)', row).attr("title", "Obs: " + error.obs);
+
+                    //Tipo Documento
+                    var _estado = aData[5].toString();
+                    if (_estado == "A")
+                        $('td:eq(4)', row).attr("title", 'Admitido');
+                    else if (_estado == "R")
+                        $('td:eq(4)', row).attr("title", 'Realizado');
+                    else if (_estado == "P")
+                        $('td:eq(4)', row).attr("title", 'Pagado');
+                    else if (_estado == "I")
+                        $('td:eq(4)', row).attr("title", 'Informado');
+                    else
+                        $('td:eq(4)', row).attr("title", 'Validado');
+
+                    //Tipo Paciente
+                    var _tpaciente = aData[7].toString();
+                    if (_tpaciente == "Asegurado")
+                        $('td:eq(6)', row).html("A");
+                    else if (_tpaciente == "Particular")
+                        $('td:eq(6)', row).html("P");
+                    else if (_tpaciente == "EsSalud")
+                        $('td:eq(6)', row).html("E");
+                    else
+                        $('td:eq(6)', row).html("R");
+
+                    $('td:eq(6)', row).attr("title", aData[7]);
+
+                    //Tipo Documento
+                    $('td:eq(7)', row).html(aData[8].toString().substring(0, 6));
+                    $('td:eq(7)', row).attr("title", aData[8]);
+
+                    //Paciente
+                    $('td:eq(9)', row).click(function () {
+                        window.open('@Url.Action("BusquedaGeneral", "CitaMedica")?filtro=' + aData[9], "", "width=1020, height=620, scrollbars=1, toolbar=0, menubar=0, resizable=yes");
+                    });
+                    $('td:eq(9)', row).html(aData[10].toString().substring(0, 10));
+                    $('td:eq(9)', row).attr("title", aData[10]);
+
+                    //Aseguradora
+                    $('td:eq(16)', row).html(aData[17].toString().substring(0, 10));
+                    $('td:eq(16)', row).attr("title", aData[17]);
+
+                    //Clinica
+                    $('td:eq(17)', row).html(aData[18].toString().substring(0, 10));
+                    $('td:eq(17)', row).attr("title", aData[18]);
+
+                    //Medico
+                    $('td:eq(18)', row).html(aData[19].toString().substring(0, 10));
+                    $('td:eq(18)', row).attr("title", aData[19]);
+
+                    //Estudio
+                    $('td:eq(19)', row).html(aData[20].toString().substring(0, 10));
+                    $('td:eq(19)', row).attr("title", aData[20]);
+
+                    //Adjunto Admision
+                    if (error.adjunto != null) {
+                        $('td:eq(0)', row).html('<i  class="fa fa-times fa-lg"  ></i>');
+                        $('td:eq(0)', row).addClass("bg-error");
+                        $('td:eq(0)', row).attr("title", error.adjunto);
+                        $('td:eq(0)', row).click(function () {
+                            updateSeguimiento(error)
+                        });
+                    } else {
+                        if (aData[1] == "False") {
+                            $('td:eq(0)', row).html('-');
+                        } else {
+                            $('td:eq(0)', row).click(function () {
+                                var codigo = aData[4];
+                                window.open('@Url.Action("GetAdjuntos", "AtencionCliente")' + '?examen=' + codigo + '&tipo=1');
+                            });
+                            $('td:eq(0)', row).html('<i class="fa fa-download fa-lg"></i>');
+                        }
+                    }
+                    //Adjunto Carta
+
+                    if (error.adjuntocarta != null) {
+                        $('td:eq(1)', row).html('<i  class="fa fa-times fa-lg"  ></i>');
+                        $('td:eq(1)', row).addClass("bg-error");
+                        $('td:eq(1)', row).attr("title", error.adjuntocarta);
+                        $('td:eq(1)', row).click(function () {
+                            updateSeguimiento(error)
+                        });
+                    } else {
+                        if (aData[2] == "False") {
+                            $('td:eq(1)', row).html('-');
+                        } else {
+                            $('td:eq(1)', row).click(function () {
+                                var codigo = aData[4];
+                                window.open('@Url.Action("GetAdjuntos", "AtencionCliente")' + '?examen=' + codigo + '&tipo=2');
+                            });
+                            $('td:eq(1)', row).html('<i class="fa fa-download fa-lg"></i>');
+                        }
+                    }
+
+                    //Protocolo
+                    if (aData[10] == 'True') {
+                        $('td:eq(10)', row).html('<i class="fa fa-university fa-lg"  ></i>');
+                    } else {
+                        $('td:eq(10)', row).html('');
+                    }
+
+
+                    //dni
+                    if (error.dni != null) {
+                        $('td:eq(8)', row).addClass("bg-error");
+                        $('td:eq(8)', row).attr("title", error.dni);
+                        $('td:eq(8)', row).click(function () {
+                            updateSeguimiento(error)
+                        });
+                    }
+
+                    //Edad
+                    if (error.edad != null) {
+                        $('td:eq(13)', row).addClass("bg-error");
+                        $('td:eq(13)', row).attr("title", error.edad);
+                        $('td:eq(13)', row).click(function () {
+                            updateSeguimiento(error)
+                        });
+                    }
+                    //Peso
+                    if (error.peso != null) {
+                        $('td:eq(14)', row).addClass("bg-error");
+                        $('td:eq(14)', row).attr("title", error.peso);
+                        $('td:eq(14)', row).click(function () {
+                            updateSeguimiento(error)
+                        });
+                    }
+                    $('td:eq(14)', row).append("Kg.");
+                    //Talla
+                    if (error.talla != null) {
+                        $('td:eq(15)', row).addClass("bg-error");
+                        $('td:eq(15)', row).attr("title", error.talla);
+                        $('td:eq(15)', row).click(function () {
+                            updateSeguimiento(error)
+                        });
+                    }
+                    $('td:eq(15)', row).append("Mts.");
+                    //clinica
+                    if (error.clinica != null) {
+                        $('td:eq(17)', row).addClass("bg-error");
+                        $('td:eq(17)', row).attr("title", error.clinica);
+                        $('td:eq(17)', row).click(function () {
+                            updateSeguimiento(error)
+                        });
+                    }
+
+                    //Medico
+                    if (error.medico != null) {
+                        $('td:eq(18)', row).addClass("bg-error");
+                        $('td:eq(18)', row).attr("title", error.medico);
+                        $('td:eq(18)', row).click(function () {
+                            updateSeguimiento(error)
+                        });
+                    }
+                    // carta
+                    if (error.carta != null) {
+                        $('td:eq(20)', row).addClass("bg-error");
+                        $('td:eq(20)', row).attr("title", error.carta);
+                        $('td:eq(20)', row).click(function () {
+                            updateSeguimiento(error)
+                        });
+                    }
+
+                    //pagos
+                    if (error.documento != null) {
+                        $('td:eq(21)', row).addClass("bg-error");
+                        $('td:eq(21)', row).attr("title", error.documento);
+                        $('td:eq(21)', row).click(function () {
+                            updateSeguimiento(error)
+                        });
+                    }
+
+
+
+
+
+                },
+                initComplete: function () {
+
+                    this.api().columns().every(function () {
+                        $("#col-" + count.toString()).html('');
+                        if ((count < 14 || count > 16) && count != 12) {
+                            var column = this;
+                            var select = $('<select class="_cbo2"><option value="">-</option></select>')
+                                .appendTo($("#col-" + count.toString()))
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                    );
+                                    var _id = ($(this).parents("div")).attr("id");
+                                    if (_id == 'col-3') {
+                                        column.search($(this).val()).draw();
+                                    }
+                                    else
+                                        column.search(val ? '^' + val + '$' : '', true, false)
+
+                                });
+
+                            column.data().unique().sort().each(function (d, j) {
+                                if (count == 1 || count == 2 || count == 11)
+                                    select.append('<option value="' + d + '">' + d.substring(0, 1) + '</option>')
+                                else if (count == 3) {
+                                    var f = d.substring(0, 8);
+                                    if (_fechas.indexOf(f) == -1) {
+                                        select.append('<option value="' + f + '">' + f + '</option>')
+                                        _fechas.push(f);
+                                    }
+                                }
+                                else if (count == 7) {
+                                    var _tpaciente = d;
+                                    if (_tpaciente == "Asegurado")
+                                        select.append('<option value="' + d + '">A</option>')
+                                    else if (_tpaciente == "Particular")
+                                        select.append('<option value="' + d + '">P</option>')
+                                    else if (_tpaciente == "EsSalud")
+                                        select.append('<option value="' + d + '">E</option>')
+                                    else
+                                        select.append('<option value="' + d + '">R</option>')
+
+                                }
+                                else if (count == 8)
+                                    select.append('<option value="' + d + '">' + d.substring(0, 6) + '</option>')
+                                else if (count == 10 || count == 17 || count == 18 || count == 19 || count == 20)
+                                    select.append('<option value="' + d + '">' + d.substring(0, 10) + '</option>')
+                                else
+                                    select.append('<option value="' + d + '">' + d + '</option>')
+                            });
+                        }
+                        count++;
+                    });
+                },
+                "destroy": true,
+            });
+            $("._cbo2").chosen({ width: "100%", height: "20px" });
+        } else
+            toastr.info("No se encontro data", "Informacion", opts);
+    }
+
+    function updateSeguimiento(error) {
+        ocultarDiv();
+        $("#upd-examen").val(error.examen);
+        if (error.medico != null) {
+            $.ajax({
+                async: false,
+                cache: false,
+                url: "@Url.Action("GetMedicos", "AtencionCliente")",
+                data: {},
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    toastr.error("No se cargo Lista de Médicos", "Informacion", opts);
+                },
+                success: function (data) {
+                    var items = "";
+                    items += "<option value=''>- Seleccione el Médico Referente -</option>";
+                    $.each(data, function (i, item) {
+                        items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                    });
+                    $("#upd-medico").html(items);
+                    $('#upd-medico').trigger("chosen:updated");
+                }
+            });
+            $("#div_upd-medico").show();
+        }
+        if (true) {
+            $.ajax({
+                async: false,
+                cache: false,
+                url: "@Url.Action("GetClinicas", "AtencionCliente")",
+                data: {},
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    toastr.error("No se cargo Lista de Médicos", "Informacion", opts);
+                },
+                success: function (data) {
+                    var items = "";
+                    items += "<option value=''>- Seleccione la Clinica Procedencia -</option>";
+                    $.each(data, function (i, item) {
+                        items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                    });
+                    $("#upd-clinica").html(items);
+                    $('#upd-clinica').trigger("chosen:updated");
+                }
+            });
+            $("#div_upd-clinica").show();
+        }
+        if (error.dni != null) {
+            $("#div_upd-dni").show();
+        }
+        if (error.carta != null) {
+            $("#div_upd-cobertura").show();
+        }
+        if (error.adjunto != null) {
+            $("#upd-admin").fileinput({
+                uploadUrl: '@Url.Action("AdjuntarArchivos", "AtencionCliente")?numero=' + error.examen + '&tipo=1', // you must set a valid URL here else you will get an error
+                allowedFileExtensions: ['pdf'],
+                overwriteInitial: false,
+                maxFileSize: 1000,
+                maxFilesNum: 1,
+                slugCallback: function (filename) {
+                    return filename.replace('(', '_').replace(']', '_');
+                },
+                layoutTemplates: {
+                    main1: "<div class=\'input-group {class}\'>\n" +
+                    "   <div class=\'input-group-btn\'>\n" +
+                "       {browse}\n" +
+                "       {upload}\n" +
+                "       {remove}\n" +
+                "   </div>\n" +
+                    "   {caption}\n" +
+                    "</div>" +
+                    "{preview}\n"
+
+                }
+            });
+            $("#div_upd-admin").show();
+        }
+        if (error.adjuntocarta != null) {
+            $("#upd-carta").fileinput({
+                uploadUrl: '@Url.Action("AdjuntarArchivos", "AtencionCliente")?numero=' + error.examen + '&tipo=2', // you must set a valid URL here else you will get an error
+                allowedFileExtensions: ['rar'],
+                overwriteInitial: false,
+                maxFileSize: 1000,
+                maxFilesNum: 1,
+                slugCallback: function (filename) {
+                    return filename.replace('(', '_').replace(']', '_');
+                },
+                layoutTemplates: {
+                    main1: "<div class=\'input-group {class}\'>\n" +
+                    "   <div class=\'input-group-btn\'>\n" +
+                "       {browse}\n" +
+                "       {upload}\n" +
+                "       {remove}\n" +
+                "   </div>\n" +
+                    "   {caption}\n" +
+                    "</div>" +
+                    "{preview}\n"
+
+                }
+            });
+            $("#div_upd-carta").show();
+        }
+        if (error.edad != null) {
+            $("#div_upd-edad").show();
+        }
+        if (error.talla != null) {
+            $("#div_upd-talla").show();
+        }
+        if (error.peso != null) {
+            $("#div_upd-peso").show();
+        }
+        $("#modalUpdateSeg").modal("show");
+    }
+    function ocultarDiv() {
+
+        $("#div_upd-admin").html('<input type="checkbox" mostrar-respuesta-inv="div_adjadmin" id="upd_adjAdmin_chk" /> Adjuntos de Admisión Correctos <br/><label>Adjuntos Admisión</label><div id="div_adjadmin"><input type="file" class="form-control" id="upd-admin" /></div>');
+        $("#div_upd-carta").html('<input type="checkbox" mostrar-respuesta-inv="div_adjcarta" id="upd_adjCarta_chk" /> Adjuntos de Carta Correctos <br/><label>Adjuntos Carta</label><div id="div_adjcarta"><input type="file" class="form-control" id="upd-carta" /></div>');
+
+
+        $("#upd_adjAdmin_chk").on('click', function () {
+            var _search = ($(this).attr("mostrar-respuesta-inv"));
+            if (_search != undefined)
+                if ($(this).is(":checked"))
+                    $("#" + _search).hide();
+                else
+                    $("#" + _search).show();
+        });
+        $("#upd_adjCarta_chk").on('click', function () {
+            var _search = ($(this).attr("mostrar-respuesta-inv"));
+            if (_search != undefined)
+                if ($(this).is(":checked"))
+                    $("#" + _search).hide();
+                else
+                    $("#" + _search).show();
+        });
+
+
+        $("#div_upd-dni").hide();
+        $("#div_upd-edad").hide();
+        $("#div_upd-talla").hide();
+        $("#div_upd-peso").hide();
+        $("#div_upd-medico").hide();
+        $("#div_upd-clinica").hide();
+        $("#div_upd-cobertura").hide();
+        $("#div_upd-admin").hide();
+        $("#div_upd-carta").hide();
+
+        $("#upd-examen").val('');
+        $("#upd-dni").val('');
+        $("#upd-edad").val('');
+        $("#upd-talla").val('');
+        $("#upd-peso").val('');
+        $("#upd-medico").val('');
+        $("#upd-clinica").val('');
+        $("#upd-cobertura").val('');
+
+        $('#upd_dni_chk').attr('checked', false);
+        $('#upd_edad_chk').attr('checked', false);
+        $('#upd_talla_chk').attr('checked', false);
+        $('#upd_peso_chk').attr('checked', false);
+        $('#upd_medico_chk').attr('checked', false);
+        $('#upd_clinica_chk').attr('checked', false);
+        $('#upd_cobertura_chk').attr('checked', false);
+        $('#upd_adjAdmin_chk').attr('checked', false);
+        $('#upd_adjCarta_chk').attr('checked', false);
+
+        $("input").removeAttr("disabled");
+        $("#upd_medico_chosen").show();
+        $("#upd_clinica_chosen").show();
+    }
+    function saveChanges() {
+        var _newerror = {
+            examen: $("#upd-examen").val(),
+            dni: $("#upd-dni").val(),
+            edad: $("#upd-edad").val(),
+            talla: $("#upd-talla").val(),
+            peso: $("#upd-peso").val(),
+            medico: $("#upd-medico").val(),
+            clinica: $("#upd-clinica").val(),
+            carta: $("#upd-cobertura").val(),
+            adjunto: $("#upd-admin").val(),
+            adjuntocarta: $("#upd-carta").val(),
+            
+            isCorrectdni: $("#upd_dni_chk").is(":checked"),
+            isCorrectedad: $("#upd_edad_chk").is(":checked"),
+            isCorrecttalla: $("#upd_talla_chk").is(":checked"),
+            isCorrectpeso: $("#upd_peso_chk").is(":checked"),
+            isCorrectmedico: $("#upd_medico_chk").is(":checked"),
+            isCorrectclinica: $("#upd_clinica_chk").is(":checked"),
+            isCorrectcarta: $("#upd_cobertura_chk").is(":checked"),
+            isCorrectadjunto: $("#upd_adjAdmin_chk").is(":checked"),
+            isCorrectadjuntocarta: $("#upd_adjCarta_chk").is(":checked")
+        };
+
+        $.ajax({
+            url: '/AtencionCliente/UpdateSeguimiento',
+            data: { cadena: (JSON.stringify(_newerror, null, "")) },
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                $("#modalUpdateSeg").modal("hide");
+                toastr.success("Se corrigio el error", "Exito", opts);
+                getSeguimiento();
+            },
+            error: function () {
+                toastr.error("No se pudo obtener la data", "Error", opts);
+            }
+
+
+        });
+
+    }
+    function getEstados() {
+        var _estados = [];
+        if ($("#chkAdmision").is(":checked")) {
+            _estados.push("'A'");
+        }
+        if ($("#chkRealizado").is(":checked")) {
+            _estados.push("'R'");
+        }
+        if ($("#chkPagado").is(":checked")) {
+            _estados.push("'P'");
+        }
+        if ($("#chkInformado").is(":checked")) {
+            _estados.push("'I'");
+        }
+        if ($("#chkValidado").is(":checked")) {
+            _estados.push("'V'");
+        }
+        return _estados;
+    }
+</script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-md-6 ">
+            <div class="form-group">
+                <div class="col-lg-6">
+                    <label class="">Inicio: </label>
+                    <div class="">
+                        <div id="dtInicio" class='input-group date'>
+                            <input type="text" class=" form-control" />
+                            <span class="input-group-addon btn-blue">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <label class="">Fin: </label>
+                    <div class="">
+                        <div id="dtFin" class='input-group date'>
+                            <input type="text" class=" form-control" />
+                            <span class="input-group-addon btn-blue">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label style="color:#fff;" class="">: </label>
+            <div>
+                <button class="btn btn-info" type="button" onclick="getSeguimiento()"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;Buscar</button>
+            </div>
+        </div>
+
+        <div class="col-md-4 pull-right" style="border: 1px solid;padding: 10px 15px;border-radius: 15px;">
+            <label class=" ">
+                Configuración:
+            </label>
+            <div>
+                <input type="checkbox" onchange="setIntervalRefresh()" id="chkrefresh" checked />&nbsp;&nbsp; Actualizar
+                <span>Cada&nbsp;&nbsp;<input style="width:40px;" onchange="setIntervalRefresh()" id="txttime" type="number" value="5" />&nbsp;&nbsp;min.</span>
+            </div><br />
+            <label>Estados</label>
+            <div>
+                <input type="checkbox" id="chkAdmision" checked />&nbsp;&nbsp; Admitidos
+                <input type="checkbox" id="chkRealizado" checked />&nbsp;&nbsp; Realizados
+                <input type="checkbox" id="chkPagado" checked />&nbsp;&nbsp; Pagados
+                <input type="checkbox" id="chkInformado" />&nbsp;&nbsp; Informados
+                <input type="checkbox" id="chkValidado" />&nbsp;&nbsp; Validados
+            </div>
+        </div>
+    </div>
+</div>
+<div class="esperando " style="text-align: center;color:#065d9d"><i class="fa fa-spinner fa-5x fa-spin"></i> <br />Cargando...</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <table id="tb_paciente" class="table table-bordered table-striped tab-hover">
+                <thead>
+                    <tr>
+                        <th>Errores                            <div id="col-0"></div></th>
+                        <th style="width:30px!important;">Adm<div id="col-1"></div></th>
+                        <th style="width:30px!important;">Car<div id="col-2"></div></th>
+                        <th>Fecha                              <div id="col-3"></div></th>
+                        <th>Examen                             <div id="col-4"></div></th>
+                        <th style="width:30px!important;">Est. <div id="col-5"></div></th>
+                        <th style="width:30px!important;">Suc. <div id="col-6"></div></th>
+                        <th>Tipo                               <div id="col-7"></div></th>
+                        <th style="width:30px!important;">Doc. <div id="col-8"></div></th>
+                        <th>N Doc                              <div id="col-9"></div></th>
+                        <th>Paciente                           <div id="col-10"></div></th>
+                        <th>Prot.                              <div id="col-11"></div></th>
+                        <th style="width:30px!important;">Sex. <div id="col-12"></div></th>
+                        <th>Nac.                               <div id="col-13"></div></th>
+                        <th style="width:30px!important;">Edad <div id="col-14"></div></th>
+                        <th style="width:30px!important;">Peso <div id="col-15"></div></th>
+                        <th style="width:30px!important;">Talla<div id="col-16"></div></th>
+                        <th>Aseguradora                        <div id="col-17"></div></th>
+                        <th>Clinica                            <div id="col-18"></div></th>
+                        <th>Médico                             <div id="col-19"></div></th>
+                        <th>Estudio                            <div id="col-20"></div></th>
+                        <th style="width:30px!important;">Cob. <div id="col-21"></div></th>
+                        <th>Documentos                         <div id="col-22"></div></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="modalUpdateSeg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalUpdateSeg-Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modalUpdateSeg-body">
+            <div class="modal-header modal-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Correccion de Errores</h4>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <input type="hidden" id="upd-examen" />
+                    <div class="form-group" id="div_upd-dni">
+                        <input type="checkbox" id="upd_dni_chk" bloquear-respuesta="upd-dni" /> DNI Correcto
+                        <label>N° Documento: </label>
+                        <div class="">
+                            <input type="text" class="form-control" id="upd-dni" />
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="div_upd-edad">
+                        <input type="checkbox" id="upd_edad_chk" bloquear-respuesta="upd-edad" /> Edad Correcta
+                        <label>Edad: </label>
+                        <div class="">
+                            <input type="number" class="form-control" id="upd-edad" />
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="div_upd-talla">
+                        <input type="checkbox" id="upd_talla_chk" bloquear-respuesta="upd-talla" /> Talla Correcta
+                        <label>Talla: </label>
+                        <div class="">
+                            <input type="text" class="form-control" id="upd-talla" />
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="div_upd-peso">
+                        <input type="checkbox" id="upd_peso_chk" bloquear-respuesta="upd-peso" /> Peso Correcto
+                        <label>Peso: </label>
+                        <div class="">
+                            <input type="text" class="form-control" id="upd-peso" />
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="div_upd-medico">
+                        <input type="checkbox" id="upd_medico_chk" mostrar-respuesta-inv="upd_medico_chosen" /> Médico Referente Correcto
+                        <label>Médico Referente: </label>
+                        <div class="">
+                            <select class="form-control _cbo2" id="upd-medico"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="div_upd-clinica">
+                        <input type="checkbox" id="upd_clinica_chk" mostrar-respuesta-inv="upd_clinica_chosen" /> Clínica Procedencia Correcta
+                        <label>Clínica Procedencia: </label>
+                        <div class="">
+                            <select class="form-control _cbo2" id="upd-clinica"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="div_upd-cobertura">
+                        <input type="checkbox" id="upd_cobertura_chk" bloquear-respuesta="upd-cobertura" /> Cobertura Correcta
+                        <label>Cobertura: </label>
+                        <div class="">
+                            <input type="number" class="form-control" id="upd-cobertura" />
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="div_upd-admin">
+                    </div>
+
+                    <div class="form-group" id="div_upd-carta">
+                    </div> 
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-success" onclick="saveChanges()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

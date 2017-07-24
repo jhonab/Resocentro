@@ -1,0 +1,39 @@
+﻿@model SistemaResocentro.Models.CorrelativoMotivo
+@{
+    ViewBag.Title = "RegistrarGenerado";
+}
+
+<h2>Registrar Generado</h2>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="well">
+            <h2></h2>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                <div class="row">
+                    <div class="col-lg-4">
+
+                        <div class="form-group">
+                            <label>Motivo</label>
+                            @Html.DropDownListFor(model => model.idmotivo, (SelectList)ViewBag.idmotivo, "- Seleccione el Motivo -", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.idmotivo)
+                        </div>
+
+                        <div class="form-group">
+                            <label>Inicio Correlativo</label>
+                            @Html.TextBoxFor(model => model.correlativo, new { @class = "form-control", @placeholder = "Ingrese el inicio del Correlativo", @type = "number", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.correlativo)
+                        </div>
+
+                        <p>
+                            <a href='@Url.Action("ListaGenerado")' class="btn btn-primary"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;&nbsp;Regresar a la Lista</a>
+                            <button id="btnregistrar" type="submit" class="btn btn-success"><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp; Registrar </button>
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

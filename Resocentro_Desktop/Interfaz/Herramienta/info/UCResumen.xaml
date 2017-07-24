@@ -1,0 +1,105 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.Herramienta.info.UCResumen" 
+    Height="600" Width="500" Background="{DynamicResource Windows.Background}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="97"/>
+            <ColumnDefinition Width="113*"/>
+            <ColumnDefinition Width="86*"/>
+            <ColumnDefinition Width="98*"/>
+            <ColumnDefinition Width="106*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="19"/>
+            <RowDefinition Height="19"/>
+            <RowDefinition Height="19"/>
+            <RowDefinition Height="19"/>
+            <RowDefinition Height="19"/>
+            <RowDefinition Height="19"/>
+            <RowDefinition Height="19"/>
+            <RowDefinition Height="19"/>
+            <RowDefinition Height="19"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="19"/>
+            <RowDefinition Height="110"/>
+            <RowDefinition Height="19"/>
+            <RowDefinition Height="69*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Codigo Estudio" Padding="0"/>
+        <Label Content="Id Paciente" Grid.Row="1" Padding="0"/>
+        <Label Content="Modalidad" Grid.Row="2" Padding="0"/>
+        <Label Content="Clase" Grid.Row="2" Grid.Column="2" Padding="0"/>
+        <Label Content="Tipo Paciente" Grid.Row="3" Padding="0" Height="19" VerticalAlignment="Top"/>
+        <Label Content="Aseguradora" Grid.Row="4" Padding="0"/>
+        <Label Content="Procedencia" Grid.Row="5" Padding="0"/>
+        <Label Content="Medico" Grid.Row="6" Padding="0"/>
+        <Label Content="Especialidad" Grid.Row="7" Padding="0"/>
+        <Label Content="Representante" Grid.Row="8" Padding="0"/>
+        <Label Content="Equipo" Grid.Column="4" Padding="0"/>
+        <Label Content="Tiem. Prom." Grid.Column="4" Grid.Row="2" Padding="0"/>
+        <Label Content="48" HorizontalAlignment="Center" Foreground="White" Grid.Column="4" Grid.Row="3" Padding="0" Margin="46,0" Width="14"/>
+        <Label Content="Tiem. Final" Grid.Column="4" Grid.Row="4" Padding="0"/>
+        <Label Content="CONSUMIBLES" HorizontalAlignment="Center"  Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="10" Padding="0"  />
+        <Label Content="OBSERVACIONES" HorizontalAlignment="Center"  Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="12" Padding="0"  />
+
+
+
+
+        <telerik:RadGridView ItemsSource="{Binding List_proceso}" AutoGenerateColumns="False" ShowGroupPanel="False" RowIndicatorVisibility="Collapsed" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="5" IsReadOnly="True">
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Proceso" DataMemberBinding="{Binding Proceso}"/>
+                <telerik:GridViewDataColumn Header="Responsable" DataMemberBinding="{Binding Responsable}"/>
+                <telerik:GridViewDataColumn Header="N° Ref." DataMemberBinding="{Binding Num_ref}"/>
+                <telerik:GridViewDataColumn Header="Inicio" DataMemberBinding="{Binding Incio}"/>
+                <telerik:GridViewDataColumn Header="Fin" DataMemberBinding="{Binding Fin}"/>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+
+
+        <Label Padding="0" Foreground="White" Grid.Column="1" Grid.ColumnSpan="3">
+            <Label.Content>
+                <TextBlock>
+                    <Run Text="{Binding Codigoestudio}"/>
+                    -
+                    <Run Text="{Binding Estudio}"/>
+                </TextBlock> 
+            </Label.Content>
+        </Label>
+        <Label Content="{Binding Datos_adquisicion.detalleAdquisicion.equipo}" Padding="0" Foreground="White" Grid.Column="5" Grid.Row="1" />
+        <Label  Padding="0" Foreground="White" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3">
+            <Label.Content>
+                <TextBlock>
+                    <Run Text="{Binding Datos_paciente.codigopaciente}"/>
+                    -
+                    <Run Text="{Binding Datos_paciente.apellidos}"/>,
+                    <Run Text="{Binding Datos_paciente.nombres}"/>
+                </TextBlock>
+            </Label.Content>
+        </Label>
+        <Label Content="{Binding Modalidad}" Padding="0" Foreground="White" Grid.Column="1" Grid.Row="2" />
+        <Label Content="{Binding Clase}" Padding="0" Foreground="White" Grid.Column="3" Grid.Row="2" />
+        <Label Content="{Binding Tipopaciente}" Padding="0" Foreground="White" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3"/>
+        <Label Content="{Binding Aseguradora}" Padding="0" Foreground="White" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3"/>
+        <Label Content="{Binding Datos_admision.Clinica}" Padding="0" Foreground="White" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3"/>
+        <Label Content="{Binding Tiempo_final}" HorizontalAlignment="Center"  Padding="0" Foreground="White" Grid.Column="4" Grid.Row="5"/>
+        <Label Content="{Binding Datos_admision.Medico}" Padding="0" Foreground="White" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="4"/>
+        <Label Content="" Padding="0" Foreground="White" Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="4"/>
+        <Label Content="" Padding="0" Foreground="White" Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="4"/>
+        <telerik:RadGridView AutoGenerateColumns="False" ShowGroupPanel="False" RowIndicatorVisibility="Collapsed" Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="5" IsReadOnly="True" ItemsSource="{Binding List_insumos}" >
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Frasco" DataMemberBinding="{Binding Frasco}"/>
+                <telerik:GridViewDataColumn Header="Descripcion" DataMemberBinding="{Binding Insumo}"/>
+                <telerik:GridViewDataColumn Header="Volumen" DataMemberBinding="{Binding Cant}"/>
+                <telerik:GridViewCheckBoxColumn Header="Aplicado" DataMemberBinding="{Binding Aplicado}"/>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+        <TextBox Grid.ColumnSpan="5" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" TextWrapping="Wrap" Text="{Binding Datos_cita.Observaciones_cita }" Grid.Row="13"/>
+
+
+    </Grid>
+</UserControl>

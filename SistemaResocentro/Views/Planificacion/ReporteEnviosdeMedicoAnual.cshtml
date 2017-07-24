@@ -1,0 +1,157 @@
+﻿
+
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <strong style="text-align:center">*Fecha de corte por mes del 1 al fin de mes, segun la fecha del examen.</strong>
+        </div>
+        <div class="col-md-12">
+            <div id="chart-EnvioAnual">
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div id="chart-EnvioPagadoAnual">
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div id="chart-CompaniaoAnual">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+  
+    var dataenvioAnual = [];
+    var dataenvioPagadoAnual = [];
+    var dataCompaniaAnual = [];
+
+    var _mesEnvioAnual = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
+    function addYearReporteAnualMedico(_dataReporte) {
+        $("#chart-EnvioAnual").html("");
+        dataenvioAnual.push({ name: _dataReporte[0].name, data: _dataReporte[0].data });
+        dataenvioPagadoAnual.push({ name: _dataReporte[1].name, data: _dataReporte[1].data });
+        for (var i = 0; i < 5; i++) {
+            if (_dataReporte[2].data[i] != undefined) {
+                dataCompaniaAnual.push({ name: _dataReporte[2].data[i].name, data: _dataReporte[2].data[i].data });
+            }
+        }
+       
+        $("#chart-EnvioAnual").kendoChart({
+            theme: "Bootstrap",
+            title: {
+                text: "Cant. Envios del Médico",
+            },
+            legend: {
+                visible: true,
+                position: "top"
+            },
+            seriesDefaults: {
+                type: "line",
+                labels: {
+                    visible: true,
+                    format: "{0}"
+                }
+            },
+            series: dataenvioAnual,
+            valueAxis: {
+                labels: {
+                    format: "{0}"
+                }/*, plotBands: [{
+                from: 0,
+                to: 10,
+                color: "#c00",
+                opacity: 0.3
+            }]*/
+            },
+            categoryAxis: {
+                categories: _mesEnvioAnual
+            },
+            tooltip: {
+                visible: true,
+                format: "{0}",
+                template: "   #= series.name # : #= value #  "
+            }
+        });
+        $("#chart-EnvioPagadoAnual").kendoChart({
+            theme: "Bootstrap",
+            title: {
+                text: "Cant. Envios Pagados del Médico",
+            },
+            legend: {
+                visible: true,
+                position: "top"
+            },
+            seriesDefaults: {
+                type: "line",
+                labels: {
+                    visible: true,
+                    format: "{0}"
+                }
+            },
+            series: dataenvioPagadoAnual,
+            valueAxis: {
+                labels: {
+                    format: "{0}"
+                }/*, plotBands: [{
+                from: 0,
+                to: 10,
+                color: "#c00",
+                opacity: 0.3
+            }]*/
+            },
+            categoryAxis: {
+                categories: _mesEnvioAnual
+            },
+            tooltip: {
+                visible: true,
+                format: "{0}",
+                template: "   #= series.name # : #= value #  "
+            }
+        });
+        $("#chart-CompaniaoAnual").kendoChart({
+            theme: "Bootstrap",
+            title: {
+                text: "Cant. Envios del Médico x Compañia",
+            },
+            legend: {
+                visible: true,
+                position: "top"
+            },
+            seriesDefaults: {
+                type: "line",
+                labels: {
+                    visible: true,
+                    format: "{0}"
+                }
+            },
+            series: dataCompaniaAnual,
+            valueAxis: {
+                labels: {
+                    format: "{0}"
+                }/*, plotBands: [{
+                from: 0,
+                to: 10,
+                color: "#c00",
+                opacity: 0.3
+            }]*/
+            },
+            categoryAxis: {
+                categories: _mesEnvioAnual
+            },
+            tooltip: {
+                visible: true,
+                format: "{0}",
+                template: "   #= series.name # : #= value #  "
+            }
+        });
+    }
+
+
+</script>

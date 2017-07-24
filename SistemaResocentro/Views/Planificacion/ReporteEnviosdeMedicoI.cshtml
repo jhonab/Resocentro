@@ -1,0 +1,31 @@
+﻿@model IEnumerable<SistemaResocentro.Models.DetalleReporteComisionesMedico>
+@{
+    Layout = null;
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <button type="button" class="btn btn-blue" data-toggle="modal" data-target="#modal_DetalleInfo"><i class=" fa fa-list-ul"></i>&nbsp;&nbsp;Mostrar Detalle</button>
+    </div>
+    <div class="col-md-12">
+        <strong style="text-align:center">*Fecha de corte por mes del 26 al 25, según el cálculo de comisiones.</strong>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <div id="chart-envio">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div id="chart-tiposEstudios">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <div id="chart-procedenciaEnvio">
+            </div>
+        </div>
+    </div>
+</div>

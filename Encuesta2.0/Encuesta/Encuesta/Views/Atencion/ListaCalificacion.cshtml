@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "<i class='fa fa-child '></i> Calificación de Atención";
+    ViewBag.Titlenot = "Calificación de Atención ";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- DataTables JavaScript -->
+
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="~/js/jquery.autosize.js"></script>
+<script src="~/js/getUrl.js"></script>
+<link href="~/css/Encuesta.css" rel="stylesheet" />
+<script src="~/js/jquery-ui.min.js"></script>
+<script>
+    var table;
+    var myDate = new Date();
+
+    $(document).ready(function () {
+        //activacion del boton en el menu
+        $(".sidebar > .sidebar-menu > li").removeClass("active");
+        $(".sidebar > .sidebar-menu > li.p7").addClass("active");
+
+
+        $("#msj").fadeOut()//ocultar el msj
+        $('.animate').autosize();//autosizeTexbox
+        table = $('#myDataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "@Url.Action("ListaCalificacionAsync", "Atencion")",
+            //"bProcessing": true,
+            "iDisplayLength": 20,
+            "lengthMenu": [[20, 25, 50, -1], [20, 25, 50, "All"]],              
+        });
+
+
+    });
+    function abrirEncuesta(examen) {
+        window.location.href = "@Url.Action("CalificarAtencion", "Atencion")" + '?atencion=' + examen;
+    }
+
+
+</script>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h2 class="box-title">Lista de Satisfacción de Examenes </h2>
+            </div>
+            <div class="box-body chart-responsive">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Lista de Satisfacción de Examenes
+
+                    </div>
+
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="alert" id="msj">
+                        </div>
+                        <div class="table-responsive">
+                            <table id="myDataTable" class="table table-striped center table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="width:10px!important;">N° Admision</th>
+                                        <th>Paciente</th>
+                                        <th style="width:30px!important;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

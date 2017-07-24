@@ -1,0 +1,28 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.frmUtil.frmSearchEstudio"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+     Title="Seleccionar Estudio | Resocentro" Height="420.25" Width="925.5" Background="{DynamicResource Windows.Background}"  Foreground="White" Icon="/Resocentro_Desktop;component/img/favicon.png" PreviewKeyUp="Window_PreviewKeyUp" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" >
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="218"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <telerik:RadGridView Margin="5" FocusVisualStyle="{StaticResource MyFocusVisual}" Name="grid_Clase" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" ShowColumnFooters="False" ShowGroupFooters="False" SelectionMode="Single" IsReadOnly="True" RowActivated="grid_Clase_RowActivated" TabIndex="1" PreviewKeyUp="grid_Clase_PreviewKeyUp" >
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Id" DataMemberBinding="{Binding codigoclase}" />
+                <telerik:GridViewDataColumn Header="Clase" DataMemberBinding="{Binding nombreclase}" />
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+        <telerik:RadGridView  Margin="5" FocusVisualStyle="{StaticResource MyFocusVisual}" Name="grid_Estudio" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" ShowColumnFooters="False" ShowGroupFooters="False" SelectionMode="Single" IsReadOnly="True" RowActivated="grid_Estudio_RowActivated" Grid.Column="1" TabIndex="2" >
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Id" DataMemberBinding="{Binding codigoestudio}" />
+                <telerik:GridViewDataColumn Header="Estudio" DataMemberBinding="{Binding estudio}" />
+                <telerik:GridViewDataColumn Header="Clase" DataMemberBinding="{Binding codigoclase}" />
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+    </Grid>
+</Window>

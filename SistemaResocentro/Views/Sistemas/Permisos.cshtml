@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "Permiso";
+}
+
+<h2>Permiso</h2>
+<script type="text/javascript">
+    $(function () {
+        $("#div_permiso").hide();
+        $(".btnsearch").hide();
+        $("._cbo2").select2({
+            placeholder: "Select a state",
+            allowClear: true
+        });
+    });
+
+    function getPermisos() {
+        var paciente = $("#cbousuario").val().trim();
+        $("#cbousuario").attr("disabled", true);
+        $(".btnadd").hide();
+        $(".btnsearch").show();
+        if (paciente != "") {
+            $("#div_permiso").show();
+            $("#tabla_permiso").html('<div class="row">' +
+                       '<div class="pace pace-active"><div class="pace-progress" data-progress="50" data-progress-text="50%" style="-webkit-transform: translate3d(50%, 0px, 0px); -ms-transform: translate3d(50%, 0px, 0px); transform: translate3d(50%, 0px, 0px);"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>' +
+                   '</div>');
+            $("#tabla_permiso").load("/Sistemas/getPermisos?idusuario=" + paciente, function (response, status, xhr) {
+                if (status == "error") {
+                    toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+                }
+            });
+        }
+    }
+    function newSearch() {
+        $("#cbousuario").attr("disabled", false);
+        $(".btnadd").show();
+        $(".btnsearch").hide();
+        $("#div_permiso").hide();
+    }
+    function deletePermiso(idpermiso) {
+        $.ajax({
+            url: "/Sistemas/deletePermiso",
+            data: { idPermiso: idpermiso },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                toastr.error('Error al eliminar permiso', 'Error', opts);
+            },
+            success: function (data) {
+                if (data) {
+                    toastr.success('Permiso Eliminado', 'Exito', opts);
+                    getPermisos();
+                }
+                else
+                    toastr.error('Error al eliminar permiso', 'Error', opts);
+
+            }
+        });
+    }
+    function addPermiso() {
+        var tipo = $("#cbopermiso").val();
+        var per = $("#cbopermiso option:selected").html();
+        var user = $("#cbousuario").val();
+        if (tipo != "") {
+            $.ajax({
+                url: "@Url.Action("addPermiso", "Sistemas")",
+                data: { idusuario: user, tipo: tipo, descripcion: per },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                toastr.error('Error al agregar permiso', 'Error', opts);
+            },
+            success: function (data) {
+                if (data) {
+                    toastr.success('Permiso agregado', 'Exito', opts);
+                    getPermisos();
+                }
+                else
+                    toastr.error('Error al agregar permiso', 'Error', opts);
+            }
+        });
+
+    } else
+            toastr.error('Error al agregar permiso', 'Error', opts);
+    }
+</script>
+<link href="~/css/progressbar.css" rel="stylesheet" />
+<div class="form-horizontal">
+    <div class="row">
+        <div class="col-md-6 ">
+            <div class="form-group">
+                <label class="control-label col-md-3">Usuario:</label>
+                <div class="col-md-6">
+                    @Html.DropDownList("cbousuario", (SelectList)ViewBag.Usuarios, "- Seleccione -", new { @class = "form-control _cbo2" })
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-info btn-lg btnadd" onclick="getPermisos()" type="button"><i class="fa fa-search "></i>&nbsp;&nbsp;Buscar</button>
+                    <button class="btn btn-info btn-lg btnsearch" onclick="newSearch()" type="button"><i class="fa fa-search "></i>&nbsp;&nbsp;Nueva Busqueda</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="div_permiso">
+        <div class="row">
+            <div class="col-md-6 ">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Permiso:</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("cbopermiso", (SelectList)ViewBag.Permisos, "- Seleccione -", new { @class = "form-control _cbo2" })
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-success btn-lg" onclick="addPermiso()" type="button"><i class="fa fa-plus "></i>&nbsp;&nbsp;Agregar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 ">
+                <div id="tabla_permiso"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="~/js/select2/select2-bootstrap.css" rel="stylesheet" />
+<link href="~/js/select2/select2.css" rel="stylesheet" />
+<script src="~/js/select2/select2.min.js"></script>

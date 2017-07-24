@@ -1,0 +1,503 @@
+﻿@model Encuesta.ViewModels.Encuesta.EncuestaExamenViewModel
+
+@{
+    ViewBag.Title = "Encuesta";
+    ViewBag.Titlenot = "Encuesta";
+}
+
+
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<script src="~/js/getUrl.js"></script>
+<script src="~/js/jquery-ui.min.js"></script>
+
+<script>
+    var table;
+    var myDate = new Date();
+
+    $(document).ready(function () {
+        //$('.animate').autosize();//autosizeTexbox
+        table = $('#myDataTable').DataTable({
+            "bServerSide": true,
+            "bProcessing": true,
+            "sAjaxSource": "@Url.Action("ListaAsync", "RealizarEncuesta")",
+            "iDisplayLength": 20,
+            "lengthMenu": [[20, 25, 50, -1], [20, 25, 50, "All"]],
+            "aoColumns": [
+                            { "sName": "N Examen" },//0
+                             { "sName": "Paciente" },//1
+                             { "sName": "Sede", "bVisible": false },//2
+                             { "sName": "HCita" },//3
+                             { "sName": "HAdmin." },//4
+                             { "sName": "Estudio" },//5
+                             { "sName": "Equipo" },//6
+                             {
+                                 "sName": "Acciones",
+                                 "mRender": function (data, type, full) {
+                                     return "";
+                                 }
+                             },//7 numeroexamen
+                             { "sName": "isvip", "bVisible": false },//8
+                             { "sName": "sedacion", "bVisible": false },//9
+                             { "sName": "asginado", "bVisible": false },//10
+                             { "sName": "escaneados", "bVisible": false },//11
+                             { "sName": "encuesta", "bVisible": false },//12
+                             { "sName": "carta", "bVisible": false },//13
+                             { "sName": "tipo_encuesta", "bVisible": false },//14
+                             { "sName": "isAyer", "bVisible": false },//15
+
+            ],
+            "createdRow": function (row, aData, dataIndex) {
+
+
+                if (aData[15] == "True") {
+                    $(row).addClass('warning');
+                }
+                else {
+                    $('td:eq(3)', row).html((aData[4]).substring(11));
+                }
+                // si es Sedacion
+                if (aData[9] == "True") {
+                    $(row).addClass('danger alert-danger');
+                }
+                // si es VIP
+                if (aData[8] == "True") {
+                    $('td:eq(1)', row).html(aData[1] + ' <i class="fa fa-star fa-lg fa-spin" style="color: #F8DB07;"></i>');
+                }
+                // minutos trascurridos
+                //$('td:eq(4)', row).addClass('texto-medio');
+                //if (parseInt(aData[4]) > 40) {
+                //    $('td:eq(4)', row).addClass('tiempo_excedente');
+                //}
+                //else if (parseInt(aData[4]) > 20) {
+                //    $('td:eq(4)', row).addClass('tiempo_intermedio');
+                //}
+                //else {
+                //    $('td:eq(4)', row).addClass('tiempo_correcto');
+                //}
+
+                // Adjuntos
+                var adjuntos = "";
+                if (aData[11] == "True" || aData[13] == "True") {
+                    adjuntos = ('<button type="button" onclick="DescargarAdjunto(' + aData[0] + ',' + aData[11].toString().toLowerCase() + ',' + aData[13].toString().toLowerCase() + ');" class="btn btn-primary btn-xs "><i class="fa fa-paperclip fa-lg"></i> </button>&nbsp;&nbsp;&nbsp;&nbsp;');
+
+                }
+
+                // realizar encuesta
+                if (aData[12] == "False") {//si esta listo para encuestar
+                    if (aData[14] == "True") {
+                        $('td:eq(6)', row).append('<button type="button" id="btnEncuesta" onclick="RealizarEncuesta(' + aData[0] + ',' + "'" + aData[5] + "'" + ');" class="btn btn-primary "><i class="fa fa-edit fa-2x"></i></button>');
+                    } else {
+                        $('td:eq(6)', row).append('<button type="button" id="btnEncuesta" onclick="RealizarEncuesta(' + aData[0] + ',' + "'" + aData[5] + "'" + ');" class="btn btn-success " ><i class="fa fa-edit fa-2x"></i></button>');
+
+                    }
+                } else {
+                    $('td:eq(6)', row).append('<button type="button" onclick="reasignar(' + aData[0] + ');" class="btn btn-default  btn-xs"><i class="fa fa-fire fa-lg"></i></button>');
+                }
+
+
+
+                //agregarboton de informacion Paciente
+                $('td:eq(1)', row).append("<br/>" + adjuntos + '<button type="button" onclick="cargarDatosExamen(' + aData[0] + ')"  class="btn btn-outline btn-info btn-xs" ><i class="fa fa-info-circle fa-lg"></i> Info</button>');
+
+
+
+                //agregar botn para Cancelar
+                $('td:eq(0)', row).append('<br /><button type="button" onclick="ModalCancelarExamen(' + aData[0] + ')"  class="btn btn-outline  btn-danger btn-xs"><i class="fa fa-times-circle fa-lg "></i> Cancelar</button>');
+            }
+        });
+        $("#div_time").html('<p class="pull-right">Last Refresh : <b>' + myDate.toLocaleTimeString() + '</b></p>');
+        $('#myDataTable').css("width", "100%!important");
+        //setInterval(function () {
+        //    table.ajax.reload();
+        //    $('#myDataTable').width("100%");
+        //    var _date = new Date();
+        //    $("#div_time").html('<p class="pull-right">Last Refresh : <b>' + _date.toLocaleTimeString() + '</b></p>');
+        //}, 30000);
+        getSucursales(table);//tipo filtro
+        //getEquipo(table, "2");//tipo Modal
+
+
+    });
+    function cargarTabla() {
+
+        table.ajax.reload();
+
+        var _date = new Date();
+        $("#div_time").html('<p class="pull-right">Last Refresh : <b>' + _date.toLocaleTimeString() + '</b></p>');
+    }
+
+    function ModalCancelarExamen(examen) {
+        $('#inputhidden_id').val(examen);
+        $('#modal_Cancelar').modal('toggle');
+    }
+
+    function RealizarEncuesta(examen, estudio) {
+        @{ Encuesta.Member.CustomMembershipUser user = Membership.GetUser(true) as Encuesta.Member.CustomMembershipUser;}
+        if (estudio.toLowerCase().includes("artro"))
+            if (!('@user.ProviderUserKey.ToString().ToUpper()' == 'JCCH25' || '@user.ProviderUserKey.ToString().ToUpper()' == 'GDCV18')) {
+                toastr.error("La sesión iniciada no es de un médico que realice el procedimiento.", opts);
+                return;
+            }
+        window.location.href = ('@Url.Action("RealizarEncuesta", "RealizarEncuesta")' + '?examen=' + examen);
+    }
+
+    function getSucursales(table) {
+        $.ajax({
+            url: "@Url.Action("getSedes", "RealizarEncuesta")",
+            data: {},
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                toastr.error("error cargar sedes", opts);
+            },
+            success: function (data) {
+                var items = "";
+                items += "<option value='' >- Todos -</option>";
+                $.each(data, function (i, item) {
+                    items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                });
+                $("#lstsede").html(items);
+                $("#lstsede").change(function () {
+                    var texto = $("#lstsede option:selected").html();
+                    if ($("#lstsede").val() != '') {
+                        $('#myDataTable').dataTable().fnFilter(texto);
+                    }
+                    else {
+                        $('#myDataTable').dataTable().fnFilter('');
+                    }
+                });
+                var parameter = $.get("sede");
+                if (parameter != null) {
+                    $("#lstsede").val(parameter);
+                    var texto = $("#lstsede option:selected").html()
+                    $('#myDataTable').dataTable().fnFilter(texto);
+                }
+
+
+
+            }
+        });
+    }
+
+    function DescargarAdjunto(examen, doc, carta) {
+        if (doc) {
+            window.open('@Url.Action("Getfile", "Adjuntos")' + '?examen=' + examen + '&tipo=1');
+        }
+        if (carta) {
+            window.open('@Url.Action("Getfile", "Adjuntos")' + '?examen=' + examen + '&tipo=2');
+        }
+    }
+
+    function cargarDatosExamen(examen) {
+        $.ajax({
+            url: "@Url.Action("DatosExamen", "RealizarEncuesta")",
+            data: { examen: examen },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                toastr.error('Ocurrio un problema y <b>no</b> se enviaron los datos al sistema', opts);
+            },
+            success: function (data) {
+                $('#myModal .modal-body').html(data.mensaje);
+                $('#myModal').modal('toggle');
+            }
+        });
+
+    }
+    function CalculateDateDiff(dateFrom, dateTo) {
+        var difference = (dateTo - dateFrom);
+
+        var years = Math.floor(difference / (1000 * 60 * 60 * 24 * 365));
+        difference -= years * (1000 * 60 * 60 * 24 * 365);
+        var months = Math.floor(difference / (1000 * 60 * 60 * 24 * 30.4375));
+
+        var dif = '';
+        if (years > 0)
+            dif = years + ' años ';
+
+        if (months > 0) {
+            if (years > 0) dif += ' y ';
+            dif += months + ' meses';
+        }
+
+        return dif;
+    }
+
+
+
+
+</script>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Lista de Espera de Encuestas</h2>
+
+        <div class="pull-right">
+            <button class="btn btn-default no-print" onclick="cargarTabla()">
+                <b><i class="fa fa-refresh fa-spin fa-lg"></i></b>
+            </button>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Equipo</label>
+                <select id="lstsede" class="form-control"></select>
+            </div>
+            <div id="div_time" class="col-sm-8">
+            </div>
+
+        </div>
+        <br />
+        <div class="row">
+            <div class="table-responsive">
+                <table id="myDataTable" class="table compact table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>N° Examen</th>
+                            <th>Paciente</th>
+                            <th>Sede</th>
+                            <th>H. Cita</th>
+                            <th>H. Admin.</th>
+                            <th>Estudio</th>
+                            <th>Equipo</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal Datos -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Datos de Examen</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script type="text/javascript">
+    function EditExamen() {
+        var examen = $("#modal_nexamen").val();
+        if ($('#alert_2').length != 0)
+            $('#alert_2').remove();
+        if (examen == "")
+            $("#2").append("<div id='alert_2' class='alert alert-danger'>Ingrese un N° Examen valido</div>")
+        else {
+            $('#modalExamen').modal('toggle');
+            window.location.href = ('@Url.Action("UpdateExamen", "RealizarExamen")?examen=' + examen);
+        }
+    }
+</script>
+<!-- Modal Buscar Examen-->
+<div class="modal fade" id="modalExamen" tabindex="-1" role="dialog" aria-labelledby="modalExamenLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalExamenLabel">Ingrese Número de Examen</h4>
+            </div>
+            <div class="modal-body" id="2">
+                <div class="input-group custom-search-form">
+                    <input type="number" class="form-control" id="modal_nexamen" placeholder="N° Examen...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" onclick="EditExamen();">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#txtmotivo").hide();
+        cargarTecnologo();
+        $("#ddlMotivos").change(function () {
+            if ($("#ddlMotivos").val() != "99")
+                $("#txtmotivo").hide();
+            else $("#txtmotivo").show();
+        });
+    });
+    function cargarTecnologo() {
+        var tip = 3
+        if (tip > 0)
+            $.ajax({
+                url: "@Url.Action("getCancelaciones", "Herramientas")",
+                data: { tipo: tip },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, "Ocurrio un error con el procesamiento, vuelva a interntarlo");
+                },
+                success: function (data) {
+                    var items = "";
+                    items += "<option value=''>- Seleccione el Motivo -</option>";
+                    $.each(data, function (i, item) {
+                        items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                    });
+
+                    $("#ddlMotivos").html(items);
+                }
+            });
+    }
+    function CancelarExamen(examen) {
+        var motivo = $("#ddlMotivos option:selected").text();
+        var detalle = $("#txtmotivo").val();
+        var all = false;
+        if ($("#all").is(':checked'))
+            all = true;
+        var pasa = true;
+        if ($("#ddlMotivos").val() == "0") {
+            pasa = false;
+            mostrarmensaje(4, "Debe seleccionar un  motivo");
+        }
+        if ($("#ddlMotivos").val() == "99" && detalle == "") {
+            pasa = false;
+            mostrarmensaje(4, "Debe ingresar un  motivo");
+        }
+        if (pasa) {
+            $.ajax({
+                url: "@Url.Action("CancelarExamen", "SupervisarExamen")",
+                data: { examen: examen, all: all, motivo: motivo, detalle: detalle },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, 'Ocurrio un problema y <b>no</b> se enviaron los datos al sistema');
+                },
+                success: function (data) {
+                    mostrarmensaje(1, 'Se cancelo el estudio');
+                    table.ajax.reload();
+                }
+            });
+        }
+
+    }
+</script>
+<!-- Modal Datos -->
+<div class="modal" id="modal_Cancelar" tabindex="-1" role="dialog" aria-labelledby="modal_CancelarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modal_CancelarLabel">Confirmar Cancelación de Examen</h4>
+            </div>
+            <div class="modal-body" id="_2">
+                <input type="hidden" id="inputhidden_id" />
+                <div class='form-group'>
+                    <label>Motivo Cancelacion: </label>
+                    <select id="ddlMotivos" class="form-control"></select>
+                    Cancelar todos los estudios
+                    <input type="checkbox" id="all" />
+                    <br />
+                    <textarea class="form-control animate" id="txtmotivo" placeholder="Ingrese el motivo de cancelación"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" onclick="CancelarExamen($('#inputhidden_id').val())" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@*ASIGNACION DE EXAMEN*@
+<script type="text/javascript">
+
+    function asignarModalidad(examen) {
+        var _equipo = $("#cboequipo_asignar").val();
+        if (_equipo != "") {
+            $.ajax({
+                url: "@Url.Action("setModalidad", "RealizarEncuesta")",
+                data: { examen: examen, equipo: _equipo },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    alert("Sucedio un error al asignar la modalidad");
+                },
+                success: function (data) {
+                    if (data.result) {
+                        $('#AsignarModal').modal('toggle');
+                        alert("Se realizo la asignación");
+                        table.ajax.reload();
+                    }
+                    else
+                        alert("No se realizo la asignación");
+                }
+            });
+        } else {
+            alert("Seleccione un Equipo")
+        }
+    }
+
+    function reasignar(examen) {
+        $("#lbln_exam").val(examen)
+        $.ajax({
+            url: "@Url.Action("getEquipo", "VisorCarga")",
+            data: { examen: examen },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                alert("Error al cargar Equipo");
+            },
+            success: function (data) {
+                var items = "";
+                items += "<option value='' >- Seleccione -</option>";
+                $.each(data, function (i, item) {
+                    items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                });
+                $("#cboequipo_asignar").html(items);
+            }
+        });
+        $('#AsignarModal').modal('toggle');
+
+    }
+</script>
+<div class="modal" id="AsignarModal" tabindex="-1" role="dialog" aria-labelledby="AsignarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="AsignarModalLabel">Reasignar Examen a Equipo</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="lbln_exam" />
+                @Html.Partial("_AsignarEquipo")
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="asignarModalidad($('#lbln_exam').val());">Enviar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+

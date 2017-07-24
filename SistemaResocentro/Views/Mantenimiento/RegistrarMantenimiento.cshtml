@@ -1,0 +1,286 @@
+﻿@model SistemaResocentro.ViewModel.Mantenimiento.DetalleMantenimiento
+@{
+    ViewBag.Title = "Registrar Mantenimiento";
+    SistemaResocentro.ViewModel.Mantenimiento.EquipoMantenimiento Equipo = (SistemaResocentro.ViewModel.Mantenimiento.EquipoMantenimiento)ViewBag.Equipo;
+    IEnumerable<SistemaResocentro.ViewModel.Mantenimiento.MantenimientoViewModel> Incidentes = (IEnumerable<SistemaResocentro.ViewModel.Mantenimiento.MantenimientoViewModel>)ViewBag.Incidente;
+
+    int cant_man = 12 / Equipo.cant_mantenimientos;
+    int cant_man_faltantes = cant_man - Incidentes.Count();
+}
+
+<script src="~/js/validar-input.js"></script>
+<script src="~/js/linq.min.js"></script>
+<script type="text/javascript">
+    var piezas = [];
+    $(function () {
+        iniciarForm();
+        ingresoForm();
+        listarpiezas();
+    });
+    function validar() {
+        return validar_form("div_revision");
+    }
+    function agregarPieza() {
+        if (piezas == null)
+            piezas = [];
+        var serie = $("#txtserie").val(),
+            pieza = $("#txtpieza").val();
+
+        if (serie != "" && pieza != "") {
+            var jsonObject = {
+                "idPieza": 0,
+                "nombre": pieza,
+                "serie": serie
+            };
+            piezas.push(jsonObject);
+            listarpiezas();
+            $('#modal_Pieza').modal('hide')
+            $("#txtserie").val("");
+            $("#txtpieza").val("");
+        } else
+            toastr.error('Error:\n Ingrese todos los datos correctamente.', 'Error', opts);
+    }
+    function listarpiezas() {
+        if (piezas == null)
+            piezas = [];
+        $("#piezas_array").val("");
+        $("#piezas_array").val(JSON.stringify(piezas, null, ""));
+        $("#tab_body_pieza").html("");
+        var items = "";
+        count = 1;
+        $.each(piezas, function (i, item) {
+            item.idPieza = count;
+            items += "<tr> <td>" + item.nombre + "</td><td>" + item.serie + "</td><td><button type='button' class='btn btn-xs btn-danger hidden-print' onclick='deletePieza(" + item.idPieza + ")'><i class='fa fa-times'/></button></td></tr>";
+            count++;
+        });
+        $("#tab_body_pieza").html(items);
+
+    }
+    function deletePieza(id) {
+        if (piezas == null)
+            piezas = [];
+        var _pieza = piezas.filter(function (el) {
+            return el.idPieza !== id;
+        });
+        piezas = _pieza;
+        listarpiezas();
+    }
+</script>
+
+<div id="div_revision">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="invoice">
+            <div class="row">
+                <div class="col-sm-6 invoice-left">
+                    <a href="#">
+                    </a>
+                </div>
+                <div class="col-sm-6 invoice-right"> <h3>MANTENIMIENTO PREVENTIVO</h3> <span></span> </div>
+            </div> <hr class="margin"> <div class="row">
+                <div class="col-sm-6 ">
+                    <h4>Detalle Equipo:</h4>
+                    <strong style="font-size:13px">Marca:</strong> @Equipo.marca.ToUpper()
+                    <br> <strong style="font-size:13px">Modelo:</strong> @Equipo.modelo.ToUpper()
+                    <br> <strong style="font-size:13px">Serie:</strong> @Equipo.serie
+                </div>
+                <div class="col-md-6 ">
+                    <h4 style="color:white;">s </h4>
+                    <strong style="font-size:13px">Frecuencia:</strong> @Equipo.frecuencia.ToUpper()
+                    <br> <strong style="font-size:13px">Nombre Equipo:</strong> @Equipo.nombreEquipo.ToUpper()
+                    <br> <strong style="font-size:13px">Sucursal:</strong> @Equipo.empresa -  @Equipo.sucursal
+                </div>
+            </div>
+
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs bordered">
+                    <li class="active">
+                        <a href="#mantenimiento" data-toggle="tab" aria-expanded="false">
+                            <span class="visible-xs"><i class="fa fa-gear"></i></span>
+                            <span class="hidden-xs"><i class="fa fa-gear"></i> Mantenimientos</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+
+                    <div class="tab-pane active" id="mantenimiento">
+
+                        @if (Incidentes.Count() == 0)
+                        {
+                            <span>No hay ningun mantenimiento registrado de los <b>@cant_man</b> del año.</span>
+                        }
+                        else
+                        {
+
+                            if (cant_man_faltantes == 0)
+                            {
+                                <span>No falta ningun mantenimiento</span>
+                            }
+                            else
+                            {
+                                <span>Faltan <b>@cant_man_faltantes</b> mantenimientos en el año.</span>
+                            }
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            N°
+                                        </th>
+                                        <th>
+                                            Fecha
+                                        </th>
+                                        <th>
+                                            Marca / Modelo
+                                        </th>
+                                        <th>
+                                            Equipo
+                                        </th>
+                                        <th>
+                                            Empresa
+                                        </th>
+                                        <th>
+                                            Técnico
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Incidentes.ToList())
+                            {
+                            <tr>
+                                <td>
+                                    @item.idIncidente
+                                </td>
+                                <td>
+                                    @item.fecha_detecta.ToShortDateString()
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.equipo.marca) - @Html.DisplayFor(modelItem => item.equipo.modelo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.equipo.nombreEquipo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.equipo.empresaMantenimiento.razonsocial)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.usuario_detecta)
+                                </td>
+                            </tr>
+
+                            }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    <label class="control-label ">Observaciones:</label>
+                    <div class="">
+                        @Html.TextAreaFor(x => x.revision, new { @class = "form-control validar", @rows = "5", @placeholder = "Ingrese la revisión" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Usuario de Registro</label>
+                    @Html.TextBoxFor(x => x.tecnico, new { @class = "form-control validar", @rows = "5", @placeholder = "Ingrese el Nombre y Apellido del Usuario que realizo la Revision" })
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Estado Actual del Equipo</label>
+                    @Html.DropDownListFor(x => x.estadoequipo, (SelectList)ViewBag.EstadoEquipo, "- Seleccione Estado Equipo -", new { @class = "form-control validar" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label ">Fecha de Realizacion:</label>
+                    <div class="">
+                        @Html.TextBoxFor(x => x.fecha_revision, new { @class = "form-control validar", @type = "date" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">N° Informe Proveedor:</label>
+                    <div class="">
+                        @Html.TextBoxFor(x => x.num_informe, new { @class = "form-control validar" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Cambio Piezas?</label>
+                    @Html.CheckBoxFor(model => model.isCambioPieza, new { @mostrar_respuesta = "div_piezas" })
+                </div>
+                <div id="div_piezas" class="form-group">
+
+                    <button type="button" class="btn btn-info pull-right hidden-print" data-toggle="modal" data-target="#modal_Pieza"><i class="fa fa-cog"></i>&nbsp;&nbsp;Agregar</button>
+                    @Html.HiddenFor(x => x.idEquipo)
+                    @Html.HiddenFor(x => x.piezas_array)
+                    <table class="table compact table-striped  table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Pieza
+                                </th>
+                                <th>
+                                    Serie
+                                </th>
+                                <th style="width: 22px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tab_body_pieza"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row hidden-print">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    <button type="button" onclick="javascript: window.location.replace('@Url.Action("ListaMantenimiento")');" class="btn btn-default"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;&nbsp;Regresar a la Lista</button>
+
+                    <button id="btnregistrar" type="submit" class="btn btn-success" onclick="return validar();"><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp; Registrar </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="modal fade " id="modal_Pieza" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Agregar Piezas de Cambio</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="">
+                        <label class="control-label ">Pieza:</label>
+                        <input id="txtpieza" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="">
+                        <label class="control-label ">Serie:</label>
+                        <input id="txtserie" type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="agregarPieza()">Agregar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

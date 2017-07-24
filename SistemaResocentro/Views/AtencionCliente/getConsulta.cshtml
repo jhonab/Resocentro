@@ -1,0 +1,180 @@
+﻿@model HistorialConsulta
+@{
+    Layout = null;
+}
+
+<style>
+    .panel-heading > .panel-title {
+  
+  padding: 3px 15px;
+}
+</style>
+<div class="row">
+    <div class="panel-group joined" id="accordion-test-2">
+
+
+
+        @foreach (var item in Model.historia)
+        {
+            if (item.usuario.Contains("Informes"))
+            {
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-test-2" href="#collapseOne-@item.HistoriaId" class="collapsed">
+                                <img src="~/images/favicon.png" class="img-circle" style="width:30px;" /> @item.usuario
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne-@item.HistoriaId" class="panel-collapse collapse" style="height: 0px;">
+                        <div class="panel-body">
+                            <div class="mail-body">
+                                <div class="mail-info">
+                                </div>
+                                <div class="mail-text">
+                                    <p>
+                                        @item.mensaje
+                                    </p>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-test-2" href="#collapseOne-@item.HistoriaId" class="collapsed">
+                                <img src="~/images/profile.png" class="img-circle" style="width:30px;" /> @item.usuario
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne-@item.HistoriaId" class="panel-collapse collapse" style="height: 0px;">
+                        <div class="panel-body">
+                            <div class="mail-body">
+                                <div class="mail-info">
+                                </div>
+                                <div class="mail-text">
+                                    <p>
+                                        @item.mensaje
+                                    </p>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        }
+        <div class="panel panel-ino">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion-test-2" href="#collapseOne-0" class="collapsed">
+                        <img src="~/images/profile.png" class="img-circle" style="width:30px;" /> @Model.pregunta.Nombre  @Model.pregunta.Apellidos
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne-0" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                    <div class="mail-body">
+                        <div class="mail-info">
+
+                            <div class="mail-sender dropdown">
+                                <span>@Model.pregunta.Nombre  @Model.pregunta.Apellidos</span> <a href="mailto:@Model.pregunta.Email">@Model.pregunta.Email</a>
+                            </div>
+
+                            <div class="mail-date">
+                                @Model.pregunta.Fec_Registro.Value.ToShortDateString()
+                            </div>
+
+                        </div>
+
+                        <div class="mail-text">
+                            <p id="mailMensaje">
+                                <b>Telefono: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>@Model.pregunta.Telefono
+                                <br />
+                                <b>Tipo Estudio:&nbsp;</b>@Model.pregunta.Tipo_Estudio
+                                <br />
+                                <b>Estudio:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>@Model.pregunta.Estudio
+                                <br /><br />
+                                <b>Consulta:&nbsp;</b>
+                                <br />
+                                @Model.pregunta.Mensaje
+                            </p>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    @*@if (!Model.pregunta.isAtendido)
+    {*@
+        <div class="mail-reply ">
+
+            <div class="col-sm-10">
+                <textarea class="form-control" rows="5" id="mailResponder" placeholder="Responder"></textarea>
+            </div>
+            <button class="btn btn-success col-sm-2" onclick="enviarMensaje();">Enviar &nbsp;<i class="fa fa-send"></i></button>
+            <br /><input type="checkbox" id="mailTerminado" onchange="mailAtendido()" />Terminado
+        </div>
+    @*}*@
+</div>
+<script type="text/javascript">
+    $(function(){
+        $("#myModalLabel").html('Consulta Web N° '+@Model.pregunta.ConsultaId);
+
+    });
+
+    function enviarMensaje() {
+        var id=@Model.pregunta.ConsultaId;
+        $("#myModalLabel").html('Consulta Web N° '+@Model.pregunta.ConsultaId+'<i class=" fa fa-spinner fa-spin fa-3x pull-right color-green" style="color:#003471;"></i>');
+        var msj = $('#mailResponder').val();
+        $.ajax({
+            url: "/AtencionCliente/responerConsulta",
+            data: { id: id, msj: msj },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                toastr.error('Error al Enviar Correo', 'Error', opts);
+            },
+            success: function (data) {
+                if (data) {
+                    toastr.success('Se Envió el Correo', 'Éxito', opts);
+                    $("#myModalLabel").html('Consulta Web N° '+@Model.pregunta.ConsultaId);
+                    $("#myModal").modal("hide");
+                } else
+                    toastr.error('Error al Enviar Correo', 'Error', opts);
+            }
+        });
+
+        cargarCorreo();
+    }
+    function mailAtendido() {
+        var id=@Model.pregunta.ConsultaId;
+        $.ajax({
+            url: "/AtencionCliente/ConsultaisAtendido",
+            data: { id: id },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                toastr.error('Error al Terminar Correo', 'Error', opts);
+            },
+            success: function (data) {
+                
+                toastr.success('Se cambió el estado a la consulta', 'Éxito', opts);
+            }
+        });
+        cargarCorreo();
+    }
+</script>

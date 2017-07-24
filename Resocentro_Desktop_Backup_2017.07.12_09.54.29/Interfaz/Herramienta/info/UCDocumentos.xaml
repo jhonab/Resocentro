@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="Resocentro_Desktop.Interfaz.Herramienta.info.UCDocumentos"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             Width="350" Height="auto" Background="{DynamicResource Windows.Background}">
+    <Grid>
+        <telerik:RadGridView ShowGroupPanel="False" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" ItemsSource="{Binding}" >
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="N° Doc" DataMemberBinding="{Binding numero_documento}"/>
+                <telerik:GridViewDataColumn Header="E" DataMemberBinding="{Binding estado}"/>
+                <telerik:GridViewDataColumn Header="SubTotal" DataMemberBinding="{Binding subtotal}"/>
+                <telerik:GridViewDataColumn Header="IGV" DataMemberBinding="{Binding igv}"/>
+                <telerik:GridViewDataColumn Header="Total" DataMemberBinding="{Binding total}"/>
+                <telerik:GridViewHyperlinkColumn Header="D" Width="30" IsFilterable="False" DataMemberBinding="{Binding path}"/>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+    </Grid>
+</UserControl>

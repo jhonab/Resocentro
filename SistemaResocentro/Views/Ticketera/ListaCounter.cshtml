@@ -1,0 +1,88 @@
+﻿@model IEnumerable<SistemaResocentro.Models.TKT_Counter>
+@{
+    ViewBag.Title = "Lista Counter";
+    IEnumerable<SistemaResocentro.Models.SUCURSAL> sedes = (IEnumerable<SistemaResocentro.Models.SUCURSAL>)ViewBag.Sede;
+}
+
+<h2>Lista de Counter</h2>
+
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+
+<script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $(function () {
+        t0 = $(".table").DataTable({
+            "sPaginationType": "bootstrap",
+            "order": [[2, "desc"], [0, "asc"], [4, "asc"]]
+        });
+    });
+</script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="">
+
+            <p>
+                <a href='@Url.Action("RegistrarCounter")' class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp; Registrar Tipo de Atención</a>
+            </p>
+            <table class="table table-striped compact table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Nombre
+                        </th>
+                        <th>
+                            Empresa
+                        </th>
+                        <th>
+                            Sede
+                        </th>
+                        <th style="width:70px">
+                            Eliminado
+                        </th>
+                        <th style="width:70px">
+                            Activo
+                        </th>
+                        <th style="width:100px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                 @Html.DisplayFor(modelItem => item.USUARIO.ShortName)
+                            </td>
+                            <td>
+                                <span>Resocentro</span>
+                            </td>
+                            <td>
+                                @sedes.SingleOrDefault(x => x.codigosucursal == item.idSede && x.codigounidad == item.idempresa).ShortDesc
+                            </td>
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.isEliminado)
+                            </td>
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.isActivo)
+                            </td>
+                            <td>
+                                @*@if (item.isActivo == false) {*@
+                                <a href="@Url.Action("AtencionCounter", new { counter = item.idcounter })"><i class="fa fa-list fa-lg"></i></a>
+                                <text>|</text>
+                                <a href="@Url.Action("EditarCounter", new { id = item.idcounter })"><i class="fa fa-edit fa-lg"></i> </a>
+                                <text>|</text>
+
+                                <a href="@Url.Action("EliminarCounter", new { id = item.idcounter })">
+                                    <i class="fa fa-trash fa-lg " style="color:#ff0000"></i>
+                                </a>
+                                @*}*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

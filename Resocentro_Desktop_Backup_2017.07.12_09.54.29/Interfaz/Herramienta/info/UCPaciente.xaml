@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Resocentro_Desktop.Interfaz.Herramienta.info.UCPaciente"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Width="350" Height="auto" Background="{DynamicResource Windows.Background}">
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <Label Content="Apellidos"></Label>
+                <Label Content="Nombres"></Label>
+                <Label Content="Fecha Nac."></Label>
+                <Label Content="Tip. Doc."></Label>
+                <Label Content="N° Doc."></Label>
+                <Label Content="Sexo"></Label>
+                <Label Content="Procotolo"></Label>
+            </StackPanel>
+            <StackPanel>
+                <TextBox IsReadOnly="True" Padding="4" Text="{Binding apellidos}"/>
+                <TextBox IsReadOnly="True" Padding="4" Text="{Binding nombres}"/>
+                <TextBox IsReadOnly="True" Padding="4" Text="{Binding fechanace}"/>
+                <TextBox IsReadOnly="True" Padding="4" Text="{Binding tipo_doc}"/>
+                <TextBox IsReadOnly="True" Padding="4" Text="{Binding dni}"/>
+                <ComboBox SelectedItem="{Binding sexo}">
+                    <ComboBoxItem Content="Masculino" />
+                    <ComboBoxItem Content="Femenino" />
+                </ComboBox>
+                <CheckBox Margin="0,6" IsChecked="{Binding IsProtocolo}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="RepositorioJhonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ReporteContabilidad">
+          <Key>
+            <PropertyRef Name="codigo" />
+          </Key>
+          <Property Name="fechayhora" Type="datetime" />
+          <Property Name="codigo" Type="int" Nullable="false" />
+          <Property Name="paciente" Type="varchar" MaxLength="900" />
+          <Property Name="codigopaciente" Type="int" />
+          <Property Name="nombreestudio" Type="varchar" MaxLength="900" />
+          <Property Name="codigoestudio" Type="varchar" MaxLength="100" />
+          <Property Name="modalidad" Type="varchar" MaxLength="10" />
+          <Property Name="encuestador" Type="varchar" MaxLength="500" />
+          <Property Name="supervisor" Type="varchar" MaxLength="500" />
+          <Property Name="tecnologo" Type="varchar" MaxLength="500" />
+          <Property Name="estado" Type="varchar" MaxLength="10" />
+          <Property Name="valor_tecnologo" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="equipo" Type="varchar" MaxLength="200" />
+          <Property Name="tipoEstudioTecnologo" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityContainer Name="RepositorioJhonModelStoreContainer">
+          <EntitySet Name="ReporteContabilidad" EntityType="Self.ReporteContabilidad" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RepositorioJhonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ReporteContabilidad">
+          <Key>
+            <PropertyRef Name="codigo" />
+          </Key>
+          <Property Name="fechayhora" Type="DateTime" Precision="3" />
+          <Property Name="codigo" Type="Int32" Nullable="false" />
+          <Property Name="paciente" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
+          <Property Name="codigopaciente" Type="Int32" />
+          <Property Name="nombreestudio" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
+          <Property Name="codigoestudio" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="modalidad" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="encuestador" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="supervisor" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="tecnologo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="valor_tecnologo" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="equipo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="tipoEstudioTecnologo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="RepositorioJhonEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ReporteContabilidad" EntityType="Self.ReporteContabilidad" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RepositorioJhonModelStoreContainer" CdmEntityContainer="RepositorioJhonEntities1">
+          <EntitySetMapping Name="ReporteContabilidad">
+            <EntityTypeMapping TypeName="RepositorioJhonModel.ReporteContabilidad">
+              <MappingFragment StoreEntitySet="ReporteContabilidad">
+                <ScalarProperty Name="fechayhora" ColumnName="fechayhora" />
+                <ScalarProperty Name="codigo" ColumnName="codigo" />
+                <ScalarProperty Name="paciente" ColumnName="paciente" />
+                <ScalarProperty Name="codigopaciente" ColumnName="codigopaciente" />
+                <ScalarProperty Name="nombreestudio" ColumnName="nombreestudio" />
+                <ScalarProperty Name="codigoestudio" ColumnName="codigoestudio" />
+                <ScalarProperty Name="modalidad" ColumnName="modalidad" />
+                <ScalarProperty Name="encuestador" ColumnName="encuestador" />
+                <ScalarProperty Name="supervisor" ColumnName="supervisor" />
+                <ScalarProperty Name="tecnologo" ColumnName="tecnologo" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="valor_tecnologo" ColumnName="valor_tecnologo" />
+                <ScalarProperty Name="equipo" ColumnName="equipo" />
+                <ScalarProperty Name="tipoEstudioTecnologo" ColumnName="tipoEstudioTecnologo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

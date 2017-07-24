@@ -1,0 +1,13 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.Caja.frmAddAtencion"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Agregar Atencion" Height="133" Width="239"  Background="{DynamicResource Windows.Background}" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner">
+    <Grid Margin="5">
+        <StackPanel>
+            <Label Content="N° de Atención"/>
+            <TextBox Name="txtatencion" Text="" HorizontalAlignment="Right" TextAlignment="Right" Width="100" Margin="100,0,0,0" FontSize="15"/>
+            <Label/>
+            <Button Content="Agregar" Padding="5,2"  Click="Button_Click"  HorizontalAlignment="Right" Width="58"/>
+        </StackPanel>
+    </Grid>
+</Window>

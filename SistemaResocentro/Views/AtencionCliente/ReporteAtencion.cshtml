@@ -1,0 +1,189 @@
+﻿@{
+    ViewBag.Title = "Reporte de Atenciones";
+}
+
+
+<h2>Reporte de Atenciones</h2>
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables.min.js"></script>
+<script src="~/js/datatables/dataTables.buttons.min.js"></script>
+<script src="~/js/datatables/buttons.print.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+
+<script src="~/js/Datetime/moment.js"></script>
+<script src="~/js/Datetime/moment-with-locales.js"></script>
+<script src="~/js/Datetime/bootstrap-datetimepicker.js"></script>
+<link href="~/css/Datetime/bootstrap-datetimepicker.css" rel="stylesheet" />
+<style>
+
+</style>
+<script type="text/javascript">
+    $(function () {
+        var examenes = [];
+        $(".esperando").hide();
+
+        $('#dtInicio').datetimepicker({
+            sideBySide: true,
+            locale: 'es',
+            defaultDate: '@DateTime.Now.ToString("MM/dd/yyyy")',
+            maxDate: '@DateTime.Now.ToString("MM/dd/yyyy")',
+            format: 'DD/MM/YYYY'
+        });
+        $('#dtFin').datetimepicker({
+            sideBySide: true,
+            locale: 'es',
+            defaultDate: '@DateTime.Now.ToString("MM/dd/yyyy")',
+            maxDate: '@DateTime.Now.ToString("MM/dd/yyyy")',
+            format: 'DD/MM/YYYY'
+        });
+
+        $("#dtInicio").on("dp.change", function (e) {
+            $('#dtFin').data("DateTimePicker").minDate(e.date);
+        });
+        $("#dtFin").on("dp.change", function (e) {
+            $('#dtInicio').data("DateTimePicker").maxDate(e.date);
+        });
+
+
+        getSeguimiento();
+
+
+    });
+    function getSeguimiento() {
+        $(".esperando").show();
+        var inicio = $("#dtInicio>input").val();
+        var fin = $("#dtFin>input").val();
+        var sede = $("#cbosede").val();
+        if (inicio != "" && fin != "")
+            getData(sede, inicio, fin);
+        else {
+            toastr.error("Ingrese un rango correcto", "Error", opts);
+            $(".esperando").hide();
+        }
+
+    }
+
+    function getData(sede, inicio, fin) {
+
+        $.ajax({
+            url: '/AtencionCliente/ReporteAtencionAsync',
+            data: { sede: sede, inicio: inicio, fin: fin },
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                examenes = data;
+                cargarTabla();
+                $(".esperando").hide();
+            },
+            error: function () {
+                toastr.error("No se pudo obtener la data", "Error", opts);
+                $(".esperando").hide();
+            }
+        });
+
+    }
+    function cargarTabla() {
+        if (true) {
+            var count = 0;
+            var _fechas = [];
+            $("#tb_paciente").DataTable({
+                dom: "fBrtip",
+                buttons: [
+                   {
+                       extend: 'print',
+                       customize: function (win) {
+                           $(win.document.body).find('table')
+                               .addClass('compact')
+    .removeClass('table')
+                               .css('font-size', '11px');
+                       }
+                   }
+                ],
+                data: examenes,
+                order: [[0, "asc"]],
+                displayLength: 100,
+                "destroy": true,
+
+            });
+        } else
+            toastr.info("No se encontro data", "Informacion", opts);
+    }
+
+</script>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-6 ">
+            <div class="form-group">
+                <div class="col-md-6">
+                    <label class="">Inicio: </label>
+                    <div class="">
+                        <div id="dtInicio" class='input-group date'>
+                            <input type="text" class=" form-control" />
+                            <span class="input-group-addon btn-blue">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="">Fin: </label>
+                    <div class="">
+                        <div id="dtFin" class='input-group date'>
+                            <input type="text" class=" form-control" />
+                            <span class="input-group-addon btn-blue">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="">Sucursal: </label>
+                    <div class="">
+                        <select class="form-control" id="cbosede">
+                            <option value="101">Reso - Central</option>
+                            <option value="105">Reso - Benavides</option>
+                            <option value="106">Reso - Piura</option>
+                            <option value="107">Reso - Polaris</option>
+                            <option value="108">Reso - San Judas</option>
+                            <option value="109">Reso - Javier Prado</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label style="color:#fff;" class="">: </label>
+            <div>
+                <button class="btn btn-info" type="button" onclick="getSeguimiento()"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;Buscar</button>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="esperando " style="text-align: center;color:#065d9d"><i class="fa fa-spinner fa-5x fa-spin"></i> <br />Cargando...</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <table id="tb_paciente" class="table table-bordered table-striped tab-hover">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Apellidos</th>
+                        <th>Nombres</th>
+                        <th>Examen</th>
+                        <th>Estudio</th>
+                        <th>Estado</th>
+                        <th>Aseguradora</th>
+                        <th>S</th>
+                        <th>C</th>
+                        <th>Documentos</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>

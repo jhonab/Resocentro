@@ -1,0 +1,709 @@
+﻿<!DOCTYPE html>
+<html lang="es-pe">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Sistema Resocentro" />
+    <link rel="publisher" href="http://www.resocentro.com">
+    <meta name="author" content="Resocentro" />
+    <meta property="og:image" content="../images/logo/Logo_Azul.png">
+    <meta property="og:image" content="../images/favicon.png">
+    <title>Resocentro | @ViewBag.Title </title>
+
+
+    <link href="~/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="~/fonts/entypo/css/entypo.css" rel="stylesheet" />
+    <link href="~/fonts/awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/fontapicss.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/neon-core.css" rel="stylesheet" />
+    <link href="~/css/neon-theme.css" rel="stylesheet" />
+    <link href="~/css/neon-forms.css" rel="stylesheet" />
+    <link href="~/css/blue.css" rel="stylesheet" />
+
+    <link href="~/css/custom.css" rel="stylesheet" />
+    @*<script src="~/js/jquery-1.11.0.min.js"></script>*@
+    <script src="~/js/jquery-1.10.2.js"></script>
+    <script src="~/js/jquery.signalR-2.2.1.min.js"></script>
+    @*<script src="http://extranet.resocentro.com:5052/signalr/hubs"></script>*@
+    @*<script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBzN8l4M1buiXBmhy8rpraN9qOYYFnAkZw&amp;sensor=true&amp;libraries=geometry"></script>*@
+    @*<script src="https://maps.googleapis.com/maps/api/js?key=&signed_in=true"></script>*@
+    @*<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>*@
+
+
+
+    <!--[if lt IE 9]><script src=" assets />js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    @{ SistemaResocentro.Member.CustomMembershipUser user = Membership.GetUser(true) as SistemaResocentro.Member.CustomMembershipUser;
+     var oRuta = "http://extranet.resocentro.com:5050/PaginaWeb/Perfiles/"; }
+    <script type="text/javascript">
+        var _$isPaginaBloqueable = true;
+        $(function () {
+
+            @if(user.bloqueado){
+            <text>
+            window.location.assign("@Url.Action("LockScreen", "Account")?url=" + window.location.pathname);
+            </text>
+            }
+        @*var functionBloqueo;
+        $('body').mouseover(function () {
+            functionBloqueo = setInterval(function () {
+                if (_$isPaginaBloqueable) {
+                    window.location.assign("@Url.Action("LockScreen", "Account")?url=" + window.location.pathname)
+                    }
+                }, 1200000);
+            });
+        $('body').mouseout(function () {
+            clearInterval(functionBloqueo);
+            });*@
+
+        });
+    </script>
+
+</head>
+<body onmouseover="" class="page-body loaded">
+    <div class="page-container">
+        <!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+
+        <div class="sidebar-menu">
+            <div class="sidebar-menu-inner">
+
+                <header class="logo-env">
+
+                    <!-- logo -->
+                    <div class="logo">
+                        <a href="@Url.Action("Index","Home")">
+                            <img src="~/images/logo_home.png" width="120" />
+
+                        </a>
+                    </div>
+
+                    <!-- logo collapse icon -->
+
+                    <div class="sidebar-collapse">
+                        <a href="#" class="sidebar-collapse-icon with-animation">
+                            <!-- add class "with-animation" if you want sidebar to have animation during expanding/collapsing transition -->
+                            <i class="entypo-menu"></i>
+                        </a>
+                    </div>
+
+
+
+                    <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+                    <div class="sidebar-mobile-menu visible-xs">
+                        <a href="#" class="with-animation">
+                            <!-- add class "with-animation" to support animation -->
+                            <i class="entypo-menu"></i>
+                        </a>
+                    </div>
+
+                </header>
+                @Html.Partial("_Menu")
+            </div>
+        </div>
+        <div class="main-content content-top">
+            <div class=" row">
+                <div class="col-md-12">
+                    <div id="Layout_Menu_User" class="row ">
+
+                        <!-- Profile Info and Notifications -->
+                        <div class="col-md-6 col-sm-8 clearfix ">
+
+                            <ul class="user-info pull-left pull-none-xsm">
+
+                                <!-- Profile Info -->
+                                <li class="profile-info dropdown" id="imgbudy" data-zoom-image="@oRuta">
+                                    <!-- add class "pull-right" if you want to place this from right -->
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                                        @if (user.pathBuddy)
+                                        {
+                                            oRuta = oRuta + user.ProviderUserKey.ToString() + ".png";
+
+                                            <img src="@oRuta" alt="@user.UserName" class=" img-circle" width="40" height="40">
+                                        }
+                                        else
+                                        {
+                                            if (user.Comment == "M")
+                                            {
+                                                oRuta = oRuta + "hombre.png";
+                                            }
+                                            else
+                                            {
+                                                oRuta = oRuta + "mujer.png";
+                                            }
+
+                                            <img src="@oRuta" alt="@user.UserName" class=" img-circle" width="40" height="40">
+                                        }
+                                        @user.UserName &nbsp;&nbsp;<i class=" fa fa-chevron-circle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+
+                                        <!-- Reverse Caret -->
+                                        <li class="caret"></li>
+
+                                        <!-- Profile sub-links -->
+                                        @*<li>
+                                                <a href="extra-timeline.html">
+                                                    <i class="entypo-user"></i>
+                                                    Edit Profile
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="mailbox.html">
+                                                    <i class="entypo-mail"></i>
+                                                    Inbox
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="extra-calendar.html">
+                                                    <i class="entypo-calendar"></i>
+                                                    Calendar
+                                                </a>
+                                            </li>*@
+
+                                        <li>
+                                            <a href="" data-toggle="modal" data-target="#modal_Modalidad">
+                                                <i class="fa fa-image"></i>
+                                                Imagen
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="" data-toggle="modal" data-target="#modal_CambioNombre">
+                                                <i class="fa fa-user"></i>
+                                                Cambiar Nombre
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="" data-toggle="modal" data-target="#modal_CambioContrasena">
+                                                <i class="fa fa-key"></i>
+                                                Cambiar Contraseña
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+
+                            <ul class="user-info pull-left pull-right-xs pull-none-xsm">
+                                <!-- Raw Notifications -->
+                                @if (User.IsInRole("5"))
+                                {
+                                    <li class="notifications dropdown hidden-print">
+                                        <script type="text/javascript">
+
+                                            $(function () {
+
+                                                iniciarPagina();
+                                                setInterval(iniciarPagina, 30000);
+
+                                            });
+                                            function iniciarPagina() {
+                                                getNotificacionSolicitudes();
+                                            }
+                                            function calcularNotificaciones() {
+                                                var cant_ntf = ($(".lista-notificaciones li").size());
+                                                if (cant_ntf > 0)
+                                                    $("#cant_notificaciones").html(cant_ntf);
+                                            }
+                                            function getNotificacionSolicitudes() {
+                                                var _items = ""
+
+                                                $.ajax({
+                                                    url: "/Notificaciones/getSolicitudesSoporte",
+                                                    data: {},
+                                                    dataType: "json",
+                                                    type: "POST",
+                                                    error: function () {
+                                                        toastr.error('Error al verificar Notificaciones', 'Error', opts);
+                                                    },
+                                                    success: function (data) {
+
+                                                        var len = data.length;
+                                                        for (var i = 0; i < len; i++) {
+
+                                                            _items += '<li class="notification-info"><a href="/Sistemas/DetalleSolicitud/' + data[i].id + '"><i class="fa fa-life-ring fa-lg  pull-right"></i><span class="line"><strong>' + data[i].nombre + '</strong> necesita soporte</span><span class="line small"><i class="fa fa-clock-o"></i> ' + data[i].minutos + '</span></a></li>';
+                                                        }
+                                                        if (_items != "") {
+                                                            $("#notificacion_null").hide();
+                                                            var opt_ntf = {
+                                                                "closeButton": true,
+                                                                "showDuration": "300",
+                                                                "hideDuration": "1000",
+                                                                "timeOut": "5000",
+                                                                "extendedTimeOut": "1000",
+                                                                "showEasing": "swing",
+                                                                "hideEasing": "linear",
+                                                                "showMethod": "fadeIn",
+                                                                "hideMethod": "fadeOut",
+                                                                "toastClass": "black"
+                                                            };
+                                                            toastr.success("Tiene Nuevas Notificaciones", "Notificacion", opt_ntf);
+                                                        }
+                                                        else
+                                                            $("#notificacion_null").show();
+                                                        $(".lista-notificaciones").html(_items);
+                                                        calcularNotificaciones();
+                                                    }
+                                                });
+                                            }
+                                        </script>
+
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                            <i class="entypo-attention"></i>
+                                            <span class="badge badge-info" id="cant_notificaciones"></span>
+                                        </a>
+
+                                        <ul class="dropdown-menu">
+                                            <li class="top">
+                                                <p class="small" id="notificacion_null">
+                                                    No hay notificaciones
+                                                </p>
+                                            </li>
+                                            <li>
+                                                <ul class="dropdown-menu-list scroller lista-notificaciones" tabindex="5001" style="overflow: hidden; outline: none;"></ul>
+                                            </li>
+
+                                        </ul>
+
+                                    </li>
+                                }
+                            </ul>
+
+
+
+                        </div>
+                        <!-- Raw Links -->
+                        <div class="col-md-6 col-sm-4 clearfix  hidden-print">
+
+                            <ul class="list-inline links-list pull-right">
+
+                                <li>
+                                    <a href="javascript:RegistrarUbicacion()">
+                                        Ubícame &nbsp;&nbsp;<i class="fa fa-crosshairs fa-lg"></i>
+                                    </a>
+                                </li>
+                                <li class="sep"></li>
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#modal_Sistemas">
+                                        Ayuda &nbsp;&nbsp;<i class="fa fa-life-ring fa-spin fa-lg"></i>
+                                    </a>
+                                </li>
+                                @*<li class="sep"></li>
+                                    <li>
+                                        <a href="@Url.Action("LockScreen","Account")">
+                                            Bloquear Sesion &nbsp;&nbsp;<i class="fa fa-lock fa-lg"></i>
+                                        </a>
+                                    </li>*@
+                                <li class="sep"></li>
+                                <li>
+                                    <a href="@Url.Action("Logout","Account")">
+                                        Salir&nbsp;&nbsp;<i class="fa fa-sign-out fa-lg "></i>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+                    <hr />
+
+                    
+                    @RenderBody()
+                </div>
+            </div>
+            <!-- lets do some work here... --><!-- Footer -->
+            <footer class="main">
+
+
+                &copy; @DateTime.Now.Year.ToString() <strong>Resocentro - Sistemas</strong>
+
+            </footer>
+        </div>
+
+
+    </div>
+    <link href="~/css/inputFile/fileinput.min.css" rel="stylesheet" />
+    <div class="modal fade" id="modal_CambioNombre" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Cambiar Nombre</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nombre de Sesion:</label>
+                        <input type="text" id="txtnombre_usersesion" value="@user.UserName" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="cambiarNombre()">Cambiar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" id="modal_CambioContrasena" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Cambiar Nombre</h4>
+                </div>
+                <div class="modal-body" id="frm_cambioClave">
+                    <div class="form-group">
+                        <label class="control-label">Contraseña Actual:</label>
+                        <input type="password" id="txtclave_actual" onchange="validarContrasenaActual()" value="" class="form-control " />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Nueva Contraseña:</label>
+                        <input type="password" id="txtclave_new" onchange="validarContrasenaNueva()" value="" class="form-control " />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Confirmación Contraseña:</label>
+                        <input type="password" id="txtclave_confirm" onchange="validarContrasenaNueva()" value="" class="form-control " />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="cambiarClave()">Cambiar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+
+    <div class="modal fade" id="modal_Modalidad" tabindex="-1" role="dialog" aria-labelledby="modal_ModalidadLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="modal_ModalidadLabel">Cambiar imagen de perfil</h4>
+                </div>
+                <div class="modal-body">
+                    <input id="file-1" type="file" multiple class="file" data-overwrite-initial="false" data-min-file-count="1">
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="modal_Sistemas" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="modal_SistemasLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="modal_SistemasLabel">Solicitud de Soporte Informático</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-horizontal">
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Importancia:<small style="color:#ff0000">(*)</small></label>
+                                    <div class="col-md-9">
+                                        @Html.DropDownList("cboimportancia", new SelectList((new SistemaResocentro.Models.Variable().getImportancia()), "nombre", "nombre"), "- Seleccione -", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Aplicativo:<small style="color:#ff0000">(*)</small></label>
+                                    <div class="col-md-9">
+                                        @Html.DropDownList("cboaplicativo", (new SelectList((new SistemaResocentro.Models.Variable().getAplicativos()), "nombre", "nombre")), "- Seleccione -", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">E-mail:<small style="color:#ff0000">(*)</small></label>
+                                    <div class="col-md-9">
+                                        <input type="email" id="email_emp" placeholder="E-mail" onchange="actualizarEmpleado(1);" class=" form-control" value="@user.Email" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Tel. / Anexo:</label>
+                                    <div class="col-md-9">
+                                        <input type="tel" id="tel_emp" placeholder="Anexo, Telefono, Celular" class="form-control" onchange="actualizarEmpleado(2);" value="@user.telefono" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Incidente:<small style="color:#ff0000">(*)</small></label>
+                                    <div class="col-md-9">
+                                        <textarea rows="5" maxlength="600" id="incidente_emp" placeholder="Describir Incidente" class="form-control"></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="registrarIncidente()">Solicitar</button>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <script src="~/js/validar-input.js"></script>
+    <script type="text/javascript">
+        var opts = {
+            "closeButton": true,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        $('#modal_CambioContrasena').on('hidden.bs.modal', function (e) {
+            removeHasAll("txtclave_actual");
+            removeHasAll("txtclave_new");
+            removeHasAll("txtclave_confirm");
+            $("#txtclave_actual").val("");
+            $("#txtclave_new").val("");
+            $("#txtclave_confirm").val("");
+
+        })
+
+        $('#modal_CambioNombre').on('hidden.bs.modal', function (e) {
+            location.reload();
+        })
+
+        function cambiarNombre() {
+            var result = true;
+            $(".has-error").each(function () {
+                alert("false");
+                result = false;
+            });
+            if (result) {
+                $.ajax({
+                    url: "/Home/ChangeShortName",
+                    data: { name: $("#txtnombre_usersesion").val() },
+                    dataType: "json",
+                    type: "POST",
+                    success: function (data) {
+                        toastr.success('Se realizó el cambio.', 'Exito', opts);
+                        $('#modal_CambioNombre').modal("hide");
+                    }
+                });
+            }
+        }
+
+        function cambiarClave() {
+            var result = true;
+            $(".has-error").each(function () {
+                alert("false");
+                result = false;
+            });
+            if (result) {
+                $.ajax({
+                    url: "/Home/ChangeContrasena",
+                    data: { clave: $("#txtclave_new").val() },
+                    dataType: "json",
+                    type: "POST",
+                    success: function (data) {
+                        toastr.success('Se realizó el cambio.', 'Exito', opts);
+                        $('#modal_CambioContrasena').modal("hide");
+                    }
+                });
+            }
+        }
+
+        function validarContrasenaActual() {
+            var pass = $("#txtclave_actual").val();
+            if (pass != "") {
+                removeHasAll("txtclave_actual");
+                $.ajax({
+                    url: "/Home/ValidarContrasena",
+                    data: { clave: pass },
+                    dataType: "json",
+                    type: "POST",
+                    error: function () {
+                        toastr.error('No se pudo registrar los datos', 'Error', opts);
+                    },
+                    success: function (data) {
+                        if (data == false)
+                            addError("txtclave_actual");
+                        else
+                            addSuccess("txtclave_actual");
+
+                    }
+                });
+            }
+        }
+        function validarContrasenaNueva() {
+            var newpass = $("#txtclave_new").val();
+            var confirmpass = $("#txtclave_confirm").val();
+            removeHasAll("txtclave_new");
+            removeHasAll("txtclave_confirm");
+            if (newpass != "" && confirmpass != "") {
+                if (newpass != confirmpass) {
+                    addError("txtclave_new");
+                    addError("txtclave_confirm");
+                } else {
+                    addSuccess("txtclave_new");
+                    addSuccess("txtclave_confirm");
+                }
+            }
+        }
+
+        function registrarIncidente() {
+            var importancia = $("#cboimportancia").val();
+            var aplicativo = $("#cboaplicativo").val();
+            var email = $("#email_emp").val();
+            var tel = $("#tel_emp").val();
+            var incidente = $("#incidente_emp").val();
+            if (importancia != "" && aplicativo != "" && email != "" && incidente != "") {
+                $("#modal_SistemasLabel").append('<i class="fa fa-spinner fa-spin fa-3x pull-right color-green" style="color:#003471;"></i>');
+                $.ajax({
+                    url: "/Home/RegistrarIncidente",
+                    data: { problema: incidente, importancia: importancia, aplicativo: aplicativo },
+                    dataType: "json",
+                    type: "POST",
+                    error: function () {
+                        toastr.error('No se pudo registrar los datos', 'Error', opts);
+                    },
+                    success: function (data) {
+                        if (data == false)
+                            toastr.error('No se pudo actualizar los datos', 'Error', opts);
+                        else {
+                            toastr.success('Se registro la solicitud Correctamente', 'Exito', opts);
+                            $("#cboimportancia").val("");
+                            $("#cboaplicativo").val("");
+                            $("#incidente_emp").val("");
+                            $("#modal_Sistemas").modal("toggle");
+                        }
+                    }
+                });
+            } else
+                toastr.error('Ingrese todos los datos correctamente', 'Error', opts);
+        }
+
+        function actualizarEmpleado(tipo) {
+            var valor = "";
+            if (tipo == 1)
+                valor = $("#email_emp").val();
+            if (tipo == 2)
+                valor = $("#tel_emp").val();
+
+            $.ajax({
+                url: "/Empleado/Update",
+                data: { tipo: tipo, valor: valor },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    toastr.error('No se pudo actualizar los datos', 'Error', opts);
+                },
+                success: function (data) {
+                    if (data == false)
+                        toastr.error('No se pudo actualizar los datos', 'Error', opts);
+                }
+            });
+        }
+
+        function RegistrarUbicacion() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (latitud) {
+                        $.ajax({
+                            url: "/Home/RegistrarUbicacion",
+                            data: {
+                                latitud: latitud.coords.latitude.toString(),
+                                longitud: latitud.coords.longitude.toString()
+                            },
+                            dataType: "json",
+                            type: "POST",
+                            error: function () {
+                                toastr.error('No se registrar ubicación', 'Error', opts);
+                            },
+                            success: function (data) {
+                                if (data == false)
+                                    toastr.error('Ubicación no registrada.', 'Error', opts);
+                                else
+                                    toastr.success('Ubicación registrada.', 'Exito', opts);
+                            }
+                        });
+                    },
+                    function () {
+                        toastr.error('No se pudo obtener su ubicación, vuelva a intentar por favor.', 'Error', opts);
+                    });
+            }
+        }
+
+        $(function () {
+
+            $("#file-1").fileinput({
+                language: "es",
+                uploadUrl: '@Url.Action("UploadFiles", "Account")', // you must set a valid URL here else you will get an error
+                allowedFileExtensions: ['jpg', 'png'],
+                overwriteInitial: false,
+                maxFileSize: 1000,
+                maxFilesNum: 1,
+                allowedFileTypes: ['image'],
+                slugCallback: function (filename) {
+                    return filename.replace('(', '_').replace(']', '_');
+                },
+                layoutTemplates: {
+                    main1: "<div class=\'input-group {class}\'>\n" +
+                    "   <div class=\'input-group-btn\'>\n" +
+                "       {browse}\n" +
+                "       {upload}\n" +
+                "       {remove}\n" +
+                "   </div>\n" +
+                    "   {caption}\n" +
+                    "</div>" +
+                    "{preview}\n"
+
+                }
+            });
+            autosize(document.querySelectorAll('textarea'));
+        });
+    </script>
+    <!-- Bottom Scripts -->
+
+    <link rel="stylesheet" href="~/js/wysihtml5/bootstrap-wysihtml5.css">
+    <script src="~/js/gsap/main-gsap.js"></script>
+    <script src="~/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js"></script>
+
+    <script src="~/js/joinable.js"></script>
+    <script src="~/js/resizeable.js"></script>  
+    <script src="~/js/neon-api.js"></script>   
+    <script src="~/js/neon-custom.js"></script>
+    <script src="~/js/neon-demo.js"></script>
+    <script src="~/js/initial.js?1.1.0"></script>
+
+    @if (Request.Url.AbsoluteUri.ToString().ToLower().Contains("incidente"))
+    {
+        <script src="~/js/wysihtml5/wysihtml5-0.4.0pre.min.js"></script>
+        <script src="~/js/wysihtml5/bootstrap-wysihtml5.js"></script>
+    }
+
+    <script src="~/js/toastr.js"></script>
+    <script src="~/js/inputFile/fileinput.min.js"></script>
+    <script src="~/js/inputFile/themes/explorer/theme.js"></script>
+    <script src="~/js/inputFile/fileinput_locale_es.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/autosize.js"></script>
+
+</body>
+</html>

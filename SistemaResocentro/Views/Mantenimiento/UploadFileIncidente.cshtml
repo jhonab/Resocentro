@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Registrar Incidente";
+}
+@*<link href="~/js/inputFile/themes/explorer/theme.css" rel="stylesheet" />*@
+<h2>¿Desea agregar archivos al Reporte de Incidente N° <b>@ViewBag.Incidente</b>?</h2>
+<script type="text/javascript">
+    $(function () {
+        listaradjuntos();
+        $("#file_incidente").fileinput({
+            language: "es",
+            theme: "explorer",
+            uploadUrl: '@Url.Action("UploadFileMantenimiento", "Mantenimiento")' + '?incidente=@ViewBag.Incidente&revision=@ViewBag.Revision', // you must set a valid URL here else you will get an error
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'pdf'],
+            overwriteInitial: false,
+            initialPreviewAsData: false,
+            maxFileSize: 1000,
+            //allowedFileTypes: ['image'],
+            slugCallback: function (filename) {
+                return filename.replace('(', '_').replace(']', '_');
+            },
+            removeClass: "btn btn-danger",
+            uploadClass: "btn btn-success ",
+            layoutTemplates: {
+                main1: "<div class=\'input-group {class}\'>\n" +
+                "   <div class=\'input-group-btn\'>\n" +
+            "       {browse}\n" +
+            "       {upload}\n" +
+            "       {remove}\n" +
+            "   </div>\n" +
+                "   {caption}\n" +
+                "</div>" +
+                "{preview}\n"
+
+            }
+        });
+        $('#file_incidente').on('fileuploaded', function (event, data, previewId, index) {
+            listaradjuntos();
+        });
+
+    });
+    function listaradjuntos() {
+        $("#div_treefile").load('@Url.Action("ListFileMantenimiento", "Mantenimiento")' + '?incidente=@ViewBag.Incidente', function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+
+        });
+    }
+</script>
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label "></label>
+            <div class="">
+                <input id="file_incidente" type="file" multiple class="file" data-overwrite-initial="false" data-min-file-count="1">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <div class="panel-heading">
+                <div class="panel-title">Archivos adjuntados al incidente</div>
+                <div class="panel-options">
+                    <a href="javascript:listaradjuntos()"><i class="entypo-arrows-ccw"></i></a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div id="div_treefile"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href='@Url.Action("ListaIncidente")' class="btn btn-default"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;&nbsp;Regresar a la Lista</a>

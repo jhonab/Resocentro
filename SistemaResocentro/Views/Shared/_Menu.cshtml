@@ -1,0 +1,552 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#searchPaciente').keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                var _ape = $('#searchPaciente').val();
+                if (_ape != "")
+                    if (_ape.length > 5)
+                        window.location.assign('@Url.Action("BusquedaGeneral", "CitaMedica")?filtro=' + $('#searchPaciente').val());
+                    else
+                        toastr.warning("Ingrese más carecteres para realizar la busqueda", "Advertencia", opts);
+                else
+                    toastr.warning("Ingrese algun filtro para hacer la busqueda", "Advertencia", opts);
+
+
+            }
+        });
+    });
+</script>
+<ul id="main-menu" class="main-menu">
+    @{
+        SistemaResocentro.Member.CustomMembershipUser user = Membership.GetUser(true) as SistemaResocentro.Member.CustomMembershipUser;
+    }
+    @if (user.idcargo != 23) { 
+    <li id="search" class="root-level" title="Ingresar Apellidos , Nombre o DNI">
+        <input type="text" id="searchPaciente" class="search-input" placeholder="Buscar Información Paciente">
+        <button>
+            <i class=" entypo-search">
+            </i>
+        </button>
+    </li>
+    if (User.IsInRole("1") || User.IsInRole("2") || User.IsInRole("3") || User.IsInRole("4") || User.IsInRole("9"))//Carta Garantia
+    {
+        <li class="root-level has-sub">
+            <a href="#">
+                <i class="fa fa-bookmark"></i>
+                <span class="title">Carta Garantía</span>
+            </a>
+            <ul>
+                @if (User.IsInRole("1"))//Proforma
+                {
+                    <li class="has-sub">
+                        <a href="#"><i class="fa fa-file-text-o"></i>Proforma</a>
+                        <ul>
+                            <li class="">
+                                <a href="@Url.Action("CreateProforma","CartaGarantia")">
+                                    <span class="title"><i class="fa fa-angle-right"></i>Registrar Proforma</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="@Url.Action("ListaProforma","CartaGarantia")">
+                                    <span class="title"><i class="fa fa-angle-right"></i>Lista de Proformas</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                }
+                @if (User.IsInRole("2") || User.IsInRole("3"))
+                {
+                    <li class="has-sub">
+                        <a href="#"><i class="fa fa-files-o"></i>Carta</a>
+                        <ul>
+                            @if (User.IsInRole("2"))//CartaGarantia
+                            {
+                                <li class="">
+                                    <a href="@Url.Action("CreateCarta","cartagarantia")">
+                                        <span class="title"><i class="fa fa-angle-right"></i>Registra Carta</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="@Url.Action("ActualizarCarta", "cartagarantia")">
+                                        <span class="title"><i class="fa fa-angle-right"></i>Actualizar Carta</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsInRole("3"))//Revisar carta
+                            {
+                                <li class="">
+                                    <a href="@Url.Action("RevisarCarta", "cartagarantia", new { estado="CITADA",fecha=DateTime.Now})">
+                                        <span class="title"><i class="fa fa-angle-right"></i>Revisar Carta</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
+                    </li>
+                }
+                @if (User.IsInRole("4"))//Visor Carta
+                {
+                    <li class="">
+                        <a href="@Url.Action("VisorCartas", "cartagarantia")">
+                            <span class="title"><i class="fa fa-binoculars"></i>Visor de Cartas</span>
+                        </a>
+                    </li>
+                }
+
+                @if (User.IsInRole("9"))//Herramientas de Carta
+                {
+                    <li class="">
+                        <a href="@Url.Action("Herramientas", "cartagarantia")">
+                            <span class="title"><i class="fa fa-archive"></i>Herramientas</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </li>
+    }
+    if (User.IsInRole("6") || User.IsInRole("7") || User.IsInRole("8") || User.IsInRole("10") || User.IsInRole("11") || User.IsInRole("12") || User.IsInRole("15") || User.IsInRole("29") || User.IsInRole("37"))//Atención al Cliente
+    {
+        <li class="root-level has-sub">
+            <a href="#">
+                <i class="fa fa-slideshare"></i>
+                <span class="title">Atención al Cliente</span>
+            </a>
+            <ul>
+                @if (User.IsInRole("a"))
+                {
+                    <li class="has-sub">
+                        <a href="#"><i class="fa fa-calendar-o"></i><span class="title">Citas</span></a>
+                        <ul>
+                            <li class="">
+                                <a href="@Url.Action("ListaTrabajo", "CitaMedica")">
+                                    <i class="fa fa-angle-right"></i><span class="title">Lista de Trabajo</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                @if (User.IsInRole("6") || User.IsInRole("7") || User.IsInRole("8"))
+                {
+                    <li class="has-sub">
+                        <a href="#">
+                            <i class="fa fa-credit-card"></i>
+                            <span class="title">Generardor de Código</span>
+                        </a>
+                        <ul>
+                            @if (User.IsInRole("6"))//Generar Cogigo
+                            {
+                                <li class="">
+                                    <a href="@Url.Action("ListaGenerado", "AtencionCliente")">
+                                        <i class="fa fa-angle-right"></i><span class="title">Generar Código</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsInRole("7"))//Registrar Motivo
+                            {
+                                <li class="">
+                                    <a href="@Url.Action("ListaMotivos", "AtencionCliente")">
+                                        <i class="fa fa-angle-right"></i><span class="title">Registrar Motivo</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsInRole("8"))//Historial Codigo
+                            {
+                                <li class="">
+                                    <a href="@Url.Action("HistorialMotivos", "AtencionCliente")">
+                                        <i class="fa fa-angle-right"></i><span class="title">Historial Códigos</span>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+
+                    </li>}
+                @if (User.IsInRole("11") || User.IsInRole("12") || User.IsInRole("13"))
+                {
+                    <li class="has-sub">
+                        <a href="#"><i class="fa fa-ticket"></i><span class="title">Ticketera</span></a>
+                        <ul>
+                            @if (User.IsInRole("13"))//Mantenimiento Ticketera
+                            {
+                                <li class="has-sub">
+                                    <a href="#"><i class="fa fa-angle-right"></i><span class="title">Mantenimiento Ticketera</span></a>
+                                    <ul>
+                                        <li class="">
+                                            <a href='@Url.Action("ListaCounter", "Ticketera")'><i class="fa fa-angle-double-right"></i><span class="title">Counter</span></a>
+                                        </li>
+                                        <li class="">
+                                            <a href='@Url.Action("ListaAtenciones", "Ticketera")'><i class="fa fa-angle-double-right"></i><span class="title">Atenciones</span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+                            @if (User.IsInRole("11"))//Ticketera
+                            {
+                                <li class="">
+                                    <a href="@Url.Action("Counter", "Ticketera")">
+                                        <i class="fa fa-angle-right"></i><span class="title">Counter</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsInRole("12"))//Reporte Ticketra
+                            {
+                                <li class="">
+                                    <a href='@Url.Action("ReporteGeneral", "Ticketera", new { ini = DateTime.Now,fin = DateTime.Now,sede=1 })'><i class="fa fa-angle-right"></i><span class="title">Reporte Ticketero</span></a>
+                                </li>
+                            }
+                            <li class="">
+                                <a href='@Url.Action("VisorPacientes", "Ticketera")'><i class="fa fa-angle-right"></i><span class="title">Visor Ticketera</span></a>
+                            </li>
+                        </ul>
+
+                    </li>
+                }
+                @if (User.IsInRole("29"))
+                {
+                    <li class="">
+                        <a href="@Url.Action("AprobarEntreTurno","AtencionCliente")">
+                            <i class="fa fa-clock-o"></i><span class="title">Aprobar Entre Turno</span>
+                        </a>
+                    </li>
+                }
+                @if (User.IsInRole("37"))
+                {
+                    <li class="">
+                        <a href="@Url.Action("AsignarAnestesiologo", "AtencionCliente")">
+                            <i class="fa fa-user-md"></i><span class="title">Asignar Anestesiólogo</span>
+                        </a>
+                    </li>
+                }
+                @if (User.IsInRole("15"))
+                {
+                    <li class="">
+                        <a href="@Url.Action("Correos","AtencionCliente")">
+                            <i class="fa fa-globe"></i><span class="title">Consultas Web</span>
+                        </a>
+                    </li>
+                }
+                @if (User.IsInRole("10"))//Herramientas Atencion al Cliente
+                {
+                    <li class="has-sub">
+                        <a href="#"><i class="fa fa-archive"></i> <span class="title">Herramientas</span></a>
+                        <ul>
+                            <li>
+                                <a href="@Url.Action("ListaSeguimiento","AtencionCliente")">
+                                    <i class="fa fa-angle-right"></i><span class="title">Seguimiento de Producción</span>
+                                </a>
+                                <a href="@Url.Action("ReporteAtencion","AtencionCliente")">
+                                    <i class="fa fa-angle-right"></i><span class="title">Reporte de Atenciones</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+                }
+            </ul>
+        </li>
+    }
+    if (User.IsInRole("14-c"))//Tecnologo /*esta opcion estaba disponible cuando emetac no tenia pagina solo funciona con emetac hasta que tenga encuesta medica*/
+    {
+        <li class="root-level has-sub">
+            <a href="#">
+                <i class="fa fa-fire"></i>
+                <span class="title">Tecnólogo Médico</span>
+            </a>
+            <ul>
+                @if (User.IsInRole("14-c"))//Enviar modalidad
+                {
+                    <li class="">
+                        <a href="@Url.Action("EnviarIntegrador", "Tecnologo")">
+                            <i class="fa fa-send"></i><span class="title">Enviar Datos a Modalidad</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </li>
+    }
+    if (User.IsInRole("16") || User.IsInRole("17") || User.IsInRole("18") || User.IsInRole("19") || User.IsInRole("20") || User.IsInRole("31") || User.IsInRole("32"))//Visitadores Médicos
+    {
+        <li class="root-level has-sub">
+            <a href="#">
+                <i class="fa fa-medkit"></i>
+                <span class="title">Representante Médico</span>
+            </a>
+            <ul>
+                @if (User.IsInRole("16") || User.IsInRole("17") || User.IsInRole("31") || User.IsInRole("32"))//Visitadores Médicos
+                {
+                    <li class=" has-sub">
+                        <a href="#"><i class="fa fa-cube"></i><span class="title">Entidades</span></a>
+                        <ul>
+                            @if (User.IsInRole("16"))//Médicos
+                            {
+                                <li class="">
+                                    <a href="@Url.Action("Index", "Medico")">
+                                        <i class="fa fa-user-md"></i><span class="title">Médico</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsInRole("17"))//Instituciones Médicas
+                            {
+                                <li class="">
+                                    <a href="@Url.Action("Index", "InstitucionMedica")">
+                                        <i class="fa fa-hospital-o"></i><span class="title">Instituciones Médicas</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsInRole("31"))//Compañia de Seguro
+                            {
+                                <li class="">
+                                    <a href="@Url.Action("Index", "CompaniaSeguro")">
+                                        <i class="fa fa-briefcase"></i><span class="title">Compañia de Seguro</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsInRole("32"))//Colaborador
+                            {
+                                <li class="">
+                                    <a href="@Url.Action("Index", "Colaborador")">
+                                        <i class="fa fa-hand-peace-o"></i><span class="title">Colaborador</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+                @if (User.IsInRole("18"))//Asignaciones
+                {
+                    <li class="has-sub">
+                        <a href="#">
+                            <i class="fa fa-cube"></i>
+                            <span class="title">Asignaciones de Entidades</span>
+                        </a>
+                        <ul>
+
+                            <li class=" has-sub">
+                                <a href="#"><i class="fa fa-h-square"></i>Entidades Médicas</a>
+                                <ul>
+                                    <li class="">
+                                        <a href="@Url.Action("ListaInstitucionMedico", "Asignaciones")">
+                                            <i class="fa fa-angle-right"></i><span class="title">Institución - Médico</span>
+                                        </a>
+                                    </li>
+                                    <li class="">
+                                        <a href="@Url.Action("ListaInstitucionPromotor", "Asignaciones")">
+                                            <i class="fa fa-angle-right"></i><span class="title">Institución - Representante</span>
+                                        </a>
+                                    </li>
+                                    <li class="">
+                                        <a href="@Url.Action("ListaAsignacionAfinidad", "Asignaciones")">
+                                            <i class="fa fa-angle-right"></i><span class="title">Afinidad a Médico</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class=" has-sub">
+                                <a href="#">
+                                    <i class="fa fa-building"></i>
+                                    <span class="title">Entidades Compañia Seguro</span>
+                                </a>
+                                <ul>
+                                    <li class="">
+                                        <a href="@Url.Action("ListaColaboradoCompania", "Asignaciones")">
+                                            <i class="fa fa-angle-right"></i><span class="title">Compañía - Colaborador</span>
+                                        </a>
+                                    </li>
+                                    <li class="">
+                                        <a href="@Url.Action("ListaCompaniaPromotor", "Asignaciones")">
+                                            <i class="fa fa-angle-right"></i><span class="title">Compañia - Promotor</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                @if (User.IsInRole("19"))//Planificacion
+                {
+                    <li class="">
+                        <a href="@Url.Action("VisitasPlanificadas", "Planificacion")">
+                            <i class="fa fa-calendar"></i><span class="title">Planificador de Visitas Médicas</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="@Url.Action("HerramientasRepresentante", "Planificacion")">
+                            <i class="fa fa-archive"></i><span class="title">Herramientas Representante</span>
+                        </a>
+                    </li>
+                }
+                @if (User.IsInRole("19"))//Planificacion
+                {
+                    <li class="">
+                        <a href="@Url.Action("VisitasPlanificadas", "PlanificacionCompaniaSeguro")">
+                            <i class="fa fa-calendar"></i><span class="title">Planificador de Visitas Compañías</span>
+                        </a>
+                    </li>
+                }
+                @if (User.IsInRole("20"))//Instituciones Médicas
+                {
+                    <li class="">
+                        <a href="@Url.Action("Herramientas", "Planificacion")">
+                            <i class="fa fa-archive"></i><span class="title">Herramientas</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </li>
+    }
+    if (User.IsInRole("5"))//Sistemas
+    {
+        <li class="root-level has-sub">
+            <a href="#">
+                <i class="fa fa-desktop"></i>
+                <span class="title">Sistemas</span>
+            </a>
+            <ul>
+
+                <li class="">
+                    <a href="@Url.Action("Permisos", "Sistemas")">
+                        <i class="fa fa-angle-right"></i><span class="title">Permiso</span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="@Url.Action("ListaAsignacionSerie", "Sistemas")">
+                        <i class="fa fa-angle-right"></i><span class="title">Lista de Asignación de Serie</span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="@Url.Action("SolicitudesPendientes", "Sistemas", new { estado="P"})">
+                        <i class="fa fa-angle-right"></i><span class="title">Solicitudes Pendientes</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    }
+    if (User.IsInRole("39"))
+    {
+        <li class="root-level has-sub">
+            <a href="#">
+                <i class="fa fa-male"></i><span class="title">Recursos Humanos</span>
+            </a>
+            <ul>
+                <li class="">
+                    <a href="@Url.Action("List", "Empleado")">
+                        <i class="fa fa-angle-right"></i><span class="title">Colaboradores</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    }
+    if (User.IsInRole("26"))
+    {
+        <li class="root-level has-sub">
+            <a href="#">
+                <i class="fa fa-comment"></i><span class="title">Visores</span>
+            </a>
+            <ul>
+                @if (User.IsInRole("26"))
+                {
+                    <li class="">
+                        <a href="@Url.Action("VisorSalaMedica", "Notificaciones")">
+                            <span class="title"><i class="fa fa-angle-right"></i>Visor de Sala de Médicos</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </li>
+    }
+    <li class="root-level">
+        <a href="@Url.Action("Solicitudes", "Home")">
+            <i class="fa fa-question-circle"></i><span class="title">Solicitudes Realizadas</span>
+        </a>
+    </li>
+    <li class="root-level">
+        <a href="@Url.Action("ListBoletapago", "Empleado")">
+            &nbsp;<i class="fa fa-file-text "></i><span class="title">Documentos Laborales</span>
+        </a>
+    </li>
+    }
+    <li class="root-level has-sub">
+        <a href="#">
+            <i class="fa fa-wrench"></i><span class="title">Mantenimiento</span>
+        </a>
+        <ul>
+@if (User.IsInRole("61"))
+    {
+            <li class="has-sub">
+                <a href="#">
+                    <i class="fa fa-angle-right"></i><span class="title">Empresa Servicio</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("CrearEmpresa", "Mantenimiento")">   
+                            &nbsp;<i class="fa fa-angle-double-right "></i><span class="title">Registrar Empresa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("ListaEmpresa", "Mantenimiento")">   
+                            &nbsp;<i class="fa fa-angle-double-right "></i><span class="title">Listar Empresa</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+}
+@if (User.IsInRole("62") )
+    {
+            <li class="has-sub">
+                <a href="#">
+                    <i class="fa fa-angle-right"></i><span class="title">Incidente</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("ListaIncidente", "Mantenimiento", new { tipo = "" })">
+                            &nbsp;<i class="fa fa-angle-double-right "></i><span class="title">Listado Incidentes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("RegistrarIncidente", "Mantenimiento")">
+                            &nbsp;<i class="fa fa-angle-double-right "></i><span class="title">Registrar Incidente</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+}
+@if (User.IsInRole("63"))
+    {
+            <li class="has-sub">
+                <a href="#">
+                    <i class="fa fa-angle-right"></i><span class="title">Equipo</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("ListaEquipo", "Mantenimiento", new { tipo = "" })">
+                            &nbsp;<i class="fa fa-angle-double-right "></i><span class="title">Listado Equipo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("CrearEquipo", "Mantenimiento")">
+                            &nbsp;<i class="fa fa-angle-double-right "></i><span class="title">Registrar Equipo</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="has-sub">
+                <a href="#">
+                    <i class="fa fa-angle-right"></i><span class="title">Mantenimiento Equipo</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("ListaMantenimiento", "Mantenimiento", new { tipo = "" })">
+                            &nbsp;<i class="fa fa-angle-double-right "></i><span class="title">Listado Mantenimientos</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+}
+            
+        </ul>
+
+    </li>
+
+</ul>

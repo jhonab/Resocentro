@@ -1,0 +1,188 @@
+﻿@model SistemaResocentro.ViewModel.RealizarLlamadaViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header modal-primary">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Realizar Llamada a Paciente</h4>
+</div>
+<script type="text/javascript">
+    $(function () {
+        iniciarForm();
+        ingresoForm();
+        $("input[name='respuestaLlamada']").click(function () {
+            $("#txtcomentarios").val("");
+        });
+    });
+    function guardarLlamada(iscitado) {
+        var respuesta = $('input[name="respuestaLlamada"]:checked').parent().text();
+        if (iscitado)
+            respuesta = 'Se citó al Paciente.'
+        if (respuesta != "") {
+            var comentario = $('#txtcomentarios').val();
+            var idcarta = '@Model.carta.codigocartagarantia';
+            var paciente = '@Model.paciente.codigopaciente';
+
+          
+            var objAudit = {
+                codigopaciente: '@Model.paciente.codigopaciente',
+                numerodecarta: '@Model.carta.codigocartagarantia',
+                tel_registro: '@Model.telefono',
+                mensaje: respuesta + ' ' + comentario
+
+            }
+
+            $.ajax({
+                url: '/CitaMedica/GuardarLlamadaCarta',
+                data: { cadena: JSON.stringify(objAudit, null, "") },
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    $("#modalAuditLlamada").modal('hide');
+                    toastr.success("Se registró la llamada", "Exito", opts);
+                    if (iscitado) {
+                        window.setTimeout(function () { citarPaciente(objAudit.numerodecarta, objAudit.codigopaciente) }, 500);
+                        ;
+                    }
+                },
+                error: function () {
+                    toastr.error("No se registró la llamada", "Error", opts);
+                }
+            });
+        } else {
+            toastr.warning('Seleccione una respuesta', 'Advertencia', opts);
+        }
+    }
+</script>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12 bg-info">
+            <div class=" col-md-6">
+                <div class="form-group">
+                    <h4>Paciente: </h4>
+                    <h2>@Model.paciente.apellidos, @Model.paciente.nombres</h2>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class=" form-group">
+                    <h4>Teléfonos: </h4>
+                    <h2>@Model.paciente.telefono &nbsp;&nbsp; @Model.paciente.celular</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label>Seleccione respuesta</label>
+                </div>
+                <div class="form-group">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="respuestaLlamada" ocultar-respuesta="txtcomentarios" value="">No contesta, se dejó mensaje de voz.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="respuestaLlamada" ocultar-respuesta="txtcomentarios" value="">No contesta, se dejó mensaje de texto.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="respuestaLlamada" mostrar-respuesta="txtcomentarios" value="">Se dejó recado con:
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="respuestaLlamada" ocultar-respuesta="txtcomentarios" value="">Se envió correo electrónico.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="respuestaLlamada" ocultar-respuesta="txtcomentarios" value="">Teléfono sin servicio.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="respuestaLlamada" ocultar-respuesta="txtcomentarios" value="">Número teléfonico errado.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="respuestaLlamada" ocultar-respuesta="txtcomentarios" value="">No tiene casilla de voz.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="respuestaLlamada" ocultar-respuesta="txtcomentarios" value="">El paciente se fué de viaje.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="respuestaLlamada" ocultar-respuesta="txtcomentarios" value="">El paciente llamará.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="respuestaLlamada" ocultar-respuesta="txtcomentarios" value="">El paciente ya está informado.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="respuestaLlamada" mostrar-respuesta="txtcomentarios" value="">Otro:
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <textarea rows="5" class="form-control" id="txtcomentarios" placeholder="Ingrese su comentario"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class=" form-group">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Fecha
+                                </th>
+                                <th>
+                                    Colaborador
+                                </th>
+                                <th>
+                                    Tel.
+                                </th>
+                                <th>Mensaje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.llamadas)
+                            {
+                            <tr>
+                                <td>
+                                    @item.fecha.ToString("dd/MM/yyyy hh:mm tt")
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.usuario)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.telefono)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.mensaje)
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+    <button id="btnCitar" type="button" class="btn btn-blue" onclick="guardarLlamada(true);"><i class="fa fa-calendar fa-lg"></i>&nbsp;&nbsp; Citar </button>
+    <button id="btnregistrar" type="button" class="btn btn-success" onclick="guardarLlamada(false);"><i class="fa fa-phone fa-lg"></i>&nbsp;&nbsp; Registar Llamada </button>
+</div>
+

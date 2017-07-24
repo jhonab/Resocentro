@@ -1,0 +1,26 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.AtencionCliente.frmListaResultado"
+        Title="frmListaResultado" Height="575" Width="455" Background="{DynamicResource Windows.Background}" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="66"/>
+            <RowDefinition Height="395*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Apellidos" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="63"/>
+        <Label Content="N° Examen" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Height="26" Width="72"/>
+        <TextBox x:Name="txtapellidos" HorizontalAlignment="Left" Height="23" Margin="82,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="259"/>
+        <TextBox x:Name="txtnum_examen" HorizontalAlignment="Left" Height="23" Margin="82,41,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="64" KeyUp="txtnum_examen_KeyUp"/>
+        <Button Content="Buscar" HorizontalAlignment="Right" Margin="0,13,10,0" VerticalAlignment="Top" Width="75" Height="23" Click="Button_Click"/>
+
+        <telerik:RadGridView AutoGenerateColumns="False" ShowGroupPanel="False" Grid.Row="1" Name="grid_Resultados" IsReadOnly="True" RowActivated="grid_Resultados_RowActivated" >
+            <telerik:RadGridView.Columns >
+                <telerik:GridViewDataColumn  Header="Fecha" DataMemberBinding="{Binding fecha}" />
+                <telerik:GridViewDataColumn  Header="N° Examen" DataMemberBinding="{Binding codigo}" />
+                <telerik:GridViewDataColumn  Header="Paciente" DataMemberBinding="{Binding paciente}" />
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+    </Grid>
+</Window>

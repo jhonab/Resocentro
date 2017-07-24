@@ -1,0 +1,77 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.InformacionTactica.frmReporteVentas"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         Title="Reporte de Producción" Height="600" Width="900"  Background="{DynamicResource Windows.Background}" WindowState="Maximized">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="42"/>
+            <RowDefinition Height="527*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Lista de Años" VerticalContentAlignment="Center"/>
+            <ComboBox x:Name="cboAno" VerticalAlignment="Center" SelectedIndex="0"  />
+            <Label />
+            <Button Content="Buscar" Height="28" VerticalAlignment="Center"  x:Name="btnBuscar" Click="btnBuscar_Click" />
+            <StackPanel Orientation="Horizontal" Name="stkListaano">
+
+            </StackPanel>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="149*"/>
+                <RowDefinition Height="378*"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="703*" />
+                    <!--<ColumnDefinition Width="189*"/>-->
+                </Grid.ColumnDefinitions>
+                <telerik:RadChart x:Name="rpcTotal" />
+            </Grid>
+            <Grid Grid.Row="1" Background="{DynamicResource Windows.Background}" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="332*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="332*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="332*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+
+                    <RowDefinition Height="212*"/>
+                    <RowDefinition Height="212*"/>
+                    <RowDefinition Height="212*"/>
+                </Grid.RowDefinitions>
+                <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+                <GridSplitter Grid.Column="3" Grid.Row="0" HorizontalAlignment="Stretch" />
+                <GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" />
+                <GridSplitter Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch" />
+                <GridSplitter Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" />
+                <GridSplitter Grid.Column="3" Grid.Row="2" HorizontalAlignment="Stretch" />
+
+                <telerik:RadChart x:Name="radChartLine">
+                </telerik:RadChart>
+                <telerik:RadChart x:Name="radChartLine2" Grid.Row="0" Grid.Column="2">
+                </telerik:RadChart>
+                <telerik:RadChart x:Name="radChartLine3" Grid.Row="0" Grid.Column="4">
+                </telerik:RadChart>
+                <telerik:RadChart x:Name="radChartLine4" Grid.Row="1" Grid.Column="0">
+                </telerik:RadChart>
+                <telerik:RadChart x:Name="radChartLine5" Grid.Row="1" Grid.Column="2">
+                </telerik:RadChart>
+                <telerik:RadChart x:Name="radChartLine6" Grid.Row="1" Grid.Column="4">
+                </telerik:RadChart>
+                <telerik:RadChart x:Name="radChartLine7" Grid.Row="2" Grid.Column="0">
+                </telerik:RadChart>
+                <telerik:RadChart x:Name="radChartLine8" Grid.Row="2" Grid.Column="2">
+                </telerik:RadChart>
+                <telerik:RadChart x:Name="radChartLine9" Grid.Row="2" Grid.Column="4">
+                </telerik:RadChart>
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+</Window>

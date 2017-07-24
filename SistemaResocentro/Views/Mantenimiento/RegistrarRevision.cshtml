@@ -1,0 +1,333 @@
+﻿@model SistemaResocentro.ViewModel.Mantenimiento.DetalleMantenimiento
+
+@{
+    ViewBag.Title = "Registrar Revisión";
+    SistemaResocentro.ViewModel.Mantenimiento.MantenimientoViewModel Incidente = (SistemaResocentro.ViewModel.Mantenimiento.MantenimientoViewModel)ViewBag.Mantenimiento;
+    SistemaResocentro.Member.CustomMembershipUser user = Membership.GetUser(true) as SistemaResocentro.Member.CustomMembershipUser;
+}
+
+<script src="~/js/validar-input.js"></script>
+<script src="~/js/linq.min.js"></script>
+<script type="text/javascript">
+    var piezas = [];
+    var idIncidente=@Incidente.idIncidente;
+    $(function () {
+        
+        iniciarForm();
+        ingresoForm();
+        listarpiezas();
+        $("#div_treefile").load('@Url.Action("ListFileMantenimiento", "Mantenimiento")' + '?incidente=@Incidente.idIncidente', function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+
+        });
+        actualizarConversacion();
+    });
+    function actualizarConversacion(){
+        $("#conversaciones").load('@Url.Action("ListaConversacionIncidente", "Mantenimiento")' + '?incidente=@Incidente.idIncidente', function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+
+        });
+    }
+    function validar() {
+        return validar_form("div_revision");
+    }
+    function agregarPieza() {
+        if (piezas == null)
+            piezas = [];
+        var serie = $("#txtserie").val(),
+            pieza = $("#txtpieza").val();
+
+        if (serie != "" && pieza != "") {
+            var jsonObject = {
+                "idPieza": 0,
+                "nombre": pieza,
+                "serie": serie
+            };
+            piezas.push(jsonObject);
+            listarpiezas();
+            $('#modal_Pieza').modal('hide')
+            $("#txtserie").val("");
+            $("#txtpieza").val("");
+        } else
+            toastr.error('Error:\n Ingrese todos los datos correctamente.', 'Error', opts);
+    }
+    function listarpiezas() {
+        if (piezas == null)
+            piezas = [];
+        $("#piezas_array").val("");
+        $("#piezas_array").val(JSON.stringify(piezas, null, ""));
+        $("#tab_body_pieza").html("");
+        var items = "";
+        count = 1;
+        $.each(piezas, function (i, item) {
+            item.idPieza = count;
+            items += "<tr> <td>" + item.nombre + "</td><td>" + item.serie + "</td><td><button type='button' class='btn btn-xs btn-danger hidden-print' onclick='deletePieza(" + item.idPieza + ")'><i class='fa fa-times'/></button></td></tr>";
+            count++;
+        });
+        $("#tab_body_pieza").html(items);
+
+    }
+    function deletePieza(id) {
+        if (piezas == null)
+            piezas = [];
+        var _pieza = piezas.filter(function (el) {
+            return el.idPieza !== id;
+        });
+        piezas = _pieza;
+        listarpiezas();
+    }
+</script>
+
+<div id="div_revision">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="invoice">
+            <div class="row">
+                <div class="col-sm-6 invoice-left">
+                  
+                </div>
+                <div class="col-sm-6 invoice-right"> <h3>INCIDENTE N° #@Incidente.idIncidente</h3> <span></span> </div>
+            </div> <hr class="margin"> <div class="row">
+                <div class="col-sm-6 ">
+                    <h4>Detalles de Incidente</h4>
+                    <strong style="font-size:13px">Tipo Incidente:</strong> @Incidente.tipoIncidente<br />
+                    <strong style="font-size:13px">Fecha Incidente:</strong> @Incidente.fecha_detecta.ToString("dd/MM/yyyy HH:mm")<br />
+                    <strong style="font-size:13px">Usuario:</strong> @Incidente.usuario_detecta - @Incidente.telefono<br />
+
+                </div>
+                <div class="col-md-6 ">
+                    <h4>Detalle Equipo:</h4>
+                    <strong style="font-size:13px">Marca:</strong> @Incidente.equipo.marca.ToUpper()
+                    <br> <strong style="font-size:13px">Modelo:</strong> @Incidente.equipo.modelo.ToUpper()
+                    <br> <strong style="font-size:13px">Sucursal:</strong> @Incidente.equipo.empresa -  @Incidente.equipo.sucursal
+                </div>
+            </div>
+
+        </div>
+
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs bordered">
+                    <li class="active">
+                        <a href="#falla" data-toggle="tab">
+                            <span class="visible-xs">Incidente</span>
+                            <span class="hidden-xs">Incidente Reportado</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#conversaciones" data-toggle="tab">
+                            <span class="visible-xs">Con.</span>
+                            <span class="hidden-xs">Conversaciones </span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#revisiones" data-toggle="tab">
+                            <span class="visible-xs">Rev.</span>
+                            <span class="hidden-xs">Revisiones (@Incidente.listaRevisiones.Count())</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#adjuntos" data-toggle="tab">
+                            <span class="visible-xs">Adj.</span>
+                            <span class="hidden-xs">Adjuntos</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="falla">
+                        <span>
+                            <i>
+                                @Incidente.falla_detectada.ToUpper()
+                            </i>
+                        </span>
+                    </div>
+                    <div class="tab-pane " id="conversaciones">
+                        
+                    </div>
+                    <div class="tab-pane " id="revisiones">
+                        <div>
+
+                            <div class="panel-group joined" id="accordion-@Incidente.idIncidente">
+                                @foreach (var item in Incidente.listaRevisiones)
+                                {
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion-@Incidente.idIncidente" href="#revision-@item.idDetalleMantenimiento" aria-expanded="false" class="collapsed">
+                                                    Revision N° #@item.idDetalleMantenimiento  &nbsp;&nbsp; @item.fecha_revision.ToString("dd-MM-yyyy HH:mm") - @item.usuario_revisa
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="revision-@item.idDetalleMantenimiento" class="panel-collapse collapse" aria-expanded="false">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label ">Revision:</label>
+                                                            <div class="">
+                                                                <textarea class="form-control" rows="5" readonly>@item.revision</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label ">Cambio Piezas?</label>
+                                                            <input mostrar-respuesta="div_piezas_revision-@item.idDetalleMantenimiento" type="checkbox" readonly disabled
+                                                                   @if (item.isCambioPieza) {  @: checked
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          } else { @: unchecked
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          }>
+                                                        </div>
+                                                        <div id="div_piezas_revision-@item.idDetalleMantenimiento" class="form-group">
+                                                            <table class="table compact table-striped  table-hover">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>
+                                                                            Pieza
+                                                                        </th>
+                                                                        <th>
+                                                                            Serie
+                                                                        </th>
+                                                                        <th style="width: 22px;"></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach (var pieza in item.listaPiezas)
+                                                                    {
+                                                                    <tr>
+                                                                        <td>@pieza.nombre</td>
+                                                                        <td>@pieza.serie</td>
+                                                                    </tr>
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="adjuntos">
+                        <div id="div_treefile"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                @Html.HiddenFor(x => x.idIncidente)
+
+                <div class="form-group">
+                    <label class="control-label ">Revision:</label>
+                    <div class="">
+                        @Html.TextAreaFor(x => x.revision, new { @class = "form-control validar", @rows = "5", @placeholder = "Ingrese la solución" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label ">Cambio Piezas?</label>
+                    @Html.CheckBoxFor(model => model.isCambioPieza, new { @mostrar_respuesta = "div_piezas" })
+                </div>
+                <div id="div_piezas" class="form-group">
+
+                    <button type="button" class="btn btn-info pull-right hidden-print" data-toggle="modal" data-target="#modal_Pieza"><i class="fa fa-cog"></i>&nbsp;&nbsp;Agregar</button>
+
+                    @Html.HiddenFor(x => x.piezas_array)
+                    <table class="table compact table-striped  table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Pieza
+                                </th>
+                                <th>
+                                    Serie
+                                </th>
+                                <th style="width: 22px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tab_body_pieza"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label ">Solucionado?</label>
+                    @Html.CheckBoxFor(model => model.isSolucionado)
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label ">Usuario de Registro</label>
+                    @Html.TextBoxFor(x => x.tecnico, new { @class = "form-control validar", @rows = "5", @placeholder = "Ingrese el Nombre y Apellido del Usuario que realizo la Revision" })
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Estado Actual del Equipo</label>
+                    @Html.DropDownListFor(x => x.estadoequipo, (SelectList)ViewBag.EstadoEquipo, "- Seleccione Estado Equipo -", new { @class = "form-control validar" })
+                </div>
+            </div>
+        </div>
+        <div class="row hidden-print">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    <a href="javascript:window.print();" class="btn btn-primary btn-icon icon-left hidden-print">
+                        Print
+                        <i class="entypo-doc-text"></i>
+                    </a>
+
+                    <button type="button" onclick="javascript: window.location.replace('@Url.Action("ListaIncidente")');" class="btn btn-default"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;&nbsp;Regresar a la Lista</button>
+
+                    <button id="btnregistrar" type="submit" class="btn btn-success" onclick="return validar();"><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp; Registrar </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="modal fade " id="modal_Pieza" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Agregar Piezas de Cambio</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="">
+                        <label class="control-label ">Pieza:</label>
+                        <input id="txtpieza" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="">
+                        <label class="control-label ">Serie:</label>
+                        <input id="txtserie" type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="agregarPieza()">Agregar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

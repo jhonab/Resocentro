@@ -1,0 +1,235 @@
+﻿@model SistemaResocentro.ViewModel.ProformaViewModel
+
+@{
+    ViewBag.Title = "CreateProforma";
+}
+<script type="text/javascript">
+    $(function () {
+        $("._cbo2").select2({
+            placeholder: "Select a state",
+            allowClear: true
+        });
+    });
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal" id="div_proforma">
+        <h2>Registrar Proforma</h2>
+        <hr />
+        <div class="well">
+            <div class="row">
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                @Html.HiddenFor(model => model.proforma.codigopaciente, new { htmlAttributes = new { @class = "form-control validar" } })
+                <div class="col-md-6 ">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Paciente:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control validar" readonly id="paciente" />
+                            @Html.ValidationMessageFor(model => model.proforma.codigopaciente, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-info btn-xs" id="btnsearchPaciente" onclick="searchPaciente_modal()" type="button"><i class="fa fa-search fa-2x"></i></button>
+                            <button class="btn btn-success btn-xs" id="btnaddPaciente" onclick="addPaciente_modal()" type="button"><i class="fa fa-plus fa-2x"></i></button>
+                            <button class="btn btn-success btn-xs" id="btnupdatePaciente" onclick="updatePaciente_modal()" type="button"><i class="fa fa-pencil fa-2x"></i></button>
+                            <button class="btn btn-danger btn-xs" id="btndeletePaciente" onclick="deletePaciente_modal()" type="button"><i class="fa fa-eraser fa-2x"></i></button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Titular:</label>
+                        <div class="col-md-9">
+
+                            @Html.EditorFor(model => model.proforma.titular, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.proforma.titular, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    @Html.HiddenFor(model => model.estudios, new { @class = "validar" })
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Aseguradora:</label>
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(model => model.proforma.codigocompaniaseguro, (SelectList)ViewBag.Aseguradora, "- Seleccione -", htmlAttributes: new { @class = "form-control _cbo2 validar" })
+                            @Html.ValidationMessageFor(model => model.proforma.codigocompaniaseguro, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Contratante:</label>
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.proforma.contratante, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.proforma.contratante, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3">N° Poliza/Código Afilidado:</label>
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.proforma.poliza, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.proforma.poliza, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    @Html.HiddenFor(model => model.proforma.cmp, new { htmlAttributes = new { @class = "form-control validar" } })
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Medico Tratante:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control validar" readonly id="medico" />
+                            @Html.ValidationMessageFor(model => model.proforma.cmp, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3 ">
+                            <button class="btn btn-info btn-xs" id="btnsearchMedico" onclick="searchMedico_modal()" type="button"><i class="fa fa-search fa-2x"></i></button>
+                            <button class="btn btn-success btn-xs" id="btnaddMedico" onclick="addMedico_modal()" type="button"><i class="fa fa-plus fa-2x"></i></button>
+                            <button class="btn btn-success btn-xs" id="btnupdateMedico" onclick="updateMedico_modal()" type="button"><i class="fa fa-pencil fa-2x"></i></button>
+                            <button class="btn btn-danger btn-xs" id="btndeleteMedico" onclick="deleteMedico_modal()" type="button"><i class="fa fa-eraser fa-2x"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Clínica Procedencia:</label>
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(model => model.proforma.codigoclinica, (SelectList)ViewBag.Clinica, "- Seleccione -", htmlAttributes: new { @class = "form-control _cbo2 validar" })
+                            @Html.ValidationMessageFor(model => model.proforma.codigoclinica, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Tiempo Enfermedad:</label>
+                        <div class="col-md-9">
+                            <div class="col-md-6" style="padding-left: 0px;">
+                                <div class=" input-spinner">
+                                    <button type="button" class="btn btn-default">-</button>
+                                    @Html.EditorFor(model => model.proforma.tiempoenfermedad, new { htmlAttributes = new { @class = "form-control size-1", @data_min = "0", @placeholder = "Días" } })
+                                    <button type="button" class="btn btn-default">+</button>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.proforma.tiempoenfermedad, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Sedacion:</label>
+                                    <div class="col-md-9">
+                                        <div class="make-switch"
+                                             data-on-label="<i class='fa fa-check-circle'></i>"
+                         data-off-label="<i class='fa fa-times-circle'></i>"
+                         data-text-label="<i class='fa fa-tint'></i>"
+                    >
+                        @Html.EditorFor(model => model.proforma.sedacion)
+					</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Observaciones:</label>
+                        <div class="col-md-9">
+                            @Html.TextAreaFor(model => model.proforma.observacion, new { @class = "form-control", @placeholder = "Observaciones", @rows = "5" })
+                            @Html.ValidationMessageFor(model => model.proforma.observacion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Unidad Negocio:</label>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("cbounidadnegocio", (SelectList)ViewBag.UnidadNegocio, "- Seleccione -", htmlAttributes: new { @class = "form-control _cbo2" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Modalidad:</label>
+                                <div class="col-md-9">
+                                    <select id="cbomodalidad" class="form-control _cbo2">
+                                        <option value="">- Seleccione -</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Clase:</label>
+                                <div class="col-md-9">
+
+                                    @Html.DropDownList("cboclase", (SelectList)ViewBag.Clase, "- Seleccione -", htmlAttributes: new { @class = "form-control _cbo2" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-9">
+
+                                    <button type="button" class="btn btn-info" onclick="cargarEstudios();"><i class="fa fa-search"></i> Buscar Estudio</button>
+                                </div>
+                                <label class="control-label col-md-3"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <link href="~/js/datatables/datatable.css" rel="stylesheet" />
+                            <script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+                            <script src="~/js/dataTables.bootstrap.js"></script>
+                            @Html.Partial("_setEstudio", Model.list_estudio)
+                            <div id="lst_estudio">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary btn-lg" onclick="return validarProforma();">Siguiente&nbsp;&nbsp;<i class="fa fa-arrow-circle-right fa-lg"></i></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+
+
+<script src="~/js/bootstrap-switch.min.js"></script>
+
+<link href="~/js/select2/select2-bootstrap.css" rel="stylesheet" />
+<link href="~/js/select2/select2.css" rel="stylesheet" />
+<script src="~/js/select2/select2.min.js"></script>
+<script src="~/js/script/proforma/createproforma.js"></script>
+
+<!-- /.modal-dialog to Add -->
+<div class="modal fade" id="modal-add" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal-addLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body" id="modal-add_body">
+            </div>
+
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<!-- /.modal-dialog to Search-->
+<div class="modal fade" id="modal-search" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal-addLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body" id="modal-search_body">
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

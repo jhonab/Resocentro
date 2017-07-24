@@ -1,0 +1,367 @@
+﻿@model IEnumerable<Encuesta.ViewModels.Reporte.ReporteGeneEncuestaViewModel>
+
+@{
+    ViewBag.Title = "<i class='fa fa-line-chart'></i> Reporte";
+    ViewBag.Titlenot = "Reporte";
+}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- DataTables JavaScript -->
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#dataTables-example').dataTable();
+
+
+    });
+</script>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div class="box-header">
+
+                <h2 class="box-title">Reporte General de Encuesta</h2>
+            </div>
+            <div class="box-body chart-responsive">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Reporte General de Encuesta
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <i class="fa fa-search fa-fw"></i>Buscar
+                            </div>
+                            <div class="panel-body">
+                                @using (Html.BeginForm("ReporteTiempoEncuesta", "Reporte", FormMethod.Post))
+                                {
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label>Periodo</label>
+                                            <input type="Month" id="i" name="i" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p>
+                                            <input type="submit" class=" btn btn-info " value="Buscar" />
+                                        </p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- /.grafico -->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <i class="fa fa-bar-chart-o fa-fw"></i>Gráficos
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                Encuestador
+                                            </div>
+                                            <!-- /.panel-heading -->
+                                            <div class="panel-body">
+                                                <div id="chart-promedio_tr">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-info">
+                                                <div class="panel-heading">
+                                                    Supervisor
+                                                </div>
+                                                <!-- /.panel-heading -->
+                                                <div class="panel-body">
+                                                    <div id="chart-promedio_td"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseEncuesta"><i class="fa fa-database fa-fw"></i>Data </a>
+                                </h4>
+                            </div>
+                            <div id="collapseEncuesta" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">
+                                            Consolidado de Reporte
+                                        </div>
+                                        <!-- /.panel-heading -->
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                Examen
+                                                            </th>
+                                                            <th>
+                                                                Fecha
+                                                            </th>
+                                                            <th>
+                                                                Estudio
+                                                            </th>
+                                                            <th>
+                                                                Encuestador
+                                                            </th>
+                                                            <th>
+                                                                Inicio
+                                                            </th>
+                                                            <th>
+                                                                Fin
+                                                            </th>
+                                                            <th>
+                                                                T Res.
+                                                            </th>
+                                                            <th>
+                                                                % Res.
+                                                            </th>
+                                                            <th>
+                                                                T Dur.
+                                                            </th>
+                                                            <th>
+                                                                % Dur.
+                                                            </th>
+                                                            <th>
+                                                                Supervisor
+                                                            </th>
+                                                            <th>
+                                                                Solicita
+                                                            </th>
+                                                            <th>
+                                                                Inicia
+                                                            </th>
+                                                            <th>
+                                                                Fin
+                                                            </th>
+                                                            <th>
+                                                                T Res.
+                                                            </th>
+                                                            <th>
+                                                                % Res.
+                                                            </th>
+                                                            <th>
+                                                                Tecnologo
+                                                            </th>
+                                                            <th>
+                                                                Inicio
+                                                            </th>
+                                                            <th>
+                                                                Fin
+                                                            </th>
+                                                            <th>
+                                                                T Dur.
+                                                            </th>
+                                                            <th>
+                                                                % Dur.
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.num_encuesta)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.fecha)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.estudio)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.encuestador)
+                                                                </td>
+                                                                <td class="small">
+                                                                    @item.encuesta.fec_ini_encu
+                                                                </td>
+                                                                <td class="small">
+                                                                    @if (item.encuesta.fec_paso3 != null)
+                                                                    {
+                                                                        @item.encuesta.fec_paso3.Value
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.min_res_encu) Min.
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.FE_encuestador_Res)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.min_dur_encu) Min.
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.FE_encuestador_Dur)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.supervisor)
+                                                                </td>
+                                                                <td class="small">
+                                                                    @if (item.encuesta.fec_Solicitavalidacion != null)
+                                                                    {
+                                                                        @item.encuesta.fec_Solicitavalidacion.Value
+                                                                    }
+                                                                </td>
+                                                                <td class="small">
+                                                                    @if (item.encuesta.fec_ini_supervisa != null)
+                                                                    {
+                                                                        @item.encuesta.fec_ini_supervisa.Value
+                                                                    }
+                                                                </td>
+                                                                <td class="small">
+                                                                    @if (item.encuesta.fec_supervisa != null)
+                                                                    {
+                                                                        @item.encuesta.fec_supervisa.Value
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.min_res_super) Min.
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.FE_supervisor_Res)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.tecnologo)
+                                                                </td>
+                                                                <td class="small">
+                                                                    @if (item.encuesta.fec_ini_tecno != null)
+                                                                    {
+                                                                        @item.encuesta.fec_ini_tecno.Value
+                                                                    }
+                                                                </td>
+                                                                <td class="small">
+                                                                    @if (item.encuesta.fec_fin_tecno != null)
+                                                                    {
+                                                                        @item.encuesta.fec_fin_tecno.Value
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.min_dur_tecno) Min.
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.FE_tecnologo_Dur)
+                                                                </td>
+
+                                                            </tr>
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <!-- /.panel-body -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.Data -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/plugins/KendoChart/kendo.all.min.js"></script>
+<link href="~/css/plugins/Kendochart/kendo.dataviz.min.css" rel="stylesheet" />
+<script>
+    $(document).ready(function () {
+        var _periode = '@Model.First().fecha.ToString("MMMM {0} yyyy")';
+        var lstDias = [];
+        @{
+            foreach (var item in Model.OrderBy(x => x.fecha).Select(x => x.fecha.ToString("dd/MMM")).Distinct().ToArray())
+            {  <text>lstDias.push('@item');  </text>  }
+        }
+
+        $("#chart-promedio_tr").kendoChart({
+            theme: "Metro",
+            title: {
+                text: "Reporte de Tiempo de Respuesta del Mes de " + _periode.replace("{0}", "del") + " (promedio 5 min.)",
+            },
+            legend: {
+                position: "bottom"
+            },
+            seriesDefaults: {
+                type: "line"
+            },
+            series: [{ name: "Encuestas", data: [@foreach (var item in Model.OrderBy(x => x.fecha).Select(x => x.fecha.Day).Distinct().ToList())
+                                                 {<text>@String.Format("{0:0.##}", Model.Where(x => x.fecha.Day == item).Select(x => x.min_res_encu).Average()), </text>}] },
+            { name: "Supervison", data: [@foreach (var item in Model.OrderBy(x => x.fecha).Select(x => x.fecha.Day).Distinct().ToList())
+                                         {<text>@String.Format("{0:0.##}", Model.Where(x => x.fecha.Day == item).Select(x => x.min_res_super).Average()), </text>}] }],
+            valueAxis: {
+                plotBands: [{
+                    from: 4.9,
+                    to: 5.1,
+                    color: "#c00",
+                    opacity: 0.3
+                }]
+            },
+            categoryAxis: {
+                categories: lstDias
+            },
+            tooltip: {
+                visible: true,
+                template: "   #= series.name # : #= value #  "
+            }
+        });
+        $("#chart-promedio_td").kendoChart({
+            theme: "Metro",
+            title: {
+                text: "Reporte de Tiempo de Duración del Mes de " + _periode.replace("{0}", "del") + " (promedio 5 min.  45 min. )",
+            },
+            legend: {
+                position: "bottom"
+            },
+            seriesDefaults: {
+                type: "line"
+            },
+            series: [{ name: "Encuestas", data: [@foreach (var item in Model.OrderBy(x => x.fecha).Select(x => x.fecha.Day).Distinct().ToList())
+                                                 {<text>@String.Format("{0:0.##}", Model.Where(x => x.fecha.Day == item).Select(x => x.min_dur_encu).Average()), </text>}] },
+            { name: "Tecnologo", data: [@foreach (var item in Model.OrderBy(x => x.fecha).Select(x => x.fecha.Day).Distinct().ToList())
+                                        {<text>@String.Format("{0:0.##}", Model.Where(x => x.fecha.Day == item).Select(x => x.min_dur_tecno).Average()), </text>}] }],
+            valueAxis: {
+                plotBands: [{
+                    from: 4.9,
+                    to: 5.1,
+                    color: "#c00",
+                    opacity: 0.3
+                }]
+            },
+            categoryAxis: {
+                categories: lstDias
+            },
+            tooltip: {
+                visible: true,
+                template: "   #= series.name # : #= value #  "
+            }
+        });
+    });
+</script>
+<script src="/js/plugins/morris/morris.min.js"></script>
+
+<script src="/js/plugins/morris/raphael.min.js"></script>
+<style>
+    .k-tooltip {
+        color: #fff !important;
+        font-weight: bold !important;
+        border-radius: 5px;
+    }
+</style>

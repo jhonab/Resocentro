@@ -1,0 +1,58 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.AtencionCliente.frmEntregarResultado"
+        Title="Entregar Resultados" Height="300" Width="800" Background="{DynamicResource Windows.Background}"  WindowStyle="ToolWindow">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="387"/>
+            <ColumnDefinition Width="250*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="270"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Entregado: " HorizontalAlignment="Left" Margin="18,45,0,0" VerticalAlignment="Top" Padding="0"/>
+        <Label Content="N° Doc.: " HorizontalAlignment="Left" Margin="34,64,0,0" VerticalAlignment="Top" Padding="0"/>
+        <Label Content="Dirección: " HorizontalAlignment="Left" Margin="23,84,0,0" VerticalAlignment="Top" Padding="0"/>
+        <Label Name="lblfotos" Content="Fotos: " HorizontalAlignment="Left" Margin="45,123,0,0" VerticalAlignment="Top" Padding="0" Visibility="Collapsed"/>
+        <Label Name="lblplaca" Content="Placas: " HorizontalAlignment="Left" Margin="135,121,0,0" VerticalAlignment="Top" Padding="0" Visibility="Collapsed"/>
+        <TextBox x:Name="txtentregado" HorizontalAlignment="Left"  Margin="89,43,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="282" Padding="0"/>
+        <TextBox x:Name="txtdocumento" HorizontalAlignment="Left"  Margin="89,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="88" Padding="0"/>
+        <TextBox x:Name="txtdireccion" HorizontalAlignment="Left"  Margin="89,84,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="282" Padding="0" AcceptsReturn="False" Height="35" />
+        
+        <TextBox x:Name="txtfotos" HorizontalAlignment="Left"  Margin="88,121,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="35" Padding="0" Visibility="Collapsed"/>
+        <TextBox x:Name="txtplacas" HorizontalAlignment="Left"  Margin="181,121,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="35" Padding="0" Visibility="Collapsed"/>
+        
+        <Button Content="Cancelar" HorizontalAlignment="Left" Margin="297,229,0,0" VerticalAlignment="Top" Width="72" Height="26" Click="Button_Click"/>
+        <Button Content="Guardar" HorizontalAlignment="Left" Margin="143,229,0,0" VerticalAlignment="Top" Width="72" Height="26" Click="Button_Click_1"/>
+        <Label Content="Observacion: " HorizontalAlignment="Left" Margin="8,144,0,0" VerticalAlignment="Top" Padding="0"/>
+        <TextBox x:Name="txtObs" HorizontalAlignment="Left"  Margin="88,144,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="282" Padding="0" AcceptsReturn="False" Height="78" />
+        <Label x:Name="lblestudio" Content=""  HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="364" HorizontalContentAlignment="Center" Foreground="White" Padding="0" FontSize="16"/>
+
+        <telerik:RadGridView Grid.Column="1" Name="gridestudios" AutoGenerateColumns="False" ShowGroupPanel="False" RowIndicatorVisibility="Collapsed" RowActivated="gridestudios_RowActivated" >
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Estudio" IsReadOnly="true" DataMemberBinding="{Binding estudio}"/>
+                <telerik:GridViewDataColumn Header="Placa" IsReadOnly="False" DataMemberBinding="{Binding placa}"/>
+                <telerik:GridViewDataColumn Header="Foto" IsReadOnly="False" DataMemberBinding="{Binding foto}"/>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+        <Button Content="Firma" HorizontalAlignment="Left" Margin="220,229,0,0" VerticalAlignment="Top" Width="72" Height="26" Click="bntFirma_Click"/>
+        <Image Grid.Row="1" Name="imgfirma"  Stretch="Uniform" Grid.ColumnSpan="2" />
+        <Label Name="lblmensaje" Content="Verificando Pagos..." Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,5" VerticalAlignment="Bottom" Width="122" Background="{x:Null}" Foreground="#FFFF0A0A">
+            <Label.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <BeginStoryboard >
+                        <Storyboard  RepeatBehavior="Forever">
+                            <DoubleAnimation 
+												Storyboard.TargetProperty="Opacity"
+												From="0.5" To="1" 
+												AutoReverse="True" Duration="0:0:0.5"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Label.Triggers>
+        </Label>
+
+    </Grid>
+</Window>

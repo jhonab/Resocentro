@@ -1,0 +1,100 @@
+﻿@model SistemaResocentro.Models.Insti_Prom_Medico
+
+@{
+    Layout = null;
+    ViewBag.Title = "Create";
+}
+
+
+<script src="~/js/validar-input.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("._cbo2").chosen({ width: "100%" });
+    });
+    
+    function validar() {
+        var idinstitucion = $("#cod_clinica").val();
+        var cmp = $("#cmp_medico").val();
+        var codigopromotor = $("#cod_promotor").val();
+
+        if (idinstitucion == "" || cmp == "" || codigopromotor == "") {
+            removeHasAll("cod_clinica");
+            removeHasAll("cmp_medico");
+            removeHasAll("cod_promotor");
+            if (idinstitucion == "")
+                addError("cod_clinica");
+            if (codigopromotor == "")
+                addError("cod_promotor");
+            if (cmp == "")
+                addError("cmp_medico");
+            return false;
+        }
+        if (!validarAsignacion(idinstitucion, cmp, codigopromotor))
+            return false;
+        return true;
+    }
+    function validarAsignacion(idinstitucion, cmp, codigopromotor) {
+        var _result = true;
+        $.ajax({
+            async: false,
+            cache: false,
+            url: '/Asignaciones/validarAsignacionInstitucionPromotorMedico',
+            data: { idInstitucion: idinstitucion, cmp: cmp, codigopromotor: codigopromotor },
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                if (!data) {
+                    toastr.error("Asignación ya existe", "Error", opts);
+                    _result = false;
+                }
+            },
+            error: function () {
+                toastr.error("No se pudo validar la asignación.", "Error", opts);
+                _result = false;
+            }
+        });
+        return _result;
+    }
+</script>
+<div class="modal-header modal-primary">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Asignar Médico a Institución Médica</h4>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <div class="row">
+            <div id="">
+                <div class="col-md-12">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <label>Institución Médica</label>
+                        <div class="">
+                            @Html.DropDownListFor(model => model.cod_clinica, (SelectList)ViewBag.Instituciones, "- Seleccione la Institución Médica -", htmlAttributes: new { @class = "form-control _cbo2" })
+                            @Html.ValidationMessageFor(model => model.cod_clinica, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Representante</label>
+                        <div class="">
+                            @Html.DropDownListFor(model => model.cod_promotor, (SelectList)ViewBag.Promotor, "- Seleccione el Representant -", htmlAttributes: new { @class = "form-control _cbo2" })
+                            @Html.ValidationMessageFor(model => model.cod_promotor, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Médico</label>
+                        <div class="">
+                            @Html.DropDownListFor(model => model.cmp_medico, (SelectList)ViewBag.Medicos, "- Seleccione el Médico -", htmlAttributes: new { @class = "form-control _cbo2" })
+                            @Html.ValidationMessageFor(model => model.cmp_medico, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button id="btnregistrar" type="submit" class="btn btn-success" onclick="return validar();"><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp; Registrar </button>
+    </div>
+}

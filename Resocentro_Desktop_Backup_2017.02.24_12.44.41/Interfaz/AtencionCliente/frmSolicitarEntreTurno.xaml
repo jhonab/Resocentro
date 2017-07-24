@@ -1,0 +1,74 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.frmCita.frmSolicitarEntreTurno"
+         Title="Solicitude de Entre Turno | Resocentro" Height="500" Width="700" MinWidth="700" MinHeight="500"  MaxHeight="500" Background="{DynamicResource Windows.Background}"   Icon="/Resocentro_Desktop;component/img/favicon.png" WindowStyle="ToolWindow">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="269"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="112"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <Label Content="Usuario"  VerticalContentAlignment="Center" Margin="0,0,10,0"/>
+                <Label x:Name="lblusuario" Content="" FontWeight="Bold"  VerticalContentAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="1"  Margin="5">
+                <Label Content="Fecha"  VerticalContentAlignment="Center" Margin="0,0,10,0"/>
+                <Label x:Name="lblfecha" Content="15/07/1991" FontWeight="Bold"  VerticalContentAlignment="Center" Margin="0,0,10,0"/>
+
+                <telerik:RadTimePicker Name="dtpHora" TimeInterval="0:10:0" EndTime="22:0:0" StartTime="7:0:0" TextAlignment="Center"  >
+                    <telerik:RadTimePicker.ClockStyle>
+                        <Style TargetType="telerik:RadClock" >
+                            <Setter Property="Header" Value="Seleccione la Hora para crear el Entre Turno"/>
+                        </Style>
+                    </telerik:RadTimePicker.ClockStyle>
+                </telerik:RadTimePicker>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5" Grid.Row="2">
+                <Label  Content="Equipo" VerticalContentAlignment="Center" Margin="0,0,10,0" />
+                <ComboBox x:Name="cboEquipo" MinHeight="26" Margin="0,0,100,0" Width="200" FontSize="16" HorizontalAlignment="Left"  TabIndex="5" VerticalContentAlignment="Center" SelectionChanged="cboEquipo_SelectionChanged"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5" Grid.Row="3">
+                <Label  Content="Solcitante" VerticalContentAlignment="Center" Margin="0,0,10,0" />
+                <ComboBox x:Name="cbousuario" MinHeight="26" Margin="0,0,100,0" Width="187" FontSize="16" HorizontalAlignment="Left"  TabIndex="5" VerticalContentAlignment="Center"  />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5" Grid.Row="4">
+                <Label  Content="Motivo" VerticalContentAlignment="Center" Margin="0,0,10,0" />
+                <ComboBox x:Name="cbotipomotivo" MinHeight="26" Margin="0,0,100,0" Width="201" FontSize="16" HorizontalAlignment="Left"  TabIndex="5" VerticalContentAlignment="Center"  />
+            </StackPanel>
+            <StackPanel Grid.Row="5" Margin="5">
+                <Label Content="Comentartios"  VerticalContentAlignment="Center" Height="26" Margin="0,0,10,0"/>
+                <TextBox Name="txtcomentarios" AcceptsReturn="True" MinHeight="80" TextWrapping="Wrap"/>
+            </StackPanel>
+            <Button x:Name="btnSolicitar" Content="Solicitar" Height="30" FontSize="16" FontWeight="Bold" HorizontalAlignment="Right" Grid.Row="6" VerticalAlignment="Top" Width="91" Click="btnSolicitar_Click" Margin="0,0,5,0"/>
+
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="429*"/>
+            </Grid.RowDefinitions>
+            <Label Content="Lista de Turnos"  VerticalContentAlignment="Center" Margin="5" Name="lbltitulogrid" FontSize="14" FontWeight="Bold"/>
+            <telerik:RadGridView x:Name="gridTurnos" Grid.Row="1" Margin="5" AutoGenerateColumns="False" IsReadOnly="True"  ShowGroupPanel="False">
+                <telerik:RadGridView.Columns>
+                    <telerik:GridViewDataColumn Header="Hora" DataMemberBinding="{Binding hora,StringFormat=\{0:HH:mm:ss\}}"/>
+                    <telerik:GridViewCheckBoxColumn Header="E" DataMemberBinding="{Binding isBloqueado}"/>
+                    <telerik:GridViewDataColumn Header="Paciente" DataMemberBinding="{Binding paciente}"/>
+                    <telerik:GridViewDataColumn Header="Estudio" DataMemberBinding="{Binding estudio}"/>
+                    <telerik:GridViewDataColumn Header="Turno" DataMemberBinding="{Binding turno}"/>
+                </telerik:RadGridView.Columns>
+            </telerik:RadGridView>
+
+        </Grid>
+                </Grid>
+</Window>

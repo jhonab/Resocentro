@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d9132a244a764821bf37245e62375c96" Name="Diagram1">
+        <EntityTypeShape EntityType="ResocentroWebModel.Consulta" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ResocentroWebModel.Historia" Width="1.5" PointX="3" PointY="1.375" />
+        <AssociationConnector Association="ResocentroWebModel.FK_dbo_Historia_dbo_Consulta_ConsultId" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

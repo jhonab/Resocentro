@@ -1,0 +1,442 @@
+﻿
+<!DOCTYPE html>
+<html lang="es-pe">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Sistema de Encuestas Médicas" />
+    <meta name="author" content="Resocentro" />
+    <meta property="og:image" content="../img/favicon.png">
+    <link rel="icon" href="../img/favicon.ico">
+    <title>@ViewBag.Titlenot | Sistema Médico</title>
+
+    <link href="~/fonts/Entypo/css/entypo.css" rel="stylesheet" />
+    <link href="~/fonts/Awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/googleapis.css" rel="stylesheet" />
+    <link href="~/Style/bootstrap.css" rel="stylesheet" />
+    <link href="~/Style/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Style/neon-core.css" rel="stylesheet" />
+    <link href="~/Style/neon-theme.css" rel="stylesheet" />
+    <link href="~/Style/neon-forms.css" rel="stylesheet" />
+    <link href="~/css/Encuesta.css" rel="stylesheet" />
+    <link href="~/Style/custom.css" rel="stylesheet" />
+    <link href="~/Style/toastr.css" rel="stylesheet" />
+    <script src="~/Script/jquery-1.11.0.min.js"></script>
+    
+    <script src="~/js/jquery.signalR-2.2.1.min.js"></script>
+    <script src="http://extranet.resocentro.com:5052/signalr/hubs"></script>
+    
+
+    <!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    @{ Encuesta.Member.CustomMembershipUser user = Membership.GetUser(true) as Encuesta.Member.CustomMembershipUser;
+     var oRuta = "http://extranet.resocentro.com:5050/PaginaWeb/Perfiles/"; }
+
+</head>
+<body onmouseover="" class="page-body loaded">
+    <div class="page-container sidebar-collapsed ">
+        <!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+
+        <div class="sidebar-menu ">
+            <div class="sidebar-menu-inner">
+                <header class="logo-env">
+
+                    <!-- logo -->
+                    <div class="logo">
+                        <a href="@Url.Action("Index","Home")">
+                            <img src="~/img/Logotipo.png" width="120" />
+
+                        </a>
+                    </div>
+
+                    <!-- logo collapse icon -->
+                    &nbsp;
+                    <div class="sidebar-collapse">
+                        <a href="#" class="sidebar-collapse-icon with-animation">
+                            <!-- add class "with-animation" if you want sidebar to have animation during expanding/collapsing transition -->
+                            <i class="entypo-menu"></i>
+                        </a>
+                    </div>
+
+
+
+                    <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+                    <div class="sidebar-mobile-menu visible-xs">
+                        <a href="#" class="with-animation">
+                            <!-- add class "with-animation" to support animation -->
+                            <i class="entypo-menu"></i>
+                        </a>
+                    </div>
+
+                </header>
+                @Html.Partial("_Menu")
+            </div>
+        </div>
+
+
+
+
+        <div class="main-content">
+            <div class=" row">
+                <div class="col-md-12">
+                    <div id="Layout_Menu_User" class="row ">
+
+                        <!-- Profile Info and Notifications -->
+                        <div class="col-md-6 col-sm-8 clearfix ">
+
+                            <ul class="user-info pull-left pull-none-xsm">
+
+                                <!-- Profile Info -->
+                                <li class="profile-info dropdown" id="imgbudy">
+                                    <!-- add class "pull-right" if you want to place this from right -->
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                                        @if (user.pathBuddy)
+                                        {
+                                            oRuta = oRuta + user.ProviderUserKey.ToString() + ".png";
+
+                                            <img src="@oRuta" alt="@user.UserName" class=" img-circle" width="40" height="40">
+
+                                        }
+                                        else
+                                        {
+                                            if (user.Comment == "M")
+                                            {
+                                                oRuta = oRuta + "hombre.png";
+                                            }
+                                            else
+                                            {
+                                                oRuta = oRuta + "mujer.png";
+                                            }
+
+                                            <img src="@oRuta" alt="@user.UserName" class=" img-circle" width="40" height="40">
+                                        }
+                                        <span> @user.UserName</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+
+                                        <!-- Reverse Caret -->
+                                        <li class="caret"></li>
+
+                                        <!-- Profile sub-links -->
+                                        @*<li>
+                                                <a href="extra-timeline.html">
+                                                    <i class="entypo-user"></i>
+                                                    Edit Profile
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="mailbox.html">
+                                                    <i class="entypo-mail"></i>
+                                                    Inbox
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="extra-calendar.html">
+                                                    <i class="entypo-calendar"></i>
+                                                    Calendar
+                                                </a>
+                                            </li>*@
+
+                                        <li>
+                                            <a href="" data-toggle="modal" data-target="#modal_imagen">
+                                                <i class="fa fa-image"></i>
+                                                Imagen
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+
+
+
+
+
+                        </div>
+                        <!-- Raw Links -->
+                        <div class="col-md-6 col-sm-4 clearfix ">
+
+                            <ul class="list-inline links-list pull-right">
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#modal_Perifoneo">
+                                        <i class="fa fa-bullhorn fa-lg "></i> &nbsp;&nbsp;Llamar
+                                    </a>
+                                </li>
+                                <li class="sep"></li>
+                                <li>
+                                    <a href="@Url.Action("ListaReporte", "Reporte", new { i = DateTime.Now, f = DateTime.Now })">
+                                        <i class="fa fa-line-chart fa-lg "></i> &nbsp;&nbsp;Reporte
+                                    </a>
+                                </li>
+                                <li class="sep"></li>
+                                <li>
+                                    <a href="#" data-toggle="chat" data-collapse-sidebar="1">
+                                        <i class="entypo-chat"></i>
+                                        Chat
+                                    </a>
+                                </li>
+                                <li class="sep"></li>
+                                <li>
+                                    <a href="@Url.Action("Logout", "Account", new { home=true})">
+                                        Salir&nbsp;&nbsp;<i class="fa fa-sign-out fa-lg "></i>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+                    <hr />
+
+                    @RenderBody()
+                </div>
+            </div>
+            <!-- lets do some work here... --><!-- Footer -->
+            <footer class="main">
+
+
+                &copy; @DateTime.Now.Year.ToString()  <strong>Resocentro - Sistemas</strong>
+
+            </footer>
+        </div>
+
+
+        <div id="chat" class="fixed" data-current-user="@user.UserName" data-order-by-status="1" data-max-chat-history="25">
+            <div class="chat-inner" tabindex="5000" style="overflow: hidden; outline: none;">
+                <h2 class="chat-header">
+                    <a href="#" class="chat-close"><i class="entypo-cancel"></i></a>
+                    <i class="entypo-users"></i>
+                    Chat
+                    <span class="badge badge-success is-hidden">0</span>
+                </h2>
+                <div class="chat-group" id="userList">
+
+
+                </div>
+
+
+            </div>
+
+            <!-- conversation template -->
+            <div class="chat-conversation" style="display: none; top: 0px; opacity: 0;">
+
+                <div class="conversation-header">
+                    <a href="#" class="conversation-close">
+                        <i class="entypo-cancel"></i>
+                    </a>
+                    <span class="user-status is-online"></span>
+                    <span class="display-name">Catherine J. Watkins</span>
+                    <small>Online</small>
+                </div>
+                <ul class="conversation-body"></ul>
+                <div class="chat-textarea">
+                    <textarea class="form-control autogrow" placeholder="Type your message" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 32px; margin-left: 0px; margin-right: -5px; width: 292px;"></textarea>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <link href="~/Style/inputFile/fileinput.min.css" rel="stylesheet" />
+    <div class="modal fade" id="modal_imagen" tabindex="-1" role="dialog" aria-labelledby="modal_imagenLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="modal_imagenLabel">Cambiar imagen de perfil</h4>
+                </div>
+                <div class="modal-body">
+                    <input id="file-1" type="file" multiple class="file" data-overwrite-initial="false" data-min-file-count="1">
+                </div>
+
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" id="modal_Perifoneo" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Llamar a Personal Médico</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <select id="lsttipoLlamada" class="form-control">
+                                <option value="">- Seleccione el Tipo de Llamado -</option>
+                                <option value="enfermera">Enfermera </option>
+                                <option value="supervisor">Supervisor </option>
+                                <option value="tecnologo">Tecnólogo </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <select id="lstEquipoLlamado" class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-success" onclick="llamarpersonalMedico()">Llamar</button>
+                </div>
+
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <script type="text/javascript">
+    var chatID = '';
+    var chatUser = '@user.ProviderUserKey.ToString()';
+
+    var opts = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-center",
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+    var hubNotification, URLactual = "";
+    $(function () {
+        URLactual = window.location.toString();
+        if (URLactual.toLowerCase().indexOf("/lectorencuesta/") < 0) {
+            $.connection.hub.url = "http://extranet.resocentro.com:5052/signalr";
+            hubNotification = $.connection.emetacHub;
+
+            $.connection.hub.start().done(function () {
+                hubNotification.server.connect('@user.UserName.ToString()', chatUser);
+            });
+            hubNotification.client.broadcastMessage = function (id, nickname, msg, reciver) {
+                console.log(id);
+                if (reciver == chatUser) {
+                    neonChat.showChat(true);
+                    neonChat.pushMessage(id, msg, nickname, new Date(), false, true);
+                    neonChat.renderMessages(id);
+                    neonChat.open("#"+id);
+                };
+            };
+            hubNotification.client.updateUsers = function (userId, userList) {
+                chatID = userId;
+                
+                $('#userList').empty();
+                userList.forEach(function (user) {
+                    if (user.username != '@user.UserName.ToString()') {
+                        $('#userList').append(' <a href="#" id="' + user.id + '"class=""><span class="user-status is-online"></span><em>' + user.username + '</em><span class="badge badge-info is-hidden">0</span></a>');
+                    }
+                });
+            };
+            $(window).unload(function () {
+                hubNotification.server.disconnect(chatID);
+            });
+
+            
+        }
+
+
+        $.ajax({
+            url: "@Url.Action("getEquipo", "Herramientas")",
+            data: {},
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                alert("error");
+            },
+            success: function (data) {
+                var items = "";
+                items += "<option value='' >- Seleccione Equipo -</option>";
+                $.each(data, function (i, item) {
+                    items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                });
+                $("#lstEquipoLlamado").html(items);
+            }
+        });
+
+        $("#file-1").fileinput({
+            uploadUrl: '@Url.Action("UploadFiles", "Account")', // you must set a valid URL here else you will get an error
+            allowedFileExtensions: ['jpg', 'png'],
+            overwriteInitial: false,
+            maxFileSize: 1000,
+            maxFilesNum: 1,
+            allowedFileTypes: ['image'],
+            slugCallback: function (filename) {
+                return filename.replace('(', '_').replace(']', '_');
+            },
+            layoutTemplates: {
+                main1: "<div class=\'input-group {class}\'>\n" +
+                "   <div class=\'input-group-btn\'>\n" +
+            "       {browse}\n" +
+            "       {upload}\n" +
+            "       {remove}\n" +
+            "   </div>\n" +
+                "   {caption}\n" +
+                "</div>" +
+                "{preview}\n"
+
+            }
+        });
+    });
+    function llamarpersonalMedico() {
+        var _ubicacion = $("#lstEquipoLlamado").val();
+        var _tipo = $("#lsttipoLlamada").val();
+        if (_tipo != "" && _ubicacion != "") {
+            $.ajax({
+                url: "@Url.Action("LlamarPersonalMedico", "Herramientas")",
+                data: { tipo: _tipo, ubicacion: _ubicacion },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, "no se cargaron los Equipo de Llamado");
+                },
+                success: function (data) {
+                    mostrarmensaje(1, "Se llamará el Personal Médico");
+                    hubNotification.server.perifoneo(_tipo, _ubicacion);
+                    $("#modal_Perifoneo").modal("toggle");
+                }
+            });
+        } else
+            mostrarmensaje(4, "Seleccione el Tipo de Llamado y el Equipo");
+    }
+    </script>
+    <!-- Bottom Scripts -->
+    <script src="~/Script/gsap/main-gsap.js"></script>
+
+    <script src="~/Script/joinable.js"></script>
+    <script src="~/Script/resizeable.js"></script>
+
+    <script src="~/Script/neon-api.js"></script>
+    <script src="~/Script/neon-custom.js"></script>
+    <script src="~/Script/neon-demo.js"></script>
+
+    <script src="~/Script/toastr.js"></script>
+    <script src="~/Script/neon-chat.js"></script>
+    <script src="~/Script/inputFile/fileinput.min.js"></script>
+    <script src="~/Script/inputFile/fileinput_locale_es.js"></script>
+    <script src="~/Script/bootstrap.min.js"></script>
+    <script src="~/js/mensajeError.js"></script>
+
+</body>
+</html>

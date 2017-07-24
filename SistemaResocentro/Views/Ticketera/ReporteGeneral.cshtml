@@ -1,0 +1,279 @@
+﻿@model SistemaResocentro.ViewModel.Reporte_ViewModel
+@{
+    ViewBag.Title = "ReporteGeneral";
+}
+<!-- DataTables JavaScript -->
+
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+
+<script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $('.table').dataTable();
+    });
+</script>
+<h2>ReporteGeneral</h2>
+
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class=" chart-responsive">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Reporte General de Encuesta</h3>
+                </div>
+                <div class="panel-body">
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <i class="fa fa-search fa-fw"></i>Buscar
+                        </div>
+                        <div class="panel-body">
+                            <script type="text/javascript">
+                                function getReporte() {
+                                    var inicio = $("#ini").val();
+                                    var fin = $("#fin").val();
+                                    var sede = $("#sede").val();
+
+                                    window.location.replace("/Ticketera/ReporteGeneral?ini=" + inicio.replace("-", "%2F") + "&fin=" + fin.replace("-", "%2F") + "&sede=" + sede);
+                                }
+                            </script>
+                            <div class="col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label>Inicio</label>
+                                    <input type="date" id="ini" name="ini" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label>Fin</label>
+                                    <input type="date" id="fin" name="fin" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label>Sede</label>
+                                    <input type="number" id="sede" name="sede" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-lg-2">
+                                <p>
+                                    <input type="button" onclick="getReporte()" class=" btn btn-info " value="Buscar" />
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="panel-primary panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Resumen</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label>Total de Pacientes :</label>
+                                    @Model.general.Count()
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Counter
+                                                </th>
+                                                <th>
+                                                    Total
+                                                </th>
+                                                <th>
+                                                    Max T. Espera
+                                                </th>
+                                                <th>
+                                                    % T. Espera
+                                                </th>
+                                                <th>
+                                                    Min T. Espera
+                                                </th>
+                                                <th>
+                                                    Max T.Atencion
+                                                </th>
+                                                <th>
+                                                    % T.Atencion
+                                                </th>
+                                                <th>
+                                                    Min T.Atencion
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.promedio)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ShortName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Total)
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                TimeSpan result = TimeSpan.FromSeconds(item.Max_T__Espera.Value);
+                                                        }
+                                                        @result.ToString("hh':'mm':'ss")
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                result = TimeSpan.FromSeconds(item.C_Tiempo_Espera.Value);
+                                                        }
+                                                        @result.ToString("hh':'mm':'ss")
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                result = TimeSpan.FromSeconds(item.Min_T__Espera.Value);
+                                                        }
+                                                        @result.ToString("hh':'mm':'ss")
+                                                    </td>
+
+                                                    <td>
+                                                        @{
+                                                result = TimeSpan.FromSeconds(item.Max_T__Atencion.Value);
+                                                        }
+                                                        @result.ToString("hh':'mm':'ss")
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                result = TimeSpan.FromSeconds(item.C_Tiempo_Atencion.Value);
+                                                        }
+                                                        @result.ToString("hh':'mm':'ss")
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                result = TimeSpan.FromSeconds(item.Min_T__Atencion.Value);
+                                                        }
+                                                        @result.ToString("hh':'mm':'ss")
+                                                    </td>
+
+
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.Data -->
+                    @{int cont = 0;}
+                    @foreach (var counter in Model.general.Select(x => x.ShortName).Distinct().ToList())
+                    {
+                        var lst = Model.general.Where(x => x.ShortName == counter).ToList();
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse_@cont"><i class="fa fa-database fa-fw"></i>@counter </a>
+                                </h4>
+                            </div>
+                            <div id="collapse_@cont" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Counter
+                                                    </th>
+                                                    <th>
+                                                        Fec. Registro
+                                                    </th>
+                                                    <th>
+                                                        Paciente
+                                                    </th>
+                                                    <th>
+                                                        Tipo Atencion
+                                                    </th>
+                                                    <th>
+                                                        Fec. Llamadas
+                                                    </th>
+                                                    <th>
+                                                        Fec. Termina
+                                                    </th>
+                                                    <th>
+                                                        Fec. Cancela
+                                                    </th>
+                                                    <th>
+                                                        T. Espera
+                                                    </th>
+                                                    <th>
+                                                        T.Atencion
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in lst)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.ShortName)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.fec_registro)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.nombre)
+                                                        </td>
+                                                        <td>
+                                                            @if (item.isPreferencial)
+                                                            {
+                                                                <text>  Preferencial -</text>
+                                                            }
+                                                            else if (item.isrecojo)
+                                                            {
+                                                                <text>  Recojo Resultado -</text>
+                                                            }
+                                                            else { }
+                                                            @Html.DisplayFor(modelItem => item.Tipo_Atencion)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.fec_llamada)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.fec_termino)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.fec_cancela)
+                                                        </td>
+                                                        <td>
+                                                            @{
+                                                    TimeSpan result = TimeSpan.FromSeconds(item.Tiempo_Espera.Value);
+
+                                                            }
+                                                            @result.ToString("hh':'mm':'ss")
+                                                        </td>
+                                                        <td>
+                                                            @{
+                                                    result = TimeSpan.FromSeconds(item.Tiempo_Atencion.Value);
+
+                                                            }
+                                                            @result.ToString("hh':'mm':'ss")
+                                                        </td>
+
+
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                                cont++;
+                    }
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,171 @@
+﻿@{
+    ViewBag.Title = "<i class='fa fa-gear '></i> Herramientas";
+    ViewBag.Titlenot = "Herramientas";
+}
+
+<script src="~/js/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#msj").hide()//ocultar el msj
+        ocultarListas();
+    });
+
+    function ocultarListas() {
+        $("#div_partial_encuesta").hide();
+        $("#div_partial_Cambio").hide();
+        $("#div_datos").hide();
+    }
+
+    function mostrarListas() {
+        var btn = ($("#btncargarEncuesta").html());
+        if (btn.indexOf('Buscar') !== -1) {
+
+            $("#num_exam").prop("disabled", true)
+            $("#btncargarEncuesta").html("<i class='fa fa-search'></i>&nbsp;&nbsp;Nueva Busqueda");
+            $("#div_partial_encuesta").show();
+            $("#div_partial_Cambio").show();
+            $("#div_datos").show();
+
+        }
+        else {
+            $("#num_exam").prop("disabled", false)
+            $("#btncargarEncuesta").html("<i class='fa fa-search'></i>&nbsp;&nbsp;Buscar");
+            $("#num_exam").val("");
+            $("#partial_cambio").html("");
+            $("#partial_encuesta").html("");
+            $("#lsttipo").val("0");
+            $("#lstmedico").html('<option value>- Seleccione el tipo -</option>');
+            ocultarListas();
+        }
+    }
+
+   
+
+    function cargarEncuesta() {
+        var examen = $("#num_exam").val();
+        if (examen != "" && examen > 0) {
+
+            $.ajax({
+                url: "@Url.Action("GetEncuesta", "Herramientas")",
+                data: { examen: examen, paciente: "" },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+                },
+                success: function (data) {
+                    if (data.result) {
+                        $("#partial_encuesta").html(data.msj);
+                        mostrarListas();
+                    } else
+                        mostrarmensaje(2, "Non existe ninguna referencia con el numero ingresado");
+                }
+            });
+
+        } else
+            mostrarmensaje(4, "Ingrese un numero de Examen correcto");
+    }
+
+    function modificarCalificacion() {
+        var examen = $("#num_exam").val();
+        var tip = $("#lsttipo").val();
+        
+        if (examen != "" && examen > 0 && tip > 0 ) {
+            $.ajax({
+                url: "@Url.Action("EliminarCalificacion", "Herramientas")",
+                data: { examen: examen, tipo: tip },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, "Ocurrio un error con el procesamiento, vuelva a interntarlo");
+                },
+                success: function (data) {
+                    $.ajax({
+                        url: "@Url.Action("GetEncuesta", "Herramientas")",
+                        data: { examen: examen, paciente: "" },
+                        dataType: "json",
+                        type: "POST",
+                        error: function () {
+                            mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+                        },
+                        success: function (data) {
+                            if (data.result) {
+                                $("#partial_cambio").html(data.msj);
+
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            mostrarmensaje(4, "Seleccione un tipo de Médico");
+        }
+    }
+</script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h2 class="box-title">Eliminar Calificación Médico </h2>
+            </div>
+            <div class="box-body chart-responsive">
+                <div class="row">
+
+                    <div class="alert" id="msj">
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>N° Examen:</label>
+                            <input type="number" id="num_exam" placeholder="Número de Examen" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <label></label>
+                            <button type="button" class=" btn btn-info " onclick="cargarEncuesta()" id="btncargarEncuesta"><i class="fa fa-search"></i>&nbsp;&nbsp; Buscar&nbsp;&nbsp; </button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="div_partial_encuesta">
+                    <div class="col-lg-4">
+                        <div id="partial_encuesta">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="div_datos">
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Tipo Médico:</label>
+                            <select class="form-control" id="lsttipo">
+                                <option value="0">- Seleccione el tipo -</option>
+                                <option value="1">Informante</option>
+                                <option value="2">Validador</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <label></label>
+                            <button type="button" class=" btn btn-danger " onclick="modificarCalificacion()" id="btncambiarUsuario"><i class="fa fa-delete"></i>&nbsp;&nbsp;Eliminar</button>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row" id="div_partial_Cambio">
+                    <div class="col-lg-4">
+                        <div id="partial_cambio">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

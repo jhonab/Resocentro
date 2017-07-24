@@ -1,0 +1,107 @@
+﻿@model SistemaResocentro.ViewModel.ProformaViewModel
+
+@{
+    ViewBag.Title = "Proforma";
+}
+<script type="text/javascript">
+    $(function () {
+        $("#Layout_Menu_User").addClass("hidden-print");
+        imprimir();
+    });
+    function imprimir() {
+        window.print();
+    }
+</script>
+<div class="form-horizontal">
+    <h3>
+        Proforma <strong>N° @Model.proforma.numerodeproforma</strong>
+
+        <img src="~/images/logo/Logo_Azul.png" class="pull-right" style="width:20%" />
+
+    </h3>
+    <hr />
+    <div class="row">
+        <div class="col-xs-6 ">
+            <div class="form-group">
+                <label class="control-label col-md-3">Paciente:</label>
+                <div class="col-md-9">
+                    @Html.DisplayFor(model => model.paciente, new { htmlAttributes = new { @class = "" } }),
+                </div>
+            </div>
+            @if (Model.proforma.titular != "")
+            {
+                <div class="form-group">
+                    <label class="control-label col-md-3">Titular:</label>
+                    <div class="col-md-9">
+                        @Html.DisplayFor(model => model.proforma.titular, new { htmlAttributes = new { @class = "" } }),
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                <label class="control-label col-md-3">Clínica Procedencia:</label>
+                <div class="col-md-9">
+                    @Html.DisplayFor(model => model.clinica, new { htmlAttributes = new { @class = "" } }),
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 ">
+            <div class="form-group">
+                <label class="control-label col-md-3">Aseguradora:</label>
+                <div class="col-md-9">
+                    @Html.DisplayFor(model => model.aseguradora, new { htmlAttributes = new { @class = "" } }),
+
+                </div>
+            </div>
+            @if (Model.proforma.contratante != "")
+            {
+                <div class="form-group">
+                    <label class="control-label col-md-3">Empresa Contratane:</label>
+                    <div class="col-md-9">
+                        @Html.DisplayFor(model => model.proforma.contratante, new { htmlAttributes = new { @class = "" } }),
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                <label class="control-label col-md-3">Médico:</label>
+                <div class="col-md-9">
+                    @Html.DisplayFor(model => model.medico, new { htmlAttributes = new { @class = "" } }),
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 ">
+            <div class="form-group">
+                <label class="control-label col-md-3">Estudios: </label>
+                <div class="col-md-8">
+                    <table class="table  table- table-bordered ">
+
+                        <tbody>
+                            @if (Model.list_estudio != null)
+                            {
+                                foreach (var item in Model.list_estudio)
+                                {
+                                    <tr>
+                                        <td>@item.nombre</td>
+                                        <td>@item.precio</td>
+
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="control-label  col-md-1 pull-right">Total: <strong>@Model.list_estudio.Sum(x => x.precio)</strong></h4>
+            </div>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary btn-lg hidden-print" onclick="imprimir();">Imprimir&nbsp;&nbsp;<i class="fa fa-print fa-lg"></i></button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,88 @@
+﻿@model IEnumerable<SistemaResocentro.Models.Incidente>
+
+@{
+    ViewBag.Title = "Solicitudes Pendientes";
+}
+<h2>
+   Lista de Solicitudes :
+    @Html.DropDownList("cboestado", (SelectList)ViewBag.estado, new { @class="",@onchange="refresLista()"})
+    
+</h2>
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var table = $(".table").DataTable({
+            "sPaginationType": "bootstrap",
+            "iDisplayLength": 50,
+        });
+    });
+    function refresLista() {
+        var estado = $("#cboestado").val();
+        window.location.assign('@Url.Action("SolicitudesPendientes", "Sistemas")'+"?estado="+estado)
+    }
+</script>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table compact table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th style="width:60px;">
+                        Id
+                    </th>
+                    <th>
+                        Usuario
+                    </th>
+                    <th>
+                        Aplicativo
+                    </th>
+                    <th>
+                        Importancia
+                    </th>
+                    <th>
+                        Fecha Registro
+                    </th>
+                    <th>
+                        Asignado a
+                    </th>
+                    <th style="width:60px;">
+                        Estado
+                    </th>
+                    <th style="width:60px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.idIncidente)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.usuario)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.aplicativo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.importancia)
+                        </td>
+                        <td>
+                            @item.fec_registro.Value
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.USUARIOLector.ShortName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.estado)
+                        </td>
+                        <td>
+                            <a href="@Url.Action("DetalleSolicitud", "Sistemas", new { id=item.idIncidente})" class="btn btn-success " type="button"><i class="fa fa-check fa-lg"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

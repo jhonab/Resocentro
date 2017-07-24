@@ -1,0 +1,71 @@
+﻿<script src="~/js/getUrl.js"></script>
+<div class="pull-right">
+    <input type="button" class="btn btn-outline btn-default" onclick="cambiarfondo();" value="Cambiar Fondo" />
+    <style>
+        .oscuro {
+            background-color: #000!important;
+            border-color: #000!important;
+            color: #fff;
+            font-size: 17px;
+        }
+
+        .panel-content_oscuro {
+            background-color: #000!important;
+            border-color: #4F5F57!important;
+            color: #fff!important;
+        }
+
+        .panel_oscuro {
+            border-color: #4F5F57!important;
+            color: #fff;
+        }
+
+        .panel_rpta_label {
+            color: #fff!important;
+        }
+
+        .panel_content_rpta {
+            font-weight: bold;
+            color: #639B9A!important;
+            font-size: 19px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var parameter = $.get("impax");
+
+            if (parameter != null) {
+                cambiarfondo();
+
+            }
+        });
+        function cambiarfondo() {
+            var color = $('#page-wrapper').css('background-color');
+            if (color == 'rgb(0, 0, 0)') {
+                $('#page-wrapper').removeClass("oscuro");
+                $('#page-wrapper').removeClass("oscuro");
+                $('.panel-body').removeClass("oscuro");
+                $('.well').removeClass("oscuro");
+                $('.panel').removeClass("panel_oscuro");
+                $('.panel-heading').removeClass("panel-content_oscuro");
+                $('.panel-body span').removeClass("panel_content_rpta");
+                $('.panel-body label').removeClass("panel_rpta_label");
+                $('.navbar').show();
+                $('#titulo_ocultar').show();
+                $('#page-wrapper').css('margin', '0 0 0 250px');
+            } else {
+                $('#page-wrapper').addClass("oscuro");
+                $('.panel-body').addClass("oscuro");
+                $('.well').addClass("oscuro");
+                $('.panel').addClass("panel_oscuro");
+                $('.panel-heading').addClass("panel-content_oscuro");
+                $('.panel-body span').addClass("panel_content_rpta");
+                $('.panel-body label').addClass("panel_rpta_label");
+                $('.navbar').hide();
+                $('#titulo_ocultar').hide();
+                $('#page-wrapper').css('margin', '0 0 0 0');
+            }
+        }
+    </script>
+                                          
+</div>

@@ -1,0 +1,133 @@
+﻿@{
+    ViewBag.Title = "Enviar Datos a Modalidad";
+}
+
+<h2>Enviar Datos a Modalidad EMETAC</h2>
+<script type="text/javascript">
+    $(function () {
+        @{
+            List<cboequipo> lista = (List<cboequipo>)ViewBag.Equipo;
+        }
+        $("._cbo2").select2({
+            allowClear: true
+        });
+        $("#div_examen").hide();
+    });
+    function getExamen() {
+        var examen = $("#examen").val().trim();
+        if (examen != "") {
+            $("#div_examen").show();
+            $("#tabla_examen").html('<tr><td><div class="row">' +
+                       '<div class="pace pace-active"><div class="pace-progress" data-progress="50" data-progress-text="50%" style="-webkit-transform: translate3d(50%, 0px, 0px); -ms-transform: translate3d(50%, 0px, 0px); transform: translate3d(50%, 0px, 0px);"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div></td></tr>' +
+                   '</div>');
+            $.ajax({
+                url: "@Url.Action("getExamen", "Tecnologo")",
+                data: { examen: examen },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                toastr.error('Error al cargar atencion', 'Error', opts);
+                $("#div_examen").hide();
+            },
+            success: function (data) {
+                var len=data.length;
+                if (len > 0) {
+                    var items = "";
+                    for (var i = 0; i < len; i++) {
+                        items += "<tr><td>" + data[i].nombre + "</td><td>" + data[i].estudio + "</td></tr>";
+                    }
+                    $("#tabla_examen").html(items);
+                }
+                else {
+                    $("#div_examen").hide();
+                    toastr.error('No se encontro ningun dato', 'Error', opts);
+                }
+            }
+        });
+        }
+    }
+    function enviarModalidad() {
+        var examen = $("#examen").val();
+        var equipo = $("#cboequipo").val().trim();
+        if (examen > 0 && equipo != "") {
+            $.ajax({
+                url: "@Url.Action("sendIntegrador", "Tecnologo")",
+                data: { examen: examen, equipo: equipo },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                toastr.error('Error al enviar datos', 'Error', opts);
+            },
+            success: function (data) {
+                if (data) {
+                    $("#div_examen").hide();
+                    toastr.success('Se envió correctamente los datos', 'Exito', opts);
+                }
+                else
+                    toastr.error('El examen ya está registrado', 'Error', opts);
+                $("#div_examen").hide();
+            }
+        });
+        }
+    }
+</script>
+<div class="form-horizontal">
+    <div class="row">
+        <div class="col-md-6 ">
+            <div class="form-group">
+                <label class="control-label col-md-3">N° de Exámen:</label>
+                <div class="col-md-6">
+                    <input type="number" class="form-control" id="examen" />
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-info btn-lg btnadd" onclick="getExamen()" type="button"><i class="fa fa-search "></i>&nbsp;&nbsp;Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="div_examen">
+        <div class="row">
+            <div class="col-md-6 ">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Equipo:</label>
+                    <div class="col-md-6">
+                        <select class="form-control _cbo2" id="cboequipo" name="cbopermiso">
+                            <option value="">- Seleccione -</option>
+                            @foreach (var un in lista)
+                            {
+                                <optgroup label="@un.empresa">
+                                    @foreach (var item in un.equipos)
+                                    {
+                                        <option value="@item.idequipo">@item.nombre</option>
+                                    }
+                                </optgroup>
+
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-success btn-lg" onclick="enviarModalidad()" type="button"><i class="fa fa-send "></i>&nbsp;&nbsp;Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 ">
+                <div >
+                    <table class="table table-striped compact table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Paciente</th>
+                                <th>Examen</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla_examen"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="~/js/select2/select2-bootstrap.css" rel="stylesheet" />
+<link href="~/js/select2/select2.css" rel="stylesheet" />
+<script src="~/js/select2/select2.min.js"></script>

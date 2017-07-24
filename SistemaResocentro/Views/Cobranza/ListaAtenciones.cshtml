@@ -1,0 +1,81 @@
+﻿@model IEnumerable<SistemaResocentro.ViewModel.CobranzaViewModel>
+@{
+    ViewBag.Title = "ListaAtenciones";
+}
+
+<h2>Lista Atenciones</h2>
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+
+<script src="~/js/Datetime/moment.js"></script>
+<script src="~/js/Datetime/moment-with-locales.js"></script>
+<script src="~/js/Datetime/bootstrap-datetimepicker.js"></script>
+<link href="~/css/Datetime/bootstrap-datetimepicker.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    $(function () {
+        $('#fecha_busqueda').datetimepicker({
+            sideBySide: true,
+            locale: 'es',
+            format: 'DD/MM/YYYY',
+            defaultDate: "@ViewBag.fecha"
+        });
+    });
+</script>
+<div class="row">
+    <div class="col-md-12 ">
+        <p>
+            @using (Html.BeginForm("ListaAtenciones", "Cobranza"))
+            {
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Fecha: </label>
+                        <div id="fecha_busqueda" class='input-group date'>
+                            <input type="text" id="fecha" name="fecha" class=" form-control" />
+                            <span class="input-group-addon btn-blue">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Sede: </label>
+                        @Html.DropDownList("unidad", (SelectList)ViewBag.Sedes, "- Seleccione Sede -", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-info"><i class="fa fa-search"></i>&nbsp;&nbsp;Buscar</button>
+                    </div>
+                </div>
+            }
+        </p>
+
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Hora
+                    </th>
+                    <th>
+                        Paciente
+                    </th>
+                    <th style="width:90px!important"></th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tbody>
+                    <tr>
+                        <td>@item.hora</td>
+                        <td>@item.paciente</td>
+                        <td><a href="../Cobranza/RealizarCobranza?atencion=@item.numeroatencion" class="btn btn-success">Cobrar</a></td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+</div>

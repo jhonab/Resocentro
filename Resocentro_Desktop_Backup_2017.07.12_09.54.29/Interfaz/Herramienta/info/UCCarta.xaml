@@ -1,0 +1,31 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.Herramienta.info.UCCarta" 
+             Width="450" Height="auto" Background="{DynamicResource Windows.Background}">
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <Label Content="Id Carta"/>
+                <Label Content="N° Carta"/>
+                <Label Content="Aseguradora"/>
+                <Label Content="Estudios."/>
+                <Label Content="Onservaciones"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBox IsReadOnly="True" Padding="4" Text="{Binding id_carta}"/>
+                <TextBox IsReadOnly="True" Padding="4" Text="{Binding numero_carta}"/>
+                <TextBox IsReadOnly="True" Padding="4" Text="{Binding aseguradora_carta}"/>
+                <telerik:RadGridView ShowGroupPanel="False" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" ItemsSource="{Binding lista_estudios_carta}">
+                    <telerik:RadGridView.Columns>
+                        <telerik:GridViewDataColumn Header="Estudio" DataMemberBinding="{Binding estudio}"/>
+                        <telerik:GridViewDataColumn Header="Cob." DataMemberBinding="{Binding cobertura}"/>
+                    </telerik:RadGridView.Columns>
+                </telerik:RadGridView>
+                <TextBox IsReadOnly="True" TextWrapping="Wrap" Padding="4" Text="{Binding observaciones_cara}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

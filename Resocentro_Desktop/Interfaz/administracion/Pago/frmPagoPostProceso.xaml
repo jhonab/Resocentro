@@ -1,0 +1,44 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.administracion.frmPagoPostProceso"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         Title="Pago Post Procesadores | Resocentro"  Background="{DynamicResource Windows.Background}"  Height="600" Width="700" Icon="/Resocentro_Desktop;component/img/favicon.png">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="105*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="5,10,5,5">
+            <Label Content="Seleccione Mes y Año:" VerticalContentAlignment="Center"/>
+            <ComboBox Height="23" x:Name="cboMes" Width="120" />
+            <ComboBox Height="23" x:Name="cboAño" Width="81" />
+            <Button Name="btnBuscar" Content="Buscar"  Margin="30,3,0,10" Click="btnBuscar_Click"/>
+            
+        </StackPanel>
+        <telerik:RadGridView Name="gridPostProceso" Grid.Row="1" Margin="5" AutoGenerateColumns="False" IsReadOnly="True" ShowColumnFooters="True">
+            <telerik:RadGridView.GroupDescriptors>
+                <telerik:GroupDescriptor  Member="tecnologo" DisplayContent="Tecnólogo" SortDirection="Ascending" />
+            </telerik:RadGridView.GroupDescriptors>
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Sede" GroupMemberPath="" DataMemberBinding="{Binding sede}"/>
+                <telerik:GridViewDataColumn Header="Fecha" DataMemberBinding="{Binding fecha}" />
+                <telerik:GridViewDataColumn Header="N° Examen" GroupMemberPath="" DataMemberBinding="{Binding codigo}"/>
+                <telerik:GridViewDataColumn Header="Tecnólogo" GroupMemberPath="" DataMemberBinding="{Binding tecnologo}"/>
+                <telerik:GridViewDataColumn Header="Tecnica" GroupMemberPath="" DataMemberBinding="{Binding tecnica}"/>
+                <telerik:GridViewDataColumn Header="Cant." DataMemberBinding="{Binding cantidad}">
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction Caption="Total: "></telerik:SumFunction>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+                
+            </telerik:RadGridView.Columns>
+            <telerik:RadContextMenu.ContextMenu>
+                <telerik:RadContextMenu>
+                    <telerik:RadMenuItem Header="Exportar Data" Click="MenuItemExport_Click"/>
+                </telerik:RadContextMenu>
+            </telerik:RadContextMenu.ContextMenu>
+        </telerik:RadGridView>
+
+
+    </Grid>
+</Window>

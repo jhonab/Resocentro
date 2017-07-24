@@ -1,0 +1,36 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.frmUtil.frmCompania"
+        Title="Registrar Empresa" Height="750" Width="800" Background="{DynamicResource Windows.Background}"  >
+    <Grid DataContext="{Binding item}" >
+        <Label Content="RUC" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top" Padding="0"/>
+        <TextBox  HorizontalAlignment="Left" Margin="109,9,0,0" TextWrapping="Wrap" Text="{Binding ruc,Mode=TwoWay}" VerticalAlignment="Top" Width="115" Padding="0" MaxLength="11"/>
+        <Label Content="Razón Social" HorizontalAlignment="Left" Margin="8,31,0,0" VerticalAlignment="Top" Padding="0"/>
+        <TextBox HorizontalAlignment="Left" Margin="107,31,0,0" TextWrapping="Wrap" Text="{Binding razonsocial,Mode=TwoWay}" VerticalAlignment="Top" Width="473" Padding="0"/>
+        <Label Content="Razón Comercial" HorizontalAlignment="Left" Margin="8,51,0,0" VerticalAlignment="Top" Padding="0"/>
+        <TextBox HorizontalAlignment="Left" Margin="107,51,0,0" TextWrapping="Wrap" Text="{Binding razoncomercial,Mode=TwoWay}" VerticalAlignment="Top" Width="473" Padding="0"/>
+        <Label Content="Tel." HorizontalAlignment="Left" Margin="8,71,0,0" VerticalAlignment="Top" Padding="0"/>
+        <TextBox HorizontalAlignment="Left" Margin="107,71,0,0" TextWrapping="Wrap" Text="{Binding telefono,Mode=TwoWay}" VerticalAlignment="Top" Width="78" Padding="0"/>
+        <Label Content="Fax" HorizontalAlignment="Left" Margin="252,71,0,0" VerticalAlignment="Top" Padding="0"/>
+        <TextBox HorizontalAlignment="Left" Margin="321,71,0,0" TextWrapping="Wrap" Text="{Binding fax, Mode=TwoWay}" VerticalAlignment="Top" Width="78" Padding="0"/>
+        <Label Content="Correo" HorizontalAlignment="Left" Margin="8,91,0,0" VerticalAlignment="Top" Padding="0"/>
+        <TextBox HorizontalAlignment="Left" Margin="107,91,0,0" TextWrapping="Wrap" Text="{Binding email, Mode=TwoWay}" VerticalAlignment="Top" Width="292" Padding="0"/>
+        <Label Content="Web" HorizontalAlignment="Left" Margin="8,111,0,0" VerticalAlignment="Top" Padding="0"/>
+        <TextBox HorizontalAlignment="Left" Margin="107,111,0,0" TextWrapping="Wrap" Text="{Binding web, Mode=TwoWay}" VerticalAlignment="Top" Width="292" Padding="0"/>
+        <Label Content="Dir. Fiscal" HorizontalAlignment="Left" Margin="8,131,0,0" VerticalAlignment="Top" Padding="0"/>
+        <TextBox HorizontalAlignment="Left" Margin="107,131,0,0" TextWrapping="Wrap" Text="{Binding domiciliofiscal, Mode=TwoWay}" VerticalAlignment="Top" Width="473" Padding="0"/>
+        <Label Content="Dir. Comercial" HorizontalAlignment="Left" Margin="8,151,0,0" VerticalAlignment="Top" Padding="0"/>
+        <TextBox HorizontalAlignment="Left" Margin="107,151,0,0" TextWrapping="Wrap" Text="{Binding domiciliocomercial, Mode=TwoWay}" VerticalAlignment="Top" Width="473" Padding="0"/>
+        <Button Content="Cancelar" Margin="0,174,13,0" VerticalAlignment="Top" Click="Button_Click" HorizontalAlignment="Right" Width="75"/>
+        <Button Content="Guardar" HorizontalAlignment="Right" Margin="0,174,93,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+        <WebBrowser Name="wbsunat" Height="507" Margin="10,0,13,10" VerticalAlignment="Bottom"/>
+        <Button Content="Beta Sunat" HorizontalAlignment="Left" Margin="484,9,0,0" VerticalAlignment="Top" Width="98" Click="Button_Click_2" Visibility="Collapsed"/>
+        <StackPanel Margin="10,172,0,0" Orientation="Horizontal" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="214">
+            <telerik:RadRadioButton Content="Consulta Sunat v1" HorizontalAlignment="Left" Height="Auto" IsChecked="False"  VerticalAlignment="Top" Width="Auto" Click="RadRadioButton_Click_1"/>
+            <telerik:RadRadioButton Content="Consulta Sunat v2" HorizontalAlignment="Left" Height="Auto" IsChecked="True"  VerticalAlignment="Top" Width="Auto" Click="RadRadioButton_Click"/>
+        </StackPanel>
+
+
+    </Grid>
+</Window>

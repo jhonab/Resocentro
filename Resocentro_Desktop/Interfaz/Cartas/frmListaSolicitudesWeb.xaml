@@ -1,0 +1,42 @@
+﻿<Window x:Class="Resocentro_Desktop.frmListaSolicitudesWeb"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+         Title="Solicitudes de Cartas | Resocentro" Height="432" Width="828.455" Background="{DynamicResource Windows.Background}"   Icon="/Resocentro_Desktop;component/img/favicon.png" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Content="Estado: " HorizontalAlignment="Left" Margin="23,10,0,0" VerticalAlignment="Top"  Height="26" Width="51"/>
+        <ComboBox HorizontalAlignment="Left" x:Name="cboEstadoSolicitud" Margin="79,14,0,0" VerticalAlignment="Top" Width="128" Height="22"/>
+        <Button Content="Buscar" HorizontalAlignment="Left" Margin="238,5,0,0" VerticalAlignment="Top" Width="80" Height="36" Click="Button_Click"/>
+
+        <telerik:RadGridView Grid.Row="1" Name="grid_SolicitudesCarta" AutoGenerateColumns="False" RowActivated="grid_SolicitudesCarta_RowActivated">
+            <telerik:RadGridView.Columns >
+                <telerik:GridViewDataColumn  Header="Nombres" DataMemberBinding="{Binding nombres}" IsReadOnly="True" />
+                <telerik:GridViewDataColumn  Header="Apellidos" DataMemberBinding="{Binding apellidos}" IsReadOnly="True" />
+                <telerik:GridViewDataColumn  Header="N° Documento" DataMemberBinding="{Binding num_doc}" IsReadOnly="True" />
+                <telerik:GridViewDataColumn  Header="Aseguradora" DataMemberBinding="{Binding Aseguradora}" IsReadOnly="True" />
+                <telerik:GridViewDataColumn  Header="Médico" DataMemberBinding="{Binding apellido_medico}" IsReadOnly="True" />
+                <telerik:GridViewDataColumn  Header="Clínica" DataMemberBinding="{Binding clinica}" IsReadOnly="True" />
+                <telerik:GridViewDataColumn  Header="Fecha Registro" DataMemberBinding="{Binding fec_registro,StringFormat=\{0:dd/MM/yyyy HH:mm:ss\}}" IsReadOnly="True" />
+                <telerik:GridViewDataColumn  Header="Usu. Lectura" DataMemberBinding="{Binding usu_lectura}" IsReadOnly="True" />
+                <telerik:GridViewDataColumn  Header="Fecha Lectura" DataMemberBinding="{Binding fec_lectura,StringFormat=\{0:dd/MM/yyyy HH:mm:ss\}}" IsReadOnly="True" />
+            </telerik:RadGridView.Columns>
+            <telerik:RadContextMenu.ContextMenu>
+                <telerik:RadContextMenu Name="MenuContext_Lista" Opening="RadContextMenu_Opening"  >
+                    <telerik:RadMenuItem Header="Cambiar Estado" >
+                        <telerik:RadMenuItem Header="Espera" Click="MenuEspera_click" />
+                        <telerik:RadMenuItem Header="Tramitado" Click="Menutramitado_click" />
+                        <telerik:RadMenuItem Header="Cancelado" Click="MenuCancelado_click" />
+                    </telerik:RadMenuItem>
+                </telerik:RadContextMenu>
+            </telerik:RadContextMenu.ContextMenu>
+        </telerik:RadGridView>
+        <CheckBox Name="chkUpdate" Content="Actualizar Automaticamente" IsChecked="True" HorizontalAlignment="Right" Margin="0,10,10,0"  Width="169" Height="15" VerticalAlignment="Top"/>
+        <Label Content="" Name="lblrefresh"  HorizontalAlignment="Left" Margin="23,36,0,0" VerticalAlignment="Top" FontSize="10"/>
+
+
+    </Grid>
+</Window>

@@ -1,0 +1,94 @@
+﻿@model SistemaResocentro.Models.Colaborador
+
+@{
+    ViewBag.Title = "Editar Colaborador";
+}
+
+<h2>Editar Colaborador</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="col-md-6">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.idColaborador)
+
+                <div class="form-group">
+                    <label>Apellidos</label>
+                    <div class="">
+                        @Html.EditorFor(model => model.apellidos, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.apellidos, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Nombres</label>
+                    <div class="">
+                        @Html.EditorFor(model => model.nombres, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.nombres, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Cargo</label>
+                    <div class="">
+                        @Html.EditorFor(model => model.cargo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.cargo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Activo</label>
+                    <div class="">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.activo)
+                            @Html.ValidationMessageFor(model => model.activo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>DNI</label>
+                    <div class="">
+                        @Html.EditorFor(model => model.dni, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.dni, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>CMP</label>
+                    <div class="">
+                        @Html.EditorFor(model => model.cmp, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.cmp, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>RNE</label>
+                    <div class="">
+                        @Html.EditorFor(model => model.rne, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.rne, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 ">
+            <div class="form-group">
+                <div class="">
+                    <a href="@Url.Action("Index")"  class="btn btn-default"><i class="fa fa-arrow-circle-left fa-lg"></i> Regresar a Lista</a>
+                    <button type="submit" class="btn btn-success"><i class=" fa fa-check fa-lg"></i>&nbsp;&nbsp; Registrar Colaborador</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+}
+
+

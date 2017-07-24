@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e0c0eba7764c4d59873f04e340c71e1f" Name="Diagram1" ZoomLevel="106">
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Permiso" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.SUCURSAL" Width="1.5" PointX="3" PointY="1.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.USUARIO" Width="1.5" PointX="3.125" PointY="2.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.EMPLEADO" Width="1.5" PointX="3.125" PointY="3.625" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__USUARIO__dni__0E391C95" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CARGO" Width="1.5" PointX="0.625" PointY="3.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.SUCURSALXUSUARIO" Width="2" PointX="0.625" PointY="2.5" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__EMPLEADO__codigo__4E53A1AA" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_SUCURSALXUSUARIO_SUCURSAL" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_SUCURSALXUSUARIO_USUARIO" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.UNIDADNEGOCIO" Width="2" PointX="0.5" PointY="1.5" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_SUCURSAL_UNIDADNEGOCIO" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CLINICAHOSPITAL" Width="2" PointX="5.75" PointY="3.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ESTUDIO" Width="1.5" PointX="6" PointY="2.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.PACIENTE" Width="1.5" PointX="6" PointY="1.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.COMPANIASEGURO" Width="1.5" PointX="8.375" PointY="3.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CLASE" Width="1.5" PointX="8.75" PointY="1.125" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__ESTUDIO__codigoc__51300E55" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.DOCESCANEADO" Width="2" PointX="0.5" PointY="4.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.TipoMedico" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Motivo_Entre_Turno" Width="1.75" PointX="7.25" PointY="5.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Solicitud_Entre_Turno" Width="2.25" PointX="9.75" PointY="5.625" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_Solicitud_Entre_Turno_Motivo_Entre_Turno" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.MEDICOEXTERNO" Width="2" PointX="0.5" PointY="5.375" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.MEDICOEXTERNO_tipomedico_fk" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Com_Medico" Width="1.5" PointX="3.375" PointY="4.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CONTROL_SEDACION" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.AL_Almacen" Width="1.5" PointX="7.375" PointY="7.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.AL_Insum" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.AL_Stock_Diario" Width="1.5" PointX="12.625" PointY="9.5" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__AL_Stock___Almac__38B00FFC" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__AL_Stock___Insum__39A43435" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.AL_Stock_Current" Width="1.5" PointX="12.625" PointY="13.625" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__AL_Stock___Almac__6F0C20AD" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__AL_Stock___Insum__700044E6" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.AL_Stock_Item" Width="1.5" PointX="9.625" PointY="9" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__AL_Stock___Almac__5CED7072" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__AL_Stock___Insum__5BF94C39" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ASEGURADORA" Width="1.5" PointX="6.125" PointY="12.125" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__COMPANIASEG__ruc__2FCF1A8A" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.UBIGEO" Width="1.5" PointX="3.75" PointY="11.375" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_ASEGURADORA_UBIGEO" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__PACIENTE__Ubigeo__0A895299" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.SERIE" Width="1.5" PointX="11.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.MONEDA" Width="1.5" PointX="13.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.TARJETA" Width="1.5" PointX="13.375" PointY="3.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.FORMADEPAGO" Width="1.5" PointX="15.625" PointY="1.25" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__FORMADEPA__codig__5CA1C101" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__FORMADEPA__codig__5E8A0973" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.RESULTADODELIVERY" Width="1.5" PointX="5.375" PointY="16.875" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__RESULTADO__codig__0697FACD" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__RESULTADO__codig__078C1F06" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.TIPO_DOCUMENTO_IDENTIDAD" Width="1.5" PointX="13.375" PointY="6.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ConfirmacionLecturaPago" Width="1.5" PointX="8.375" PointY="13.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.DETALLEDOCUMENTO" Width="1.5" PointX="17.625" PointY="11.375" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_AL_Insum_AL_Insum" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.LIBROCAJA" Width="1.5" PointX="0.75" PointY="15.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.DOCUMENTO" Width="1.5" PointX="15.375" PointY="9.25" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__DOCUMENTO__ruc__4D5F7D71" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__DETALLEDOCUMENTO__44CA3770" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__DOCUMENTO__codig__4B7734FF" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__DOCUMENTO__codig__4C6B5938" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__FORMADEPAGO__5D95E53A" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.COBRANZACIASEGURO" Width="1.5" PointX="17.625" PointY="18.5" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__COBRANZACIASEGUR__2EDAF651" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.DetalleFacturaGlobal" Width="1.5" PointX="19.625" PointY="7" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.FacturaGlobal" Width="1.5" PointX="17.375" PointY="7.125" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_DetalleFacturaGlobal_FacturaGlobal" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.TIPOCAMBIO" Width="1.5" PointX="7.375" PointY="16.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.FacturaDetalleLote" Width="1.5" PointX="11.625" PointY="17.875" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.FacturaLote" Width="1.5" PointX="9.375" PointY="18" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_FacturaDetalleLote_FacturaLote" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.TKT_Counter" Width="1.5" PointX="5.375" PointY="23.125" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.TKT_Historial" Width="1.5" PointX="10.625" PointY="23.375" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.TKT_List_Atencion" Width="1.5" PointX="7.625" PointY="23.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.TKT_Ticketera" Width="1.5" PointX="7.625" PointY="26.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.TKT_Tipo_Atencion" Width="1.5" PointX="5.375" PointY="28.375" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_TKT_Counter_USUARIO" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_TKT_Historial_TKT_Counter" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_TKT_Historial_TKT_CounterOrigen" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_TKT_List_Atencion_TKT_Counter" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_TKT_Ticketera_TKT_Counter" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_TKT_Historial_TKT_Ticketera" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_TKT_List_Atencion_TKT_Tipo_Atencion" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_TKT_Ticketera_TKT_Tipo_Atencion" />
+      </Diagram>
+      <Diagram DiagramId="e0e278cdea714f4f94892782f065b8ed" Name="Carta" ZoomLevel="88" >
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ESTUDIO_COMPANIA" Width="2.5" PointX="3.5" PointY="1.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CG_Log" Width="1.5" PointX="0.875" PointY="2.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.DETALLEPROFORMA" Width="1.875" PointX="0.75" PointY="3.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.PROFORMA" Width="1.5" PointX="3.375" PointY="3.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CG_SolicituCarta_Historial" Width="2.125" PointX="0.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CG_SolicitudCarta" Width="1.875" PointX="0.75" PointY="1.625" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_CG_SolicituCarta_Historial_CG_SolicitudCarta" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CIE" Width="1.5" PointX="6.5" PointY="1.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.SitedProducto" Width="1.5" PointX="6.5" PointY="2.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Sunasa_Cobertura" Width="2" PointX="6.125" PointY="4.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ESTUDIO_CARTAGAR" Width="2" PointX="0.75" PointY="4.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CARTAGARANTIA" Width="1.5" PointX="8.875" PointY="15.75" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__CARTAGARA__Sunas__207893B8" />
+      </Diagram>
+      <Diagram DiagramId="adab36cd7c394ee7b86ac509964b3123" Name="Atencion Cliente" ZoomLevel="72" >
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ATENCION" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.CITA" Width="1.5" PointX="4.75" PointY="2.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.EQUIPO" Width="1.5" PointX="2.625" PointY="4.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.EQUIPO_ESTUDIO" Width="1.5" PointX="5.5" PointY="5.125" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__ATENCION__236943A5" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__EQUIPO_ES__codig__503BEA1C" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.AUDITORIA_CARTAS_GARANTIA" Width="3" PointX="4.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.EXAMENXATENCION" Width="1.5" PointX="0.5" PointY="2.75" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__EXAMENXAT__codig__57DD0BE4" />
+        <AssociationConnector Association="DATABASEGENERALModel.fk_equipoFinal_examenxatencion" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.HORARIO" Width="1.5" PointX="1.25" PointY="5.75" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__HORARIO__codigoe__6442E2C9" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.FIZCALIZACION" Width="1.5" PointX="4.75" PointY="1.25" IsExpanded="false" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__EXAMENXATENCION__58D1301D" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.ESCANADMISION" Width="1.5" PointX="2.5" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.Confirmacion_Cita" Width="1.5" PointX="3.375" PointY="6.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.EXAMENXCITA" Width="1.5" PointX="8" PointY="2.625" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__EXAMENXCITA__5BAD9CC8" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__EXAMENXCI__codig__5AB9788F" />
+      </Diagram>
+      <Diagram DiagramId="df66aa56c02f45f7b076028dfabf6042" Name="Insumos" >
+        <EntityTypeShape EntityType="DATABASEGENERALModel.AL_Almacen" Width="1.5" PointX="0.75" PointY="7.125" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.AL_Enfermeria" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.AL_Insum" Width="1.5" PointX="0.75" PointY="1.625" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.AL_Stock_Current" Width="1.5" PointX="4.125" PointY="3.375" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.AL_Stock_Diario" Width="1.5" PointX="3" PointY="7.125" />
+        <!--<EntityTypeShape EntityType="DATABASEGENERALModel.AL_Stock_LoteIng" Width="1.5" PointX="6" PointY="6.625" />-->
+        <!--<EntityTypeShape EntityType="DATABASEGENERALModel.AL_Stock_Out" Width="1.5" PointX="3" PointY="18.5" />-->
+        <AssociationConnector Association="DATABASEGENERALModel.FK__AL_Stock___Almac__38B00FFC" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__AL_Stock___Almac__6F0C20AD" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_AL_Stock_Out_AL_Almacen" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__AL_Stock___Insum__39A43435" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK__AL_Stock___Insum__700044E6" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_AL_Stock_Item_AL_Stock_LoteIng" />
+        <AssociationConnector Association="DATABASEGENERALModel.FK_AL_Insum_AL_Insum" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

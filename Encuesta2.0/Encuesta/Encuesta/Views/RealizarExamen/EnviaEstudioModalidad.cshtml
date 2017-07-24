@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "<i class='fa fa-send-o'></i> Enviar Examen Modalidad";
+    ViewBag.Titlenot = "Enviar Examen Modalidad";
+}
+<script src="~/js/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //activacion del boton en el menu
+        $(".sidebar > .sidebar-menu > li").removeClass("active");
+        $(".sidebar > .sidebar-menu > li.p3-1").addClass("active");
+
+        $("#msj").hide()//ocultar el msj
+        $(".equipos").hide();
+    });
+
+    function cargarEquipo() {
+        var examen = $("#num_exam").val();
+        if (examen != "" && examen > 0) {
+            $.ajax({
+                url: "@Url.Action("getEquipoxExamen", "RealizarExamen")",
+                data: { examen: examen },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    alert("Error al cargar Equipo");
+                },
+                success: function (data) {
+                    var items = "";
+                    items += "<option value='' >- Seleccione -</option>";
+                    $.each(data, function (i, item) {
+                        items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                    });
+                    $("#cboequipo_asignar").html(items);
+                    $(".equipos").show();
+                }
+            });
+        }
+        else
+            mostrarmensaje(4, 'Ingrese un numero de <b>Examen</b> para enviar los datos ');
+    }
+
+    function EnviarModalidad() {
+        var _equipo = $("#cboequipo_asignar").val();
+        var examen = $("#num_exam").val();
+        if (_equipo != '') {
+            $.ajax({
+                url: "@Url.Action("enviarModalidadsinEncuesta", "RealizarExamen")",
+                data: { examen: examen, equipo: _equipo },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, 'Ocurrio un problema y <b>no</b> se enviaron los datos al sistemas');
+                },
+                success: function (data) {
+                    if (data.result == 1)
+                        mostrarmensaje(1, data.mensaje);
+                    else {
+                        mostrarmensaje(4, data.mensaje);
+                    }
+                }
+            });
+        }
+        else {
+
+            mostrarmensaje(4, 'Seleccione el <b>Equipo</b> para enviar los datos ');
+        }
+    }
+
+ 
+</script>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-dark" data-collapsed="0">
+            <div class="panel-heading">
+                <h2 class="panel-heading">Enviar Examen a Modalidad</h2>
+            </div>
+            <div class="panel-body chart-responsive">
+                <div class="row">
+
+                    <div class="alert" id="msj">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="form-group">
+                            <label>N° Examen:</label>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="col-sm-10 col-lg-10">
+                                        <input type="number" id="num_exam" placeholder="Número de Examen" class="form-control" />
+                                    </div>
+                                    <div class="col-sm-2 col-lg-2">
+                                        <button type="button" class=" btn btn-info " onclick="cargarEquipo()" id="btncargarEncuesta"><i class="fa fa-search"></i>&nbsp;&nbsp; Buscar&nbsp;&nbsp; </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group equipos">
+                            <label>Equipo:</label>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="col-sm-10 col-lg-10">
+                                        <select id="cboequipo_asignar" class="form-control">
+                                            <option>Seleccione</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-2 col-lg-2">
+                                        <button type="button" class=" btn btn-success " onclick="EnviarModalidad()" id="btncargarEncuesta"><i class="fa fa-send-o"></i>&nbsp;&nbsp; Enviar&nbsp;&nbsp; </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

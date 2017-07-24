@@ -1,0 +1,189 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.frmCita.frmRegistarLlamada"
+        Title="Registrar Llamada | Resocentro" MinHeight="460" Height="Auto" MaxHeight="600" Width="800" Background="{DynamicResource Windows.Background}"   Icon="/Resocentro_Desktop;component/img/favicon.png" WindowStyle="ToolWindow" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" MaxHeight="170" />
+            <RowDefinition Height="379*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="5" >
+                <Label Content="Paciente:" ></Label>
+                <TextBlock TextWrapping="WrapWithOverflow" x:Name="tbkpaciente" FontSize="24"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Margin="5">
+                <Label Content="Teléfonos:" />
+                <StackPanel  Margin="5" VerticalAlignment="Center">
+                    <Label Content="" x:Name="lbltelefono"  HorizontalContentAlignment="Right" FontSize="16" />
+                    <Label Content="" x:Name="lblcelular"  HorizontalContentAlignment="Right" FontSize="16"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="145*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="5" Name="stkradiobutton" >
+                <RadioButton GroupName="rpta" Content="No Contesta, se dejó mensahe de voz." FontSize="16"  VerticalContentAlignment="Center" Margin="0,0,0,5"/>
+                <RadioButton GroupName="rpta" Content="No contesta, se dejó mensaje de texto." FontSize="16"  VerticalContentAlignment="Center" Margin="0,0,0,5"/>
+                <RadioButton GroupName="rpta" Content="Se dejó recado con:" FontSize="16"  VerticalContentAlignment="Center" Margin="0,0,0,5" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked"/>
+                <RadioButton GroupName="rpta" Content="Se envió correo electrónico." FontSize="16"  VerticalContentAlignment="Center" Margin="0,0,0,5"/>
+                <RadioButton GroupName="rpta" Content="Teléfono sin servicio." FontSize="16"  VerticalContentAlignment="Center" Margin="0,0,0,5"/>
+                <RadioButton GroupName="rpta" Content="Número teléfonico errado." FontSize="16"  VerticalContentAlignment="Center" Margin="0,0,0,5"/>
+                <RadioButton GroupName="rpta" Content="No tiene casilla de voz." FontSize="16"  VerticalContentAlignment="Center" Margin="0,0,0,5"/>
+                <RadioButton GroupName="rpta" Content="El paciente se fué de viaje." FontSize="16"  VerticalContentAlignment="Center" Margin="0,0,0,5"/>
+                <RadioButton GroupName="rpta" Content="El paciente llamará." FontSize="16"  VerticalContentAlignment="Center" Margin="0,0,0,5"/>
+                <RadioButton GroupName="rpta" Content="El paciente ya está informado." FontSize="16"  VerticalContentAlignment="Center" Margin="0,0,0,5"/>
+                <RadioButton GroupName="rpta" Content="Otro:" FontSize="16"  VerticalContentAlignment="Center" Margin="0,0,0,5" Checked="RadioButton_Checked_1" Unchecked="RadioButton_Unchecked_1"/>
+                <TextBox AcceptsReturn="True" x:Name="txtcomentario" Height="70" Visibility="Hidden"/>
+
+            </StackPanel>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="279*"/>
+                    <RowDefinition Height="79"/>
+                </Grid.RowDefinitions>
+                <telerik:RadGridView Name="gridLlamadas" ShowGroupPanel="False" AutoGenerateColumns="False" Margin="5" IsReadOnly="True" RowIndicatorVisibility="Collapsed">
+                    <telerik:RadGridView.Columns>
+                        <telerik:GridViewDataColumn Header="Fecha" DataMemberBinding="{Binding fecha,StringFormat=\{0:dd/MM/yyyy HH:mm:ss\}}"/>
+                        <telerik:GridViewDataColumn Header="Colaborador" DataMemberBinding="{Binding usuario}"/>
+                        <telerik:GridViewDataColumn Header="Teléfono" DataMemberBinding="{Binding telefono}"/>
+                        <telerik:GridViewDataColumn Header="Mensaje" DataMemberBinding="{Binding mensaje}"/>
+                    </telerik:RadGridView.Columns>
+                </telerik:RadGridView>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" >
+                    <Button Height="32" MinWidth="100" Margin="10,24,0,23" Name="btnCitar" Click="btnCitar_Click"  Background="#00DDDDDD" BorderBrush="White" TabIndex="29" Width="101">
+                        <Button.Content>
+                            <Grid Width="91" Height="26">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="23*"/>
+                                    <ColumnDefinition Width="28*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Data="M28.019493,17.409L29.034,17.409 29.034,30.297999 27.458333,30.297999 27.458333,20.250112C27.078093,20.615901 26.580641,20.979289 25.964675,21.338578 25.34741,21.701966 24.795351,21.971358 24.302999,22.152253L24.302999,20.6302C25.185893,20.212413 25.956775,19.713528 26.618344,19.123947 27.277314,18.536565 27.744864,17.964983 28.019493,17.409z M17.149704,17.409C17.850288,17.409 18.494772,17.560094 19.085758,17.860883 19.676944,18.161571 20.127533,18.573056 20.438725,19.091236 20.753819,19.612216 20.908714,20.162896 20.908714,20.747473 20.908714,21.300852 20.760318,21.807433 20.463426,22.261715 20.165233,22.717497 19.722643,23.079484 19.139257,23.348874 19.898339,23.523467 20.488225,23.887953 20.908714,24.437432 21.330605,24.989512 21.539,25.682185 21.539,26.510254 21.539,27.632611 23001,28.580475 20.312428,29.362944 19.495949,30.142916 18.460873,30.531001 17.212204,30.531001 16.085831,30.531001 15.149752,30.196213 14.403669,29.52324 13.660189,28.849965 13.234499,27.978999 13.129002,26.910038L14.705763,26.701746C14.888058,27.592213 15.195351,28.239388 15.628941,28.632573 16.06373,29.028458 16.593718,29.22375 17.218702,29.22375 17.959585,29.22375 18.58577,28.968359 19.098858,28.45168 19.609245,27.938599 19.86444,27.304524 19.86444,26.542853 19.86444,25.820179 19.627545,25.218503 19.154857,24.752421 18.680868,24.281239 18.080683,24.048148 17.3503,24.048148 17.053307,24.048148 16.683615,24.106745 16.238327,24.221241L16.412722,22.838494C16.51812,22.854092 16.602818,22.856793 16.665316,22.856793 17.338501,22.856793 17.945286,22.682299 18.481672,22.332013 19.018061,21.983025 19.286353,21.442746 19.286353,20.710974 19.286353,20.132896 19.091058,19.655015 18.700468,19.274829 18.308477,18.897144 17.801989,18.707251 17.184803,18.707251 16.574118,18.707251 16.058531,18.901244 15.65234,19.285328 15.24345,19.669314 14.980457,20.250092 14.863258,21.018363L13.289196,20.738373C13.480492,19.679714 13.920582,18.862245 14.602865,18.282667 15.285149,17.700689 16.135328,17.409 17.149704,17.409z M34.243753,12.107718C34.306304,12.111844,34.366986,12.133885,34.416334,12.175922L38.112712,15.340044C38.244307,15.455844 38.259907,15.655046 38.14401,15.787846 38.108812,15.829647 38.059413,15.863347 38.006015,15.884347L33.443667,17.474158C33.336871,17.511858 33.218374,17.488458 33.134978,17.416757 33.04918,17.341257 33.007482,17.230456 33.028281,17.119956L33.888952,12.375023C33.898052,12.320424 33.921551,12.269523 33.95925,12.226723 34.03006,12.143722 34.139502,12.100839 34.243753,12.107718z M40.89837,4.2549517C40.981767,4.2484215,41.063665,4.2757613,41.126262,4.3292314L44.822718,7.477587C44.955514,7.5908065,44.969814,7.7888055,44.85782,7.9241242L39.311232,14.435815C39.257834,14.501015 39.179636,14.538814 39.096338,14.545414 39.012944,14.554414 38.928444,14.524415 38.865848,14.472415L35.177292,11.313429C35.048394,11.20023,35.031397,11.00363,35.143392,10.869531L40.68358,4.3643209C40.735576,4.3017612,40.813675,4.2627013,40.89837,4.2549517z M3.8593674,3.6340002L8.0937767,3.6340002 8.0937767,8.3956909 15.764412,8.3956909 15.764412,3.6340002 26.523687,3.6340002 26.523687,8.3956909 34.195542,8.3956909 34.195542,3.6340002 38.811474,3.6340002C39.166977,3.6340001,39.504079,3.6977199,39.830882,3.7875595L33.629138,10.955511C33.513137,11.08971,33.435037,11.24851,33.396136,11.420309L33.000233,13.188602 4.0781593,13.188602 4.0781593,33.93722 38.591373,33.93722 38.591373,16.485389 39.049777,16.31099C39.215077,16.24979,39.360979,16.14679,39.474179,16.015391L42.667002,12.325305 42.667002,33.93722 42.667002,37.006308 42.667002,38.428 0,38.428 0,33.93722 0.0038757324,33.93722 0.0038757324,7.4893851C0.0038757324,5.3604933,1.7303925,3.6340001,3.8593674,3.6340002z M45.087942,0.09501791C45.413185,0.096627712,45.721191,0.21055317,45.968479,0.42019105L47.98169,2.1339862C48.567623,2.6351854,48.622326,3.5390236,48.100197,4.1484628L46.036183,6.5757599C45.921677,6.7098629,45.721066,6.7268345,45.588359,6.6161039L41.922757,3.4934291C41.857553,3.4401439 41.819851,3.3645065 41.814651,3.2797886 41.809451,3.1953001 41.835452,3.1130821 41.892755,3.0466658L43.959269,0.6207726C44.213083,0.32252574 44.563402,0.13891363 44.947623,0.10125256 44.994663,0.096849442 45.041478,0.094787121 45.087942,0.09501791z M27.986001,0L32.736,0 32.736,6.8410006 27.986001,6.8410006z M9.5550003,0L14.302999,0 14.302999,6.8410006 9.5550003,6.8410006z" Stretch="Uniform"  Fill="White" RenderTransformOrigin="0.5,0.5" Grid.Column="0" >
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <TransformGroup.Children>
+                                                <RotateTransform Angle="0" />
+                                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                                            </TransformGroup.Children>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Label Content="Citar"  Grid.Column="1" FontWeight="Bold" FontSize="13" Height="26" VerticalAlignment="Top"></Label>
+                            </Grid>
+
+                        </Button.Content>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="SnapsToDevicePixels" Value="true"/>
+                                <Setter Property="OverridesDefaultStyle" Value="true"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border x:Name="Border" CornerRadius="2" BorderThickness="1" Background="{x:Null}" BorderBrush="#fff">
+                                                <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsFocused" Value="true">
+                                                    <Setter TargetName="Border" Property="Background" Value="#FF1C84DA" />
+                                                    <Setter TargetName="Border" Property="Background" Value="#FF1C84DA" />
+                                                </Trigger>
+                                                <Trigger Property="IsKeyboardFocused" Value="true">
+                                                    <Setter TargetName="Border" Property="BorderBrush" Value="#FF1C84DA" />
+                                                </Trigger>
+                                                <Trigger Property="IsDefaulted" Value="true">
+                                                    <Setter TargetName="Border" Property="BorderBrush" Value="#FF1C84DA" />
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter TargetName="Border" Property="Background" Value="#FF1C84DA" />
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="true">
+                                                    <Setter TargetName="Border" Property="Background" Value="#FF1C84DA" />
+                                                    <Setter TargetName="Border" Property="BorderBrush" Value="#FF1C84DA" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="false">
+                                                    <Setter TargetName="Border" Property="Background" Value="#FFF" />
+                                                    <Setter TargetName="Border" Property="BorderBrush" Value="#FFF" />
+                                                    <Setter Property="Foreground" Value="#FFF"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button  Height="32" MinWidth="100" Name="btnLlamada" Click="btnLlamada_Click"   Background="#00DDDDDD" BorderBrush="White" TabIndex="28" Margin="5,24,0,23" Width="165">
+                        <Button.Content>
+                            <Grid Width="156" Height="26">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="11*"/>
+                                    <ColumnDefinition Width="28*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path   Data="M17.61582,14.278075C18.016384,14.281975,18.41516,14.436279,18.721811,14.742938L20.521217,16.541189C21.133218,17.154606,21.137118,18.136332,20.547216,18.765251L20.556516,18.771751 20.521217,18.806851 18.844212,20.483999 14.697,16.340683 16.454804,14.742938 16.490103,14.709137 16.499104,14.715637C16.812905,14.420679,17.215256,14.274175,17.61582,14.278075z M11.917614,6.0823078C12.678671,6.0712891 13.443287,6.3558335 14.024229,6.9369144 14.951538,7.8652935 15.123439,9.263793 14.540034,10.368 14.607635,9.408329 14.226131,8.3575044 13.414924,7.5463104 12.603717,6.7350559 11.550408,6.3509498 10.591999,6.4211426 11.005628,6.2019348 11.46098,6.0889196 11.917614,6.0823078z M13.412964,3.1554308C14.541765,3.1395569 15.675888,3.5621185 16.53696,4.4231281 17.914477,5.8007536 18.16968,7.8762455 17.302469,9.5129995 17.404171,8.0884051 16.836364,6.5298705 15.63325,5.3267546 14.428835,4.1223497 12.870217,3.5546713 11.447,3.6575108 12.06032,3.3323154 12.735684,3.1649551 13.412964,3.1554308z M3.6850538,0.34708309C4.0856266,0.35114956,4.483758,0.50577164,4.7897272,0.81306362L6.589222,2.60993C7.1998806,3.223299,7.2064109,4.2064199,6.6178522,4.8327188L6.6243219,4.8418093 6.589222,4.8756905 4.9941368,6.637466C4.0332594,9.2573581 5.4772253,11.516559 7.6477494,13.688427 9.8170238,15.856495 12.076118,17.30184 14.69721,16.34091L18.842999,20.48424 18.841699,20.48824C14.82231,22.674408 9.7285237,20.424338 5.3170757,16.013999 0.91083813,11.607661 -1.3418455,6.5124621 0.84698772,2.4915257L0.84961796,2.4901762 2.5253334,0.81306362 2.5605431,0.7779026 2.565733,0.78443241C2.8814669,0.48950386,3.284481,0.34301567,3.6850538,0.34708309z M14.939976,0.0003080368C16.475462,0.015711784 18.006014,0.6091671 19.177654,1.7807398 21.11375,3.7169361 21.470668,6.6310754 20.253108,8.9280005 20.397615,6.9318628 19.600775,4.7404003 17.909191,3.0503006 16.219007,1.3588505 14.027599,0.56196117 12.029999,0.70649433 12.891905,0.24947453 13.840397,0.014178276 14.791377,0.00062179565 14.840907,-8.392334E-05 14.890444,-0.00018882751 14.939976,0.0003080368z" Stretch="Uniform" RenderTransformOrigin="0.5,0.5" Grid.Column="0" Fill="White">
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <TransformGroup.Children>
+                                                <RotateTransform Angle="0" />
+                                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                                            </TransformGroup.Children>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Label Content="Registra Llamada"  Grid.Column="1" FontWeight="Bold" FontSize="13" Padding="0,5"/>
+                            </Grid>
+
+                        </Button.Content>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="SnapsToDevicePixels" Value="true"/>
+                                <Setter Property="OverridesDefaultStyle" Value="true"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border x:Name="Border" CornerRadius="2" BorderThickness="1" Background="{x:Null}" BorderBrush="#fff">
+                                                <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsFocused" Value="true">
+                                                    <Setter TargetName="Border" Property="Background" Value="#FF1E8919" />
+                                                    <Setter TargetName="Border" Property="Background" Value="#FF1E8919" />
+                                                </Trigger>
+                                                <Trigger Property="IsKeyboardFocused" Value="true">
+                                                    <Setter TargetName="Border" Property="BorderBrush" Value="#FF1E8919" />
+                                                </Trigger>
+                                                <Trigger Property="IsDefaulted" Value="true">
+                                                    <Setter TargetName="Border" Property="BorderBrush" Value="#FF1E8919" />
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter TargetName="Border" Property="Background" Value="#FF1E8919" />
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="true">
+                                                    <Setter TargetName="Border" Property="Background" Value="#FF1E8919" />
+                                                    <Setter TargetName="Border" Property="BorderBrush" Value="#FF1E8919" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="false">
+                                                    <Setter TargetName="Border" Property="Background" Value="#FFF" />
+                                                    <Setter TargetName="Border" Property="BorderBrush" Value="#FFF" />
+                                                    <Setter Property="Foreground" Value="#FFF"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Window>

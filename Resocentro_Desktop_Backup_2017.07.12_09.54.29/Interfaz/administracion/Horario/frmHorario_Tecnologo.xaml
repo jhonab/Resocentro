@@ -1,0 +1,66 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+         x:Class="Resocentro_Desktop.Interfaz.administracion.Horario.frmHorario_Tecnologo"
+        Title="" Height="600" Background="{DynamicResource Windows.Background}" Width="900">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="46"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="293*"/>
+        </Grid.RowDefinitions>
+
+
+        <Label Content="Mes" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="32"/>
+        <telerik:RadDatePicker Name="dtpFecha" HorizontalAlignment="Left" DisplayFormat="Short" DateSelectionMode="Month"   Margin="48,14,0,0" VerticalAlignment="Top" Height="22" Width="103" />
+        <Label Content="Empresa" HorizontalAlignment="Left" Margin="168,10,0,0" VerticalAlignment="Top" Height="26" Width="61"/>
+        <ComboBox Name="cboempresa" HorizontalAlignment="Left" Margin="234,11,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
+        <Button Content="Buscar" HorizontalAlignment="Left" Margin="371,14,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Height="20"/>
+
+        <StackPanel Name="sktEquipo" Grid.Row="1" Orientation="Horizontal" Margin="10,0"/>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="4"/>
+                <ColumnDefinition Width="312"/>
+            </Grid.ColumnDefinitions>
+            <telerik:RadScheduleView Name="rshorario" UseLayoutRounding="False" AllowDrop="False" FirstDayOfWeek="Monday"  ShowAppointmentDeleteButton="False"  FirstVisibleTime="7:00:00" DialogClosing="rshorario_DialogClosing" AppointmentEdited="rshorario_AppointmentEdited"   >
+                <telerik:RadScheduleView.ViewDefinitions>
+                    <telerik:MonthViewDefinition DayStartTime="07:00"  DayEndTime="22:00" />
+                    <telerik:WeekViewDefinition DayStartTime="07:00" MajorTickLength="3h" MinorTickLength="1h"  DayEndTime="22:00"/>
+                    <telerik:DayViewDefinition DayStartTime="07:00" MajorTickLength="3h" MinorTickLength="1h" DayEndTime="22:00" />
+                </telerik:RadScheduleView.ViewDefinitions>
+            </telerik:RadScheduleView>
+            <GridSplitter HorizontalAlignment="Stretch" Grid.Column="1" />
+            <telerik:RadGridView Name="grid_resumen" Grid.Column="2" AutoGenerateColumns="False" IsReadOnly="True" ShowColumnFooters="True" >
+                <telerik:RadGridView.GroupDescriptors>
+                    <telerik:GroupDescriptor Member="nombretecnologo" DisplayContent="Tecnólogo"
+                             SortDirection="Ascending" />
+                    <telerik:GroupDescriptor Member="nombreequipo" DisplayContent="Equipo"
+                             SortDirection="Ascending" />
+                </telerik:RadGridView.GroupDescriptors>
+                <telerik:RadGridView.Columns >
+                    <telerik:GridViewDataColumn  Header="Tecnólogo" DataMemberBinding="{Binding nombretecnologo}" />
+                    <telerik:GridViewDataColumn  Header="Equipo" DataMemberBinding="{Binding nombreequipo}" />
+                    <telerik:GridViewDataColumn  Header="Fecha" DataMemberBinding="{Binding inicio}" />
+                    <telerik:GridViewDataColumn  Header="Turno" DataMemberBinding="{Binding turno}" >
+                        <telerik:GridViewDataColumn.AggregateFunctions>
+                            <telerik:SumFunction Caption="Total Turnos: "/>
+                        </telerik:GridViewDataColumn.AggregateFunctions>
+                    </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn  Header="Horas" DataMemberBinding="{Binding horas}" >
+                        <telerik:GridViewDataColumn.AggregateFunctions>
+                            <telerik:SumFunction Caption="Total Horas: "/>
+                        </telerik:GridViewDataColumn.AggregateFunctions>
+                    </telerik:GridViewDataColumn>
+                </telerik:RadGridView.Columns>
+            </telerik:RadGridView>
+
+        </Grid>
+
+
+
+    </Grid>
+</Window>

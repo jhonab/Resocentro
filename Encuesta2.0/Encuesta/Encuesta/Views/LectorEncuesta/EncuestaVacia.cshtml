@@ -1,0 +1,110 @@
+﻿@model Encuesta.ViewModels.Encuesta.Tipos.EncuestaGenericaRMViewModel
+
+@{
+    ViewBag.Title = "<i class='fa fa-edit'></i> Encuesta";
+    ViewBag.Titlenot = "Encuesta Generica";
+}
+
+
+<script src="~/js/encuestas/encuestas_ini.js"></script>
+<link href="~/css/Encuesta.css" rel="stylesheet" />
+<script src="../js/jquery.autosize.js"></script>
+<script src="~/js/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#msj").hide()//ocultar el msj
+    });
+
+
+    function cargarEncuesta() {
+        var get = getGET();
+        var examen = get.examen;//618657;//Request.Querystring("examen");//$("#num_exam").val();
+        if (examen != "" && examen > 0) {
+            $.ajax({
+                url: "@Url.Action("GetEncuesta", "Herramientas")",
+                data: { examen: examen, paciente: "" },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+                },
+                success: function (data) {
+                    if (data.result) {
+                        $("#partial_encuesta").html(data.msj);
+                    } else
+                        mostrarmensaje(2, "Non existe ninguna referencia con el numero ingresado");
+                }
+            });
+
+            $.ajax({
+                url: "@Url.Action("SolucionarEncuesta", "Herramientas")",
+                data: { examen: examen },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+                },
+                success: function (data) {
+                    if (data.result) {
+                        $("#partial_encuesta_log").html(data.msj);
+                    } else
+                        mostrarmensaje(2, "Non existe ninguna referencia con el numero ingresado");
+                }
+            });
+
+        } else
+            mostrarmensaje(4, "Ingrese un numero de Examen correcto");
+    }
+
+    function getGET() {
+        var loc = document.location.href;
+        var getString = loc.split('?')[1];
+        var GET = getString.split('&');
+        var get = {};
+
+        for (var i = 0, l = GET.length; i < l; i++) {
+            var tmp = GET[i].split('=');
+            get[tmp[0]] = unescape(decodeURI(tmp[1]));
+        }
+        return get;
+    }
+
+
+</script>
+
+<div class="row">
+
+    <div class="col-lg-12">
+        <div class="panel panel-dark" data-collapsed="0">
+            <div class="panel-heading">
+                <h2 class="panel-title">Solucionar Problemas de Encuesta </h2>
+            </div>
+            <div class="panel-body chart-responsive">
+                <div class="row">
+                    <div class="alert" id="msj">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <label></label>
+                            <button type="button" class=" btn btn-info " onclick="cargarEncuesta()" id="btncargarEncuesta"><i class="fa fa-cogs"></i>&nbsp;&nbsp; Reparar Encuesta&nbsp;&nbsp; </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div id="partial_encuesta">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div id="partial_encuesta_log">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

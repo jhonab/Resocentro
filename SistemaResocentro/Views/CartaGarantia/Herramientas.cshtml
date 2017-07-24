@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "Herramientas";
+}
+
+<h2>Herramientas</h2>
+
+<div class="form-horizontal">
+    <hr />
+    
+    <ul class="nav nav-tabs bordered">
+        <!-- available classes "bordered", "right-aligned" -->
+        <li class="active">
+            <a href="#tab-carta-cita" data-toggle="tab">
+                <span class="visible-xs"><i class="fa fa-calendar"></i></span>
+                <span class="hidden-xs"><i class="fa fa-calendar"></i>&nbsp; Cambiar Carta a Cita</span>
+            </a>
+        </li>
+        <li>
+            <a href="#tab_nada" data-toggle="tab">
+                <span class="visible-xs">...</span>
+                <span class="hidden-xs">...</span>
+            </a>
+        </li>
+        @*<li>
+                <a href="#tab_paciente" data-toggle="tab">
+                    <span class="visible-xs"><i class="fa fa-user"></i></span>
+                    <span class="hidden-xs">Paciente</span>
+                </a>
+            </li>*@
+
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab-carta-cita">
+            <div class="row">
+              <script type="text/javascript">
+                  function cambiarcarta() {
+                      var cita = $("#cita").val();
+                      var carta = $("#carta").val();
+                      var paciente = $("#paciente").val();
+                      if(cita!="" && carta!="" && paciente!=""){
+                          $.ajax({
+                              url: "/CartaGarantia/CambiarCartaxCita",
+                              data: { cita: cita, carta: carta, paciente: paciente },
+                              dataType: "json",
+                              type: "POST",
+                              error: function () {
+                                  toastr.error('No se pudo actualizar los datos', 'Error', opts);
+                              },
+                              success: function (data) {
+                                  if (data == false)
+                                      toastr.error('No se pudo actualizar los datos', 'Error', opts);
+                                  else {
+                                      toastr.success('Se Actualizo correctamente la Cita', 'Exito', opts);
+                                      $("#cita").val("");
+                                      $("#carta").val("");
+                                      $("#paciente").val("");
+                                  }
+                              }
+                          });
+                      }else
+                          toastr.error('Ingrese todos los datos', 'Error', opts);
+                  }
+              </script>
+                    <div class="form-horizontal">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">N° Cita:</label>
+                                <div class="col-md-10">
+                                    <input type="number" id="cita" placeholder="N° Cita" class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Codigo Carta <small>(SISTEMA)</small>:</label>
+                                <div class="col-md-10">
+                                    <input type="text" id="carta" placeholder="N° Carta " class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Paciente:</label>
+                                <div class="col-md-10">
+                                    <input type="number" id="paciente" placeholder="ID Paciente" class="form-control" />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" col-md-6">
+                            <div class="form-group">
+                                <button class="btn btn-primary col-md-2" type="button" onclick="cambiarcarta()">Cambiar <i class="fa fa-exchange"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+        <div class="tab-pane " id="tab_nada">
+
+        </div>
+    </div>
+    <div id="div_resultado">
+
+    </div>
+</div>

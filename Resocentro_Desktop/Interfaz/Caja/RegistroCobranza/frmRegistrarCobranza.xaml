@@ -1,0 +1,303 @@
+﻿<Window xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Primitives="clr-namespace:Telerik.Windows.Controls.Diagrams.Primitives;assembly=Telerik.Windows.Controls.Diagrams"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+    
+       
+    
+        x:Class="Resocentro_Desktop.Interfaz.Cobranza.frmRegistrarCobranza"
+        Title="Registra Cobranza" MinHeight="650" Width="1120" Background="{DynamicResource Windows.Background}" Closing="Window_Closing" Height="600" Loaded="Windows_Loaded">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <ControlTemplate x:Key="TextBoxBaseControlTemplate" TargetType="{x:Type TextBoxBase}">
+            <Border Background="{TemplateBinding Background}" BorderBrush="White"
+        		BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3">
+                <ScrollViewer x:Name="PART_ContentHost"/>
+            </Border>
+        </ControlTemplate>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle StrokeDashArray="1 2" StrokeThickness="1" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" Margin="2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+    </Window.Resources>
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="691*"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="250"/>
+        </Grid.ColumnDefinitions>
+        <Grid ShowGridLines="False">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="194"/>
+                <RowDefinition/>
+                <RowDefinition Height="190"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="31"/>
+                    <RowDefinition Height="28"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition/>
+
+                </Grid.RowDefinitions>
+                <TextBox x:Name="lblnumDocumentoReceptor" BorderThickness="0" IsReadOnly="True"  Text="000000000000" BorderBrush="{x:Null}"  Background="{DynamicResource Windows.Background}"  HorizontalAlignment="Left" Margin="81,6,0,0" VerticalAlignment="Top" Width="110" Foreground="#FF00FFDC" FontWeight="Bold" Padding="0" FontSize="15" HorizontalContentAlignment="Center" Height="20"/>
+                <TextBox x:Name="lblRazReceptor" ContextMenuOpening="lblRazReceptor_ContextMenuOpening" IsReadOnly="True" Text="RAZON SOCIAL" HorizontalAlignment="Left" Margin="196,7,0,0" VerticalAlignment="Top" Width="583" Foreground="#FF00FFDC" FontWeight="Bold"  Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" FontSize="14" Height="19" CaretBrush="{x:Null}" BorderThickness="0">
+                    <telerik:RadContextMenu.ContextMenu>
+                        <telerik:RadContextMenu x:Name="ContextMenuPaciente" BorderThickness="0" FontSize="11">
+                            <telerik:RadMenuItem Header="Historia Clínica de Paciente" Click="HCPaciente_Click" FontSize="11" FontWeight="Normal"/>
+                            <MenuItem Header="Copiar" HorizontalAlignment="Left" Command="Copy" FontSize="11" FontWeight="Normal"/>
+                            <MenuItem Header="Pegar" HorizontalAlignment="Left" Command="Paste" FontSize="11" FontWeight="Normal"/>
+                        </telerik:RadContextMenu>
+                    </telerik:RadContextMenu.ContextMenu>
+                </TextBox>
+                <TextBox x:Name="lbldireccionReceptor" Text="DIRECCION" HorizontalAlignment="Left" Margin="6,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="773" Foreground="White" Background="{DynamicResource Windows.Background}" FontFamily="Tahoma" FontWeight="Normal" Padding="0" FontSize="15" CharacterCasing="Upper"  BorderBrush="{x:Null}" LostFocus="lbldireccionReceptor_LostFocus" Height="20" Template="{StaticResource TextBoxBaseControlTemplate}"/>
+                <Label Content="Correo:" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.Row="2" VerticalAlignment="Top" Height="25" Width="51"/>
+                <TextBox x:Name="txtcorreoReceptor" HorizontalAlignment="Left"  Margin="57,3,0,0" Grid.Row="2" TextWrapping="Wrap" Text="" CharacterCasing="Lower" FontSize="12" VerticalAlignment="Top" Width="367" Padding="0" LostFocus="txtcorreoReceptor_LostFocus" Height="21" Template="{StaticResource TextBoxBaseControlTemplate}"  Background="{DynamicResource Windows.Background}" BorderBrush="{x:Null}" Foreground="White"/>
+                <Button x:Name="btnReceptorEmpresa" HorizontalAlignment="Left" Margin="5,-2,0,3" Width="30" Padding="5" Click="btnReceptorEmpresa_Click" >
+                    <Path Data="M12.003748,4.5049986C10.494726,4.5309996 8.9806971,4.987008 7.7016882,5.9000024 4.5866403,8.1250076 4.0476317,12.220008 6.5006675,15.049994 8.9517054,17.875006 13.465759,18.364996 16.581798,16.140005 19.698844,13.915 20.235855,9.8199996 17.783826,6.9899983 16.404809,5.3980035 14.373776,4.5479979 12.305754,4.5049986 12.205747,4.5029997 12.104748,4.5029997 12.003748,4.5049986z M12.127743,2.0721107E-06C15.724792,-0.0019966637 19.286836,1.4420032 21.684881,4.2050108 25.103918,8.1500015 25.075918,13.549994 22.002878,17.435003L31.444,28.325001 26.299932,32.000002 16.892806,21.15C11.969737,23.054996 6.0676631,21.830006 2.5996136,17.834997 -1.5464387,13.049994 -0.63543081,6.1250085 4.6346449,2.3600098 6.8586745,0.77200525 9.5027079,0.0010016877 12.127743,2.0721107E-06z" Stretch="Fill"  Fill="White"  />
+
+                </Button>
+
+                <Label Content="RUC" x:Name="lbltipoDocumento" HorizontalAlignment="Left"  Margin="41,6,0,0" VerticalAlignment="Top"  Width="35" Foreground="#FF00FFDC" FontWeight="Bold" Padding="0" FontSize="15" Height="20"/>
+                <Label x:Name="lblTCCompra" Content="TC Compra: -" HorizontalAlignment="Right" Margin="0,0,126,0" Grid.Row="2" VerticalAlignment="Top"  Width="120" Height="26" Grid.RowSpan="2"/>
+                <Label x:Name="lblTCVenta" Content="TC Venta: -" HorizontalAlignment="Right" Margin="0,0,1,0" Grid.Row="2" VerticalAlignment="Top"  Width="120" Height="26" Grid.RowSpan="2"/>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="538*"/>
+                        <ColumnDefinition Width="251*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="txtinformacion"  Background="{DynamicResource Windows.Background}" AcceptsReturn="True" TextWrapping="Wrap" FontSize="12" Foreground="White" Text="" TextAlignment="Left" VerticalScrollBarVisibility="Auto" CharacterCasing="Upper" Margin="5,0,0,2" LostFocus="txtinformacion_LostFocus" BorderBrush="White" BorderThickness="1" Template="{StaticResource TextBoxBaseControlTemplate}"/>
+                    <Button x:Name="btnTarifario" Content="Tarifario" Padding="5" HorizontalAlignment="Right" Margin="0,0,10,72" VerticalAlignment="Bottom"   Click="btnTarifario_Click" Background="{x:Null}" BorderBrush="White" Grid.Column="1"/>
+                    <Button x:Name="btnTipoCambio" Content="Tipo Cambio" Padding="5" HorizontalAlignment="Right" Margin="0,0,10,41" VerticalAlignment="Bottom"   Click="btnTipoCambio_Click" Background="{x:Null}" BorderBrush="White" Grid.Column="1"/>
+                </Grid>
+
+
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="222"/>
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="48"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Content="Ver Adjuntos" Padding="5" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Bottom" Click="BtnVerAdjuntos_Click" Background="{x:Null}" BorderBrush="White" Foreground="White" />
+                        <Button Content="Ver Carta" x:Name="btnCarta"  Padding="5" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Bottom" Click="BtnVerCarta_Click" Background="{x:Null}" BorderBrush="White" Foreground="White" />
+                        <Button Content="Agregar Item" Padding="5" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Bottom"   Click="BtnAgregar_Estudio_Click" BorderBrush="White" Background="{x:Null}"/>
+                        <Button x:Name="btnVerInforme" Content="Ver Informe" Padding="5" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Bottom" Click="BtnVerInforme_Click" Background="{x:Null}" BorderBrush="White" Foreground="White" />
+                        <Button x:Name="btnVerBoleta" Content="Ver Documentos" Padding="5" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Bottom" Click="BtnVerBoleta_Click" Background="{x:Null}" BorderBrush="White" Foreground="White" />
+                        <Button x:Name="btnCobranza_Externa" Content="Cobranza Externa" Padding="5" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Bottom"   Click="BtnCobranzaExterna_Click" Background="{x:Null}" BorderBrush="White"/>
+                        <Button x:Name="btnCortesia" Content="Cortesia" Padding="5" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Bottom" Visibility="Collapsed"  Click="btnCortesia_Click" Background="{x:Null}" BorderBrush="White"/>
+                        <Button x:Name="btnAddAtencion" Content="Atención" Padding="5" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Bottom"   Click="btnAddAtencion_Click" Background="{x:Null}" BorderBrush="White"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="2">
+                        <Label Padding="0" Content="Tipo Documento"  VerticalAlignment="Center" Margin="5,0,15,0" />
+                        <ComboBox x:Name="cboTipoDocumento" HorizontalAlignment="Left" VerticalAlignment="Center" Width="138" TabIndex="1" SelectedIndex="1" FontSize="18" FontFamily="Tahoma"  Margin="5,0,0,0">
+                            <ComboBoxItem Content="01 - Factura"  />
+                            <ComboBoxItem Content="03 - Boleta"  />
+
+                        </ComboBox>
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+
+                        <Button MinWidth="100" x:Name="btnguardar"  Content="GUARDAR" FocusVisualStyle="{StaticResource MyFocusVisual}" Background="#00DDDDDD" BorderBrush="White" TabIndex="2" Foreground="#FFF9F3F3" Click="btnguardar_Click" Margin="5" HorizontalAlignment="Left" Width="100" />
+
+                        <Button MinWidth="100" Grid.Row="4" x:Name="btnReenviar"  Content="REENVIAR" FocusVisualStyle="{StaticResource MyFocusVisual}" Background="#00DDDDDD" BorderBrush="White" TabIndex="2" Foreground="#FFF9F3F3" Click="btnReenviar_Click" Margin="5" HorizontalAlignment="Left" Width="100" Visibility="Collapsed" />
+
+                        <Button MinWidth="100" Grid.Row="4" x:Name="btnImprimir"  Content="RE-IMPRIMIR" FocusVisualStyle="{StaticResource MyFocusVisual}" Background="#00DDDDDD" BorderBrush="White" TabIndex="9" Foreground="White" Click="btnImprimir_Click"  IsEnabled="{Binding IsEnabled, Converter={StaticResource isReadyOnly}, ElementName=btnguardar}" HorizontalAlignment="Left" Width="100" Margin="5"/>
+                        <Button MinWidth="100" Grid.Row="4" x:Name="btnVerificarCDR"  Content="VERIFICAR  &#xA;      CDR" FocusVisualStyle="{StaticResource MyFocusVisual}" Background="#00DDDDDD" BorderBrush="White" TabIndex="2" Foreground="#FFF9F3F3" Click="btnVerificarCDR_Click" Margin="5" HorizontalAlignment="Left" Width="100" Visibility="Collapsed" />
+                        <Button MinWidth="100" Grid.Row="4" x:Name="btncancrlar"  Content="CANCELAR" FocusVisualStyle="{StaticResource MyFocusVisual}" Background="#00DDDDDD" BorderBrush="White" TabIndex="8" Foreground="#FFF9F3F3"  HorizontalAlignment="Left" Width="100" Click="btncancrlar_Click" Margin="5"/>
+                        <Button MinWidth="100" Grid.Row="4" x:Name="btnprocesar"  Content="PROCESAR &#xA;   AL 100%" FocusVisualStyle="{StaticResource MyFocusVisual}" Background="#00DDDDDD" BorderBrush="White" TabIndex="8" Foreground="#FFF9F3F3"  HorizontalAlignment="Left" Width="100" Click="btnprocesar_Click" Margin="5"/>
+                    </StackPanel>
+                    <Label x:Name="lblnumerodocumento" Content="" HorizontalAlignment="Center" Padding="0" FontSize="20" VerticalAlignment="Center" Grid.Row="3" />
+
+
+                </Grid>
+                <Grid Grid.Column="1" Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="102"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="SubTotal:" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="2" />
+                    <Label Content="IGV:" VerticalContentAlignment="Center" Grid.Row="2" HorizontalContentAlignment="Right" Padding="2"  />
+                    <StackPanel Orientation="Horizontal" Grid.Row="3"  >
+                        <Label Content="Desc." VerticalContentAlignment="Center" Padding="2"  HorizontalContentAlignment="Right" />
+                        <telerik:RadNumericUpDown IsEnabled="False" x:Name="rnDescuento" VerticalAlignment="Top" Maximum="0" Minimum="0"  NullValue="0" NumberDecimalDigits="2" LargeChange="5" Width="40" ValueChanged="rnDescuento_ValueChanged"  HorizontalContentAlignment="Right" />
+                        <Label Content="%:" VerticalContentAlignment="Center" Padding="2"  HorizontalContentAlignment="Right" />
+                    </StackPanel>
+                    <Label Content="Total:" VerticalContentAlignment="Center"  HorizontalContentAlignment="Right" Grid.Row="5" Padding="2" />
+                    <Label Content="Redondeo:" VerticalContentAlignment="Center"  HorizontalContentAlignment="Right" Grid.Row="4" Padding="2"/>
+                    <Label Content="Entregado:" VerticalContentAlignment="Center"  HorizontalContentAlignment="Right" Grid.Row="6" Padding="2"/>
+                    <Label Content="Vuelto:" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Grid.Row="7" Padding="2"/>
+                    <TextBox x:Name="txtsubtotal" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Background="{DynamicResource Windows.Background}" Foreground="#FFFBFFF6" BorderBrush="{x:Null}" BorderThickness="0" Padding="0" HorizontalContentAlignment="Right" FontSize="15" IsReadOnly="True" />
+                    <TextBox x:Name="txtigv" Grid.Column="1" Grid.Row="2"  TextWrapping="Wrap" Background="{DynamicResource Windows.Background}" Foreground="#FFFBFFF6" BorderBrush="{x:Null}" BorderThickness="0" HorizontalContentAlignment="Right" FontSize="15" IsReadOnly="True" />
+                    <TextBox x:Name="txtdesc" Grid.Column="1"  Grid.Row="3" TextWrapping="Wrap" Background="{DynamicResource Windows.Background}" Foreground="#FFFBFFF6" BorderBrush="{x:Null}" BorderThickness="0" HorizontalContentAlignment="Right" FontSize="15" IsReadOnly="True"/>
+                    <TextBox x:Name="txttotal" Grid.Column="1"  Grid.Row="5" TextWrapping="Wrap" Background="{DynamicResource Windows.Background}" Foreground="#FFFBFFF6" BorderBrush="{x:Null}" BorderThickness="0" HorizontalContentAlignment="Right" FontSize="18" FontStyle="Italic" IsReadOnly="True" />
+                    <TextBox x:Name="txtredondeo" Grid.Column="1"  Grid.Row="4" TextWrapping="Wrap" Background="{DynamicResource Windows.Background}" Foreground="#FFFBFFF6" BorderBrush="{x:Null}" BorderThickness="0" HorizontalContentAlignment="Right" FontSize="15" IsReadOnly="True"/>
+                    <TextBox x:Name="txtentregado" Grid.Column="1"  Grid.Row="6" TextWrapping="Wrap" Text="{Binding S, StringFormat=N\{0\}}"   HorizontalContentAlignment="Right" TextChanged="txtentregado_TextChanged" Template="{StaticResource TextBoxBaseControlTemplate}"  Background="{DynamicResource Windows.Background}" BorderBrush="{x:Null}" Foreground="White" />
+                    <TextBox x:Name="txtvuelto" Grid.Column="1"  Grid.Row="7" TextWrapping="Wrap" Background="{DynamicResource Windows.Background}" Foreground="#FFFBFFF6" BorderBrush="{x:Null}" BorderThickness="0" HorizontalContentAlignment="Right" FontSize="15" IsReadOnly="True" />
+                    <telerik:RadRadioButton Content="Dolares" IsChecked="False"  Grid.Column="1" Padding="2" Click="RadRadioButton_Click" />
+                    <telerik:RadRadioButton Content="Soles" IsChecked="True" Margin="1" Padding="2" Click="RadRadioButton_Click_1"/>
+
+                </Grid>
+            </Grid>
+            <telerik:RadGridView x:Name="gridDetalle" Grid.Row="1"  AutoGenerateColumns="False"  RowEditEnded="gridDetalle_RowEditEnded"   ShowGroupPanel="False" FontSize="11" RowIndicatorVisibility="Collapsed" CellEditEnded="gridDetalle_CellEditEnded" Deleting="gridDetalle_Deleting"  >
+                <telerik:RadGridView.Columns>
+                    <telerik:GridViewCheckBoxColumn  Header="C" DataMemberBinding="{Binding isGratuita}" IsReorderable="False" IsFilterable="False" ToolTip="Activar Cortesia"/>
+                    <telerik:GridViewCheckBoxColumn   x:Name="chkCortesia" Header="D"   IsFilterable="False" IsReorderable="False" DataMemberBinding="{Binding isCortesia}" ToolTip="Activar Descuento"/>
+                    <telerik:GridViewDataColumn IsFilterable="False" Width="35"  Header="Cant." DataMemberBinding="{Binding cantidad}" IsReadOnly="True" TextAlignment="Center"/>
+                    <telerik:GridViewDataColumn IsFilterable="False"  Header="Descripción" DataMemberBinding="{Binding descripcion}" IsReadOnly="True"/>
+                    <telerik:GridViewDataColumn IsFilterable="False"  DataMemberBinding="{Binding valorUnitario}" IsReadOnly="False" HeaderTextAlignment="Right" TextAlignment="Right" FooterTextAlignment="Right"  DataFormatString="{}{0:0.##}">
+                        <telerik:GridViewDataColumn.Header  >
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0"><Run Text="  Valor"/><LineBreak/><Run Text="Unitario"/></TextBlock>
+                        </telerik:GridViewDataColumn.Header>
+                    </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn IsFilterable="False"   DataMemberBinding="{Binding porcentajeDescPromocion}" IsReadOnly="True"  HeaderTextAlignment="Right" TextAlignment="Center" FooterTextAlignment="Right"  DataFormatString="{}{0:0.##}%">
+                        <telerik:GridViewDataColumn.Header>
+                            <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0"><Run Text="    %"/><LineBreak/><Run Text="Promo"/></TextBlock>
+                        </telerik:GridViewDataColumn.Header>
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn IsFilterable="False"  DataMemberBinding="{Binding descPromocion}" IsReadOnly="true"  HeaderTextAlignment="Right" TextAlignment="Right" FooterTextAlignment="Right"  DataFormatString="{}{0:0.##}">
+                        <telerik:GridViewDataColumn.Header>
+                            <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0"><Run Text=" Valor"/><LineBreak/><Run Text="Promo."/></TextBlock>
+                        </telerik:GridViewDataColumn.Header>
+                    </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn  IsFilterable="False"  x:Name="gvcporcobertura"  DataMemberBinding="{Binding porcentajeCobSeguro}" IsReadOnly="True"  HeaderTextAlignment="Right" TextAlignment="Center" FooterTextAlignment="Right"  DataFormatString="{}{0:0.##}%">
+                        <telerik:GridViewDataColumn.Header>
+                            <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0"><Run Text="  %"/><LineBreak/><Run Text="Cob."/></TextBlock>
+                        </telerik:GridViewDataColumn.Header>
+                    </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn IsFilterable="False"   x:Name="gvccobertura"  DataMemberBinding="{Binding descxCobSeguro}" IsReadOnly="True"  HeaderTextAlignment="Right" TextAlignment="Right" FooterTextAlignment="Right"  DataFormatString="{}{0:0.##}">
+                        <telerik:GridViewDataColumn.Header>
+                            <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0"><Run Text="Valor"/><LineBreak/><Run Text=" Cob."/></TextBlock>
+                        </telerik:GridViewDataColumn.Header>
+                    </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn IsFilterable="False"  x:Name="gvcpordeducible"  DataMemberBinding="{Binding porcentajeCobPaciente}" IsReadOnly="True"  HeaderTextAlignment="Right" TextAlignment="Center" FooterTextAlignment="Right"  DataFormatString="{}{0:0.##}%">
+                        <telerik:GridViewDataColumn.Header>
+                            <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0"><Run Text="   %"/><LineBreak/><Run Text="Dedu."/></TextBlock>
+                        </telerik:GridViewDataColumn.Header>
+                    </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn IsFilterable="False"  x:Name="gvcdeducible"  DataMemberBinding="{Binding descxCobPaciente}" IsReadOnly="True"  HeaderTextAlignment="Right" TextAlignment="Right" FooterTextAlignment="Right"  DataFormatString="{}{0:0.##}">
+                        <telerik:GridViewDataColumn.Header>
+                            <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0"><Run Text="Valor"/><LineBreak/><Run Text="Dedu."/></TextBlock>
+                        </telerik:GridViewDataColumn.Header>
+                    </telerik:GridViewDataColumn>
+
+
+
+                    <telerik:GridViewDataColumn IsFilterable="False" DataMemberBinding="{Binding porcentajedescxItem}"  HeaderTextAlignment="Right" TextAlignment="Center" FooterTextAlignment="Right"  DataFormatString="{}{0:0.##}%" IsReadOnlyBinding="{Binding isCortesia, Converter={StaticResource isReadyOnly}}">
+                        <telerik:GridViewDataColumn.Header>
+                            <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0"><Run Text="  %"/><LineBreak/><Run Text="Desc."/></TextBlock>
+                        </telerik:GridViewDataColumn.Header>
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn IsFilterable="False" DataMemberBinding="{Binding descxItem}" IsReadOnly="True"  HeaderTextAlignment="Right" TextAlignment="Right" FooterTextAlignment="Right"  DataFormatString="{}{0:0.##}">
+                        <telerik:GridViewDataColumn.Header>
+                            <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0"><Run Text="Valor"/><LineBreak/><Run Text="Desc."/></TextBlock>
+                        </telerik:GridViewDataColumn.Header>
+                    </telerik:GridViewDataColumn>
+
+
+                    <telerik:GridViewDataColumn IsFilterable="False" DataMemberBinding="{Binding valorVenta}" IsReadOnly="True"  HeaderTextAlignment="Right" TextAlignment="Right" FooterTextAlignment="Right"  DataFormatString="{}{0:0.##}">
+                        <telerik:GridViewDataColumn.Header>
+                            <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0"><Run Text="Valor"/><LineBreak/><Run Text="Bruto"/></TextBlock>
+                        </telerik:GridViewDataColumn.Header>
+                    </telerik:GridViewDataColumn>
+                    <!--<telerik:GridViewDataColumn  DataMemberBinding="{Binding valorReferencialVenta}" IsReadOnly="True" DataFormatString="{}{0:0.##}" Header="REF VENTA"/>
+                        <telerik:GridViewDataColumn  DataMemberBinding="{Binding valorReferencial}" IsReadOnly="True" DataFormatString="{}{0:0.##}" Header="REF"/>-->
+                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding tipoIGV}" IsReadOnly="True" DataFormatString="{}{0:0.##}" Header="igv"/>
+                </telerik:RadGridView.Columns>
+                <telerik:RadContextMenu.ContextMenu>
+                    <telerik:RadContextMenu x:Name="RadContextMenuDetalle" Opening="RadContextMenuDetalle_Opening"  >
+                        <telerik:RadMenuItem Name="itemCortesia" Header="Activar Cortesia" Click="MenuItemCortesia_Click"/>
+                        <telerik:RadMenuItem Name="itemDescuento" Header="Activar Descuento" Click="MenuItemDescuento_Click"/>
+                        <Separator/>
+                        <telerik:RadMenuItem Header="Eliminar Item" Click="MenuItemEliminarItem_Click"/>
+                        <telerik:RadMenuItem Header="Quitar Cobertura" Click="MenuItemQuitarCobertura_Click"/>
+                        <telerik:RadMenuItem Name="itemPromocion" Header="Quitar Promoción" Click="MenuItemQuitarPromocionClick"/>
+                    </telerik:RadContextMenu>
+                </telerik:RadContextMenu.ContextMenu>
+            </telerik:RadGridView>
+
+        </Grid>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Margin="1,0"/>
+        <Grid Grid.Column="5" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto" MaxHeight="300" />
+            </Grid.RowDefinitions>
+            <TextBox x:Name="txtcomentarios" BorderThickness="0" TextWrapping="Wrap" Text="" AcceptsReturn="True" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Background="#FF52759C" Foreground="White" FontSize="12" HorizontalContentAlignment="Right" BorderBrush="{x:Null}"/>
+            <Grid Grid.Row="1" x:Name="gridFormaPago" Visibility="Visible">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" MinHeight="115"/>
+                    <RowDefinition MinHeight="120"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="25"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Tipo Moneda" Padding="2"/>
+                    <Label Content="Tipo Pago" Padding="2" Grid.Row="1"/>
+                    <Label Content="Num. Referencia" Padding="2" Grid.Row="2"/>
+                    <Label Content="Monto" Padding="2" Grid.Row="3"/>
+                    <ComboBox x:Name="cbotipomoneda" Grid.Column="1" Grid.Row="0" TabIndex="3"/>
+                    <ComboBox x:Name="cboTipoPago" Grid.Column="1" Grid.Row="1" TabIndex="4"/>
+                    <TextBox x:Name="txtnumeroReferencia" Grid.Column="1" HorizontalContentAlignment="Right" Grid.Row="2" TextWrapping="Wrap" Text="" TabIndex="5" Background="{DynamicResource Windows.Background}" BorderBrush="{x:Null}" Template="{StaticResource TextBoxBaseControlTemplate}" />
+                    <telerik:RadNumericUpDown x:Name="txtmonto" Grid.Column="1" NullValue="0" LargeChange="1" Grid.Row="3" Minimum="0" NumberDecimalDigits="2" TabIndex="6" KeyDown="txtmonto_KeyDown" Background="{DynamicResource Windows.Background}" BorderBrush="White" Foreground="White"  />
+
+                    <Button Content="Agregar" Padding="5,2" Grid.Column="1" Grid.Row="4" Click="btnAgregarFormaPago_Click" IsEnabled="{Binding IsEnabled, Converter={StaticResource isReadyOnly}, ElementName=btnguardar}" TabIndex="7" Background="{x:Null}" BorderBrush="White" Margin="82,0,0,0" HorizontalAlignment="Left" Width="58"  />
+
+
+                </Grid>
+                <telerik:RadGridView Grid.Row="1" x:Name="grid_formaPago"  ShowGroupPanel="False" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" FontSize="11" RowActivated="grid_formaPago_RowActivated" IsReadOnly="True">
+                    <telerik:RadGridView.Columns>
+                        <telerik:GridViewDataColumn Header="Tipo Pago" DataMemberBinding="{Binding Tarjeta}"/>
+                        <telerik:GridViewDataColumn Header="Monto" DataMemberBinding="{Binding Monto}"/>
+                        <telerik:GridViewDataColumn Header="Moneda" DataMemberBinding="{Binding Descripcion}"/>
+                        <telerik:GridViewDataColumn Header="Num. Refer." DataMemberBinding="{Binding referencia}"/>
+                    </telerik:RadGridView.Columns>
+                </telerik:RadGridView>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Window>

@@ -1,0 +1,83 @@
+﻿@model IEnumerable<SistemaResocentro.ViewModel.Sedaciones_ProgramadasViewModel>
+@{
+    Layout = null;
+}
+
+
+<script type="text/javascript">
+    var selected = [];
+    $(function () {
+
+        table = $('#tb_paciente').DataTable({
+            "sPaginationType": "bootstrap"
+        });
+
+
+        $('#tb_paciente tbody').on('contextmenu', 'td', function (e) {
+            var items = "";
+            var rowIdx = table
+              .cell(this)
+              .index().row;
+            var len = table.rows('.selected').data().length;
+            if (len > 0)
+                items += '<li><a tabindex="-1" href="javascript:sendCorreo()"><i class="fa fa-fire fa-lg " ></i>&nbsp;&nbsp;Enviar a Correo (' + len + ')</a></li>';
+
+            if (items == "")
+                items += '<li><a><i class="fa fa-ban fa-lg " style="color:#f00" ></i>&nbsp;&nbsp;No hay opciones disponibles. Debe selecciona una fila.</a></li>';
+            $("#contextMenu").html(items);
+            var offset = $("#div_lista").offset();
+            var relativeX = (e.pageX - offset.left);
+            var relativeY = (e.pageY - offset.top);
+            $("#contextMenu").css({
+                display: "block",
+                left: relativeX,
+                top: relativeY
+            });
+            $(document).click(function () {
+                $("#contextMenu").hide();
+            });
+            return false;
+        });
+    });
+</script>
+
+<table id="tb_paciente" class="table table-bordered table-striped tab-hover">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Fecha</th>
+            <th>N° Cita</th>
+            <th>Paciente</th>
+            <th>Estudio</th>
+            <th>Edad</th>
+            <th>Equipo</th>
+            <th>Aseguradora</th>
+            <th>Clínica</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderBy(x=> x.fecha))
+        {
+            <tr>
+                <td>
+                    @if (item.sedador == "") { 
+                <input type="checkbox" onchange="selecctRow('@item.numerocita');" />
+                    }
+                    else
+                    {
+                        <a title="@item.sedador" href="#"><i class="fa fa-user-md fa-2x"></i></a>
+                    }
+                </td>
+                <td>@item.fecha.ToString("dd/MM/yy HH:mm ")</td>
+                <td>@item.numerocita</td>
+                <td>@item.paciente</td>
+                <td>@item.estudio</td>
+                <td>@item.edad</td>
+                <td>@item.equipo</td>
+                <td>@item.aseguradora</td>
+                <td>@item.clinica</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none"></ul>

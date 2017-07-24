@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Encuesta.Models.SUCURSALXUSUARIO>
+<table class="table table-striped table-bordered table-hover" id="table_sedes">
+    <thead>
+        <tr>
+            <th>Unidad</th>
+            <th>Sede</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="padding: 1px!important">@Html.DisplayFor(modelItem => item.SUCURSAL.UNIDADNEGOCIO.nombre)</td>
+                <td style="padding: 1px!important">@Html.DisplayFor(modelItem => item.SUCURSAL.descripcion)</td>
+                <td class="table_id" style="padding: 1px!important">
+                    <button type="button" class="btn btn-outline btn-danger btn-circle" onclick="eliminarsede('@item.codigousuario','@item.codigounidad','@item.codigosucursal')"><i class="fa fa-times"></i></button>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

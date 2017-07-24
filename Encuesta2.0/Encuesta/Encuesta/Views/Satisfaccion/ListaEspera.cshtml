@@ -1,0 +1,124 @@
+﻿@model IEnumerable<Encuesta.ViewModels.Supervisor.SupervisarExamenViewModel>
+
+@{
+    ViewBag.Title = "<i class='fa fa-child '></i> Satisfacción Examen";
+    ViewBag.Titlenot = "Satisfacción Examen ";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- DataTables JavaScript -->
+
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="~/js/jquery.autosize.js"></script>
+<script src="~/js/getUrl.js"></script>
+<link href="~/css/Encuesta.css" rel="stylesheet" />
+<script src="~/js/jquery-ui.min.js"></script>
+<script>
+    var table;
+    var myDate = new Date();
+
+    $(document).ready(function () {
+        //activacion del boton en el menu
+        $(".sidebar > .sidebar-menu > li").removeClass("active");
+        $(".sidebar > .sidebar-menu > li.p7").addClass("active");
+
+
+        $("#msj").fadeOut()//ocultar el msj
+        $('.animate').autosize();//autosizeTexbox
+        table = $('#myDataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "@Url.Action("ListaAsync", "Satisfaccion")",
+            //"bProcessing": true,
+            "iDisplayLength": 20,
+            "lengthMenu": [[20, 25, 50, -1], [20, 25, 50, "All"]],
+            "aoColumns": [
+                             { "sName": "HAdmin." },//0
+                             { "sName": "Paciente" },//1
+                             { "sName": "HAdmin." },//2
+                             { "sName": "Min." },//3
+                             {
+                                 "sName": "Acciones",
+                                 "mRender": function (data, type, full) {
+                                     return "";
+                                 }
+                             },//4
+            ],
+            "createdRow": function (row, aData, dataIndex) {
+                // si es una validacion pendiente
+                var fec_admi = new Date((aData[2]).substring(6, 10), parseInt((aData[2]).substring(3, 5)) - 1, (aData[2]).substring(0, 2), 0, 0, 0);
+                var fec_now = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0);
+                if (fec_admi < fec_now) {
+                    $(row).addClass('warning');
+                }
+                else {
+                    $('td:eq(2)', row).html((aData[2]).substring(11));
+                }
+
+                // minutos trascurridos
+                if (parseInt(aData[3]) > 40) {
+                    $('td:eq(3)', row).addClass('tiempo_excedente');
+                }
+                else if (parseInt(aData[3]) > 20) {
+                    $('td:eq(3)', row).addClass('tiempo_intermedio');
+                }
+                else {
+                    $('td:eq(3)', row).addClass('tiempo_correcto');
+                }
+
+                $('td:eq(0)', row).addClass('center');
+                $('td:eq(2)', row).addClass('center');
+                $('td:eq(3)', row).addClass('center');
+                $('td:eq(4)', row).addClass('center');
+                $('td:eq(4)', row).html('<button type="button" onclick="SatisfaccionExamen(' + aData[0] + ')"  class="btn btn-success"><i class="fa fa-check fa-1x"></i></button>');
+            }
+        });
+
+        
+    });
+    function SatisfaccionExamen(examen) {
+        window.location.href = "@Url.Action("SatisfaccionExamen", "Satisfaccion")" + '?atencion=' + examen;
+    }
+   
+
+</script>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h2 class="box-title">Lista de Satisfacción de Examenes </h2>
+            </div>
+            <div class="box-body chart-responsive">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Lista de Satisfacción de Examenes 
+                   
+                    </div>
+
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="alert" id="msj">
+                        </div>
+                        <div class="table-responsive">
+                            <table id="myDataTable" class="table table-striped center table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="width:65px!important;">N° Admision</th>
+                                        <th>Paciente</th>
+                                        <th style="width:65px!important;">Hora Admision</th>
+                                        <th style="width:40px!important;">Min. </th>
+                                        <th style="width:60px!important;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

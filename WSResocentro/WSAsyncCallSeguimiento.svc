@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="WSResocentro.WSAsyncCallSeguimiento" CodeBehind="WSAsyncCallSeguimiento.svc.cs" %>

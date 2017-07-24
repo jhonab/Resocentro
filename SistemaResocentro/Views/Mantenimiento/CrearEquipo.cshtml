@@ -1,0 +1,249 @@
+﻿@model SistemaResocentro.ViewModel.Mantenimiento.EquipoMantenimiento
+
+@{
+    ViewBag.Title = "Registrar Equipo";
+}
+
+<h2>Registro de Equpo</h2>
+<script src="~/js/validar-input.js"></script>
+<script src="~/js/linq.min.js"></script>
+<script src="~/js/Datetime/moment.js"></script>
+<script src="~/js/Datetime/moment-with-locales.js"></script>
+<script src="~/js/Datetime/bootstrap-datetimepicker.js"></script>
+<link href="~/css/Datetime/bootstrap-datetimepicker.css" rel="stylesheet" />
+<script type="text/javascript">
+    var Sedes =  @JavaScriptConvert.SerializeObject(ViewBag.Sedes);
+    var Modalidades =  @JavaScriptConvert.SerializeObject(ViewBag.Modalidad);
+    var Empresas =  @JavaScriptConvert.SerializeObject(ViewBag.Empresa);
+
+    $(function () {
+        iniciarForm();
+        ingresoForm();
+        $('.datetime').datetimepicker({
+            locale: 'es',
+            format: 'DD/MM/YYYY',
+            maxDate: new Date()
+        });
+    });
+
+    function cargarSedes(){
+        var idEmpresa = $("#idEmpresa").val();
+        var _array={};
+        if (idEmpresa != undefined && idEmpresa != "") {
+            var items = "";
+            items += "<option value=''>- Seleccione Sede -</option>";
+            _array=Enumerable.From(Sedes)
+                .Where(function(x){return x.codigounidad==idEmpresa})
+                .Select(function(x){return x})
+                .OrderBy(function(x){return x.codigosucursal})
+                .ToArray();
+            $.each(_array, function (i, item) {
+                items += "<option value=\"" + item.codigosucursal + "\">" + item.descripcion + "</option>";
+            });
+            $("#idSede").html(items);
+
+            items="";
+            _array={};
+            items += "<option value=''>- Seleccione Modalidad -</option>";
+            _array=Enumerable.From(Modalidades)
+                .Where(function(x){return x.codigounidad==idEmpresa})
+                .Select(function(x){return x})
+                .OrderBy(function(x){return x.codigosucursal})
+                .ToArray();
+            $.each(_array, function (i, item) {
+                items += "<option value=\"" + item.codigomodalidad + "\">" + item.abreviatura + "</option>";
+            });
+            $("#idModalidad").html(items);
+
+        }
+    }
+
+    function isRadiacion(){
+        var idEmpresa = $("#idEmpresa").val();
+        var idmodalidad = $("#idModalidad").val();
+        console.log(idEmpresa);
+        console.log(idmodalidad);
+        if(idEmpresa!="" && idmodalidad!=""){
+            var _modalidad =Enumerable.From(Modalidades)
+                     .Where(function(x){return x.codigounidad==idEmpresa && x.codigomodalidad==idmodalidad})
+                     .Select(function(x){return x})
+                     .SingleOrDefault();
+            console.log(_modalidad);
+            if(_modalidad!=null){
+                if(_modalidad.radiacion)
+                    $("#div_licencia").removeClass("hidden");
+                else
+                    $("#div_licencia").addClass("hidden");
+            }
+        }
+    }
+
+    function validar(){
+        return validar_form("div_equipo");
+    }
+</script>
+<div id="div_equipo">
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label ">Empresa:</label>
+                    <div class="">
+                        @Html.DropDownListFor(x => x.idEmpresa, (SelectList)ViewBag.Unidad, "- Seleccione Empresa -", new { @class = "form-control validar", @onchange = "cargarSedes()" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Sucursal:</label>
+                    <div class="">
+                        @Html.DropDownListFor(x => x.idSede, (SelectList)ViewBag.Vacio, "- Seleccione Empresa -", new { @class = "form-control validar" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Modalidad:</label>
+                    <div class="">
+                        @Html.DropDownListFor(x => x.idModalidad, (SelectList)ViewBag.Vacio, "- Seleccione Empresa -", new { @class = "form-control validar", @onchange = "isRadiacion()" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Marca:</label>
+                    <div class="">
+                        @Html.TextBoxFor(x => x.marca, new { @class = "form-control validar", @placeholder = "Marca Equipo", @maxlength = "40" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Serie:</label>
+                    <div class="">
+                        @Html.TextBoxFor(x => x.serie, new { @class = "form-control validar", @placeholder = "Serie Equipo"})
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Modelo:</label>
+                    <div class="">
+                        @Html.TextBoxFor(x => x.modelo, new { @class = "form-control validar", @placeholder = "Modelo Equipo", @maxlength = "40" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Nombre Equipo:</label>
+                    <div class="">
+                        @Html.TextBoxFor(x => x.nombreEquipo, new { @class = "form-control validar", @placeholder = "Nombre Equipo", @maxlength = "35" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Nombre Equipo Corto:</label>
+                    <div class="">
+                        @Html.TextBoxFor(x => x.shortNombreequipo, new { @class = "form-control validar", @placeholder = "Nombre Corto Equipo", @maxlength = "15" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Nombre Equipo Largo:</label>
+                    <div class="">
+                        @Html.TextBoxFor(x => x.LongNombreequipo, new { @class = "form-control validar", @placeholder = "Nombre Largo Equipo", @maxlength = "25" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Intensidad:</label>
+                    <div class="">
+                        @Html.TextBoxFor(x => x.intensidad, new { @class = "form-control validar", @placeholder = "Intensidad Equipo" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Año Fabricacion:</label>
+                    <div class="">
+                        @Html.TextBoxFor(x => x.añoFabricacion, new { @class = "form-control validar", @placeholder = "Año de Fabricación", @maxlength = "4" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    <label class="control-label " for="fechanacimiento">Fecha Adquisición:</label>
+                    <div class="input-group date datetime">
+                        @Html.TextBoxFor(model => model.fechaAdquirio, new { @class = "form-control validar datetime", @placeholder = "dd/mm/yyyy" })
+                        <span class="input-group-addon btn-info">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Activo:</label>
+                    <div class="">
+                        @Html.CheckBoxFor(x => x.isActivo)<br />
+                        <small>Se mostrará en los otros sistemas</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Integrador:</label>
+                    <div class="">
+                        @Html.CheckBoxFor(x => x.isIntegrador, new { @mostrar_respuesta = "div_integrador" })<br />
+                        <small>Permite configurar la WorkList con AETitle</small>
+                    </div>
+                </div>
+                <div id="div_integrador" class="col-md-12">
+
+                    <div class="form-group">
+                        <label class="control-label ">AETitle RIS:</label>
+                        <div class="">
+                            @Html.TextBoxFor(x => x.aeTitle, new { @class = "form-control", @placeholder = "AETitle HIS/RIS" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label ">Station Name:</label>
+                        <div class="">
+                            @Html.TextBoxFor(x => x.stationName, new { @class = "form-control", @placeholder = "Nombre PC Equipo" })
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label ">Frecuencia Mantenimiento</label>
+                    @Html.DropDownListFor(x => x.idfrecuencia, (SelectList)ViewBag.Frecuencia, "- Seleccione Frecuencia -", new { @class = "form-control validar" })
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label ">Empresa Servicio</label>
+                    @Html.DropDownListFor(x => x.idEmpresaMantenimiento, (SelectList)ViewBag.Empresa, "- Seleccione Empresa -", new { @class = "form-control validar" })
+                </div>
+                <div id="div_licencia" class="hidden">
+                    <label>Licencia de Radiación</label>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label " for="fechanacimiento">Fecha Emision:</label>
+                            <div class="input-group date datetime">
+                                @Html.TextBoxFor(model => model.fecha_emision_licencia, new { @class = "form-control  datetime", @placeholder = "dd/mm/yyyy" })
+                                <span class="input-group-addon btn-info">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label " for="fechanacimiento">Fecha Vencimiento:</label>
+                            <div class="input-group date datetime">
+                                @Html.TextBoxFor(model => model.fecha_vencimiento_licencia, new { @class = "form-control  datetime", @placeholder = "dd/mm/yyyy" })
+                                <span class="input-group-addon btn-info">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    <a href='@Url.Action("ListaEquipo")' class="btn btn-default"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;&nbsp;Regresar a la Lista</a>
+                    <button id="btnregistrar" type="submit" class="btn btn-success" onclick="return validar();"><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp; Registrar </button>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>

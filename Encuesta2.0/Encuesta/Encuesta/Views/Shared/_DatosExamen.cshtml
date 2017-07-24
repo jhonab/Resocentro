@@ -1,0 +1,64 @@
+﻿@model Encuesta.Models.EXAMENXATENCION
+<script type="text/ecmascript">
+    $(document).ready(function () {
+        verHistorial('@Model.codigo');
+        verificarAdjunto();
+        $("#_Partial_Paciente_Procedencia").html("<label>Procedencia: </label> " + "@Model.ATENCION.CITA.COMPANIASEGURO.descripcion");
+         @{string _hos = Model.prioridad != "URGENTE" ? "-":Model.prioridadMotivo;}
+
+      $("#_Partial_Encuesta_Hospitalizado").html("<label class='resaltar'>"+ "@Html.Raw(_hos.Replace("\""," "))"+ "</label> ");
+
+    });
+    function verificarAdjunto() {
+        var exa = '@Model.codigo';
+
+        $.ajax({
+            url: '@Url.Action("isFile", "Adjuntos")',
+            data: { exam: exa },
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                if (data.result) {
+                    $('#div_adicional').append('&nbsp;&nbsp;<button type="button" onclick="DescargarAdjunto(' + exa + ',' + data.doc + ',' + data.carta + ');" class="btn btn-outline btn-primary btn-xs "><i class="fa fa-paperclip fa-2x" style="transform: rotate(228deg);"></i> </button>');
+                }
+
+            }
+        });
+    }
+
+    function DescargarAdjunto(examen, doc, carta) {
+        if (doc) {
+            window.open('@Url.Action("Getfile", "Adjuntos")' + '?examen=' + examen + '&tipo=1');
+        }
+        if (carta) {
+            window.open('@Url.Action("Getfile", "Adjuntos")' + '?examen=' + examen + '&tipo=2');
+        }
+    }
+</script>
+<div class="form-group" style="">
+    <label>N° Examen :</label>
+    <span>@Html.DisplayFor(model => model.codigo) </span>
+</div>
+<div class="form-group">
+    <label>Estudio :</label>
+    <span>@Html.DisplayFor(model => model.ESTUDIO.nombreestudio) </span>
+</div>
+<div class="form-group">
+    <label>Talla :</label>
+    @Html.DisplayFor(model => model.ATENCION.talla) mt.
+    &nbsp;<label>Peso :</label>
+    @Html.DisplayFor(model => model.ATENCION.peso) kg.
+</div>
+<div class="form-group" id="div_adicional">
+    <label>Adicional:</label><b>
+        @if (Model.ATENCION.CITA.sedacion)
+        {
+            <span class="alert-danger">SEDACION</span>
+        }
+        @if (Model.ATENCION.CITA.claustrofobico)
+        {
+            <span class="alert-info">CLAUSTROFOBICO</span>
+        }
+    </b>
+
+</div>

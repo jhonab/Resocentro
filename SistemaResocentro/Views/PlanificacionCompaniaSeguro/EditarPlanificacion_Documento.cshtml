@@ -1,0 +1,118 @@
+﻿@model SistemaResocentro.Models.Planificacion_Documento
+@{
+    Layout = null;
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#categoria").val("@Model.categoria");
+        tipo_gastoEditar();
+    });
+
+    function tipo_gastoEditar() {
+        var tipo = $("#tipo").val();
+        if (tipo == 1 || tipo == 4) {
+            $("#div_Gasto").show();
+            $("#div_Movilidad").hide();
+            $("#div_total").show();
+        } else {
+            $("#div_Gasto").hide();
+            $("#div_Movilidad").show();
+            $("#div_total").show();
+        }
+
+    }
+
+    function editarGasto() {
+        var jsonObject = {
+            "id": $("#id").val(),
+            "idplanificacion": $("#e_idplanificacion").val(),
+            "tipo": $("#tipo").val(),
+            "ndocumento": $("#ndocumento").val(),
+            "proveedor": $("#proveedor").val(),
+            "categoria": $("#categoria").val(),
+            "persona_destino": $("#persona_destino").val(),
+            "origen": $("#origen").val(),
+            "destino": $("#destino").val(),
+            "total": $("#total").val()
+        };
+        $.ajax({
+            url: '/Planificacion/ActualizarPlanificacion_Documento',
+            data: { cadena: JSON.stringify(jsonObject, null, "") },
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                $("#modal-body-gasto").load("/Planificacion/ListaPago?id=" + jsonObject.idplanificacion, function (response, status, xhr) {
+                    if (status == "error") {
+                        toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+                    }
+                });
+            },
+            error: function () {
+                toastr.error("No se actualizo el gasto.", "Error", opts);
+                _result = false;
+            }
+        });
+    }
+</script>
+<div class="col-md-6">
+    <div class="panel panel-default ">
+        <div class="panel-heading">
+            <div class="panel-title">Editar Gasto</div>
+        </div>
+        <div class="panel-body">
+            @Html.HiddenFor(model => model.id)
+            @Html.HiddenFor(model => model.idplanificacion ,new {@id="e_idplanificacion"})
+            <div class="form-group">
+                <label>Tipo Gasto:</label>
+                @Html.DropDownListFor(model => model.tipo, (SelectList)ViewBag.Gasto, "- Seleccione el Tipo de Gasto -", new { @class = "form-control", @onchange = "tipo_gastoEditar()" })
+                @Html.ValidationMessageFor(model => model.tipo)
+            </div>
+            <div id="div_Gasto">
+                <div class="form-group">
+                    <label>Numero Documento: </label>
+                    @Html.TextBoxFor(model => model.ndocumento, new { @placeholder = "Ingrese el N° Documento", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ndocumento)
+                </div>
+                <div class="form-group">
+                    <label>Proveedor: </label>
+                    @Html.TextBoxFor(model => model.proveedor, new { @placeholder = "Ingrese el Proveedor", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.proveedor)
+                </div>
+                <div class="form-group">
+                    <label>Categoría: </label>
+                    @Html.DropDownListFor(model => model.categoria, (SelectList)ViewBag.Categoria, "- Seleccione el Tipo de Categoría -", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.categoria)
+                </div>
+                <div class="form-group">
+                    <label>Persona Destino: </label>
+                    @Html.TextBoxFor(model => model.persona_destino, new { @placeholder = "Ingrese el Destino", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.persona_destino)
+                </div>
+            </div>
+            <div id="div_Movilidad">
+                <div class="form-group">
+                    <label>Origen: </label>
+                    @Html.TextBoxFor(model => model.origen, new { @placeholder = "Ingrese el Origen", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.origen)
+                </div>
+                <div class="form-group">
+                    <label>Destino: </label>
+                    @Html.TextBoxFor(model => model.destino, new { @placeholder = "Ingrese el Destino", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.destino)
+                </div>
+            </div>
+            <div id="div_total" class="form-group">
+                <label>Total (S/.): </label>
+                @Html.TextBoxFor(model => model.total, new { @placeholder = "Ingrese el Total de Gasto", @type = "number", @step = "0.01", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.total)
+            </div>
+
+
+            <p class="pull-right">
+                <button type="button" onclick="editarGasto()" class="btn btn-success">Editar Gasto</button>
+            </p>
+
+        </div>
+    </div>
+</div>

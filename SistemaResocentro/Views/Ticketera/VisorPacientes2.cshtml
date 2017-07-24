@@ -1,0 +1,510 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "<i class='fa fa-users '></i> Lista Pacientes";
+    ViewBag.Titlenot = "Lista Pacientes";
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Sistema Resocentro" />
+    <link rel="publisher" href="https://plus.google.com/u/0/+elcomerciope/">
+    <meta name="author" content="Resocentro" />
+    <meta property="og:image" content="../images/logo/Logo_Azul.png">
+    <meta property="og:image" content="../images/favicon.png">
+    <title>Resocentro Ticketera </title>
+
+
+    <link href="~/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="../favicon.ico" />
+    <meta content='width=device-width, initial-scale=1' name='viewport'>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/fonts/awesome/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Theme style -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+    <script src="~/js/jquery-1.11.0.min.js"></script>
+    <script src="../js/jquery.signalR-2.2.1.min.js"></script>
+    <script src="http://extranet.resocentro.com:5052/signalr/hubs"></script>
+    <script src="../js/ion.sound.min.js"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/js/getUrl.js"></script>
+    <!-- AdminLTE App -->
+    <!-- AdminLTE for demo purposes -->
+
+    <style type="text/css">
+        .right-side {
+            margin-left: 0 !important;
+        }
+
+        .resaltar {
+            /*background-color: #faed5c;*/
+        }
+
+        .skin-black, .skin-black section, .skin-black .panesl-body,
+        .table-bordered > tbody > tr > td {
+            background: #091A38;
+            color: #ffffff !important;
+        }
+
+        .table-bordered > tbody > tr > td {
+            font-size: 38px;
+        }
+
+        .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
+            background: #4a4848;
+        }
+
+        .table-bordered > thead > tr > th {
+            background: #686464 !important;
+            font-size: 15px;
+            padding: 4px 8px 4px 8px;
+        }
+
+        .panel-heading {
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+        }
+
+        /* .panel-primary > .panel-heading {
+            color: #fff;
+            background-color: #838C9B;
+            border-color: #838C9B;
+        }*/
+
+        .bg-verde {
+            background-color: #00A336 !important;
+        }
+
+        .panel-primary {
+            border-color: #091A38;
+            background: #091A38;
+        }
+
+        .panel-info {
+            border-color: #091A38;
+            background: #091A38;
+        }
+
+            .panel-info > .panel-heading {
+                color: #fff;
+                background-color: #43abde;
+                border-color: #43abde;
+            }
+
+        .panel-success {
+            border-color: #091A38;
+            background: #091A38;
+        }
+
+            .panel-success > .panel-heading {
+                color: #fff;
+                background-color: #209c22;
+                border-color: #209c22;
+            }
+
+        .panesl-body {
+            border-color: #808080;
+            margin-top: 10px;
+            box-shadow: 0px 1px 3px rgba(255, 255, 255, 0.0);
+        }
+
+
+
+        .bg-yellow {
+            background: #F0E846;
+            color: #000;
+        }
+
+        .bg-plomo {
+            background: #808183 !important;
+            color: #000;
+            font-size: 30px !important;
+        }
+
+        .bg-oscuro {
+            background: #363A43 !important;
+            color: #000;
+            height: 20px !important;
+            font-size: 25px !important;
+        }
+
+        .bg-blue {
+            background: #337ab7!important;
+            color: #fff !important;
+        }
+
+            .bg-blue > i {
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 30px;
+                margin-top: 5px;
+            }
+
+        .bg-green {
+            background: #209c22;
+            color: #fff !important;
+        }
+
+            .bg-green > i {
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 30px;
+                margin-top: 5px;
+            }
+
+        .bg-celeste {
+            background: #43abde !important;
+            color: #fff !important;
+        }
+
+            .bg-celeste > i {
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 30px;
+                margin-top: 5px;
+            }
+
+        .bg-red {
+            background: #F50808;
+            color: #FFF;
+        }
+
+
+            #table_preferencial::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.3);
+            background-color: rgba(255, 255, 255, 0.00);
+        }
+
+        #table_preferencial::-webkit-scrollbar {
+            width: 0px;
+            background-color: rgba(255, 255, 255, 0.00);
+        }
+
+        #table_preferencial::-webkit-scrollbar-thumb {
+            background-color:rgba(255, 255, 255, 0.00);
+        }
+
+
+
+
+            #table_paciente::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0);
+            background-color: rgba(255, 255, 255, 0.00);
+        }
+
+        #table_paciente::-webkit-scrollbar {
+            width: 0px;
+            background-color: rgba(255, 255, 255, 0.00);
+        }
+
+        #table_paciente::-webkit-scrollbar-thumb {
+            background-color:rgba(255, 255, 255, 0.00);
+        }
+
+
+
+
+
+        #table_caja::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.3);
+            background-color: rgba(255, 255, 255, 0.00);
+        }
+
+        #table_caja::-webkit-scrollbar {
+            width: 0px;
+            background-color: rgba(255, 255, 255, 0.00);
+        }
+
+        #table_caja::-webkit-scrollbar-thumb {
+            background-color:rgba(255, 255, 255, 0.00);
+        }
+   
+
+
+ 
+        .triangulo_inf_primary {
+            width: 0;
+            margin-left: 45%;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 10px solid #337ab7;
+        }
+
+        .triangulo_inf_success {
+            width: 0;
+            margin-left: 45%;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 10px solid #209c22;
+        }
+
+        .triangulo_inf_info {
+            width: 0;
+            margin-left: 45%;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 10px solid #43abde;
+        }
+
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            border-top: 0px solid #ddd !important;
+            border-bottom: 3px solid !important;
+            color: #000;
+        }
+
+        .panel-primary > .panel-body > .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            border-bottom-color: #337ab7 !important;
+        }
+
+        .panel-info > .panel-body > .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            border-bottom-color: #43abde !important;
+        }
+
+        .panel-success > .panel-body > .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            border-bottom-color: #209c22 !important;
+        }
+
+
+
+        .panel-body > table > tbody > tr > td > span {
+            font-weight: 600;
+            font-size: 30px;
+        }
+
+        .panel-body {
+            padding: 0;
+            background: #fff;
+            border-radius: 5px;
+        }
+
+        .correlativo {
+            font-size: 25px;
+        }
+    </style>
+    <script type="text/javascript">
+        var _sede = "";
+        var _empresa = "";
+        $(document).ready(function () {
+            $.connection.hub.url = "http://extranet.resocentro.com:5052/signalr";
+
+            var _signalR = $.connection.emetacHub;
+            $.connection.hub.start().done(function () {
+            });
+            _signalR.client.actualizarPaciente2 = function (msj) {
+
+                console.log(msj);
+                cargartabla();
+
+            }
+
+
+            _sede = $.get("sede");
+            _empresa = $.get("empresa");
+
+            if (_sede == null || _empresa == null) {
+                _empresa = prompt("Ingrese el codigo de la Empresa", "1");
+                _sede = prompt("Ingrese el codigo de la Sede", "1");
+                window.location.assign(window.location.pathname + "?sede=" + _sede + "&empresa=" + _empresa);
+            }
+
+            cargartabla();
+            //milisegundos
+            //$(".panel").height($(window).height()-100);
+            if ($("#table_preferencial").heigh > $(window).height() - 100)
+                $("#table_preferencial").height($(window).height() - 100);
+            if ($("#table_paciente").heigh > $(window).height() - 100)
+                $("#table_paciente").height($(window).height() - 100);
+            if ($("#table_caja").heigh < $(window).height() - 100)
+                $("#table_caja").height($(window).height() - 100);
+            pageScroll();
+            //setInterval(pageScroll, 1000);
+            ion.sound({
+                sounds: [
+                    { name: "bell_ring" }
+                ],
+                path: "../sound/",
+                preload: true,
+                multiplay: true,
+                volume: 1.0
+            });
+
+
+
+        });
+        var isdescendingprefe = true;
+        var isdescendingpaci = true;
+        var isdescendingcaja = true;
+        function pageScroll() {
+            //table_preferencial
+            console.log("lista");
+            var objDiv = document.getElementById("table_preferencial");
+                if (isdescendingprefe)
+                    objDiv.scrollTop = objDiv.scrollTop + 1;
+                else
+                    objDiv.scrollTop = objDiv.scrollTop - 1;
+
+                if (objDiv.scrollTop == (objDiv.scrollHeight - ($(window).height() - 100)))
+                    isdescendingprefe = false;
+                if (objDiv.scrollTop == 0)
+                    isdescendingprefe = true;
+            
+            //table_paciente
+
+            var objDiv = document.getElementById("table_paciente");
+            if (isdescendingpaci)
+                objDiv.scrollTop = objDiv.scrollTop + 1;
+            else
+                objDiv.scrollTop = objDiv.scrollTop - 1;
+
+            if (objDiv.scrollTop == (objDiv.scrollHeight - ($(window).height() - 100)))
+                isdescendingpaci = false;
+            if (objDiv.scrollTop == 0)
+                isdescendingpaci = true;
+
+            //table_caja
+            var objDiv = document.getElementById("table_caja");
+            if (isdescendingcaja)
+                objDiv.scrollTop = objDiv.scrollTop + 1;
+            else
+                objDiv.scrollTop = objDiv.scrollTop - 1;
+
+            if (objDiv.scrollTop == (objDiv.scrollHeight - ($(window).height() - 100)))
+                isdescendingcaja = false;
+            if (objDiv.scrollTop == 0)
+                isdescendingcaja = true;
+            setTimeout('pageScroll()', 30);
+
+        }
+        function resaltar() {
+            //$("#partial_visor").removeClass(nombreClase);
+        }
+
+        function cargartabla() {
+
+            if (_sede != "" || _empresa != "") {
+                $.ajax({
+                    url: "@Url.Action("AsyncVisorPaciente2", "Ticketera")",
+                    data: { sede: _sede, empresa: _empresa },
+                    dataType: "json",
+                    type: "POST",
+                    error: function () {
+                        $("#body-preferencial").html("<code>Hubo un error al momento de Actualizar</code>");
+                        $("#body-paciente").html("<code>Hubo un error al momento de Actualizar</code>");
+                        $("#body-caja").html("<code>Hubo un error al momento de Actualizar</code>");
+
+                    },
+                    success: function (data) {
+                        //  $("#partial_visor").html(data.mensaje);
+                        $("#body-preferencial").html(data.preferencial);
+                        $("#body-paciente").html(data.paciente);
+                        $("#body-caja").html(data.caja);
+                        $("table tbody .resaltar").each(function () {
+                            var options = {};
+                            ion.sound.play("bell_ring");
+                            console.log("Sonido");
+                        });
+                        //calcularvideo();
+                    }
+                });
+            } else {
+                $("#body-preferencial").html("<code>No se identifico la Sede</code>");
+                $("#body-paciente").html("<code>No se identifico la Sede</code>");
+                $("#body-caja").html("<code>No se identifico la Sede</code>");
+            }
+
+        }
+    </script>
+</head>
+<body class="skin-black">
+    <!-- header logo: style can be found in header.less -->
+
+    <div class="row" id="div-lista" style="padding:0px;margin:0px">
+        <div class="col-md-12" style="padding:0px;margin:0px" id="partial_visor">
+        </div>
+        <div class="col-md-4 ">
+            <div class='panel panel-primary' style='margin-bottom:10px;'>
+                <div class='panel-heading'>
+                    <h1 class='panel-title text-center' style='font-size: 30px;'><i class="fa fa-wheelchair" style="padding:5px;" aria-hidden="true"></i> PREFERENCIAL</h1>
+                </div>
+                <div class='triangulo_inf_primary '></div>
+                <div class="panel-body" id="table_preferencial" style="padding:0;margin-top:5px;overflow-y: scroll;">
+                    <table class='table' style="margin:0; ">
+                        <tbody id="body-preferencial">
+
+                        <tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <div class='panel panel-info' style='margin-bottom:10px;'>
+                <div class='panel-heading'>
+                    <h1 class='panel-title text-center' style='font-size: 30px;'><i class="fa fa-male" style="padding:5px;" aria-hidden="true"></i> PACIENTES</h1>
+                </div>
+                <div class='triangulo_inf_info '></div>
+                <div class="panel-body" id="table_paciente" style="padding:0;margin-top:5px;overflow-y: scroll;">
+                    <table class='table' style="margin:0; ">
+                        <tbody id="body-paciente">
+
+                        <tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class='panel panel-success' style='margin-bottom:10px;'>
+                <div class='panel-heading'>
+                    <h1 class='panel-title text-center' style='font-size: 30px;'><i class="fa fa-shopping-bag" style="padding:5px;" aria-hidden="true"></i> CAJA</h1>
+                </div>
+                <div class='triangulo_inf_success '></div>
+                <div class="panel-body" id="table_caja" style="padding:0;margin-top:5px;overflow-y: scroll;">
+                    <table class='table' style="margin:0; ">
+                        <tbody id="body-caja">
+
+                        <tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ./wrapper -->
+    @*  <div class="row" id="div-video" style="padding:0px;margin:0px">
+        <div class="col-md-12" style="padding:0px;margin:0px;text-align:center;background:#000;">
+            <script type="text/javascript">
+                $(function () {
+                    $("#video").volumen = 0.1;
+                    calcularvideo();
+                    $(window).resize(function () {
+                        calcularvideo();
+                    });
+                });
+                function calcularvideo() {
+                    $("#video").height($(window).height() - $("#div-lista").height()-5);
+
+                }
+            </script>
+            <video id="video" muted autoplay>
+                <source src="http://192.168.0.5:5050/PaginaWeb/videos/video.mp4" type="video/mp4" />
+                <source src="http://192.168.0.5:5050/PaginaWeb/videos/video_1.mp4" type="video/mp4" />
+                Actualize su Navegador
+            </video>
+            </div>
+        </div>*@
+
+</body>
+
+</html>

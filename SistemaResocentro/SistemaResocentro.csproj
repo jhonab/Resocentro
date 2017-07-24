@@ -1,0 +1,1195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DA78FF11-A0EE-41ED-8F49-9A8A3462DF55}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SistemaResocentro</RootNamespace>
+    <AssemblyName>SistemaResocentro</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="itextsharp">
+      <HintPath>..\..\..\Carta_Garantia\CartaGarantia_2\CartaGarantia_2\bin\Release\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.pdfa">
+      <HintPath>..\..\..\Carta_Garantia\CartaGarantia_2\CartaGarantia_2\bin\Release\itextsharp.pdfa.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.1\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Cors, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Cors.3.0.1\lib\net45\Microsoft.Owin.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.Cors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.0.0\lib\net45\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=__MvcPagesVersion__, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.2\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.1.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.0\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.0.0\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.0\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AtencionCliente\AtencionClienteController.cs" />
+    <Compile Include="Controllers\AtencionCliente\CitaMedicaController.cs" />
+    <Compile Include="Controllers\AtencionCliente\CobranzaController.cs" />
+    <Compile Include="Controllers\AtencionCliente\TicketeraController.cs" />
+    <Compile Include="Controllers\Carta Garantia\CartaGarantiaController.cs" />
+    <Compile Include="Controllers\Mantenimiento\MantenimientoController.cs" />
+    <Compile Include="Controllers\Medica\TecnologoController.cs" />
+    <Compile Include="Controllers\Promotores\AsignacionesController.cs" />
+    <Compile Include="Controllers\Promotores\ColaboradorController.cs" />
+    <Compile Include="Controllers\Promotores\CompaniaSeguroController.cs" />
+    <Compile Include="Controllers\Promotores\InstitucionMedicaController.cs" />
+    <Compile Include="Controllers\Promotores\PlanificacionCompaniaSeguroController.cs" />
+    <Compile Include="Controllers\Promotores\PlanificacionController.cs" />
+    <Compile Include="Controllers\Sistemas\AseguradoraController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Sistemas\EmpleadoController.cs" />
+    <Compile Include="Controllers\Promotores\MedicoController.cs" />
+    <Compile Include="Controllers\Sistemas\HerramientasController.cs" />
+    <Compile Include="Controllers\Sistemas\NotificacionesController.cs" />
+    <Compile Include="Controllers\Sistemas\PacienteController.cs" />
+    <Compile Include="Controllers\Sistemas\SistemasController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Hubs\TicketeraHub.cs" />
+    <Compile Include="Member\CustomMembershipProvider.cs" />
+    <Compile Include="Member\CustomRoleProvider.cs" />
+    <Compile Include="Models\AdjuntoIncidente.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ASEGURADORA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AsignacionRepresentanteMedico.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ATENCION.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AUDITORIA_CARTAS_GARANTIA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CARGO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CARTAGARANTIA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CIE.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CITA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CLASE.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CLINICAHOSPITAL.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Colaborador.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\COMPANIASEGURO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CompaniaSeguro_Colaborador.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CompaniaSeguro_Promotor.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Com_Medico.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ConfirmacionLecturaPago.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Consulta.cs">
+      <DependentUpon>ResoWeb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ConversacionIncidente.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CorrelativoMotivo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DETALLEPROFORMA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DetalleReporteComisionesMedico.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DOCESCANEADO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EMPLEADO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmpresaServicio.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Encuesta.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Encuesta_Satisfaccion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EQUIPO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EQUIPO_ESTUDIO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ESCANADMISION.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ESPECIALIDAD.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ESTUDIO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ESTUDIO_CARTAGAR.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ESTUDIO_COMPANIA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EXAMENXATENCION.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EXAMENXCITA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FrecuenciaMantenimiento.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Historia.cs">
+      <DependentUpon>ResoWeb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HistorialCorrelativo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HORARIO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Incidente.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IncidenteEquipo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Institucion_Medico.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Institucion_Promotor.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Insti_Prom_Medico.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\INTEGRACION.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\JQueryDataTableParamModel.cs" />
+    <Compile Include="Models\listarturnoparacita_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Log_Seguimiento_Produccion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Log_sistResocentro.cs">
+      <DependentUpon>ModelLog.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MEDICOEXTERNO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MODALIDAD.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelLog.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelLog.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelLog.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelLog.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelLog.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelLog.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MotivoCodigo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Motivo_Entre_Turno.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PACIENTE.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Permiso.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PiezasRevision.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Planificacion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Planificacion_CompaniaSeguro.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Planificacion_CompaniaSeguro_Documento.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Planificacion_Documento.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PROFORMA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ReporteComisionesMedico.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ResoWeb.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResoWeb.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ResoWeb.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResoWeb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ResoWeb.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResoWeb.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RESULTADODELIVERY.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RevisionIncidente.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Script.cs" />
+    <Compile Include="Models\SERIE.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Serie_Equipo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SitedProducto.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Solicitud_Entre_Turno.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spu_ReportePromedioxFecha_Ticketera_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spu_ReportexFecha_Ticketera_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SUCURSAL.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SUCURSALXUSUARIO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Sunasa_Cobertura.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SupervisarEncuesta.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TelefonoEmpresa.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TipoIncidente.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TipoMedico.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TipoTelefono.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tipo_Permiso.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TKT_Counter.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TKT_Historial.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TKT_List_Atencion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TKT_Ticketera.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TKT_Tipo_Atencion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tool.cs" />
+    <Compile Include="Models\Ubicacion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UBIGEO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UNIDADNEGOCIO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\USUARIO.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\visordecartas_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="ViewModel\BusquedaGeneralViewModel.cs" />
+    <Compile Include="ViewModel\CartaGarantia\CartaGarantiaViewModel.cs" />
+    <Compile Include="ViewModel\CartaGarantia\Lista_ProformaViewModel.cs" />
+    <Compile Include="ViewModel\AtencioalCliente\CartasxCitarViewModel.cs" />
+    <Compile Include="ViewModel\AtencioalCliente\CitarCartaViewModel.cs" />
+    <Compile Include="ViewModel\AtencioalCliente\Pagos_PlanificacionViewModel.cs" />
+    <Compile Include="ViewModel\AtencioalCliente\CobranzaViewModel.cs" />
+    <Compile Include="ViewModel\Empleado\EmpleadoViewModel.cs" />
+    <Compile Include="ViewModel\AtencioalCliente\List_EstudioViewModel.cs" />
+    <Compile Include="ViewModel\AtencioalCliente\List_TicketeraViewModels.cs" />
+    <Compile Include="ViewModel\AtencioalCliente\ListaSeguimientoViewModels.cs" />
+    <Compile Include="ViewModel\Mantenimiento\MantenimientoViewModel.cs" />
+    <Compile Include="ViewModel\Proforma\ProformaViewModel.cs" />
+    <Compile Include="ViewModel\AtencioalCliente\RealizarLlamadaViewModel.cs" />
+    <Compile Include="ViewModel\AtencioalCliente\SolicitudEntreTurno.cs" />
+    <Compile Include="ViewModel\Sedaciones_ProgramadasViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="css\blue.css" />
+    <Content Include="css\bootstrap-theme.min.css" />
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\custom.css" />
+    <Content Include="css\Datetime\bootstrap-datetimepicker.css" />
+    <Content Include="css\fontapicss.css" />
+    <Content Include="css\inputFile\fileinput.min.css" />
+    <Content Include="css\inputFile\img\loading-sm.gif" />
+    <Content Include="css\inputFile\img\loading.gif" />
+    <Content Include="css\inputFile\fileinput.min_0.css" />
+    <Content Include="css\Kendochart\kendo.dataviz.min.css" />
+    <Content Include="css\neon-core.css" />
+    <Content Include="css\neon-forms.css" />
+    <Content Include="css\neon-theme.css" />
+    <Content Include="css\progressbar.css" />
+    <Content Include="css\sprite_google.css" />
+    <Content Include="css\wysihtml5-color.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\awesome\css\font-awesome.css" />
+    <Content Include="fonts\awesome\css\font-awesome.min.css" />
+    <Content Include="fonts\awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\entypo\css\animation.css" />
+    <Content Include="fonts\entypo\css\entypo-codes.css" />
+    <Content Include="fonts\entypo\css\entypo-embedded.css" />
+    <Content Include="fonts\entypo\css\entypo-ie7-codes.css" />
+    <Content Include="fonts\entypo\css\entypo-ie7.css" />
+    <Content Include="fonts\entypo\css\entypo.css" />
+    <Content Include="fonts\entypo\font\entypo.svg" />
+    <Content Include="fonts\glyphicons\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="images\favicon.png" />
+    <Content Include="images\fotocumpleaños.png" />
+    <Content Include="images\logo\19 años.png" />
+    <Content Include="images\logo\central_small.jpg" />
+    <Content Include="images\logo\Logo.png" />
+    <Content Include="images\logo\year.png" />
+    <Content Include="images\logo\Logotipo.png" />
+    <Content Include="images\logo\Logo_Azul.png" />
+    <Content Include="images\error.png" />
+    <Content Include="images\logo_home.png" />
+    <Content Include="images\markers\marker_clinica.png" />
+    <Content Include="images\markers\marker_hospital.png" />
+    <Content Include="images\markers\marker_otros.png" />
+    <Content Include="images\markers\marker_visitador.png" />
+    <Content Include="images\profile.png" />
+    <Content Include="images\sin_perfil.jpg" />
+    <Content Include="js\autosize.js" />
+    <Content Include="js\bootstrap-switch.min.js" />
+    <Content Include="js\bootstrap.min.js" />
+    <Content Include="js\chosen\chosen.css" />
+    <Content Include="js\chosen\chosen-sprite%402x.png" />
+    <Content Include="js\chosen\chosen-sprite.png" />
+    <Content Include="js\chosen\chosen.jquery.min.js" />
+    <Content Include="js\dataTables.bootstrap.js" />
+    <Content Include="js\datatables\buttons.print.min.js" />
+    <Content Include="js\datatables\datatable.css" />
+    <Content Include="js\datatables\dataTables.buttons.min.js" />
+    <Content Include="js\datatables\jquery.dataTables.columnFilter.js" />
+    <Content Include="js\datatables\jquery.dataTables.min.js" />
+    <Content Include="js\datatables\jquery.dataTables_ES.min.js" />
+    <Content Include="js\datatables\lodash.min.js" />
+    <Content Include="js\datatables\responsive\css\datatables.responsive.css" />
+    <Content Include="js\datatables\responsive\img\minus.png" />
+    <Content Include="js\datatables\responsive\img\plus.png" />
+    <Content Include="js\datatables\responsive\js\datatables.responsive.js" />
+    <Content Include="js\datatables\TableTools.min.js" />
+    <Content Include="js\datatables\ZeroClipboard.js" />
+    <Content Include="js\Datetime\bootstrap-datetimepicker.js" />
+    <Content Include="js\Datetime\dateformat.js" />
+    <Content Include="js\Datetime\moment-with-locales.js" />
+    <Content Include="js\Datetime\moment.js" />
+    <Content Include="js\fileExplore\images\application.png" />
+    <Content Include="js\fileExplore\images\code.png" />
+    <Content Include="js\fileExplore\images\css.png" />
+    <Content Include="js\fileExplore\images\db.png" />
+    <Content Include="js\fileExplore\images\directory.png" />
+    <Content Include="js\fileExplore\images\doc.png" />
+    <Content Include="js\fileExplore\images\file.png" />
+    <Content Include="js\fileExplore\images\film.png" />
+    <Content Include="js\fileExplore\images\flash.png" />
+    <Content Include="js\fileExplore\images\folder_open.png" />
+    <Content Include="js\fileExplore\images\html.png" />
+    <Content Include="js\fileExplore\images\java.png" />
+    <Content Include="js\fileExplore\images\linux.png" />
+    <Content Include="js\fileExplore\images\music.png" />
+    <Content Include="js\fileExplore\images\pdf.png" />
+    <Content Include="js\fileExplore\images\php.png" />
+    <Content Include="js\fileExplore\images\picture.png" />
+    <Content Include="js\fileExplore\images\ppt.png" />
+    <Content Include="js\fileExplore\images\psd.png" />
+    <Content Include="js\fileExplore\images\ruby.png" />
+    <Content Include="js\fileExplore\images\script.png" />
+    <Content Include="js\fileExplore\images\spinner.gif" />
+    <Content Include="js\fileExplore\images\txt.png" />
+    <Content Include="js\fileExplore\images\xls.png" />
+    <Content Include="js\fileExplore\images\zip.png" />
+    <Content Include="js\fileExplore\jquery.easing.js" />
+    <Content Include="js\fileExplore\jqueryFileTree.css" />
+    <Content Include="js\fileExplore\jqueryFileTree.js" />
+    <Content Include="js\getUrl.js" />
+    <Content Include="js\gsap\easing\EasePack.min.js" />
+    <Content Include="js\gsap\jquery.gsap.min.js" />
+    <Content Include="js\gsap\main-gsap.js" />
+    <Content Include="js\gsap\plugins\AttrPlugin.min.js" />
+    <Content Include="js\gsap\plugins\BezierPlugin.min.js" />
+    <Content Include="js\gsap\plugins\ColorPropsPlugin.min.js" />
+    <Content Include="js\gsap\plugins\CSSPlugin.min.js" />
+    <Content Include="js\gsap\plugins\CSSRulePlugin.min.js" />
+    <Content Include="js\gsap\plugins\DirectionalRotationPlugin.min.js" />
+    <Content Include="js\gsap\plugins\EaselPlugin.min.js" />
+    <Content Include="js\gsap\plugins\KineticPlugin.min.js" />
+    <Content Include="js\gsap\plugins\Physics2DPlugin.min.js" />
+    <Content Include="js\gsap\plugins\PhysicsPropsPlugin.min.js" />
+    <Content Include="js\gsap\plugins\RaphaelPlugin.min.js" />
+    <Content Include="js\gsap\plugins\RoundPropsPlugin.min.js" />
+    <Content Include="js\gsap\plugins\ScrambleTextPlugin.min.js" />
+    <Content Include="js\gsap\plugins\ScrollToPlugin.min.js" />
+    <Content Include="js\gsap\plugins\TextPlugin.min.js" />
+    <Content Include="js\gsap\plugins\ThrowPropsPlugin.min.js" />
+    <Content Include="js\gsap\TimelineLite.min.js" />
+    <Content Include="js\gsap\TimelineMax.min.js" />
+    <Content Include="js\gsap\TweenLite.min.js" />
+    <Content Include="js\gsap\TweenMax.min.js" />
+    <Content Include="js\gsap\utils\Draggable.min.js" />
+    <Content Include="js\gsap\utils\SplitText.min.js" />
+    <Content Include="js\initial.js" />
+    <Content Include="js\inputFile\fileinput_locale_es.js" />
+    <Content Include="js\inputFile\fileinput.min.js" />
+    <Content Include="js\inputFile\fileinput.min_0.js" />
+    <Content Include="js\inputFile\fileinput_locale_es_0.js" />
+    <Content Include="js\inputFile\themes\explorer\theme.css" />
+    <Content Include="js\inputFile\themes\explorer\theme.js" />
+    <Content Include="js\inputFile\themes\fa\theme.js" />
+    <Content Include="js\inputFile\themes\gly\theme.js" />
+    <Content Include="js\ion.sound.min.js" />
+    <Content Include="js\joinable.js" />
+    <Content Include="js\jquery-1.10.2.js" />
+    <Content Include="js\jquery-1.11.0.min.js" />
+    <Content Include="js\jquery-ui\css\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
+    <Content Include="js\jquery-ui\css\images\ui-bg_flat_100_deedf7_40x100.png" />
+    <Content Include="js\jquery-ui\css\images\ui-bg_flat_100_e4f1fb_40x100.png" />
+    <Content Include="js\jquery-ui\css\images\ui-bg_flat_100_f2f5f7_40x100.png" />
+    <Content Include="js\jquery-ui\css\images\ui-bg_flat_15_cd0a0a_40x100.png" />
+    <Content Include="js\jquery-ui\css\images\ui-bg_flat_25_ffef8f_40x100.png" />
+    <Content Include="js\jquery-ui\css\images\ui-bg_flat_50_3baae3_40x100.png" />
+    <Content Include="js\jquery-ui\css\images\ui-bg_flat_70_000000_40x100.png" />
+    <Content Include="js\jquery-ui\css\images\ui-bg_flat_80_d7ebf9_40x100.png" />
+    <Content Include="js\jquery-ui\css\images\ui-icons_2694e8_256x240.png" />
+    <Content Include="js\jquery-ui\css\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="js\jquery-ui\css\images\ui-icons_3d80b3_256x240.png" />
+    <Content Include="js\jquery-ui\css\images\ui-icons_72a7cf_256x240.png" />
+    <Content Include="js\jquery-ui\css\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="js\jquery-ui\css\jquery-ui-1.11.4.structure.min.css" />
+    <Content Include="js\jquery-ui\css\jquery-ui-1.11.4.theme.min.css" />
+    <Content Include="js\jquery-ui\css\no-theme\jquery-ui-1.10.3.custom.css" />
+    <Content Include="js\jquery-ui\css\no-theme\jquery-ui-1.10.3.custom.min.css" />
+    <Content Include="js\jquery-ui\js\jquery-1.9.1.js" />
+    <Content Include="js\jquery-ui\js\jquery-ui-1.10.3.custom.js" />
+    <Content Include="js\jquery-ui\js\jquery-ui-1.10.3.custom.min.js" />
+    <Content Include="js\jquery-ui\js\jquery-ui-1.10.3.minimal.min.js" />
+    <Content Include="js\jquery-ui\js\jquery-ui-1.11.4.min.js" />
+    <Content Include="js\jquery.dataTables.min.js" />
+    <Content Include="js\jquery.elevateZoom-3.0.8.min.js" />
+    <Content Include="js\jquery.inputmask.bundle.min.js" />
+    <Content Include="js\jquery.validate.min.js" />
+    <Content Include="js\Kendochart\kendo.all.min.js" />
+    <Content Include="js\linq.min.js" />
+    <Content Include="js\morris\morris.css" />
+    <Content Include="js\morris\morris.js" />
+    <Content Include="js\morris\raphael-min.js" />
+    <Content Include="js\neon-api.js" />
+    <Content Include="js\neon-custom.js" />
+    <Content Include="js\neon-demo.js" />
+    <Content Include="js\neon-login.js" />
+    <Content Include="js\progressbar.js" />
+    <Content Include="js\resizeable.js" />
+    <Content Include="js\script\aseguradora\searchbeneficio.js" />
+    <Content Include="js\script\aseguradora\searchcie.js" />
+    <Content Include="js\script\carta\CartaxProforma.js" />
+    <Content Include="js\script\carta\updateCarta.js" />
+    <Content Include="js\script\carta\createCarta.js" />
+    <Content Include="js\script\empleado\createEmpleado.js" />
+    <Content Include="js\script\medico\createmedico.js" />
+    <Content Include="js\script\medico\searchmedico.js" />
+    <Content Include="js\script\medico\updatemedico.js" />
+    <Content Include="js\script\paciente\createpaciente.js" />
+    <Content Include="js\script\paciente\searchpaciente.js" />
+    <Content Include="js\script\paciente\updatepaciente.js" />
+    <Content Include="js\script\proforma\createproforma.js" />
+    <Content Include="js\select2-4.0.3\css\select2.css" />
+    <Content Include="js\select2-4.0.3\css\select2.min.css" />
+    <Content Include="js\select2-4.0.3\js\i18n\ar.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\az.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\bg.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\ca.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\cs.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\da.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\de.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\el.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\en.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\es.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\et.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\eu.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\fa.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\fi.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\fr.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\gl.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\he.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\hi.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\hr.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\hu.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\id.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\is.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\it.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\ja.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\km.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\ko.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\lt.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\lv.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\mk.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\ms.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\nb.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\nl.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\pl.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\pt-BR.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\pt.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\ro.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\ru.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\sk.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\sr-Cyrl.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\sr.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\sv.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\th.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\tr.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\uk.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\vi.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\zh-CN.js" />
+    <Content Include="js\select2-4.0.3\js\i18n\zh-TW.js" />
+    <Content Include="js\select2-4.0.3\js\select2.full.js" />
+    <Content Include="js\select2-4.0.3\js\select2.full.min.js" />
+    <Content Include="js\select2-4.0.3\js\select2.js" />
+    <Content Include="js\select2-4.0.3\js\select2.min.js" />
+    <Content Include="js\select2\select2-bootstrap.css" />
+    <Content Include="js\select2\select2-spinner.gif" />
+    <Content Include="js\select2\select2.css" />
+    <Content Include="js\select2\select2.js" />
+    <Content Include="js\select2\select2.min.js" />
+    <Content Include="js\select2\select2.png" />
+    <Content Include="js\select2\select2x2.png" />
+    <Content Include="js\select2\select2_locale_ar.js" />
+    <Content Include="js\select2\select2_locale_bg.js" />
+    <Content Include="js\select2\select2_locale_ca.js" />
+    <Content Include="js\select2\select2_locale_cs.js" />
+    <Content Include="js\select2\select2_locale_da.js" />
+    <Content Include="js\select2\select2_locale_de.js" />
+    <Content Include="js\select2\select2_locale_el.js" />
+    <Content Include="js\select2\select2_locale_es.js" />
+    <Content Include="js\select2\select2_locale_et.js" />
+    <Content Include="js\select2\select2_locale_eu.js" />
+    <Content Include="js\select2\select2_locale_fa.js" />
+    <Content Include="js\select2\select2_locale_fi.js" />
+    <Content Include="js\select2\select2_locale_fr.js" />
+    <Content Include="js\select2\select2_locale_gl.js" />
+    <Content Include="js\select2\select2_locale_he.js" />
+    <Content Include="js\select2\select2_locale_hr.js" />
+    <Content Include="js\select2\select2_locale_hu.js" />
+    <Content Include="js\select2\select2_locale_id.js" />
+    <Content Include="js\select2\select2_locale_is.js" />
+    <Content Include="js\select2\select2_locale_it.js" />
+    <Content Include="js\select2\select2_locale_ja.js" />
+    <Content Include="js\select2\select2_locale_ko.js" />
+    <Content Include="js\select2\select2_locale_lt.js" />
+    <Content Include="js\select2\select2_locale_lv.js" />
+    <Content Include="js\select2\select2_locale_mk.js" />
+    <Content Include="js\select2\select2_locale_ms.js" />
+    <Content Include="js\select2\select2_locale_nl.js" />
+    <Content Include="js\select2\select2_locale_no.js" />
+    <Content Include="js\select2\select2_locale_pl.js" />
+    <Content Include="js\select2\select2_locale_pt-BR.js" />
+    <Content Include="js\select2\select2_locale_pt-PT.js" />
+    <Content Include="js\select2\select2_locale_ro.js" />
+    <Content Include="js\select2\select2_locale_ru.js" />
+    <Content Include="js\select2\select2_locale_sk.js" />
+    <Content Include="js\select2\select2_locale_sv.js" />
+    <Content Include="js\select2\select2_locale_th.js" />
+    <Content Include="js\select2\select2_locale_tr.js" />
+    <Content Include="js\select2\select2_locale_ua.js" />
+    <Content Include="js\select2\select2_locale_vi.js" />
+    <Content Include="js\select2\select2_locale_zh-CN.js" />
+    <Content Include="js\select2\select2_locale_zh-TW.js" />
+    <Content Include="js\toastr.js" />
+    <Content Include="js\validar-input.js" />
+    <Content Include="js\wysihtml5\advanced.js" />
+    <Content Include="js\wysihtml5\bootstrap-wysihtml5.css" />
+    <Content Include="js\wysihtml5\bootstrap-wysihtml5.js" />
+    <Content Include="js\wysihtml5\simple.js" />
+    <Content Include="js\wysihtml5\wysihtml5-0.4.0pre.min.js" />
+    <Content Include="Models\Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.cs</LastGenOutput>
+    </Content>
+    <Content Include="js\jquery.signalR-2.2.1.js" />
+    <Content Include="js\jquery.signalR-2.2.1.min.js" />
+    <Content Include="sound\bell_ring.mp3" />
+    <Content Include="sound\encuesta.mp3" />
+    <Content Include="sound\equipo.mp3" />
+    <Content Include="sound\satisfaccion.mp3" />
+    <Content Include="sound\supervisor.mp3" />
+    <Content Include="sound\tecnologo.aac" />
+    <Content Include="sound\tecnologo.mp3" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="js\script\beneficio\" />
+    <Folder Include="video\" />
+    <Folder Include="Views\Herramientas\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config" />
+    <Content Include="fonts\entypo\font\entypo.eot" />
+    <Content Include="fonts\entypo\font\entypo.ttf" />
+    <Content Include="fonts\entypo\font\entypo.woff" />
+    <Content Include="fonts\awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\awesome\fonts\fontawesome-webfont.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\awesome\fonts\FontAwesome.otf" />
+    <Content Include="fonts\awesome\less\animated.less" />
+    <Content Include="fonts\awesome\less\bordered-pulled.less" />
+    <Content Include="fonts\awesome\less\core.less" />
+    <Content Include="fonts\awesome\less\fixed-width.less" />
+    <Content Include="fonts\awesome\less\font-awesome.less" />
+    <Content Include="fonts\awesome\less\icons.less" />
+    <Content Include="fonts\awesome\less\larger.less" />
+    <Content Include="fonts\awesome\less\list.less" />
+    <Content Include="fonts\awesome\less\mixins.less" />
+    <Content Include="fonts\awesome\less\path.less" />
+    <Content Include="fonts\awesome\less\rotated-flipped.less" />
+    <Content Include="fonts\awesome\less\stacked.less" />
+    <Content Include="fonts\awesome\less\variables.less" />
+    <Content Include="fonts\awesome\scss\font-awesome.scss" />
+    <Content Include="fonts\awesome\scss\_animated.scss" />
+    <Content Include="fonts\awesome\scss\_bordered-pulled.scss" />
+    <Content Include="fonts\awesome\scss\_core.scss" />
+    <Content Include="fonts\awesome\scss\_fixed-width.scss" />
+    <Content Include="fonts\awesome\scss\_icons.scss" />
+    <Content Include="fonts\awesome\scss\_larger.scss" />
+    <Content Include="fonts\awesome\scss\_list.scss" />
+    <Content Include="fonts\awesome\scss\_mixins.scss" />
+    <Content Include="fonts\awesome\scss\_path.scss" />
+    <Content Include="fonts\awesome\scss\_rotated-flipped.scss" />
+    <Content Include="fonts\awesome\scss\_stacked.scss" />
+    <Content Include="fonts\awesome\scss\_variables.scss" />
+    <Content Include="js\select2\bower.json" />
+    <Content Include="js\select2\LICENSE" />
+    <Content Include="js\select2\README.md" />
+    <Content Include="js\select2\release.sh" />
+    <Content Include="js\select2\select2.jquery.json" />
+    <Content Include="js\select2\select2_locale_en.js.template" />
+    <EntityDeploy Include="Models\ResoWeb.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ResoWeb.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ResoWeb.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ResoWeb.edmx</DependentUpon>
+      <LastGenOutput>ResoWeb.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ResoWeb.edmx.diagram">
+      <DependentUpon>ResoWeb.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\ResoWeb.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ResoWeb.edmx</DependentUpon>
+      <LastGenOutput>ResoWeb.cs</LastGenOutput>
+    </Content>
+    <Content Include="js\chosen\chosen.bootstrap.css" />
+    <EntityDeploy Include="Models\ModelLog.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelLog.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ModelLog.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelLog.edmx</DependentUpon>
+      <LastGenOutput>ModelLog.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelLog.edmx.diagram">
+      <DependentUpon>ModelLog.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\ModelLog.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelLog.edmx</DependentUpon>
+      <LastGenOutput>ModelLog.cs</LastGenOutput>
+    </Content>
+    <None Include="Project_Readme.html" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
+    <Content Include="Views\CartaGarantia\ListaProforma.cshtml" />
+    <Content Include="Views\CartaGarantia\CartaProforma.cshtml" />
+    <Content Include="Views\CartaGarantia\_List_Est_Carta.cshtml" />
+    <Content Include="Views\CartaGarantia\CreateProforma.cshtml" />
+    <Content Include="Views\CartaGarantia\getEstudio.cshtml" />
+    <Content Include="Views\Paciente\CreatePaciente.cshtml" />
+    <Content Include="Views\Paciente\UpdatePaciente.cshtml" />
+    <Content Include="Views\Paciente\SearchPaciente.cshtml" />
+    <Content Include="Views\Paciente\ListaPaciente.cshtml" />
+    <Content Include="Views\CartaGarantia\_setEstudio.cshtml" />
+    <Content Include="Views\Medico\CreateMedico.cshtml" />
+    <Content Include="Views\Medico\UpdateMedico.cshtml" />
+    <Content Include="Views\Medico\SearchMedico.cshtml" />
+    <Content Include="Views\Medico\ListaMedico.cshtml" />
+    <Content Include="Views\CartaGarantia\AdjuntarArchivoProforma.cshtml" />
+    <Content Include="Views\CartaGarantia\ImprimirProforma.cshtml" />
+    <Content Include="Views\Aseguradora\SearchCie.cshtml" />
+    <Content Include="Views\Aseguradora\ListaCie.cshtml" />
+    <Content Include="Views\CartaGarantia\CreateCarta.cshtml" />
+    <Content Include="Views\CartaGarantia\getListCarta.cshtml" />
+    <Content Include="Views\CartaGarantia\VisorCartas.cshtml" />
+    <Content Include="Views\CartaGarantia\VisorxTipo.cshtml" />
+    <Content Include="Views\CartaGarantia\ActualizarCarta.cshtml" />
+    <Content Include="Views\CartaGarantia\UpdateCarta.cshtml" />
+    <Content Include="Views\Aseguradora\SearchBenefico.cshtml" />
+    <Content Include="Views\Aseguradora\ListaBenefico.cshtml" />
+    <Content Include="Views\CartaGarantia\RevisarCarta.cshtml" />
+    <Content Include="Views\Sistemas\Permisos.cshtml" />
+    <Content Include="Views\Sistemas\getPermisos.cshtml" />
+    <None Include="Properties\PublishProfiles\Local.pubxml" />
+    <Content Include="Views\AtencionCliente\ListaMotivos.cshtml" />
+    <Content Include="Views\AtencionCliente\RegistrarMotivo.cshtml" />
+    <Content Include="Views\AtencionCliente\EditarMotivo.cshtml" />
+    <Content Include="Views\AtencionCliente\EliminarMotivo.cshtml" />
+    <Content Include="Views\AtencionCliente\HistorialMotivos.cshtml" />
+    <Content Include="Views\AtencionCliente\ListaGenerado.cshtml" />
+    <Content Include="Views\AtencionCliente\DetalleGenerado.cshtml" />
+    <Content Include="Views\AtencionCliente\DetalleMotivo.cshtml" />
+    <Content Include="Views\AtencionCliente\RegistrarGenerado.cshtml" />
+    <Content Include="Views\AtencionCliente\EditarGenerado.cshtml" />
+    <Content Include="Views\CartaGarantia\Herramientas.cshtml" />
+    <Content Include="Views\Home\Solicitudes.cshtml" />
+    <Content Include="Views\Sistemas\SolicitudesPendientes.cshtml" />
+    <Content Include="Views\Sistemas\DetalleSolicitud.cshtml" />
+    <Content Include="Views\Ticketera\Counter.cshtml" />
+    <Content Include="Views\Ticketera\VisorPacientes.cshtml" />
+    <Content Include="Views\Ticketera\_Session.cshtml" />
+    <Content Include="Views\Ticketera\_VisorPaciente.cshtml" />
+    <Content Include="sound\bell_ring.aac" />
+    <Content Include="sound\bell_ring.ogg" />
+    <Content Include="Views\Ticketera\ReporteGeneral.cshtml" />
+    <Content Include="Views\Ticketera\ListaAtenciones.cshtml" />
+    <Content Include="Views\Ticketera\EditarTipoAtencion.cshtml" />
+    <Content Include="Views\Ticketera\RegistrarTipoAtencion.cshtml" />
+    <Content Include="Views\Ticketera\ListaCounter.cshtml" />
+    <Content Include="Views\Ticketera\EditarCounter.cshtml" />
+    <Content Include="Views\Ticketera\RegistrarCounter.cshtml" />
+    <Content Include="Views\Ticketera\AtencionCounter.cshtml" />
+    <Content Include="Views\Account\LockScreen.cshtml" />
+    <Content Include="Views\Tecnologo\EnviarIntegrador.cshtml" />
+    <Content Include="Views\AtencionCliente\Correos.cshtml" />
+    <Content Include="Views\AtencionCliente\ListConsulta.cshtml" />
+    <Content Include="Views\AtencionCliente\getConsulta.cshtml" />
+    <Content Include="Views\Empleado\List.cshtml" />
+    <Content Include="Views\Empleado\Create.cshtml" />
+    <Content Include="Views\Empleado\Detalle.cshtml" />
+    <Content Include="Views\Empleado\Editar.cshtml" />
+    <Content Include="Views\Notificaciones\VisorSalaMedica.cshtml" />
+    <Content Include="sound\encuesta.aac" />
+    <Content Include="sound\encuesta.ogg" />
+    <Content Include="sound\satisfaccion.aac" />
+    <Content Include="sound\satisfaccion.ogg" />
+    <Content Include="sound\supervisor.aac" />
+    <Content Include="sound\supervisor.ogg" />
+    <Content Include="sound\equipo.aac" />
+    <Content Include="sound\equipo.ogg" />
+    <Content Include="Views\Notificaciones\VisorCargaEquipo.cshtml" />
+    <Content Include="Views\Medico\Index.cshtml" />
+    <Content Include="Views\Medico\Details.cshtml" />
+    <Content Include="Views\Medico\Create.cshtml" />
+    <Content Include="Views\Medico\Edit.cshtml" />
+    <Content Include="Views\InstitucionMedica\Create.cshtml" />
+    <Content Include="Views\InstitucionMedica\Delete.cshtml" />
+    <Content Include="Views\InstitucionMedica\Details.cshtml" />
+    <Content Include="Views\InstitucionMedica\Edit.cshtml" />
+    <Content Include="Views\InstitucionMedica\Index.cshtml" />
+    <Content Include="Views\Asignaciones\CreateInstitucionMedico.cshtml" />
+    <Content Include="Views\Asignaciones\ListaInstitucionMedico.cshtml" />
+    <Content Include="Views\Asignaciones\ListaInstitucionPromotor.cshtml" />
+    <Content Include="Views\Asignaciones\CreateInstitucionPromotor.cshtml" />
+    <Content Include="Views\Planificacion\VisitasPlanificadas.cshtml" />
+    <Content Include="Views\Planificacion\VisitasxDia.cshtml" />
+    <None Include="Properties\PublishProfiles\Server.pubxml" />
+    <Content Include="Views\Planificacion\ConfirmarCheckin.cshtml" />
+    <Content Include="Views\Planificacion\RegistrarVisita.cshtml" />
+    <Content Include="Views\Planificacion\RegistrarPago.cshtml" />
+    <Content Include="Views\Planificacion\Herramientas.cshtml" />
+    <Content Include="Views\Planificacion\PlanificacionRepresentantes.cshtml" />
+    <Content Include="Views\Planificacion\ListaPago.cshtml" />
+    <Content Include="Views\Planificacion\EditarPlanificacion_Documento.cshtml" />
+    <Content Include="Views\Planificacion\ReporteEnviosdeMedico.cshtml" />
+    <Content Include="Views\Planificacion\UbicacionesRegistradasPromotores.cshtml" />
+    <Content Include="Views\Planificacion\ReporteEnviosxProcedencia.cshtml" />
+    <Content Include="Views\CitaMedica\ListaTrabajo.cshtml" />
+    <Content Include="Views\Paciente\DetallePaciente.cshtml" />
+    <Content Include="Views\CitaMedica\RealizarLLamadaCita.cshtml" />
+    <Content Include="Views\CitaMedica\CitarCarta.cshtml" />
+    <Content Include="Views\Shared\_Close.cshtml" />
+    <Content Include="Views\CitaMedica\ListaTurnos.cshtml" />
+    <Content Include="Views\CitaMedica\BusquedaGeneral.cshtml" />
+    <Content Include="Views\AtencionCliente\ListaSeguimiento.cshtml" />
+    <Content Include="Views\AtencionCliente\UpdateSeguimiento.cshtml" />
+    <Content Include="Views\Home\getSolicitudes.cshtml" />
+    <Content Include="Views\AtencionCliente\AprobarEntreTurno.cshtml" />
+    <Content Include="Views\AtencionCliente\DetalleEntreTurno.cshtml" />
+    <Content Include="Views\CompaniaSeguro\Create.cshtml" />
+    <Content Include="Views\CompaniaSeguro\Delete.cshtml" />
+    <Content Include="Views\CompaniaSeguro\Details.cshtml" />
+    <Content Include="Views\CompaniaSeguro\Edit.cshtml" />
+    <Content Include="Views\CompaniaSeguro\Index.cshtml" />
+    <Content Include="Views\PlanificacionCompaniaSeguro\ConfirmarCheckin.cshtml" />
+    <Content Include="Views\PlanificacionCompaniaSeguro\EditarPlanificacion_Documento.cshtml" />
+    <Content Include="Views\PlanificacionCompaniaSeguro\ListaPago.cshtml" />
+    <Content Include="Views\PlanificacionCompaniaSeguro\PlanificacionRepresentantes.cshtml" />
+    <Content Include="Views\PlanificacionCompaniaSeguro\RegistrarPago.cshtml" />
+    <Content Include="Views\PlanificacionCompaniaSeguro\RegistrarVisita.cshtml" />
+    <Content Include="Views\PlanificacionCompaniaSeguro\VisitasPlanificadas.cshtml" />
+    <Content Include="Views\PlanificacionCompaniaSeguro\VisitasxDia.cshtml" />
+    <Content Include="Views\Asignaciones\CreateColaboradorCompania.cshtml" />
+    <Content Include="Views\Asignaciones\ListaColaboradoCompania.cshtml" />
+    <Content Include="Views\Asignaciones\ListaCompaniaPromotor.cshtml" />
+    <Content Include="Views\Asignaciones\CreateCompaniaPromotor.cshtml" />
+    <Content Include="Views\Empleado\Sucursalesusuario.cshtml" />
+    <Content Include="Views\Planificacion\ReporteEnviosdeMedicoAnual.cshtml" />
+    <Content Include="Views\AtencionCliente\AsignarAnestesiologo.cshtml" />
+    <Content Include="Views\AtencionCliente\ListaAsignacion.cshtml" />
+    <Content Include="Views\Asignaciones\ListaInstitucionPromotorMedico.cshtml" />
+    <Content Include="Views\Asignaciones\CreateInstitucionPromotorMedico.cshtml" />
+    <Content Include="Views\Colaborador\Create.cshtml" />
+    <Content Include="Views\Colaborador\Details.cshtml" />
+    <Content Include="Views\Colaborador\Edit.cshtml" />
+    <Content Include="Views\Colaborador\Index.cshtml" />
+    <Content Include="Views\Asignaciones\ListaAsignacionAfinidad.cshtml" />
+    <Content Include="Views\Asignaciones\CreateAfinidadMedico.cshtml" />
+    <Content Include="sound\tecnologo.ogg" />
+    <Content Include="Views\Cobranza\ListaAtenciones.cshtml" />
+    <Content Include="Views\Cobranza\RealizarCobranza.cshtml" />
+    <Content Include="Views\Cobranza\ListaEstudiosCobranza.cshtml" />
+    <Content Include="Views\Cobranza\getAseguradora.cshtml" />
+    <Content Include="Views\Sistemas\ListaAsignacionSerie.cshtml" />
+    <Content Include="Views\Sistemas\RegistrarAsignacionSerie.cshtml" />
+    <Content Include="Views\AtencionCliente\ReporteAtencion.cshtml" />
+    <Content Include="Views\Empleado\ListBoletaPago.cshtml" />
+    <Content Include="Views\Ticketera\VisorPacientes2.cshtml" />
+    <Content Include="Views\Planificacion\HerramientasRepresentante.cshtml" />
+    <Content Include="Views\Planificacion\ReporteEnviosdeMedicoRepresentante.cshtml" />
+    <Content Include="Views\Planificacion\ReporteEnviosxProcedenciaRepresentante.cshtml" />
+    <Content Include="Views\Mantenimiento\RegistrarIncidente.cshtml" />
+    <Content Include="Views\Mantenimiento\UploadFileIncidente.cshtml" />
+    <Content Include="Views\Mantenimiento\ListFileMantenimiento.cshtml" />
+    <Content Include="Views\Mantenimiento\CrearEmpresa.cshtml" />
+    <Content Include="Views\Mantenimiento\ListaEmpresa.cshtml" />
+    <Content Include="Views\Mantenimiento\EditarEmpresa.cshtml" />
+    <Content Include="Views\Mantenimiento\ListaIncidente.cshtml" />
+    <Content Include="Views\Mantenimiento\RegistrarRevision.cshtml" />
+    <Content Include="Views\Mantenimiento\CrearEquipo.cshtml" />
+    <Content Include="Views\Mantenimiento\ListaEquipo.cshtml" />
+    <Content Include="Views\Mantenimiento\EditarEquipo.cshtml" />
+    <Content Include="Views\Mantenimiento\ListaIncidenteEquipo.cshtml" />
+    <Content Include="Views\Mantenimiento\DetalleIncidente.cshtml" />
+    <Content Include="Views\Mantenimiento\ListaMantenimiento.cshtml" />
+    <Content Include="Views\Mantenimiento\RegistrarMantenimiento.cshtml" />
+    <Content Include="Views\Planificacion\ReporteEnviosdeMedicoI.cshtml" />
+    <Content Include="Views\Mantenimiento\ListaConversacionIncidente.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>7467</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:7467/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

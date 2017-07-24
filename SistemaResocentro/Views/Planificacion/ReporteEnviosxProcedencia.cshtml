@@ -1,0 +1,231 @@
+﻿@model IEnumerable<SistemaResocentro.Models.DetalleReporteComisionesMedico>
+
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <button type="button" class="btn btn-blue pull-right" data-toggle="modal" data-target="#modal_DetalleInfoProcedencia"><i class=" fa fa-list-ul"></i>&nbsp;&nbsp;Mostrar Detalle</button>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="border-right:2px solid #EAEAEA">
+            <div id="chart-envioProcedencia">
+            </div>
+        </div>
+        <div class="col-md-12" style="border-bottom:2px solid #EAEAEA">
+            <div class="" id="chart-tiposEstudiosProcedencia">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" style="border-top:2px solid #EAEAEA">
+            <div id="chart-medicosEnvio">
+            </div>
+        </div>
+        <div class="col-md-12" style="border-left:2px solid #EAEAEA">
+            <div id="chart-especialidadEnvio">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="">
+    var contenidoProcedencia = "<div class='modal-body'><table class='table table-striped table-bordered table-hover tableDetalleProcedencia'><thead><tr><th>N°</th><th>Paciente</th><th>Estudio</th><th>Médico</th><th></th></tr></thead><tbody>@foreach (var item in Model){<text><tr><td>@item.codigo</td><td>@item.paciente</td><td>@item.estudio</td><td>@item.medico</td><td><button type='button' class='btn btn-default btn-xs' onclick='DescargarAdjunto(@item.codigo)'><i class='fa fa-download'></i></button></td></tr></text>}</tbody></table></div>"
+    $(function () {
+        $("#body_modal_DetalleInfoProcedencia").html(contenidoProcedencia);
+        $('.tableDetalleProcedencia').DataTable();
+    });
+
+</script>
+
+<script type="text/javascript">
+
+
+    var dataenvioP = [{ name: "Envios Total", data: [@foreach (var item in Model.OrderBy(x => x.idReporte).Select(x => new { x.ReporteComisionesMedico.idReporte }).Distinct().ToList())
+                                                     {<text> "@Model.Where(x=> x.idReporte==item.idReporte).ToList().Count()", </text>}] },
+    { name: "Envios Aceptados", data: [@foreach (var item in Model.OrderBy(x => x.idReporte).Select(x => new { x.ReporteComisionesMedico.idReporte }).Distinct().ToList()){<text> "@Model.Where(x => x.idReporte == item.idReporte && x.isAceptado == true).ToList().Count()", </text>}] },
+    { name: "Envios Pagados", data: [@foreach (var item in Model.OrderBy(x => x.idReporte).Select(x => new { x.ReporteComisionesMedico.idReporte }).Distinct().ToList()){<text> "@Model.Where(x => x.idReporte == item.idReporte && x.isPagado == true).ToList().Count()", </text>}] },
+    { name: "Envios No Pagados", data: [@foreach (var item in Model.OrderBy(x => x.idReporte).Select(x => new { x.ReporteComisionesMedico.idReporte}).Distinct().ToList())
+                                        {<text> "@Model.Where(x=> x.idReporte==item.idReporte && x.isPagado==false).ToList().Count()", </text>}] }];
+    var _lengthData = dataenvioP[0].data.length;
+    var sumtotalP = 0;
+    for (var i = 0; i < _lengthData; i++) {
+        sumtotalP = sumtotalP + parseInt(dataenvioP[0].data[i]);
+    }
+    var promedioP = parseInt(sumtotalP / _lengthData);
+
+    var datatipoEstudioP = [{ name: "Resonancia", data: [@foreach (var item in Model.OrderBy(x => x.idReporte).Select(x => new { x.ReporteComisionesMedico.idReporte, x.ReporteComisionesMedico.fecha }).Distinct().ToList()){<text> "@Model.Where(x=> x.idReporte==item.idReporte&&x.modalidad=="RM").ToList().Count()", </text>}] },
+    { name: "Tomografía", data: [@foreach (var item in Model.OrderBy(x => x.idReporte).Select(x => new { x.ReporteComisionesMedico.idReporte, x.ReporteComisionesMedico.fecha }).Distinct().ToList()){<text> "@Model.Where(x=> x.idReporte==item.idReporte&&x.modalidad=="TEM").ToList().Count()", </text>}] }];
+    @{ var topMedicos = Model.GroupBy(x => new { x.idmedico,x.especialidad, x.medico }).Select(group =>
+           new
+           {
+               medico = (group.Key.medico.Length > 20 ? group.Key.medico.Substring(0, 20) + ". #" + group.Key.especialidad : group.Key.medico + "#" + group.Key.especialidad),
+               count = group.Count()
+           }
+           );
+       var topespecialidad = Model.GroupBy(x => new { x.isespecialidad, x.especialidad }).Select(group =>
+       new
+       {
+           especialidad = group.Key.especialidad.Length > 20 ? group.Key.especialidad.Substring(0, 20) + "." : group.Key.especialidad,
+           count = group.Count()
+       }
+       ); }
+    var dataProcedenciaP = [@foreach (var item in topMedicos.OrderByDescending(x=>x.count).Take(5)){<text> { procedencia: ("@Html.Raw(item.medico)").replace("#","\n"), cantidad: "@item.count" },</text>}];
+    var dataEspecialidadP = [@foreach (var item in topespecialidad.OrderByDescending(x=>x.count).Take(5)){<text> { especialidad: "@Html.Raw(item.especialidad)", cantidad: "@item.count" },</text>}];
+
+    var _mesEnvioP = [@foreach(var item in Model.OrderBy(x => x.idReporte).Select(x => x.ReporteComisionesMedico.fecha.Value.AddMonths(-1).ToString("MMMM")).Distinct().ToList()){<text> "@item", </text>
+        }]
+
+    $("#chart-envioProcedencia").kendoChart({
+        theme: "Bootstrap",
+        title: {
+            text: "Envios de los últimos 6 meses \n Promedio: " + promedioP,
+        },
+        legend: {
+            visible: true,
+            position: "top"
+        },
+        seriesDefaults: {
+            type: "line",
+            labels: {
+                visible: true,
+                format: "{0}"
+            }
+        },
+        series: dataenvioP,
+        valueAxis: {
+            labels: {
+                format: "{0}"
+            }, plotBands: [{
+                from: promedioP,
+                to: promedioP + 1,
+                color: "#FF0000",
+            }]
+        },
+        categoryAxis: {
+            categories: _mesEnvioP
+        },
+        tooltip: {
+            visible: true,
+            format: "{0}",
+            template: "   #= series.name # : #= value #  "
+        }
+    });
+    $("#chart-tiposEstudiosProcedencia").kendoChart({
+        theme: "Bootstrap",
+        title: {
+            text: "Tipos de Estudios enviados\n los últimos 6 meses",
+        },
+        legend: {
+            visible: true,
+            position: "top"
+        },
+        seriesDefaults: {
+            type: "line",
+            labels: {
+                visible: true,
+                format: "{0}"
+            }
+        },
+        series: datatipoEstudioP,
+        valueAxis: {
+            labels: {
+                format: "{0}"
+            }/*, plotBands: [{
+                from: 0,
+                to: 10,
+                color: "#c00",
+                opacity: 0.3
+            }]*/
+        },
+        categoryAxis: {
+            categories: _mesEnvioP
+        },
+        tooltip: {
+            visible: true,
+            format: "{0}",
+            template: "   #= series.name # : #= value #  "
+        }
+    });
+
+    $("#chart-medicosEnvio").kendoChart({
+        theme: "Bootstrap",
+        title: {
+            text: "Top 5 Médicos"
+        },
+        legend: {
+            visible: true,
+            position: "top"
+        },
+        seriesDefaults: {
+            type: "column",
+            labels: {
+                visible: true,
+                format: "{0}"
+            }
+        },
+        dataSource: {
+            data: dataProcedenciaP
+        },
+        series: [{
+            field: "cantidad",
+            categoryField: "procedencia"
+        }],
+        categoryAxis: {
+            baseUnit: "procedencia",
+            //labels: {
+            //    visual: function (e) {
+            //        var rect = new kendo.geometry.Rect(e.rect.origin, [e.rect.size.width, 100]);
+            //        var layout = new kendo.drawing.Layout(rect, {
+            //            orientation: "vertical",
+            //            alignContent: "center"
+            //        });
+            //        var words = e.text.split(" ");
+            //        for (var i = 0; i < words.length; i++) {
+            //            layout.append(new kendo.drawing.Text(words[i]));
+            //        }
+            //        layout.reflow();
+            //        return layout;
+            //    }
+            //}
+        }, tooltip: {
+            visible: true,
+            template: " #= value #  "
+        }
+
+    });
+    $("#chart-especialidadEnvio").kendoChart({
+        theme: "Bootstrap",
+        title: {
+            text: "Top 5 Especialidades"
+        },
+        legend: {
+            visible: true,
+            position: "top"
+        },
+        seriesDefaults: {
+            type: "column",
+            labels: {
+                visible: true,
+                format: "{0}"
+            }
+        },
+        dataSource: {
+            data: dataEspecialidadP
+        },
+        series: [{
+            field: "cantidad",
+            categoryField: "especialidad"
+        }],
+        categoryAxis: {
+            baseUnit: "especialidad"
+        }, tooltip: {
+            visible: true,
+            template: " #= value #  "
+        }
+
+    });
+
+</script>

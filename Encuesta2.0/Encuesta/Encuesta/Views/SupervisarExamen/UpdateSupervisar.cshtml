@@ -1,0 +1,343 @@
+﻿@model Encuesta.ViewModels.Supervisor.SupervisarExamenViewModel
+
+@{
+    ViewBag.Title = "<i class='fa fa-check-square-o '></i> Supervisión";
+    ViewBag.Titlenot = "Supervisión";
+}
+<script src="~/js/jquery.autosize.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.animate').autosize();//autosizeTexbox
+        ocultarTextDetalle();
+        $("input[name=p1]").change(ocultarTextDetalle);
+        $("input[name=p2]").change(ocultarTextDetalle);
+        $("input[name=p3]").change(ocultarTextDetalle);
+        $("input[name=p4]").change(ocultarTextDetalle);
+
+        ocultarBotones();
+    });
+
+    function ocultarTextDetalle() {
+        //P1
+        if ($('input:radio[name=p1]:checked').val() == "false")
+            $("#p1_1").show();
+        else
+            $("#p1_1").hide();
+        //P2
+        if ($('input:radio[name=p2]:checked').val() == "false")
+            $("#p2_1").show();
+        else
+            $("#p2_1").hide();
+        //P3
+        if ($('input:radio[name=p3]:checked').val() == "false")
+            $("#p3_1").show();
+        else
+            $("#p3_1").hide();
+        //P4
+        if ($('input:radio[name=p4]:checked').val() == "0")
+            $("#p4_1").show();
+        else
+            $("#p4_1").hide();
+
+    }
+
+    function ocultarBotones() {
+        var visible = '@Model.isEncuestaVisible';
+        var url = '@Model.examen.UrlXero';
+        if (visible == "True")
+            $("#div_Encuesta").show();
+        else
+            $("#div_Encuesta").hide();
+
+        if (url == "")
+            $("#div_Imagen").hide();
+        else
+            $("#div_Imagen").show();
+
+    }
+
+    function AbrirEncuesta() {
+        $("#isinEncuesta").val("True");
+    }
+    function AbrirImagenes() {
+        $("#isinImagenes").val("True");
+    }
+</script>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h2 class="box-title">Supervisar Examen: <b>@Model.num_examen - @Model.nom_paciente</b> </h2>
+            </div>
+            <div class="box-body chart-responsive">
+
+                @using (Html.BeginForm())
+                {
+                
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+                    <div class="row">
+
+                        <div class="col-lg-12">
+
+                            <div class="panel panel-primary">
+
+                                <div class="panel-heading">
+                                    Datos Examen
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-lg-4">
+                                        @Html.Partial("_DatosExamen", Model.examen)
+                                    </div>
+                                    <div class="col-lg-4">
+                                        @Html.Partial("_DatosPaciente", Model.paciente)
+                                    </div>
+                                    <div class="col-lg-4">
+                                        @Html.Partial("_DatosEncuesta", Model.encuesta)
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            @Html.HiddenFor(model => model.id_estudio)
+                            @Html.HiddenFor(model => model.num_examen)
+                            @Html.HiddenFor(model => model.inicio)
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="panel panel-primary">
+
+                                <div class="panel-heading">
+                                    Supervisar Examen
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+
+                                        @*Encuesta *@
+                                        <div class="col-lg-6" id="div_Encuesta">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Encuesta
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label>Encuesta: </label>
+                                                        <button type="button" onclick="AbrirEncuesta()" class="btn btn-outline btn-primary fa-2x "><i class="fa fa-file-text "></i></button>
+                                                        @Html.HiddenFor(b => b.isinEncuesta)
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <p>Califica las preguntas clinicas como:</p>
+                                                        <p>
+                                                            @Html.RadioButtonFor(b => b.p1, "true") Optimo
+                                                        @Html.RadioButtonFor(b => b.p1, "false") No Optimo
+                                                        @Html.TextBoxFor(b => b.p1_1, new { @placeholder = "Ingrese el motivo ", @class = "form-control" })
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        @*Imagenes *@
+                                        <div class="col-lg-6" id="div_Imagen">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Imagenes
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label>Imagenes: </label>
+                                                        <button type="button" onclick="AbrirImagenes()" class="btn btn-outline btn-warning fa-2x"><i class="fa fa-joomla  fa-spin"></i></button>
+                                                        @Html.HiddenFor(b => b.isinImagenes)
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        @*Tecnicas*@
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Tecnologo
+                                                </div>
+                                                <div class="panel-body">
+                                                    <ul style="list-style: none;">
+                                                        <li>
+                                                            <p>Aceptable calidad técnica de todas las secuencias de adquisición (contraste, ruidom resolución espacial)</p>
+                                                            <p>
+                                                                @Html.RadioButtonFor(b => b.p2, "true") Optimo
+                                                            @Html.RadioButtonFor(b => b.p2, "false") No Optimo
+                                                            @Html.TextBoxFor(b => b.p2_1, new { @placeholder = "Ingrese el motivo ", @class = "form-control" })
+                                                            </p>
+                                                        </li>
+                                                        <li>
+                                                            <p>Cumplimiento de los objetivos clinicos del examen (pregunta clinica derivada de la entrevista del paciente y en respuesta a contenido de la orden médica)</p>
+                                                            <p>
+                                                                @Html.RadioButtonFor(b => b.p3, "true") Optimo
+                                                            @Html.RadioButtonFor(b => b.p3, "false") No Optimo
+                                                            @Html.TextBoxFor(b => b.p3_1, new { @placeholder = "Ingrese el motivo ", @class = "form-control" })
+                                                            </p>
+                                                        </li>
+                                                        <li>
+                                                            <p>Adecuada respuesta del tecnólogo ante artefactos e inconvenientes en general ocurridos durante el examen</p>
+                                                            <p>
+                                                                @Html.RadioButtonFor(b => b.p4, "1") Optimo
+                                                            @Html.RadioButtonFor(b => b.p4, "0") No Optimo
+                                                            @Html.RadioButtonFor(b => b.p4, "2") No Aplica
+                                                            @Html.TextBoxFor(b => b.p4_1, new { @placeholder = "Ingrese el motivo ", @class = "form-control" })
+                                                            </p>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Grupo Medico
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label>Seleccione el tipo de grupo de destino final del examen</label>
+                                                        <div class="radio">
+                                                            <label>
+                                                                @Html.RadioButtonFor(b => b.grupomedico, "1") Oncológico
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label>
+                                                                @Html.RadioButtonFor(b => b.grupomedico, "2") Neurológico
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label>
+                                                                @Html.RadioButtonFor(b => b.grupomedico, "3") Musculo Esquelético
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label>
+                                                                @Html.RadioButtonFor(b => b.grupomedico, "4") Cardiovascular
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label>
+                                                                @Html.RadioButtonFor(b => b.grupomedico, "5") Abdomen y Pelvis
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Diagnostico Preliminar
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        @Html.TextAreaFor(b => b.diagnostico, new { @placeholder = "Ingrese el diagnostico preliminar ", @class = "form-control animate" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <script type="text/javascript">
+
+                        function validar() {
+                            var isEncuesta = '@Model.isEncuestaVisible';
+                        var _msj = "";
+                        var _IsValid = true;
+                        if (!isEncuesta) {
+                            if ($("input:radio[name=p1]:checked").val() != undefined) {
+                                if ($('input:radio[name=p1]:checked').val() == "false" && $("#p1_1").val().trim() == "") {
+                                    _IsValid = false;
+                                    _msj += "Pregunta 1: Especifique la calificaión\n";
+                                }
+                            } else {
+                                _IsValid = false;
+                                _msj += "Pregunta 1: Seleccionar respuesta\n";
+                            }
+                        }
+
+                        //p2
+                        if ($("input:radio[name=p2]:checked").val() != undefined) {
+                            if ($('input:radio[name=p2]:checked').val() == "false" && $("#p2_1").val().trim() == "") {
+                                _IsValid = false;
+                                _msj += "Pregunta 2: Especifique la calificaión\n";
+                            }
+                        } else {
+                            _IsValid = false;
+                            _msj += "Pregunta 2: Seleccionar respuesta\n";
+                        }
+
+                        //p3
+                        if ($("input:radio[name=p3]:checked").val() != undefined) {
+                            if ($('input:radio[name=p3]:checked').val() == "false" && $("#p3_1").val().trim() == "") {
+                                _IsValid = false;
+                                _msj += "Pregunta 3: Especifique la calificaión\n";
+                            }
+                        } else {
+                            _IsValid = false;
+                            _msj += "Pregunta 3: Seleccionar respuesta\n";
+                        }
+
+                        //P4
+                        if ($("input:radio[name=p4]:checked").val() != undefined) {
+                            if ($('input:radio[name=p4]:checked').val() == "0" && $("#p4_1").val().trim() == "") {
+                                _IsValid = false;
+                                _msj += "Pregunta 4: Especifique la calificaión\n";
+                            }
+
+                        } else {
+                            _IsValid = false;
+                            _msj += "Pregunta 4: Seleccionar respuesta\n";
+                        }
+
+                        //grupo medico
+                        if ($("input:radio[name=grupomedico]:checked").val() == undefined) {
+                            _IsValid = false;
+                            _msj += "Pregunta 5: Seleccionar Grupo Médico\n";
+                        }
+
+                        //diagnostico
+                        if ($("#diagnostico").val().trim() == "") {
+                            _IsValid = false;
+                            _msj += "Pregunta 6: Ingrese Diagnóstico\n";
+                        }
+
+                        if (_IsValid == false) {
+                            alert('Falta completar datos.\nVerifique las preguntas: \n' + _msj);
+                            return false;
+                        }
+
+                        return true;
+
+                    }
+                    </script>
+                    <p style="text-align: center;">
+                        <input type="submit" class="btn btn-success" onclick="return validar()" value="Guardar" />
+                        <a href='@Url.Action("ListaEspera")' class="btn btn-primary">Regresar a la Lista</a>
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

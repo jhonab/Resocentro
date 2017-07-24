@@ -1,0 +1,137 @@
+﻿@model IEnumerable<SistemaResocentro.Models.Institucion_Medico>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Asignaciones de Colaborador en Compañía de Seguro</h2>
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    var tabla;
+    $(function () {
+        tabla=$('.table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": "@Url.Action("ListaAsyncColaboradoCompania", "Asignaciones")"
+        })
+        $(".esperando").remove();
+        $(".hidden").removeClass("hidden");
+    });
+</script>
+<div class="row">
+    <div class="esperando " style="text-align: center;color:#065d9d"><i class="fa fa-spinner fa-5x fa-spin"></i> <br />Cargando...</div>
+    <div class="col-sm-12 ">
+        <p>
+            <a href="javascript:openmodalcreate('@Url.Action("CreateColaboradorCompania")')" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp; Asignar Colaborador a Compañía</a>
+        </p>
+        <style>
+            @@media only screen and (max-width: 800px) {
+                table td:nth-child(1),
+                table th:nth-child(1),
+                table td:nth-child(4),
+                table th:nth-child(4),
+                table td:nth-child(5),
+                table th:nth-child(5) {
+                    display: none;
+                }
+            }
+        </style>
+
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Compañía
+                    </th>
+                    <th>
+                        Colaborador
+                    </th>
+                    <th>
+                        Activo
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="modalDelete" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalDelete-Label" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content" id="modal-body">
+            <div class="modal-header modal-danger">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="titulo_asignacionmedico"></h4>
+            </div>
+            <div class="modal-body" id="body-delete">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button id="btndelete" type="submit" class="btn btn-danger" onclick=""></button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="modalCreate" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalCreate-Label" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content" id="modal-bodycreate">
+
+        </div>
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<link href="~/js/chosen/chosen.bootstrap.css" rel="stylesheet" />
+@*<link href="~/js/chosen/chosen.css" rel="stylesheet" />*@
+<script src="~/js/chosen/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+    var isCargadoCreate = false;
+    function openModalDelete(id, estado, institucion, medico) {        
+        if (estado) {
+            $("#titulo_asignacionmedico").html("Desactivar Asignación");
+            $("#body-delete").html("¿Está seguro de que desea <b>desactivar</b> la asginación Institución - Médico?<br/><br/>Institución Médica: <label>" + institucion + "</label><br/>Médico: <label>" + medico + "</label>");
+            $("#btndelete").html("<i class='fa fa-times fa-lg'></i>&nbsp;&nbsp; Desactivar ");
+        } else {
+            $("#titulo_asignacionmedico").html("Activar Asignación");
+            $("#body-delete").html("¿Está seguro de que desea <b>activar</b> la asginación Institución - Médico?<br/><br/>Institución Médica: <label>" + institucion + "</label><br/>Médico: <label>" + medico + "</label>");
+            $("#btndelete").html("<i class='fa fa-check fa-lg'></i>&nbsp;&nbsp; Activar ");
+        }
+        $("#btndelete").attr('onclick', "confirmDelete('" + id + "')")
+        $("#modalDelete").modal('show');
+    }
+    function confirmDelete(id) {
+        $.ajax({
+            url: '/Asignaciones/DeleteColaboradorCompania',
+            data: { id: id },
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                $("#modalDelete").modal('hide');
+                tabla.ajax.reload();
+            },
+            error: function () {
+                toastr.error("Ocurrio un error y no se pudo guardar los cambios", "Error", opts);
+            }
+        });
+    }
+    function openmodalcreate(url) {
+        if (!isCargadoCreate) {
+            $("#modal-bodycreate").load(url, function (response, status, xhr) {
+                if (status == "error") {
+                    toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+                } else {
+                    isCargadoCreate = true;
+                    $("#modalCreate").modal('show');
+                }
+            });
+        } else {
+            $("#modalCreate").modal('show');
+        }
+    }
+</script>

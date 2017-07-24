@@ -1,0 +1,46 @@
+﻿@model IEnumerable<SistemaResocentro.Models.CIE>
+
+@{
+    Layout = null;
+}
+
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+
+<script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $(function () {
+        t0 = $("#datatablecie").DataTable({
+            "sPaginationType": "bootstrap"
+        });
+    });
+</script>
+<table id="datatablecie" class="table  compact table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                Codigo
+            </th>
+            <th>
+                Nombre
+            </th>            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.codigo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.descripcion)
+                </td>               
+                <td>
+                    <button type="button" class="btn btn-info btn-xs" onclick="selectcie('@item.codigo','@item.descripcion ')"><i class="fa fa-check"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

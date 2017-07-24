@@ -1,0 +1,304 @@
+﻿@model Encuesta.Models.EXAMENXATENCION
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>EXAMENXATENCION</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.codigo)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.codigo)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ATENCION.cmp)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ATENCION.cmp)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.codigopaciente)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.codigopaciente)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.numerocita)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.numerocita)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.codigocompaniaseguro)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.codigocompaniaseguro)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ruc)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ruc)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.codigoequipo)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.codigoequipo)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.horaatencion)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.horaatencion)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.codigoestudio)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.codigoestudio)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.codigoclase)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.codigoclase)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.codigomodalidad)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.codigomodalidad)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.codigounidad)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.codigounidad)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.estadoestudio)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.estadoestudio)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.prioridad)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.prioridad)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.turnomedico)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.turnomedico)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.encu_tipo)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.encu_tipo)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.codigoequipoFinal)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.codigoequipoFinal)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.EstadoInforme)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EstadoInforme)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.motivo)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.motivo)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.otros_motivos)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.otros_motivos)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.usu_cancela)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.usu_cancela)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.fecha_cancela)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.fecha_cancela)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsAcopied)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsAcopied)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsAmpliInDemand)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsAmpliInDemand)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.AmpliCodigo)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AmpliCodigo)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CodigoDeEstudioOrigen)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CodigoDeEstudioOrigen)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.isLocked)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.isLocked)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.EstadoEncuesta)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EstadoEncuesta)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.equipoAsignado)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.equipoAsignado)
+    </div>
+
+   
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.GrupoMedico)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GrupoMedico)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.isImpax)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.isImpax)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Fec_Rev_Impax)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Fec_Rev_Impax)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.usu_Rev_Impax)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.usu_Rev_Impax)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsAudible)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsAudible)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UserTemporal)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UserTemporal)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsMoreThanOnePage)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsMoreThanOnePage)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UrlXero)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UrlXero)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsTranscriInDemand)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsTranscriInDemand)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.MedProceAtro)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MedProceAtro)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsDictado)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsDictado)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.AmpliMotivo)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AmpliMotivo)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

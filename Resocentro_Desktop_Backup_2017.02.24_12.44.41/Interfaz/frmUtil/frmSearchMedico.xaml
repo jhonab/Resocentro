@@ -1,0 +1,35 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.frmUtil.frmSearchMedico"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+        Title="Buscar Médico Referente | Resocentro" Height="324" Width="800" Background="{DynamicResource Windows.Background}"  Foreground="White" Icon="/Resocentro_Desktop;component/img/favicon.png" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" PreviewKeyUp="Window_PreviewKeyUp" >
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <Label Content="Tipo Medico : " Margin="5,0,0,0" Foreground="White" VerticalContentAlignment="Center"/>
+            <ComboBox Name="cbotipomedico" Margin="5,0,0,0" Width="150" VerticalContentAlignment="Center" ></ComboBox>
+            <Label Content="CMP : " Margin="5,0,0,0" Foreground="White" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="txtcmp" Margin="5,0,0,0" VerticalContentAlignment="Center"  MinWidth="50" KeyDown="txtMedico_KeyDown" FocusVisualStyle="{StaticResource MyFocusVisual}"/>
+            <Label Content="Apellidos : " Margin="5,0,0,0" Foreground="White" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="txtMedico" Margin="5,0,0,0" VerticalContentAlignment="Center"  MinWidth="250" KeyDown="txtMedico_KeyDown" FocusVisualStyle="{StaticResource MyFocusVisual}"/>
+            <Button Content="Buscar" Margin="5,0,0,0" x:Name="btnBuscar" Padding="20,0" Height="35" VerticalAlignment="Top" Click="btnBuscar_Click" FocusVisualStyle="{StaticResource MyFocusVisual}"/>
+        </StackPanel>
+
+        <telerik:RadGridView Name="gridMedico" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" ShowGroupFooters="False" Grid.Row="1" Margin="5" RowActivated="gridMedico_RowActivated" FocusVisualStyle="{StaticResource MyFocusVisual}">
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="CMP" DataMemberBinding="{Binding cmp}"/>
+                <telerik:GridViewDataColumn Header="Apellidos" DataMemberBinding="{Binding apellidos}"/>
+                <telerik:GridViewDataColumn Header="Nombre" DataMemberBinding="{Binding nombres}"/>
+                <telerik:GridViewDataColumn Header="DNI" DataMemberBinding="{Binding dniMedico}"/>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+    </Grid>
+</Window>

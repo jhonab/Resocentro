@@ -1,0 +1,358 @@
+﻿@model Encuesta.ViewModels.Tecnologo.RealizarExamenViewModel
+
+@{
+    ViewBag.Title = "<i class='fa fa-fire '></i> Tecnólogo";
+    ViewBag.Titlenot = "Tecnólogo";
+
+}
+<!-- DataTables JavaScript -->
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="~/js/jquery.autosize.js"></script>
+<script src="~/js/jquery-ui.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#table_estudios').dataTable({
+            "columnDefs": [
+            { "targets": [2], "visible": false, "searchable": false },
+            { "targets": [1], "searchable": false, }
+
+            ]
+        });
+
+        /*OCULTAR ANESTESIA CONTRASTE*/
+        mostrarDiv();
+        $("#isSedacion").change(mostrarDiv);
+        $("#isContraste").change(mostrarDiv);
+        $("#istecnicas").change(mostrarDiv);
+        $("#isPostproceso").change(mostrarDiv);
+        !$('#isContrasteContinuo').change(mostrarDiv);
+    });
+
+    function mostrarDiv() {
+        /*sedacion*/
+        if ($('#isSedacion').is(':checked'))
+            $("#div_sedacion").show();
+        else
+            $("#div_sedacion").hide();
+        /*contraste and contraste_Continuo*/
+        if ($('#isContraste').is(':checked'))
+            $("#div_contraste_continuo").show();
+        else
+            $("#div_contraste_continuo").hide();
+        /* contraste_Continuo*/
+        if ($('#isContrasteContinuo').is(':checked'))
+            $("#div_contraste").hide();
+        else
+            $("#div_contraste").show();
+        //quitar el check si no usa contraste
+        if (!$('#isContraste').is(':checked'))
+            $('#isContrasteContinuo').prop("checked", "");
+        /*tecnicas*/
+        if ($('#istecnicas').is(':checked')) {
+            $("#div_tecnicas").show();
+            $('#table_estudios').focus();
+        }
+        else
+            $("#div_tecnicas").hide();
+        /*PostProceso*/
+        if ($('#isPostproceso').is(':checked'))
+            $("#postproceso").show();
+        else
+            $("#postproceso").hide();
+    }
+    function agregarTecnica(examen, tecnica, cita) {
+        if (examen == '-1') {
+            examen = '@Model.examen.codigo';
+        }
+        $.ajax({
+            url: "@Url.Action("IngresarTecnica", "RealizarExamen")",
+            data: { nexamen: examen, ncita: cita, nestudio: tecnica },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+            },
+            success: function (data) {
+                if (data.result)
+                    mostrarTecnica(examen);
+            }
+        });
+    }
+
+    function eliminarTecnica(tecnica, cita) {
+        $.ajax({
+            url: "@Url.Action("EliminarTecnica", "RealizarExamen")",
+            data: { ncita: tecnica },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                mostrarmensaje(4, 'Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+            },
+            success: function (data) {
+                if (data.result)
+                    mostrarTecnica(@Model.examen.codigo);
+            }
+        });
+    }
+
+    function mostrarTecnica(_examen) {
+        $("#partialListTecnica").load('@Url.Action("ListarTecnicas", "RealizarExamen")' + '?ncita=' + _examen)
+    }
+
+
+
+  
+</script>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h2 class="box-title">Modificar Examen: <b>@Model.num_examen - @Model.nom_paciente</b>  </h2>
+            </div>
+            <div class="box-body chart-responsive">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    Datos Examen
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-lg-4">
+                                        @Html.Partial("_DatosExamen", Model.examen)
+                                    </div>
+                                    <div class="col-lg-4">
+                                        @Html.Partial("_DatosPaciente", Model.paciente)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div>
+                            @Html.HiddenFor(model => model.id_paciente)
+                            @Html.HiddenFor(model => model.id_estudio)
+                            @Html.HiddenFor(model => model.num_examen)
+                            @Html.HiddenFor(model => model.id_equipo_rea)
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="panel panel-primary">
+
+                                <div class="panel-heading">
+                                    Datos Adquisión
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="alert" id="msj">
+                                        </div>
+                                        @*Sedacion *@
+                                        <div class="col-lg-6">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Anestesia
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label>Sedacion: </label>
+                                                        @Html.CheckBoxFor(model => model.isSedacion)
+                                                    </div>
+                                                    <div class="form-group" id="div_sedacion">
+                                                        <label>Anesteciologa: </label>
+                                                        @Html.DropDownListFor(model => model.anestesiologa, (SelectList)ViewBag.anesteciologos, "- Seleccione el Anestesiologa -", new { @class = "form-control" })
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        @*Contraste*@
+                                        <div class="col-lg-6 hidden">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Contraste
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group" id="divcontraste">
+                                                        <label>Contraste: </label>
+                                                        @Html.CheckBoxFor(model => model.isContraste)
+                                                    </div>
+                                                    <div id="div_contraste_continuo">
+                                                        <div id="check_contraste">
+                                                            <label>Continuo? </label>
+                                                            @Html.CheckBoxFor(model => model.isContrasteContinuo)
+                                                        </div>
+                                                        <div id="div_contraste">
+                                                            <div class="form-group">
+                                                                <label>Enfermera: </label>
+                                                                @Html.DropDownListFor(model => model.enfermera, (SelectList)ViewBag.enfermeras, "- Seleccione el Enfermera -", new { @class = "form-control" })
+
+                                                            </div>
+                                                            <div class="form-group" id="div_insumo_contraste">
+                                                                <label>Insumo: </label>
+                                                                @Html.DropDownListFor(model => model.contraste, (SelectList)ViewBag.insumoContraste, "- Seleccione el Contraste -", new { @class = "form-control" })
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        @*Tecnicas*@
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Técnicas
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label>Cant. Placas: </label>
+                                                        @Html.TextBoxFor(model => model.placas, new { @type = "number", @class = "form-control" })
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Tecnicas: </label>
+                                                        @Html.CheckBoxFor(model => model.istecnicas)
+                                                    </div>
+                                                    <div class="form-group" id="div_tecnicas">
+                                                        <div class="col-lg-6">
+                                                            <div class="panel-group" id="accordion" style="font-size: smaller!important">
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        <h4 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Seleccione la técnica</a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                                                        <div class="panel-body">
+                                                                            <table class="table table-striped table-bordered table-hover" id="table_estudios">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Técnica</th>
+                                                                                        <th></th>
+                                                                                        <th>codigo</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    @foreach (var item in (List<Encuesta.Models.ESTUDIO>)ViewBag.tecnicas)
+                                                                                    {
+                                                                                        <tr>
+                                                                                            <td style="padding: 1px!important">@Html.DisplayFor(modelItem => item.nombreestudio)</td>
+                                                                                            <td class="table_id" style="padding: 1px!important;text-align:center;">
+                                                                                                <button type="button" class="btn btn-info btn-circle" onclick="agregarTecnica('@Model.num_examen','@item.codigoestudio','@Model.examen.numerocita')"><i class="fa fa-check"></i></button>
+                                                                                            </td>
+
+                                                                                            <td style="padding: 1px!important">@Html.DisplayFor(modelItem => item.codigoestudio)</td>
+                                                                                        </tr>
+                                                                                    }
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="panel-group" id="accordion1" style="font-size: smaller!important">
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        <h4 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion1" href="#collapsetwo">Técnicas ingresadas</a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="collapsetwo" class="panel-collapse collapse in">
+                                                                        <div class="panel-body">
+                                                                            <button type="button" class="btn btn-outline btn-primary btn-xs" onclick="mostrarTecnica('@Model.examen.codigo')"><i class="fa fa-binoculars"></i>Mostrar</button>
+                                                                            <div id="partialListTecnica">
+                                                                                @Html.Partial("_ListExamenCita", Model.tecnica)
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Datos Adicionales
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label>PostProceso: </label>
+                                                        @Html.CheckBoxFor(model => model.isPostproceso)
+                                                        @Html.TextAreaFor(model => model.postproceso, new { @class = "form-control animate" })
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Información Adicional: </label>
+                                                        @Html.TextAreaFor(model => model.inf_adicional, new { @class = "form-control animate" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <script type="text/javascript">
+                        function validar() {
+
+                            var msj = "";
+                            if ($('#isSedacion').is(':checked'))
+                                if ($('#anestesiologa').val() == "")
+                                    msj += "- Seleccione el Anestesiologo"
+
+                            if ($("input:radio[name=grupomedico]:checked").val() == undefined) {
+                                _IsValid = false;
+                                _msj += "Pregunta : Seleccionar Grupo Médico\n";
+                            }
+
+                            if ($('#isContraste').is(':checked') && !$('#isContrasteContinuo').is(':checked')) {
+                                if ($('#enfermera').val() == "")
+                                    msj += "\n- Seleccione la Enfermera"
+                                if ($('#contraste').val() == "")
+                                    msj += "\n- Seleccione el Insumo"
+                            }
+
+                            if (msj == "")
+                                return true;
+                            else {
+                                alert(msj);
+                                return false;
+                            }
+                        }
+                    </script>
+                    <p style="text-align: center;">
+                        <input type="submit" class="btn btn-success" onclick="return validar()" value="Guardar" />
+                        <a href='@Url.Action("ListaEspera")' class="btn btn-primary">Regresar a la Lista</a>
+                    </p>
+
+                }
+            </div>
+        </div>
+
+    </div>
+</div>

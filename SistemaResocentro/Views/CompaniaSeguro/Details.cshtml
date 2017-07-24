@@ -1,0 +1,74 @@
+﻿@model SistemaResocentro.Models.COMPANIASEGURO
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>COMPANIASEGURO</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsAgrupable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsAgrupable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsRequested)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsRequested)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsSCTR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsSCTR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsAp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsAp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsObsolet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsObsolet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GrupoId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GrupoId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,170 @@
+﻿@model SistemaResocentro.ViewModel.Mantenimiento.EmpresaMantenimiento
+
+@{
+    ViewBag.Title = "Editar Empresa de Servicio Técnico";
+}
+
+<h2>Editar de Empresa de Servicio Técnico</h2>
+<script src="~/js/validar-input.js"></script>
+<script type="text/javascript">
+    var telefonos = [];
+    telefonos=@JavaScriptConvert.SerializeObject(Model.telefonos);
+    $(function () {
+        iniciarForm();
+        ingresoForm();
+        listarTelefonos();
+    });
+    function validar() {
+        return validar_form("div_empresa");
+    }
+    function agregarTelefono() {
+        if(telefonos==null)
+            telefonos=[];
+        var id = $("#cbotipotelefono").val(),
+            numero = $("#txttelefono").val(),
+            descripcion = $("#cbotipotelefono option:selected").text();
+        if (id != 0 && numero != "") {
+            var jsonObject = {
+                "idTelefono": 0,
+                "numero": numero,
+                "descripcion": descripcion,
+                "idTipoTelefono": id
+            };
+            telefonos.push(jsonObject);
+            listarTelefonos();
+            $('#moda_Telefono').modal('hide')
+            $("#cbotipotelefono").val("");
+            $("#txttelefono").val("");
+        } else
+            toastr.error('Error:\n Ingrese todos los datos correctamente.', 'Error', opts);
+    }
+    function listarTelefonos() {
+        if(telefonos==null)
+            telefonos=[];
+            $("#telefonos_array").val("");
+            $("#telefonos_array").val(JSON.stringify(telefonos, null, ""));
+            $("#tab_body_tel").html("");
+            var items = "";
+            count=1;
+            $.each(telefonos, function (i, item) {
+                item.idTelefono=count;
+                items += "<tr> <td>" + item.descripcion + "</td><td>" + item.numero + "</td><td><button type='button' class='btn btn-xs btn-danger' onclick='deletetelefono(" + item.idTelefono + ")'><i class='fa fa-times'/></button></td></tr>";
+                count++;
+            });
+            $("#tab_body_tel").html(items);
+        
+    }
+    function deletetelefono(id) {
+        if(telefonos==null)
+            telefonos=[];
+        var _tel = telefonos.filter(function (el) {
+            return el.idTelefono !== id;
+        });
+        telefonos = _tel;
+        listarTelefonos();
+    }
+</script>
+<div id="div_empresa">
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(x=> x.idEmpresaMantenimiento)
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label ">Rason Social:</label>
+                <div class="">
+                    @Html.TextBoxFor(x => x.razonsocial, new { @class = "form-control validar" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label ">RUC:</label>
+                <div class="">
+                    @Html.TextBoxFor(x => x.ruc, new { @class = "form-control validar" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label ">Correo Soporte:</label><br />
+                <small> Separe los correos con punto y coma ;</small>
+                <div class="">
+                    @Html.TextBoxFor(x => x.correoSoporte, new { @class = "form-control validar" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label ">Correo Mantenimiento:</label><br />
+                <small> Separe los correos con punto y coma ;</small>
+                <div class="">
+                    @Html.TextBoxFor(x => x.correoMantenimiento, new { @class = "form-control validar" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="pull-right">
+                        <a href='@Url.Action("ListaEmpresa")' class="btn btn-default"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;&nbsp;Regresar a la Lista</a>
+                        <button id="btnregistrar" type="submit" class="btn btn-success" onclick="return validar();"><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp; Editar </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="">
+                    <label class="control-label ">Teléfonos:</label>
+                    <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#moda_Telefono"><i class="fa fa-phone"></i>&nbsp;&nbsp;Agregar</button>
+                </div>
+                @Html.HiddenFor(x => x.telefonos_array)
+                <table class="table compact table-striped  table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                Tipo
+                            </th>
+                            <th>
+                                Número
+                            </th>
+                            <th style="width: 22px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tab_body_tel"></tbody>
+                </table>
+            </div>
+        </div>
+
+
+    }
+</div>
+
+<div class="modal fade " id="moda_Telefono" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Agregar Teléfono</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="">
+                        <label class="control-label ">Tipo:</label>
+                        @Html.DropDownList("cbotipotelefono", (SelectList)ViewBag.TipoIncidente, "- Seleccione -", htmlAttributes: new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="">
+                        <label class="control-label ">Teléfono:</label>
+                        <input id="txttelefono" type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="agregarTelefono()">Agregar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

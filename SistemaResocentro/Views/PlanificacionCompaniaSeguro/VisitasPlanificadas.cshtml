@@ -1,0 +1,148 @@
+﻿@{
+    ViewBag.Title = "VisitasPlanificadas";
+}
+<script src="~/js/getUrl.js"></script>
+<script src="~/js/Datetime/moment.js"></script>
+<script src="~/js/Datetime/moment-with-locales.js"></script>
+<script src="~/js/Datetime/bootstrap-datetimepicker.js"></script>
+<link href="~/css/Datetime/bootstrap-datetimepicker.css" rel="stylesheet" />
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<h2 >Planificacion y Registro de Visitas a Compañía de Seguro</h2>
+
+<div class="row">
+    <style>
+        @@media only screen and (max-width: 800px) {
+
+            .table td:nth-child(4),
+            .table th:nth-child(4) {
+                display: none;
+            }
+        }
+    </style>
+
+    
+    <div class="col-md-12">
+
+        <ul class="nav nav-tabs bordered">
+            <!-- available classes "bordered", "right-aligned" -->
+            <li id="tab1" class="">
+                <a href="#visitas" data-toggle="tab">
+                    <span class="visible-xs"><i class="fa fa-calendar"></i></span>
+                    <span class="hidden-xs"><i class="fa fa-calendar"></i>&nbsp;&nbsp;&nbsp; Visitas Planificadas</span>
+                </a>
+            </li>
+            <li id="tab2" class="">
+                <a href="#create" data-toggle="tab">
+                    <span class="visible-xs"><i class="fa fa-plus"></i></span>
+                    <span class="hidden-xs"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp; Registrar Visita </span>
+                </a>
+            </li>
+
+        </ul>
+
+
+        <div class="tab-content">
+            <div class="tab-pane " id="visitas">
+                <div class=" row">
+                    <div class="col-md-6" style="padding:0;">
+                        <div class="form-group">
+                            <label class="col-md-3">Fecha de Busqueda</label>
+                            <div class="col-md-9">
+                                <div class="col-xs-6" style="padding:0 5px 0 0;">
+                                    <div id="fecha_visita" class='input-group date'>
+                                        <input type="text" class=" form-control" />
+                                        <span class="input-group-addon btn-blue">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="list_visitas"></div>
+            </div>
+            <div class="tab-pane" id="create">
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(function () {
+
+        //cargarvisitas
+        cargarVisitasTab1('@DateTime.Now.ToString("MM/dd/yyyy")');
+        $("#create").load("@Url.Action("RegistrarVisita", "PlanificacionCompaniaSeguro")", function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+        });
+        var tab = 1;
+        var _tab = $.get("tab");
+        if (_tab != null)
+            tab = _tab;
+        setTab(tab);
+        $('#fecha_visita').datetimepicker({
+            locale: 'es',
+            format: 'DD/MM/YYYY',
+            defaultDate: "@DateTime.Now.ToString("yyyy/MM/dd")",
+            @*minDate: '@DateTime.Now.ToString("yyyy/MM/dd")'*@
+        });
+        $("#fecha_visita").on("dp.change", function (e) {
+            cargarVisitasTab1(e.date.format("MM/DD/YYYY"));
+        })
+        $('#modal_gasto').on('hidden.bs.modal', function (e) {
+            var fecha = $("#fecha_visita>input").val().split("/");
+            cargarVisitasTab1(fecha[1] + "/" + fecha[0] + "/" + fecha[2]);
+        })
+        $('#modal_checkin').on('hidden.bs.modal', function (e) {
+            var fecha = $("#fecha_visita>input").val().split("/");
+            cargarVisitasTab1(fecha[1] + "/" + fecha[0] + "/" + fecha[2]);
+        })
+    });
+    function cargarVisitasTab1(fecha_tb1) {
+        var _newfec_tb1 = fecha_tb1.replace("/", "%2F").replace("/", "%2F");
+        $("#list_visitas").load("/PlanificacionCompaniaSeguro/VisitasxDia?fecha=" + _newfec_tb1, function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+        });
+    }
+    function setTab(tab) {
+        if (tab == 1) {
+            $("#tab1").addClass("active");
+            $("#tab2").removeClass("active");
+            $("#visitas").addClass("active");
+            $("#create").removeClass("active");
+        } else {
+            $("#tab1").removeClass("active");
+            $("#tab2").addClass("active");
+            $("#visitas").removeClass("active");
+            $("#create").addClass("active");
+        }
+    }
+</script>
+
+<div class="modal fade" id="modal_checkin" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal_checkin-Label" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content" id="modal-body-chekin">
+        </div>
+        <!-- /.modal-content -->
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="modal_gasto" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal_gasto-Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modal-body-gasto">
+        </div>
+        <!-- /.modal-content -->
+
+    </div>
+    <!-- /.modal-dialog -->
+</div>

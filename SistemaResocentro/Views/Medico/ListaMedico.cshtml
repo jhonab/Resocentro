@@ -1,0 +1,71 @@
+﻿@model IEnumerable<SistemaResocentro.Models.MEDICOEXTERNO>
+
+@{
+    Layout = null;
+}
+
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+
+<script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $(function () {
+        t0 = $("#datatablemedico").DataTable({
+            "scrollY": "200px",
+            "sPaginationType": "bootstrap"
+        });
+    });
+</script>
+    <table id="datatablemedico" class="table  compact table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Apellidos
+                </th>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    CMP
+                </th>
+                <th>
+                    Especialidad
+                </th>
+                <th>
+                    Pago
+                </th>
+                <th>
+                    Documento
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.apellidos)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nombres)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cmp)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ESPECIALIDAD.descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.isPaga)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DocumentoPago)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info btn-xs" onclick="selectMedico('@item.cmp','@item.apellidos, @item.nombres ')"><i class="fa fa-check"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+</table>

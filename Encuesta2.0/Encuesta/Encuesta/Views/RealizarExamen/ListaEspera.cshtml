@@ -1,0 +1,656 @@
+﻿@model IEnumerable<Encuesta.ViewModels.Tecnologo.RealizarExamenViewModel>
+
+@{
+    ViewBag.Title = "<i class='fa fa-fire'></i> Tecnólogo";
+    ViewBag.Titlenot = "Tecnólogo";
+}
+
+<!-- DataTables JavaScript -->
+
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="~/js/getUrl.js"></script>
+<script src="~/js/jquery-ui.min.js"></script>
+
+<style>
+    table.dataTable tbody tr.selected {
+        background-color: #abb9d3;
+    }
+
+    .table-hover > tbody > tr.selected:hover > td, .table-striped > tbody > tr.selected:nth-child(odd) > td {
+        background-color: #abb9d3;
+    }
+</style>
+<script>
+    var tableExamen;
+    var myDate = new Date();
+    var selected = [];
+    $(document).ready(function () {
+
+        $('#modal_Validacion').on('hidden.bs.modal', function (e) {
+            $("#modal_Validacion-body").html("");
+
+        })
+        ;
+        $("#msj").fadeOut()//ocultar el msj
+        $("#div_tabla").load("@Url.Action("ListaExamen", "RealizarExamen")", function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+        });
+
+        //cargarTabla();
+        setInterval(function () {
+            cargarTabla();
+        }, 90000)/
+       getEquipo("1");//tipo filtro
+
+        //$('#myDataTable tbody').on('contextmenu', 'td', function (e) {
+        //    var _equipo = $("#lstEquipo").val();
+        //    var items = "";
+        //    if (_equipo != '') {
+
+        //        var rowIdx = table
+        //          .cell(this)
+        //          .index().row;
+        //        var len = table.rows('.selected').data().length;
+        //        if (len < 2) {
+        //            if (table.cell(rowIdx, 11).data() == "True") { }
+        //            else if (table.cell(rowIdx, 12).data() == "True") { }
+        //            else if (table.cell(rowIdx, 14).data() == "True") {
+        //                items += '<li><a tabindex="-1" href="javascript:SolicitarSupervision(' + table.cell(rowIdx, 1).data() + ');"><i class="fa fa-joomla fa-lg   fa-spin" style="color: #078EF8"></i>&nbsp;&nbsp;Solicitar Supervisión</a></li>'
+        //            }
+        //            else {
+        //                items += '<li><a tabindex="-1" href="javascript:cargarDatosExamen(' + table.cell(rowIdx, 1).data() + ',2);"><i class="fa fa-fire fa-lg " ></i>&nbsp;&nbsp;Enviar a Modalidad</a></li>'
+        //            }
+        //        } else {
+        //            var _supe = [];
+        //            var _moda = [];
+        //            table.rows().data().each(function (value, ind) {
+        //                selected.forEach(function (val, idx) {
+        //                    if (val == table.cell(ind, 1).data()) {
+        //                        if (table.cell(ind, 11).data() == "True") { }
+        //                        else if (table.cell(ind, 12).data() == "True") { }
+        //                        else if (table.cell(ind, 14).data() == "True")
+        //                            _supe.push(table.cell(ind, 1).data());
+        //                        else
+        //                            _moda.push(table.cell(ind, 1).data());
+        //                    }
+        //                });
+        //            });
+        //            if (_supe.length > 0) {
+        //                if (_supe.length == 1)
+        //                    items += '<li><a tabindex="-1" href="javascript:SolicitarSupervision(' + "'" + _supe + "'" + ');"><i class="fa fa-joomla fa-lg   fa-spin" style="color: #078EF8"></i>&nbsp;&nbsp;Solicitar Supervisión</a></li>';
+        //                else
+        //                    items += '<li><a tabindex="-1" href="javascript:SolicitarSupervision(' + "'" + _supe + "'" + ');"><i class="fa fa-joomla fa-lg   fa-spin" style="color: #078EF8"></i>&nbsp;&nbsp;Solicitar Supervisión (' + _supe.length + ')</a></li>';
+        //            }
+        //            if (_moda.length > 0) {
+        //                if (_moda.length == 1)
+        //                    items += '<li><a tabindex="-1" href="javascript:enviarMultipleModalidad(' + "'" + _mod + "'" + ');"><i class="fa fa-fire fa-lg " ></i>&nbsp;&nbsp;Enviar a Modalidad</a></li>';
+        //                else
+        //                    items += '<li><a tabindex="-1" href="javascript:enviarMultipleModalidad(' + "'" + _moda + "'" + ');"><i class="fa fa-fire fa-lg " ></i>&nbsp;&nbsp;Enviar a Modalidad (' + _moda.length + ')</a></li>';
+        //            }
+        //        }
+        //        if (items == "")
+        //            items += '<li><a><i class="fa fa-ban fa-lg " style="color:#f00" ></i>&nbsp;&nbsp;No hay opciones disponibles</a></li>';
+
+        //    } else {
+        //        items += '<li><a><i class="fa fa-times fa-lg " style="color:#f00" ></i>&nbsp;&nbsp;Seleccione el Equipo</a></li>';
+        //    }
+        //    $("#contextMenu").html(items);
+        //    $("#contextMenu").css({
+        //        display: "block",
+        //        left: e.pageX,
+        //        top: e.pageY
+        //    });
+        //    $(document).click(function () {
+        //        $("#contextMenu").hide();
+        //    });
+        //    return false;
+        //});
+
+
+
+
+
+    });
+    function cargarTabla() {
+
+        $('#myDataTable').DataTable().ajax.reload();
+
+        var _date = new Date();
+        $("#div_time").html('<p class="pull-right">Last Refresh : <b>' + _date.toLocaleTimeString() + '</b></p>');
+    }
+    function selecctRow(id) {
+        var index = $.inArray(id, selected);
+
+        if (index === -1) {
+            selected.push(id);
+        } else {
+            selected.splice(index, 1);
+        }
+        $('#myDataTable tbody tr').removeClass('selected')
+        tableExamen.rows().data().each(function (value, ind) {
+            selected.forEach(function (val, idx) {
+                if (val == tableExamen.cell(ind, 1).data())
+                    $('#myDataTable tbody tr:eq(' + ind + ')').toggleClass('selected');
+            });
+        });
+
+    }
+
+    function getEquipo(tipo) {
+        $.ajax({
+            url: "@Url.Action("getEquipo", "RealizarExamen")",
+            data: {},
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                alert("error");
+            },
+            success: function (data) {
+                var items = "";
+                if (tipo == "1")
+                    items += "<option value='' >- Todos -</option>";
+                $.each(data, function (i, item) {
+                    items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                });
+                if (tipo == "1") {//tipo filtro
+                    $("#lstEquipo").html(items);
+                    $("#lstEquipo").change(function () {
+                        var texto = $("#lstEquipo option:selected").html();
+                        if ($("#lstEquipo").val() != '') {
+                            $("#titulo").html("<h2 class='box-title'>Lista de Examenes de <strong style='font-size:25px'>" + texto + "</strong></h2>");
+                            $('#myDataTable').dataTable().fnFilter(texto);
+                        }
+                        else {
+                            $("#titulo").html("<h2 class='box-title'>Lista de Examenes</h2>");
+                            $('#myDataTable').dataTable().fnFilter('');
+                        }
+                    });
+                    var parameter = $.get("equipo");
+
+                    if (parameter != null) {
+                        $("#lstEquipo").val(parameter);
+                        var texto = $("#lstEquipo option:selected").html()
+                        $('#myDataTable').dataTable().fnFilter(texto);
+                    }
+                }
+                if (tipo == "2") {//tipo modal
+                    $("#lstEquipo_modal").html(items);
+                }
+
+
+            }
+        });
+    }
+
+    function EnviarModalidad(examen) {
+        var _equipo = $("#lstEquipo").val();
+        if (_equipo != '') {
+
+            $.ajax({
+                url: "@Url.Action("enviarModalidad", "RealizarExamen")",
+                data: { examen: examen, equipo: _equipo },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, 'Ocurrio un problema y <b>no</b> se enviaron los datos al sistemas');
+                },
+                success: function (data) {
+                    if (data.result == 1)
+                        mostrarmensaje(1, data.mensaje);
+                    else {
+
+                        $('#myModal .modal-body').html(data.mensaje);
+                        $('#myModal').modal('toggle');
+                        cargarTabla();
+                    }
+
+                    cargarTabla();
+                }
+            });
+        }
+        else {
+
+            mostrarmensaje(4, 'Seleccione el <b>Equipo</b> para enviar los datos ');
+        }
+    }
+    function verEncuesta(examen) {
+        var _equipo = $("#lstEquipo").val();
+        if (_equipo != '') {
+            window.open('/LectorEncuesta/LectorEncuesta?examen=' + examen + '&isVisible=false', '_blank');
+        } else {
+
+            mostrarmensaje(4, 'Seleccione el <b>Equipo</b> para enviar los datos ');
+        }
+    }
+    function enviarMultipleModalidad(examen) {
+        var _equipo = $("#lstEquipo").val();
+        if (_equipo != '') {
+            var _array = examen.split(",");
+            cargarDatosExamen(_array[0], 2);
+            $('#modal_Modalidad').on('hidden.bs.modal', function (e) {
+                _array.forEach(function (val, idx) {
+                    EnviarModalidad(val);
+                });
+            });
+        }
+    }
+
+    function agregarContraste(examen, atencion) {
+        var _equipo = $("#lstEquipo").val();
+        if (_equipo != '') {
+            $.ajax({
+                async: false,
+                cache: false,
+                url: "@Url.Action("VerificarRegistroContraste", "RealizarExamen")",
+                data: { atencion: atencion },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, 'Ocurrio un problema y <b>no</b> se enviaron los datos al sistema');
+                },
+                success: function (data) {
+                    if (data.result) {
+                        mostrarmensaje(2, 'Ya se envio una solicitud de contraste');
+                    }
+                    else {
+                        $.ajax({
+                            async: false,
+                            cache: false,
+                            url: "@Url.Action("InsertarContraste", "RealizarExamen")",
+                            data: { codigo: examen },
+                            dataType: "json",
+                            type: "POST",
+                            error: function () {
+                                mostrarmensaje(4, 'Ocurrio un problema y <b>no</b> se enviaron los datos al sistema');
+                            },
+                            success: function (data) {
+                                if (data)
+                                    mostrarmensaje(1, 'Se envio la solicitud de contraste');
+                                asyncPerifoneo(examen,"enfermera");
+                            }
+
+                        });
+                    }
+                    cargarTabla();
+                }
+
+            });
+
+        }
+        else {
+
+            mostrarmensaje(4, 'Seleccione el <b>Equipo</b> para enviar los datos ');
+        }
+    }
+
+    function cargarDatosExamen(examen, tipo) {
+
+        var _equipo = $("#lstEquipo").val();
+        if (_equipo != '') {
+
+            $.ajax({
+                url: "@Url.Action("DatosExamen", "RealizarExamen")",
+                data: { examen: examen, tipo: tipo },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    mostrarmensaje(4, 'Ocurrio un problema y <b>no</b> se enviaron los datos al sistema');
+                },
+                success: function (data) {
+                    if (tipo == 1) {//lectura
+                        $('#myModal .modal-body').html(data.mensaje);
+                        $('#myModal').modal('toggle');
+                    }
+                    if (tipo == 2) {//escritura
+
+                        $('#modal_Modalidad .modal-body').html(data.mensaje);
+                        $('#modal_Modalidad').modal('toggle');
+                    }
+
+                }
+
+            });
+        }
+        else {
+
+            mostrarmensaje(4, 'Seleccione el <b>Equipo</b> para enviar los datos ');
+        }
+    }
+
+    function cargarInfoAmpliacion(examen) {
+
+        var _equipo = $("#lstEquipo").val();
+        if (_equipo != '') {
+            $("#myModalAmpliacion .modal-body").load("/RealizarEncuesta/getAmpliacioninfo?examen=" + examen, function (response, status, xhr) {
+                if (status == "error") {
+                    mostrarmensaje(4, 'Error:\n' + xhr.status + " " + xhr.statusText);
+                }
+                $('#myModalAmpliacion').modal('show');
+            });
+        }
+        else {
+
+            mostrarmensaje(4, 'Seleccione el <b>Equipo</b> para enviar los datos ');
+        }
+    }
+    function CalculateDateDiff(dateFrom, dateTo) {
+        var difference = (dateTo - dateFrom);
+
+        var years = Math.floor(difference / (1000 * 60 * 60 * 24 * 365));
+        difference -= years * (1000 * 60 * 60 * 24 * 365);
+        var months = Math.floor(difference / (1000 * 60 * 60 * 24 * 30.4375));
+
+        var dif = '';
+        if (years > 0)
+            dif = years + ' años ';
+
+        if (months > 0) {
+            if (years > 0) dif += ' y ';
+            dif += months + ' meses';
+        }
+
+        return dif;
+    }
+
+    function SolicitarSupervision(examen) {
+        var _equipo = $("#lstEquipo").val();
+        if (_equipo != '') {
+            var _array = examen.split(",");
+            _array.forEach(function (val, idx) {
+                $.ajax({
+                    url: "@Url.Action("SolicitarSupervicion", "RealizarExamen")",
+                    data: { examen: val, equipo: _equipo },
+                    dataType: "json",
+                    type: "POST",
+                    error: function () {
+                        mostrarmensaje(4, 'Ocurrio un problema y <b>no</b> se enviaron los datos al sistema');
+                    },
+                    success: function (data) {
+                        if (data.result) {
+                            mostrarmensaje(1, data.mensaje);
+                            asyncPerifoneo(examen,"supervisor");
+                        }
+                        else
+                            mostrarmensaje(2, data.mensaje);
+                    }
+                });
+            });
+            cargarTabla();
+        }
+        else {
+
+            mostrarmensaje(4, 'Seleccione el <b>Equipo</b> para enviar los datos ');
+        }
+    }
+    function RealizarExamen(examen) {
+        var _equipo = $("#lstEquipo").val();
+        if (_equipo != '') {
+            var url = "@Url.Action("RealizarExamen", "RealizarExamen")" + '?examen=' + examen + '&equipo=' + _equipo;
+            console.log(url);
+            $("#modal_Validacion-body").load(url, function (response, status, xhr) {
+                if (status == "error") {
+                    toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+                }
+                else {
+                    $("#modal_Validacion").modal("show");
+                }
+            });
+            @*window.location.href = "@Url.Action("RealizarExamen", "RealizarExamen")" + '?examen=' + examen + '&equipo=' + _equipo;*@
+        }
+        else {
+            mostrarmensaje(4, 'Seleccione el <b>Equipo</b> para enviar los datos ');
+        }
+    }
+
+    function rellamadaSupervisor(examen) {
+        $.ajax({
+            url: "@Url.Action("RellamadaSupervisor", "RealizarExamen")",
+            data: { examen: examen },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                mostrarmensaje(4, 'No se registro la rellamada');
+            },
+            success: function (data) {
+                mostrarmensaje(1, 'Se envio el rellamado de supervisión');
+                asyncPerifoneo(examen,"supervisor");
+            }
+        });
+
+
+    }
+
+    function asyncPerifoneo(examen , tipo) {
+        $.ajax({
+            url: "@Url.Action("getEquipoxExamenPerifoneo", "RealizarExamen")",
+            data: { examen: examen },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                mostrarmensaje(4, 'No se registro la rellamada');
+            },
+            success: function (data) {
+                if (data != "") {
+                    hubNotification.server.perifoneo(tipo, data);
+                }
+
+            }
+        });
+
+
+    }
+
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+
+
+        <h2 class="">Lista de Espera de Adquisición </h2>
+        <div class="pull-right">
+            <button class="btn btn-default no-print" onclick="cargarTabla()">
+                <b><i class="fa fa-refresh fa-spin fa-lg"></i></b>
+            </button>
+            &nbsp;&nbsp;
+            <button class="btn btn-primary no-print" data-toggle="modal" data-target="#modalExamen">
+                <b><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;Examen</b>
+            </button>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Equipo</label>
+                <select id="lstEquipo" class="form-control"></select>
+            </div>
+            <div id="div_time" class="col-sm-8">
+            </div>
+
+        </div>
+        <br />
+        <div id="div_tabla">
+
+        </div>
+        @*<div class=" chart-responsive">
+
+
+                <div class="">
+                    <div class="">
+                        Lista de Examenes por Realizar
+                        @{ Encuesta.Member.CustomMembershipUser user = Membership.GetUser(true) as Encuesta.Member.CustomMembershipUser;
+                         ViewBag.Title = "<i class='fa fa-fire'></i>  Tecnólogo: <b>" + user.UserName.ToString() + "</b>";
+
+                        }
+                    </div>
+
+                    <!-- /.panel-heading -->
+                    <div class="">
+                        <div class="alert" id="msj">
+                        </div>
+
+                    </div>
+                </div>
+            </div>*@
+
+    </div>
+</div>
+
+<!-- Modal Datos -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Datos de Examen</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script type="text/javascript">
+    function EditExamen() {
+        var examen = $("#modal_nexamen").val();
+        if ($('#alert_2').length != 0)
+            $('#alert_2').remove();
+        if (examen == "")
+            $("#2").append("<div id='alert_2' class='alert alert-danger'>Ingrese un N° Examen valido</div>")
+        else {
+            $('#modalExamen').modal('toggle');
+            window.location.href = ('@Url.Action("UpdateExamen", "RealizarExamen")?examen=' + examen);
+        }
+    }
+</script>
+<!-- Modal Buscar Examen-->
+<div class="modal fade" id="modalExamen" tabindex="-1" role="dialog" aria-labelledby="modalExamenLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalExamenLabel">Ingrese Número de Examen</h4>
+            </div>
+            <div class="modal-body" id="2">
+                <div class="input-group custom-search-form">
+                    <input type="number" class="form-control" id="modal_nexamen" placeholder="N° Examen...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" onclick="EditExamen();">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+    function ActualizarDatos() {
+        var nexa = ($('#modalidad_examen').val());
+        var fec = ($('#modal_Modalidad_Fecha').val());
+        var talla = ($('#modal_Modalidad_talla').val());
+        var pes = ($('#modal_Modalidad_Peso').val());
+        $.ajax({
+            url: "@Url.Action("ActualizarDatosAdmision", "RealizarExamen")",
+            data: { nexamen: nexa, talla: talla, peso: pes, fecha: fec },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                mostrarmensaje(4, 'Ocurrio un problema y <b>no</b> se enviaron los datos al sistemas');
+            },
+            success: function (data) {
+                EnviarModalidad(nexa);
+                $('#modal_Modalidad').modal('toggle');
+            }
+        });
+    }
+</script>
+
+<!-- Modal Validacion -->
+<div class="modal fade" id="modal_Validacion" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Validación de Examen</h4>
+            </div>
+            <div class="modal-body" id="modal_Validacion-body">
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<!-- Modal Datos -->
+<div class="modal fade" id="modal_Modalidad" tabindex="-1" role="dialog" aria-labelledby="modal_ModalidadLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modal_ModalidadLabel">Confirmar Datos de Examen</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="ActualizarDatos();">Enviar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="myModalAmpliacion" tabindex="-1" role="dialog" aria-labelledby="myModalAmpliacionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">          
+            <div class="modal-body">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="myModalContraste" tabindex="-1" role="dialog" aria-labelledby="myModalContrasteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modal_ModalidadLabel">Confirmación de Contraste</h4>
+            </div>
+            <div class="modal-body">
+                <label> Ya se registro un contraste para la atención. </label>
+                <label> El contraste que desea mandar es continuo? </label>
+                <input type="radio" id="rdbContrastecntSi" checked="checked" value="Si" />
+                <input type="radio" id="rdbContrastecntNo" value="No" />
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

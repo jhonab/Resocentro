@@ -1,0 +1,94 @@
+﻿@model IEnumerable<SistemaResocentro.ViewModel.Lista_ProformaViewModel>
+    @{
+        ViewBag.Title = "ListaProforma";
+    }
+
+    <h2>Lista de Proforma</h2>
+<div class="pull-right">
+    <button class="btn btn-success btn-xs" onclick="javascript: location.reload();"> Actualizar &nbsp;&nbsp;<i class="fa fa-refresh"></i></button>
+</div>
+    <br />
+    <table class="table compact table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>N° Proforma</th>
+            <th data-hide="phone">Fec. Tramite</th>
+            <th>Paciente</th>
+            <th data-hide="phone">Titular</th>
+            <th data-hide="phone">Aseguradora</th>
+            <th data-hide="phone">Clinica</th>
+            <th data-hide="phone">Emp. Contratante</th>
+            <th data-hide="phone">Sedacion</th>
+            <th data-hide="phone">Usuario</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="center">@item.numero_proforma</td>
+                <td>@item.fechaEmision</td>
+                <td>@item.pac</td>
+                <td>@item.titular</td>
+                <td>@item.companiaseguro.descripcion</td>
+                <td>@item.clinica.razonsocial</td>
+                <td>@item.contratante</td>
+                <td class="center">@Html.DisplayFor(modelItem => item.sedacion)</td>
+                <td>@item.tramitador</td>
+                <td>
+                    <a href="@Url.Action("CartaProforma", "CartaGarantia", new { numero_proforma=item.numero_proforma})" class="btn btn-success " style="font-size:20px;padding:0 9px 0 9px;">
+                        <i class="fa fa-check-square-o "></i>
+                    </a>
+                    <a href="@Url.Action("RechazarCarta", "CartaGarantia", new { numero_proforma=item.numero_proforma})" class="btn btn-danger " style="font-size:20px;padding:0 9px 0 9px;">
+                        <i class="fa fa-times-circle-o"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    var responsiveHelper;
+    var breakpointDefinition = {
+        tablet: 1024,
+        phone: 480
+    };
+    var tableContainer;
+
+    jQuery(document).ready(function ($) {
+        tableContainer = $(".table");
+
+        tableContainer.dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "bStateSave": true,
+
+
+            // Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                responsiveHelper.createExpandIcon(nRow);
+            },
+            fnDrawCallback: function (oSettings) {
+                responsiveHelper.respond();
+            }
+        });
+       
+    });
+</script>
+<link href="~/js/datatables/responsive/css/datatables.responsive.css" rel="stylesheet" />
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+
+<script src="~/js/jquery.dataTables.min.js"></script>
+<script src="~/js/datatables/TableTools.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script src="~/js/datatables/lodash.min.js"></script>
+<script src="~/js/datatables/responsive/js/datatables.responsive.js"></script>

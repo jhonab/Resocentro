@@ -1,0 +1,72 @@
+﻿@model IEnumerable<SistemaResocentro.Models.SUCURSALXUSUARIO>
+
+@{
+    Layout = null;
+}
+<div id="div_lst_sucursal_usuario">
+    <script type="text/javascript">
+        var codigo = '@ViewBag.usuario';
+    </script>
+    <div class="col-md-12">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label>Sucursales:</label>
+                <div class="">
+
+                    @Html.DropDownList("cbosucursal", (SelectList)ViewBag.Sucursal, "- Seleccione la Sucursal -", new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label style="color:#fff;width:100px;"></label>
+                <button type="button" onclick="agregarSucursal();" class="btn btn-success">Agregar Sede</button>
+            </div>
+        </div>
+
+        <table class=" table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Empresa</th>
+                    <th>Sucursal</th>
+                    <th>ID</th>
+                    <th style="width:70px!important"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (item.codigounidad == 1)
+                            {
+                                @:Resocentro
+                            }
+                            else if (item.codigounidad == 2)
+                            {
+                                @:Emetac
+                            }
+                            else
+                            {
+                                @:Otros
+                            }
+                        </td>
+                        <td>
+                            @item.SUCURSAL.descripcion
+                        </td>
+                        <td>
+                            @{
+                    var id = item.codigounidad * 100 + item.codigosucursal;
+                            }
+                            @id
+                        </td>
+                        <td style="text-align:center">
+                            <a href="javascript:eliminarSucursal(@item.codigounidad,'@item.codigosucursal')" class="btn btn-danger btn-xs" title="Eliminar Sucursal: @item.SUCURSAL.ShortDesc"> <i class="fa fa-close"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

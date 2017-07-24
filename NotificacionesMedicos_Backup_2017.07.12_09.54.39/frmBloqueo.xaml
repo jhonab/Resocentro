@@ -1,0 +1,9 @@
+﻿<Window x:Class="NotificacionesMedicos.frmBloqueo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Bloqueo" Height="604.7" Width="1133" WindowState="Maximized">
+    <Grid>
+        <Label Content="Supervisión Pendiente" HorizontalAlignment="Center" Width="830" VerticalAlignment="Center" FontSize="80" Height="112" />
+        <TextBox Name="lblexamen" Text=" " HorizontalAlignment="Center"  VerticalAlignment="Center" FontSize="20" Width="827"  Height="226" Margin="125,347,173,1" AcceptsReturn="True" IsEnabled="False"/>
+    </Grid>
+</Window>

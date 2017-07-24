@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Encuesta.Models.EXAMENXCITA>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //$('#table_tecnicas').DataTable({
+        //    "columnDefs": [
+        //    { "targets": [2], "visible": false, "searchable": false },
+        //    { "targets": [1], "searchable": false, }
+
+        //    ]
+        //});
+    });
+
+</script>
+
+<table class="table table-striped table-bordered table-hover" id="table_tecnicas">
+    <thead>
+        <tr>
+            <th>Técnica
+            </th>
+            <th style="text-align:center;"></th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="padding: 1px!important">@Html.DisplayFor(modelItem => item.ESTUDIO.nombreestudio) <span class="pull-right"><button type="button" class="btn btn-success btn-circle btn-xs" onclick="agregarTecnica('-1','@item.codigoestudio','@item.numerocita')"><i class="fa fa-copy"></i></button> </span></td>
+                <td class="table_id" style="padding: 1px!important;text-align:center;">
+                    <button type="button" class="btn btn-danger btn-circle btn-xs" onclick="eliminarTecnica('@item.codigoexamencita','@item.numerocita')"><i class="fa fa-times"></i></button>
+                </td>               
+            </tr>
+        }
+
+    </tbody>
+</table>

@@ -1,0 +1,184 @@
+﻿@model Encuesta.ViewModels.Mantenimiento.DetalleMantenimiento
+
+@{
+    ViewBag.Title = "Registrar Revisión";
+    Encuesta.ViewModels.Mantenimiento.MantenimientoViewModel Incidente = (Encuesta.ViewModels.Mantenimiento.MantenimientoViewModel)ViewBag.Mantenimiento;
+}
+
+<script src="~/js/validar-input.js"></script>
+<script type="text/javascript">
+    var piezas = [];
+    $(function () {
+        iniciarForm();
+        ingresoForm();
+
+        $("#div_treefile").load('@Url.Action("ListFileMantenimiento", "Mantenimiento")' + '?incidente=@Incidente.idIncidente', function (response, status, xhr) {
+            if (status == "error") {
+                toastr.error('Error:\n' + xhr.status + " " + xhr.statusText, 'Error', opts);
+            }
+
+        });
+    });
+</script>
+
+<div id="div_revision">
+
+
+    <div class="invoice">
+        <div class="row">
+            <div class="col-sm-6 invoice-left">
+                <a href="#">
+
+                    <img src="~/images/logo/Logo_Azul.png" width="185" alt="">
+                </a>
+            </div>
+            <div class="col-sm-6 invoice-right"> <h3>INCIDENTE N° #@Incidente.idIncidente</h3> <span></span> </div>
+        </div> <hr class="margin"> <div class="row">
+            <div class="col-sm-6 ">
+                <h4>Detalles de Incidente</h4>
+                <strong style="font-size:13px">Tipo Incidente:</strong> @Incidente.tipoIncidente<br />
+                <strong style="font-size:13px">Fecha Incidente:</strong> @Incidente.fecha_detecta.ToString("dd/MM/yyyy HH:mm")<br />
+                <strong style="font-size:13px">Usuario:</strong> @Incidente.usuario_detecta<br />
+
+            </div>
+            <div class="col-md-6 ">
+                <h4>Detalle Equipo:</h4>
+                <strong style="font-size:13px">Marca:</strong> @Incidente.equipo.marca.ToUpper()
+                <br> <strong style="font-size:13px">Modelo:</strong> @Incidente.equipo.modelo.ToUpper()
+                <br> <strong style="font-size:13px">Sucursal:</strong> @Incidente.equipo.empresa -  @Incidente.equipo.sucursal
+            </div>
+        </div>
+
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs bordered">
+                <li class="active">
+                    <a href="#falla" data-toggle="tab">
+                        <span class="visible-xs">Incidente</span>
+                        <span class="hidden-xs">Incidente Reportado</span>
+                    </a>
+                </li>
+
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="falla">
+                    <span>
+                        <i>
+                            @Incidente.falla_detectada.ToUpper()
+                        </i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @{
+        string claseBg = Incidente.isSolucionado ? "bg-success" : "bg-info";
+    }
+    <div class="row">
+        <div class="col-md-9 border-right">
+            <div class="row">
+                <div class="col-md-12 @claseBg">
+                    <h4>
+                        <b>Revisiones</b>
+                        @if (Incidente.isSolucionado)
+                        {
+                            <i>&nbsp;&nbsp; - Solucionado <i class="fa fa-calendar"></i> @Incidente.fecha_solucionado - </i>
+                        }
+                    </h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="panel-group joined col-md-12" id="accordion-@Incidente.idIncidente">
+                    @foreach (var item in Incidente.listaRevisiones)
+                    {
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion-@Incidente.idIncidente" href="#revision-@item.idDetalleMantenimiento" aria-expanded="false" class="collapsed">
+                                        Revision N° #@item.idDetalleMantenimiento  &nbsp;&nbsp; @item.fecha_revision.ToString("dd-MM-yyyy HH:mm") - @item.usuario_revisa
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="revision-@item.idDetalleMantenimiento" class="panel-collapse collapse" aria-expanded="false">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label ">Revision:</label>
+                                                <div class="">
+                                                    <textarea class="form-control" readonly>@item.revision</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label ">Cambio Piezas?</label>
+                                                <input mostrar-respuesta="div_piezas_revision-@item.idDetalleMantenimiento" type="checkbox" readonly disabled @if (item.isCambioPieza) { <text> checked </text>    } else { <text> unchecked </text>    }>
+                                            </div>
+                                            <div id="div_piezas_revision-@item.idDetalleMantenimiento" class="form-group">
+                                                <table class="table compact table-striped  table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                Pieza
+                                                            </th>
+                                                            <th>
+                                                                Serie
+                                                            </th>
+                                                            <th style="width: 22px;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var pieza in item.listaPiezas)
+                                                        {
+                                                            <tr>
+                                                                <td>@pieza.nombre</td>
+                                                                <td>@pieza.serie</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-md-12 @claseBg">
+                    <h4><b>Adjuntos</b></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div id="div_treefile" class="col-md-12"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row hidden-print">
+        <div class="col-md-12">
+            <div class="pull-right">
+                <a href="javascript:window.print();" class="btn btn-primary btn-icon icon-left hidden-print">
+                    Print
+                    <i class="entypo-doc-text"></i>
+                </a>
+
+                <button type="button" onclick="javascript: window.location.replace('@Url.Action("ListaIncidenteEquipo", "Mantenimiento", new { equipo=Incidente.idEquipo})');" class="btn btn-default"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;&nbsp;Regresar </button>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>

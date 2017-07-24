@@ -1,0 +1,67 @@
+﻿@model SistemaResocentro.Models.Planificacion
+
+@{
+    Layout = null;
+}
+<script src="~/js/validar-input.js"></script>
+<script type="text/javascript">
+    function registrarCheckin(id) {
+       /* navigator.geolocation.getCurrentPosition(function (latitud) { latitud_actual = latitud }, function () { toastr.error('No se pudo obtener su ubicación, vuelva a intentar por favor.', 'Error', opts); });
+        var _lati = (latitud_actual.coords.latitude.toString());
+        var _long = (latitud_actual.coords.longitude.toString());*/
+        var _lati = "";
+        var _long = "";
+        var _comentarios = $("#comentarios").val();
+        var _correcto = $("#isCorrecto").val();
+        $.ajax({
+            url: "@Url.Action("RegistrarCheckin", "Planificacion")",
+            data: { lati: _lati, lon: _long, comentarios: _comentarios, id: id,correcto:_correcto },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                toastr.error("No se guardó el Check-in de la Visita Médica", "Error", opts);
+            },
+            success: function (data) {
+                toastr.success("Se guardó el Check-in de la Visita Médica", "Exito", opts);
+                $("#modal_checkin").modal("hide");
+            }
+        });
+    }
+</script>
+
+<div class="modal-header modal-primary">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Confirmar Visita Médica </h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Institución:</label>
+                <div>@Html.DisplayFor(modelItem => modelItem.CLINICAHOSPITAL.razonsocial, new { @class = "form-control" })</div>
+            </div>
+            <div class="form-group">
+                <label>Médico:</label>
+                <div>
+                    @Html.DisplayFor(modelItem => modelItem.MEDICOEXTERNO.apellidos, new { @class = "form-control" })
+                @Html.DisplayFor(modelItem => modelItem.MEDICOEXTERNO.nombres, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Visita realizada correctamente</label>
+            <div>
+                @Html.CheckBoxFor(x => x.isCorrecto)
+            </div>
+        </div>
+        <div class="form-group" id="div-comentario">
+            <label>Comentarios </label>
+            @Html.TextAreaFor(model => model.comentarios, new { @rows = "3", @class = "form-control" })
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+    <button type="button" class="btn btn-success" onclick="registrarCheckin(@Model.id)">Guardar</button>
+</div>

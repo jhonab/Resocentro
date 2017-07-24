@@ -1,0 +1,1089 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DATABASEGENERALModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ATENCION">
+          <Key>
+            <PropertyRef Name="numeroatencion" />
+            <PropertyRef Name="codigopaciente" />
+            <PropertyRef Name="codigocompaniaseguro" />
+            <PropertyRef Name="ruc" />
+            <PropertyRef Name="numerocita" />
+            <PropertyRef Name="codigomodalidad" />
+            <PropertyRef Name="codigounidad" />
+          </Key>
+          <Property Name="fechayhora" Type="datetime" Nullable="false" />
+          <Property Name="numeroatencion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="codigopaciente" Type="int" Nullable="false" />
+          <Property Name="cmp" Type="char" MaxLength="6" Nullable="false" />
+          <Property Name="codigocompaniaseguro" Type="int" Nullable="false" />
+          <Property Name="ruc" Type="char" MaxLength="11" Nullable="false" />
+          <Property Name="numerocita" Type="int" Nullable="false" />
+          <Property Name="codigomodalidad" Type="int" Nullable="false" />
+          <Property Name="codigounidad" Type="int" Nullable="false" />
+          <Property Name="peso" Type="int" Nullable="false" />
+          <Property Name="talla" Type="real" Nullable="false" />
+          <Property Name="edad" Type="int" Nullable="false" />
+          <Property Name="codigousuario" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="numerocarnetseguro" Type="varchar" MaxLength="22" />
+          <Property Name="codigocompaniaseguroChanged" Type="int" />
+          <Property Name="SitedOrden" Type="varchar" MaxLength="15" />
+          <Property Name="SitedCobertura" Type="varchar" MaxLength="2" />
+          <Property Name="CodigoSegOnline" Type="varchar" MaxLength="8" />
+          <Property Name="isChangePeso" Type="bit" />
+          <Property Name="newPeso" Type="int" />
+          <Property Name="isChangeTalla" Type="bit" />
+          <Property Name="newTalla" Type="float" />
+          <Property Name="isChangeEdad" Type="bit" />
+          <Property Name="newEdad" Type="datetime" />
+          <Property Name="observacionAten" Type="varchar" MaxLength="500" />
+          <Property Name="IsVerified" Type="bit" />
+          <Property Name="IsReimprimible" Type="bit" />
+          <Property Name="isDelivery" Type="bit" Nullable="false" />
+          <Property Name="numeroTicket" Type="int" />
+          <Property Name="IsPlacaDejada" Type="bit" />
+        </EntityType>
+        <EntityType Name="Encuesta">
+          <Key>
+            <PropertyRef Name="idencuesta" />
+          </Key>
+          <Property Name="idencuesta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="numeroexamen" Type="int" Nullable="false" />
+          <Property Name="fec_ini_encu" Type="datetime" Nullable="false" />
+          <Property Name="fec_paso1" Type="datetime" />
+          <Property Name="fec_paso2" Type="datetime" />
+          <Property Name="tipo_encu" Type="int" />
+          <Property Name="fec_paso3" Type="datetime" />
+          <Property Name="usu_reg_encu" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="fec_ini_supervisa" Type="datetime" />
+          <Property Name="fec_supervisa" Type="datetime" />
+          <Property Name="usu_reg_super" Type="varchar" MaxLength="20" />
+          <Property Name="fec_ini_tecno" Type="datetime" />
+          <Property Name="fec_fin_tecno" Type="datetime" />
+          <Property Name="usu_reg_tecno" Type="varchar" MaxLength="20" />
+          <Property Name="fec_ini_proto" Type="datetime" />
+          <Property Name="fec_fin_proto" Type="datetime" />
+          <Property Name="usu_reg_proto" Type="varchar" MaxLength="50" />
+          <Property Name="estado" Type="int" />
+          <Property Name="atencion" Type="int" />
+          <Property Name="SolicitarValidacion" Type="bit" />
+          <Property Name="fec_Solicitavalidacion" Type="datetime" />
+          <Property Name="usu_Solicitavalidacion" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Encuesta_Satisfaccion">
+          <Key>
+            <PropertyRef Name="idencuesta" />
+          </Key>
+          <Property Name="idencuesta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="numeroatecion" Type="int" Nullable="false" />
+          <Property Name="fec_inicio" Type="datetime" />
+          <Property Name="fec_fin" Type="datetime" />
+          <Property Name="paciente" Type="int" Nullable="false" />
+          <Property Name="p1" Type="bit" />
+          <Property Name="p2" Type="bit" />
+          <Property Name="p3" Type="bit" />
+          <Property Name="usu_reg" Type="varchar" MaxLength="20" />
+          <Property Name="fec_ini" Type="datetime" />
+          <Property Name="isTerminado" Type="bit" />
+        </EntityType>
+        <EntityType Name="EQUIPO">
+          <Key>
+            <PropertyRef Name="codigoequipo" />
+          </Key>
+          <Property Name="fechaadquirio" Type="datetime" Nullable="false" />
+          <Property Name="intensidad" Type="real" Nullable="false" />
+          <Property Name="modelo" Type="varchar" MaxLength="40" />
+          <Property Name="marca" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="nombreequipo" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="codigoequipo" Type="int" Nullable="false" />
+          <Property Name="codigosucursal2" Type="int" Nullable="false" />
+          <Property Name="codigounidad2" Type="int" Nullable="false" />
+          <Property Name="estado" Type="char" MaxLength="1" />
+          <Property Name="ShortDesc" Type="varchar" MaxLength="15" />
+          <Property Name="LongDesc" Type="varchar" MaxLength="25" />
+          <Property Name="isIntegrator" Type="bit" />
+          <Property Name="PathTemplate" Type="varchar" MaxLength="200" />
+          <Property Name="isSupervisable" Type="bit" Nullable="false" />
+          <Property Name="codigomodalidad2" Type="int" />
+          <Property Name="EstadoActual" Type="char" MaxLength="1" />
+          <Property Name="AETitleConsulta" Type="varchar" MaxLength="200" />
+          <Property Name="StationName" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="ESTUDIO">
+          <Key>
+            <PropertyRef Name="codigoestudio" />
+            <PropertyRef Name="codigoclase" />
+          </Key>
+          <Property Name="nombreestudio" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="codigoestudio" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="codigoclase" Type="int" Nullable="false" />
+          <Property Name="indicacion" Type="varchar" MaxLength="500" />
+          <Property Name="IsValidacion" Type="bit" />
+        </EntityType>
+        <EntityType Name="EXAMENXATENCION">
+          <Key>
+            <PropertyRef Name="codigo" />
+            <PropertyRef Name="numeroatencion" />
+            <PropertyRef Name="codigopaciente" />
+            <PropertyRef Name="numerocita" />
+            <PropertyRef Name="codigocompaniaseguro" />
+            <PropertyRef Name="ruc" />
+            <PropertyRef Name="codigoequipo" />
+            <PropertyRef Name="codigoestudio" />
+            <PropertyRef Name="codigoclase" />
+            <PropertyRef Name="codigomodalidad" />
+            <PropertyRef Name="codigounidad" />
+          </Key>
+          <Property Name="codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="numeroatencion" Type="int" Nullable="false" />
+          <Property Name="codigopaciente" Type="int" Nullable="false" />
+          <Property Name="numerocita" Type="int" Nullable="false" />
+          <Property Name="codigocompaniaseguro" Type="int" Nullable="false" />
+          <Property Name="ruc" Type="char" MaxLength="11" Nullable="false" />
+          <Property Name="codigoequipo" Type="int" Nullable="false" />
+          <Property Name="horaatencion" Type="datetime" Nullable="false" />
+          <Property Name="codigoestudio" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="codigoclase" Type="int" Nullable="false" />
+          <Property Name="codigomodalidad" Type="int" Nullable="false" />
+          <Property Name="codigounidad" Type="int" Nullable="false" />
+          <Property Name="estadoestudio" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="prioridad" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="turnomedico" Type="char" MaxLength="5" />
+          <Property Name="encu_tipo" Type="int" />
+          <Property Name="codigoequipoFinal" Type="int" />
+          <Property Name="EstadoInforme" Type="int" />
+          <Property Name="motivo" Type="varchar" MaxLength="400" />
+          <Property Name="otros_motivos" Type="varchar" MaxLength="400" />
+          <Property Name="usu_cancela" Type="varchar" MaxLength="20" />
+          <Property Name="fecha_cancela" Type="datetime" />
+          <Property Name="IsAcopied" Type="bit" />
+          <Property Name="IsAmpliInDemand" Type="bit" />
+          <Property Name="AmpliCodigo" Type="int" />
+          <Property Name="CodigoDeEstudioOrigen" Type="int" />
+          <Property Name="isLocked" Type="bit" />
+          <Property Name="EstadoEncuesta" Type="int" StoreGeneratedPattern="Computed" />
+          <Property Name="equipoAsignado" Type="int" />
+          <Property Name="IsPostProInDemand" Type="bit" />
+          <Property Name="GrupoMedico" Type="int" />
+          <Property Name="isImpax" Type="bit" />
+          <Property Name="Fec_Rev_Impax" Type="datetime" />
+          <Property Name="usu_Rev_Impax" Type="varchar" MaxLength="20" />
+          <Property Name="IsAudible" Type="bit" />
+          <Property Name="UserTemporal" Type="varchar" MaxLength="20" />
+          <Property Name="IsMoreThanOnePage" Type="bit" />
+          <Property Name="UrlXero" Type="varchar" MaxLength="900" />
+          <Property Name="IsTranscriInDemand" Type="bit" />
+          <Property Name="MedProceAtro" Type="varchar" MaxLength="20" />
+          <Property Name="IsDictado" Type="bit" />
+          <Property Name="AmpliMotivo" Type="varchar" MaxLength="1000" />
+          <Property Name="FecAlternativaIniEntrega" Type="datetime" />
+          <Property Name="IsPediatrico" Type="bit" />
+          <Property Name="turnomedicoOld" Type="char" MaxLength="5" />
+          <Property Name="IsSensible" Type="bit" />
+          <Property Name="isSensibleB" Type="bit" />
+          <Property Name="consentimiento" Type="varchar(max)" />
+          <Property Name="isSensibleA" Type="bit" />
+          <Property Name="IsValidRequired" Type="bit" />
+          <Property Name="num_oa_sjt" Type="varchar" MaxLength="200" />
+          <Property Name="IsVerifiedTurno" Type="bit" />
+          <Property Name="MedAsigRea" Type="varchar" MaxLength="20" />
+          <Property Name="FecAlternativaIniEntregaAutor" Type="datetime" />
+          <Property Name="isOperado" Type="bit" Nullable="false" />
+          <Property Name="isAngio" Type="bit" Nullable="false" />
+          <Property Name="SensibleGrupo" Type="char" MaxLength="1" />
+          <Property Name="prioridadMotivo" Type="varchar" MaxLength="200" />
+          <Property Name="prioridadUser" Type="varchar" MaxLength="25" />
+          <Property Name="prioridadFecReg" Type="datetime" />
+          <Property Name="AmpliSoliFec" Type="datetime" />
+          <Property Name="PauseEstado" Type="char" MaxLength="1" />
+          <Property Name="PauseMotivo" Type="varchar" MaxLength="200" />
+          <Property Name="PauseStopFecReg" Type="datetime" />
+          <Property Name="PauseStopUsuReg" Type="varchar" MaxLength="20" />
+          <Property Name="PauseReaFecReg" Type="datetime" />
+          <Property Name="PauseReaUsuReg" Type="varchar" MaxLength="20" />
+          <Property Name="num_oa_sjt_doc_tip" Type="char" MaxLength="3" />
+          <Property Name="num_oa_sjt_doc_ser" Type="char" MaxLength="3" />
+          <Property Name="num_oa_sjt_doc_num" Type="char" MaxLength="8" />
+          <Property Name="num_oa_sjt_cod_item" Type="char" MaxLength="2" />
+          <Property Name="DigitaEst" Type="char" MaxLength="1" />
+          <Property Name="FecAlternativaIniEntregaPag" Type="datetime" />
+          <Property Name="FecAlternativaIniEntregaAutorPag" Type="datetime" />
+          <Property Name="FecAlternativaIniEntregaPag_M" Type="varchar" MaxLength="200" />
+          <Property Name="FecAlternativaIniEntregaAutorPag_M" Type="varchar" MaxLength="200" />
+          <Property Name="FecAlternativaIniEntregaAutorPag_U" Type="varchar" MaxLength="20" />
+          <Property Name="FecAlternativaIniEntregaPag_U" Type="varchar" MaxLength="20" />
+          <Property Name="isRevisadoCarta" Type="bit" Nullable="false" />
+          <Property Name="estadoImagen" Type="bit" Nullable="false" />
+          <Property Name="ImpactoPrint" Type="char" MaxLength="1" />
+          <Property Name="ImpactoPrint_user" Type="varchar" MaxLength="20" />
+          <Property Name="ImpactoPrint_fec" Type="datetime" />
+          <Property Name="IsImpreso" Type="bit" />
+        </EntityType>
+        <EntityType Name="PACIENTE">
+          <Key>
+            <PropertyRef Name="codigopaciente" />
+          </Key>
+          <Property Name="nacionalidad" Type="varchar(max)" />
+          <Property Name="direccion" Type="varchar" MaxLength="80" />
+          <Property Name="email" Type="varchar(max)" />
+          <Property Name="celular" Type="varchar(max)" />
+          <Property Name="telefono" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="fechanace" Type="datetime" Nullable="false" />
+          <Property Name="sexo" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="nombres" Type="varchar" MaxLength="900" />
+          <Property Name="apellidos" Type="varchar" MaxLength="900" />
+          <Property Name="dni" Type="varchar" MaxLength="20" />
+          <Property Name="codigopaciente" Type="int" Nullable="false" />
+          <Property Name="tipo_doc" Type="char" MaxLength="1" />
+          <Property Name="IsProtocolo" Type="bit" />
+          <Property Name="UbigeoId" Type="char" MaxLength="6" />
+          <Property Name="UbigeoPaisId" Type="int" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="codigousuario" />
+          </Key>
+          <Property Name="jerarquia" Type="int" Nullable="false" />
+          <Property Name="estadousuario" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="siglas" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="codigousuario" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="dni" Type="char" MaxLength="8" />
+          <Property Name="bloqueado" Type="bit" Nullable="false" />
+          <Property Name="contrasena" Type="varchar" MaxLength="20" />
+          <Property Name="ShortName" Type="varchar" MaxLength="25" />
+          <Property Name="isEnf" Type="bit" />
+          <Property Name="isAnes" Type="bit" />
+          <Property Name="username" Type="varchar" MaxLength="300" />
+          <Property Name="Acro" Type="varchar" MaxLength="2" />
+          <Property Name="CurrentUnidad" Type="int" />
+          <Property Name="isSessionLocked" Type="bit" Nullable="false" />
+          <Property Name="User_Uid" Type="varchar(max)" />
+        </EntityType>
+        <Association Name="FK__ATENCION__codigo__25518C17">
+          <End Role="PACIENTE" Type="Self.PACIENTE" Multiplicity="1" />
+          <End Role="ATENCION" Type="Self.ATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PACIENTE">
+              <PropertyRef Name="codigopaciente" />
+            </Principal>
+            <Dependent Role="ATENCION">
+              <PropertyRef Name="codigopaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EXAMENXAT__codig__57DD0BE4">
+          <End Role="EQUIPO" Type="Self.EQUIPO" Multiplicity="1" />
+          <End Role="EXAMENXATENCION" Type="Self.EXAMENXATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EQUIPO">
+              <PropertyRef Name="codigoequipo" />
+            </Principal>
+            <Dependent Role="EXAMENXATENCION">
+              <PropertyRef Name="codigoequipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EXAMENXATENCION__56E8E7AB">
+          <End Role="ESTUDIO" Type="Self.ESTUDIO" Multiplicity="1" />
+          <End Role="EXAMENXATENCION" Type="Self.EXAMENXATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ESTUDIO">
+              <PropertyRef Name="codigoestudio" />
+              <PropertyRef Name="codigoclase" />
+            </Principal>
+            <Dependent Role="EXAMENXATENCION">
+              <PropertyRef Name="codigoestudio" />
+              <PropertyRef Name="codigoclase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EXAMENXATENCION__58D1301D">
+          <End Role="ATENCION" Type="Self.ATENCION" Multiplicity="1" />
+          <End Role="EXAMENXATENCION" Type="Self.EXAMENXATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATENCION">
+              <PropertyRef Name="numeroatencion" />
+              <PropertyRef Name="codigopaciente" />
+              <PropertyRef Name="codigomodalidad" />
+              <PropertyRef Name="codigounidad" />
+              <PropertyRef Name="codigocompaniaseguro" />
+              <PropertyRef Name="ruc" />
+              <PropertyRef Name="numerocita" />
+            </Principal>
+            <Dependent Role="EXAMENXATENCION">
+              <PropertyRef Name="numeroatencion" />
+              <PropertyRef Name="codigopaciente" />
+              <PropertyRef Name="codigomodalidad" />
+              <PropertyRef Name="codigounidad" />
+              <PropertyRef Name="codigocompaniaseguro" />
+              <PropertyRef Name="ruc" />
+              <PropertyRef Name="numerocita" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Encuesta_Satisfaccion_PACIENTE">
+          <End Role="PACIENTE" Type="Self.PACIENTE" Multiplicity="1" />
+          <End Role="Encuesta_Satisfaccion" Type="Self.Encuesta_Satisfaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PACIENTE">
+              <PropertyRef Name="codigopaciente" />
+            </Principal>
+            <Dependent Role="Encuesta_Satisfaccion">
+              <PropertyRef Name="paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Encuesta_Satisfaccion_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+          <End Role="Encuesta_Satisfaccion" Type="Self.Encuesta_Satisfaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="codigousuario" />
+            </Principal>
+            <Dependent Role="Encuesta_Satisfaccion">
+              <PropertyRef Name="usu_reg" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipoFinal_examenxatencion">
+          <End Role="EQUIPO" Type="Self.EQUIPO" Multiplicity="0..1" />
+          <End Role="EXAMENXATENCION" Type="Self.EXAMENXATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EQUIPO">
+              <PropertyRef Name="codigoequipo" />
+            </Principal>
+            <Dependent Role="EXAMENXATENCION">
+              <PropertyRef Name="codigoequipoFinal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DATABASEGENERALModelStoreContainer">
+          <EntitySet Name="ATENCION" EntityType="Self.ATENCION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Encuesta" EntityType="Self.Encuesta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Encuesta_Satisfaccion" EntityType="Self.Encuesta_Satisfaccion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EQUIPO" EntityType="Self.EQUIPO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ESTUDIO" EntityType="Self.ESTUDIO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EXAMENXATENCION" EntityType="Self.EXAMENXATENCION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PACIENTE" EntityType="Self.PACIENTE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__ATENCION__codigo__25518C17" Association="Self.FK__ATENCION__codigo__25518C17">
+            <End Role="PACIENTE" EntitySet="PACIENTE" />
+            <End Role="ATENCION" EntitySet="ATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EXAMENXAT__codig__57DD0BE4" Association="Self.FK__EXAMENXAT__codig__57DD0BE4">
+            <End Role="EQUIPO" EntitySet="EQUIPO" />
+            <End Role="EXAMENXATENCION" EntitySet="EXAMENXATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EXAMENXATENCION__56E8E7AB" Association="Self.FK__EXAMENXATENCION__56E8E7AB">
+            <End Role="ESTUDIO" EntitySet="ESTUDIO" />
+            <End Role="EXAMENXATENCION" EntitySet="EXAMENXATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EXAMENXATENCION__58D1301D" Association="Self.FK__EXAMENXATENCION__58D1301D">
+            <End Role="ATENCION" EntitySet="ATENCION" />
+            <End Role="EXAMENXATENCION" EntitySet="EXAMENXATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Encuesta_Satisfaccion_PACIENTE" Association="Self.FK_Encuesta_Satisfaccion_PACIENTE">
+            <End Role="PACIENTE" EntitySet="PACIENTE" />
+            <End Role="Encuesta_Satisfaccion" EntitySet="Encuesta_Satisfaccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Encuesta_Satisfaccion_USUARIO" Association="Self.FK_Encuesta_Satisfaccion_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="Encuesta_Satisfaccion" EntitySet="Encuesta_Satisfaccion" />
+          </AssociationSet>
+          <AssociationSet Name="fk_equipoFinal_examenxatencion" Association="Self.fk_equipoFinal_examenxatencion">
+            <End Role="EQUIPO" EntitySet="EQUIPO" />
+            <End Role="EXAMENXATENCION" EntitySet="EXAMENXATENCION" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DATABASEGENERALModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Encuesta">
+          <Key>
+            <PropertyRef Name="idencuesta" />
+          </Key>
+          <Property Name="idencuesta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="numeroexamen" Type="Int32" Nullable="false" />
+          <Property Name="fec_ini_encu" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="fec_paso1" Type="DateTime" Precision="3" />
+          <Property Name="fec_paso2" Type="DateTime" Precision="3" />
+          <Property Name="tipo_encu" Type="Int32" />
+          <Property Name="fec_paso3" Type="DateTime" Precision="3" />
+          <Property Name="usu_reg_encu" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="fec_ini_supervisa" Type="DateTime" Precision="3" />
+          <Property Name="fec_supervisa" Type="DateTime" Precision="3" />
+          <Property Name="usu_reg_super" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fec_ini_tecno" Type="DateTime" Precision="3" />
+          <Property Name="fec_fin_tecno" Type="DateTime" Precision="3" />
+          <Property Name="usu_reg_tecno" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fec_ini_proto" Type="DateTime" Precision="3" />
+          <Property Name="fec_fin_proto" Type="DateTime" Precision="3" />
+          <Property Name="usu_reg_proto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="Int32" />
+          <Property Name="atencion" Type="Int32" />
+          <Property Name="SolicitarValidacion" Type="Boolean" />
+          <Property Name="fec_Solicitavalidacion" Type="DateTime" Precision="3" />
+          <Property Name="usu_Solicitavalidacion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EXAMENXATENCION">
+          <Key>
+            <PropertyRef Name="codigo" />
+            <PropertyRef Name="numeroatencion" />
+            <PropertyRef Name="codigopaciente" />
+            <PropertyRef Name="numerocita" />
+            <PropertyRef Name="codigocompaniaseguro" />
+            <PropertyRef Name="ruc" />
+            <PropertyRef Name="codigoequipo" />
+            <PropertyRef Name="codigoestudio" />
+            <PropertyRef Name="codigoclase" />
+            <PropertyRef Name="codigomodalidad" />
+            <PropertyRef Name="codigounidad" />
+          </Key>
+          <Property Name="codigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="numeroatencion" Type="Int32" Nullable="false" />
+          <Property Name="codigopaciente" Type="Int32" Nullable="false" />
+          <Property Name="numerocita" Type="Int32" Nullable="false" />
+          <Property Name="codigocompaniaseguro" Type="Int32" Nullable="false" />
+          <Property Name="ruc" Type="String" MaxLength="11" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="codigoequipo" Type="Int32" Nullable="false" />
+          <Property Name="horaatencion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="codigoestudio" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="codigoclase" Type="Int32" Nullable="false" />
+          <Property Name="codigomodalidad" Type="Int32" Nullable="false" />
+          <Property Name="codigounidad" Type="Int32" Nullable="false" />
+          <Property Name="estadoestudio" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="prioridad" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="turnomedico" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="encu_tipo" Type="Int32" />
+          <Property Name="codigoequipoFinal" Type="Int32" />
+          <Property Name="EstadoInforme" Type="Int32" />
+          <Property Name="motivo" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+          <Property Name="otros_motivos" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+          <Property Name="usu_cancela" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_cancela" Type="DateTime" Precision="3" />
+          <Property Name="IsAcopied" Type="Boolean" />
+          <Property Name="IsAmpliInDemand" Type="Boolean" />
+          <Property Name="AmpliCodigo" Type="Int32" />
+          <Property Name="CodigoDeEstudioOrigen" Type="Int32" />
+          <Property Name="isLocked" Type="Boolean" />
+          <Property Name="EstadoEncuesta" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="equipoAsignado" Type="Int32" />
+          <Property Name="IsPostProInDemand" Type="Boolean" />
+          <Property Name="GrupoMedico" Type="Int32" />
+          <Property Name="isImpax" Type="Boolean" />
+          <Property Name="Fec_Rev_Impax" Type="DateTime" Precision="3" />
+          <Property Name="usu_Rev_Impax" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IsAudible" Type="Boolean" />
+          <Property Name="UserTemporal" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IsMoreThanOnePage" Type="Boolean" />
+          <Property Name="UrlXero" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
+          <Property Name="IsTranscriInDemand" Type="Boolean" />
+          <Property Name="MedProceAtro" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IsDictado" Type="Boolean" />
+          <Property Name="AmpliMotivo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="FecAlternativaIniEntrega" Type="DateTime" Precision="3" />
+          <Property Name="IsPediatrico" Type="Boolean" />
+          <Property Name="turnomedicoOld" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="IsSensible" Type="Boolean" />
+          <Property Name="isSensibleB" Type="Boolean" />
+          <Property Name="consentimiento" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="isSensibleA" Type="Boolean" />
+          <Property Name="IsValidRequired" Type="Boolean" />
+          <Property Name="num_oa_sjt" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IsVerifiedTurno" Type="Boolean" />
+          <Property Name="MedAsigRea" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FecAlternativaIniEntregaAutor" Type="DateTime" Precision="3" />
+          <Property Name="isOperado" Type="Boolean" Nullable="false" />
+          <Property Name="isAngio" Type="Boolean" Nullable="false" />
+          <Property Name="SensibleGrupo" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="prioridadMotivo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="prioridadUser" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="prioridadFecReg" Type="DateTime" Precision="3" />
+          <Property Name="AmpliSoliFec" Type="DateTime" Precision="3" />
+          <Property Name="PauseEstado" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="PauseMotivo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PauseStopFecReg" Type="DateTime" Precision="3" />
+          <Property Name="PauseStopUsuReg" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PauseReaFecReg" Type="DateTime" Precision="3" />
+          <Property Name="PauseReaUsuReg" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="num_oa_sjt_doc_tip" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="num_oa_sjt_doc_ser" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="num_oa_sjt_doc_num" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+          <Property Name="num_oa_sjt_cod_item" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="DigitaEst" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="FecAlternativaIniEntregaPag" Type="DateTime" Precision="3" />
+          <Property Name="FecAlternativaIniEntregaAutorPag" Type="DateTime" Precision="3" />
+          <Property Name="FecAlternativaIniEntregaPag_M" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="FecAlternativaIniEntregaAutorPag_M" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="FecAlternativaIniEntregaAutorPag_U" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FecAlternativaIniEntregaPag_U" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="isRevisadoCarta" Type="Boolean" Nullable="false" />
+          <Property Name="estadoImagen" Type="Boolean" Nullable="false" />
+          <Property Name="ImpactoPrint" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="ImpactoPrint_user" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ImpactoPrint_fec" Type="DateTime" Precision="3" />
+          <Property Name="IsImpreso" Type="Boolean" />
+          <NavigationProperty Name="EQUIPO" Relationship="DATABASEGENERALModel.FK__EXAMENXAT__codig__57DD0BE4" FromRole="EXAMENXATENCION" ToRole="EQUIPO" />
+          <NavigationProperty Name="EQUIPO1" Relationship="DATABASEGENERALModel.fk_equipoFinal_examenxatencion" FromRole="EXAMENXATENCION" ToRole="EQUIPO" />
+          <NavigationProperty Name="ATENCION" Relationship="DATABASEGENERALModel.FK__EXAMENXATENCION__58D1301D" FromRole="EXAMENXATENCION" ToRole="ATENCION" />
+          <NavigationProperty Name="ESTUDIO" Relationship="DATABASEGENERALModel.FK__EXAMENXATENCION__56E8E7AB" FromRole="EXAMENXATENCION" ToRole="ESTUDIO" />
+        </EntityType>
+        <EntityContainer Name="DATABASEGENERALEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Encuesta" EntityType="Self.Encuesta" />
+          <EntitySet Name="EXAMENXATENCION" EntityType="Self.EXAMENXATENCION" />
+          <EntitySet Name="Encuesta_Satisfaccion" EntityType="DATABASEGENERALModel.Encuesta_Satisfaccion" />
+          <EntitySet Name="USUARIO" EntityType="DATABASEGENERALModel.USUARIO" />
+          <AssociationSet Name="FK_Encuesta_Satisfaccion_USUARIO" Association="DATABASEGENERALModel.FK_Encuesta_Satisfaccion_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="Encuesta_Satisfaccion" EntitySet="Encuesta_Satisfaccion" />
+          </AssociationSet>
+          <EntitySet Name="EQUIPO" EntityType="DATABASEGENERALModel.EQUIPO" />
+          <AssociationSet Name="FK__EXAMENXAT__codig__57DD0BE4" Association="DATABASEGENERALModel.FK__EXAMENXAT__codig__57DD0BE4">
+            <End Role="EQUIPO" EntitySet="EQUIPO" />
+            <End Role="EXAMENXATENCION" EntitySet="EXAMENXATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="fk_equipoFinal_examenxatencion" Association="DATABASEGENERALModel.fk_equipoFinal_examenxatencion">
+            <End Role="EQUIPO" EntitySet="EQUIPO" />
+            <End Role="EXAMENXATENCION" EntitySet="EXAMENXATENCION" />
+          </AssociationSet>
+          <EntitySet Name="PACIENTE" EntityType="DATABASEGENERALModel.PACIENTE" />
+          <AssociationSet Name="FK_Encuesta_Satisfaccion_PACIENTE" Association="DATABASEGENERALModel.FK_Encuesta_Satisfaccion_PACIENTE">
+            <End Role="PACIENTE" EntitySet="PACIENTE" />
+            <End Role="Encuesta_Satisfaccion" EntitySet="Encuesta_Satisfaccion" />
+          </AssociationSet>
+          <EntitySet Name="ATENCION" EntityType="DATABASEGENERALModel.ATENCION" />
+          <EntitySet Name="ESTUDIO" EntityType="DATABASEGENERALModel.ESTUDIO" />
+          <AssociationSet Name="FK__ATENCION__codigo__25518C17" Association="DATABASEGENERALModel.FK__ATENCION__codigo__25518C17">
+            <End Role="PACIENTE" EntitySet="PACIENTE" />
+            <End Role="ATENCION" EntitySet="ATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EXAMENXATENCION__58D1301D" Association="DATABASEGENERALModel.FK__EXAMENXATENCION__58D1301D">
+            <End Role="ATENCION" EntitySet="ATENCION" />
+            <End Role="EXAMENXATENCION" EntitySet="EXAMENXATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EXAMENXATENCION__56E8E7AB" Association="DATABASEGENERALModel.FK__EXAMENXATENCION__56E8E7AB">
+            <End Role="ESTUDIO" EntitySet="ESTUDIO" />
+            <End Role="EXAMENXATENCION" EntitySet="EXAMENXATENCION" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Encuesta_Satisfaccion">
+          <Key>
+            <PropertyRef Name="idencuesta" />
+          </Key>
+          <Property Name="idencuesta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="numeroatecion" Type="Int32" Nullable="false" />
+          <Property Name="fec_inicio" Type="DateTime" Precision="3" />
+          <Property Name="fec_fin" Type="DateTime" Precision="3" />
+          <Property Name="paciente" Type="Int32" Nullable="false" />
+          <Property Name="p1" Type="Boolean" />
+          <Property Name="p2" Type="Boolean" />
+          <Property Name="p3" Type="Boolean" />
+          <Property Name="usu_reg" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fec_ini" Type="DateTime" Precision="3" />
+          <Property Name="isTerminado" Type="Boolean" />
+          <NavigationProperty Name="USUARIO" Relationship="DATABASEGENERALModel.FK_Encuesta_Satisfaccion_USUARIO" FromRole="Encuesta_Satisfaccion" ToRole="USUARIO" />
+          <NavigationProperty Name="PACIENTE1" Relationship="DATABASEGENERALModel.FK_Encuesta_Satisfaccion_PACIENTE" FromRole="Encuesta_Satisfaccion" ToRole="PACIENTE" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="codigousuario" />
+          </Key>
+          <Property Name="jerarquia" Type="Int32" Nullable="false" />
+          <Property Name="estadousuario" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="siglas" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="codigousuario" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="dni" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+          <Property Name="bloqueado" Type="Boolean" Nullable="false" />
+          <Property Name="contrasena" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ShortName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="isEnf" Type="Boolean" />
+          <Property Name="isAnes" Type="Boolean" />
+          <Property Name="username" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="Acro" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="CurrentUnidad" Type="Int32" />
+          <Property Name="isSessionLocked" Type="Boolean" Nullable="false" />
+          <Property Name="User_Uid" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Encuesta_Satisfaccion" Relationship="DATABASEGENERALModel.FK_Encuesta_Satisfaccion_USUARIO" FromRole="USUARIO" ToRole="Encuesta_Satisfaccion" />
+        </EntityType>
+        <Association Name="FK_Encuesta_Satisfaccion_USUARIO">
+          <End Type="DATABASEGENERALModel.USUARIO" Role="USUARIO" Multiplicity="0..1" />
+          <End Type="DATABASEGENERALModel.Encuesta_Satisfaccion" Role="Encuesta_Satisfaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="codigousuario" />
+            </Principal>
+            <Dependent Role="Encuesta_Satisfaccion">
+              <PropertyRef Name="usu_reg" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EQUIPO">
+          <Key>
+            <PropertyRef Name="codigoequipo" />
+          </Key>
+          <Property Name="fechaadquirio" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="intensidad" Type="Single" Nullable="false" />
+          <Property Name="modelo" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="marca" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="nombreequipo" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="codigoequipo" Type="Int32" Nullable="false" />
+          <Property Name="codigosucursal2" Type="Int32" Nullable="false" />
+          <Property Name="codigounidad2" Type="Int32" Nullable="false" />
+          <Property Name="estado" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="ShortDesc" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="LongDesc" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="isIntegrator" Type="Boolean" />
+          <Property Name="PathTemplate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="isSupervisable" Type="Boolean" Nullable="false" />
+          <Property Name="codigomodalidad2" Type="Int32" />
+          <Property Name="EstadoActual" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="AETitleConsulta" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="StationName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EXAMENXATENCION" Relationship="DATABASEGENERALModel.FK__EXAMENXAT__codig__57DD0BE4" FromRole="EQUIPO" ToRole="EXAMENXATENCION" />
+          <NavigationProperty Name="EXAMENXATENCION1" Relationship="DATABASEGENERALModel.fk_equipoFinal_examenxatencion" FromRole="EQUIPO" ToRole="EXAMENXATENCION" />
+        </EntityType>
+        <Association Name="FK__EXAMENXAT__codig__57DD0BE4">
+          <End Type="DATABASEGENERALModel.EQUIPO" Role="EQUIPO" Multiplicity="1" />
+          <End Type="DATABASEGENERALModel.EXAMENXATENCION" Role="EXAMENXATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EQUIPO">
+              <PropertyRef Name="codigoequipo" />
+            </Principal>
+            <Dependent Role="EXAMENXATENCION">
+              <PropertyRef Name="codigoequipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_equipoFinal_examenxatencion">
+          <End Type="DATABASEGENERALModel.EQUIPO" Role="EQUIPO" Multiplicity="0..1" />
+          <End Type="DATABASEGENERALModel.EXAMENXATENCION" Role="EXAMENXATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EQUIPO">
+              <PropertyRef Name="codigoequipo" />
+            </Principal>
+            <Dependent Role="EXAMENXATENCION">
+              <PropertyRef Name="codigoequipoFinal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PACIENTE">
+          <Key>
+            <PropertyRef Name="codigopaciente" />
+          </Key>
+          <Property Name="nacionalidad" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="celular" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="telefono" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fechanace" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="sexo" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="nombres" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
+          <Property Name="apellidos" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
+          <Property Name="dni" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="codigopaciente" Type="Int32" Nullable="false" />
+          <Property Name="tipo_doc" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="IsProtocolo" Type="Boolean" />
+          <Property Name="UbigeoId" Type="String" MaxLength="6" FixedLength="true" Unicode="false" />
+          <Property Name="UbigeoPaisId" Type="Int32" />
+          <NavigationProperty Name="Encuesta_Satisfaccion" Relationship="DATABASEGENERALModel.FK_Encuesta_Satisfaccion_PACIENTE" FromRole="PACIENTE" ToRole="Encuesta_Satisfaccion" />
+          <NavigationProperty Name="ATENCION" Relationship="DATABASEGENERALModel.FK__ATENCION__codigo__25518C17" FromRole="PACIENTE" ToRole="ATENCION" />
+        </EntityType>
+        <Association Name="FK_Encuesta_Satisfaccion_PACIENTE">
+          <End Type="DATABASEGENERALModel.PACIENTE" Role="PACIENTE" Multiplicity="1" />
+          <End Type="DATABASEGENERALModel.Encuesta_Satisfaccion" Role="Encuesta_Satisfaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PACIENTE">
+              <PropertyRef Name="codigopaciente" />
+            </Principal>
+            <Dependent Role="Encuesta_Satisfaccion">
+              <PropertyRef Name="paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ATENCION">
+          <Key>
+            <PropertyRef Name="numeroatencion" />
+            <PropertyRef Name="codigopaciente" />
+            <PropertyRef Name="codigocompaniaseguro" />
+            <PropertyRef Name="ruc" />
+            <PropertyRef Name="numerocita" />
+            <PropertyRef Name="codigomodalidad" />
+            <PropertyRef Name="codigounidad" />
+          </Key>
+          <Property Name="fechayhora" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="numeroatencion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="codigopaciente" Type="Int32" Nullable="false" />
+          <Property Name="cmp" Type="String" Nullable="false" MaxLength="6" FixedLength="true" Unicode="false" />
+          <Property Name="codigocompaniaseguro" Type="Int32" Nullable="false" />
+          <Property Name="ruc" Type="String" Nullable="false" MaxLength="11" FixedLength="true" Unicode="false" />
+          <Property Name="numerocita" Type="Int32" Nullable="false" />
+          <Property Name="codigomodalidad" Type="Int32" Nullable="false" />
+          <Property Name="codigounidad" Type="Int32" Nullable="false" />
+          <Property Name="peso" Type="Int32" Nullable="false" />
+          <Property Name="talla" Type="Single" Nullable="false" />
+          <Property Name="edad" Type="Int32" Nullable="false" />
+          <Property Name="codigousuario" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="numerocarnetseguro" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
+          <Property Name="codigocompaniaseguroChanged" Type="Int32" />
+          <Property Name="SitedOrden" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="SitedCobertura" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="CodigoSegOnline" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="isChangePeso" Type="Boolean" />
+          <Property Name="newPeso" Type="Int32" />
+          <Property Name="isChangeTalla" Type="Boolean" />
+          <Property Name="newTalla" Type="Double" />
+          <Property Name="isChangeEdad" Type="Boolean" />
+          <Property Name="newEdad" Type="DateTime" Precision="3" />
+          <Property Name="observacionAten" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IsVerified" Type="Boolean" />
+          <Property Name="IsReimprimible" Type="Boolean" />
+          <Property Name="isDelivery" Type="Boolean" Nullable="false" />
+          <Property Name="numeroTicket" Type="Int32" />
+          <Property Name="IsPlacaDejada" Type="Boolean" />
+          <NavigationProperty Name="PACIENTE" Relationship="DATABASEGENERALModel.FK__ATENCION__codigo__25518C17" FromRole="ATENCION" ToRole="PACIENTE" />
+          <NavigationProperty Name="EXAMENXATENCION" Relationship="DATABASEGENERALModel.FK__EXAMENXATENCION__58D1301D" FromRole="ATENCION" ToRole="EXAMENXATENCION" />
+        </EntityType>
+        <EntityType Name="ESTUDIO">
+          <Key>
+            <PropertyRef Name="codigoestudio" />
+            <PropertyRef Name="codigoclase" />
+          </Key>
+          <Property Name="nombreestudio" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="codigoestudio" Type="String" Nullable="false" MaxLength="12" FixedLength="true" Unicode="false" />
+          <Property Name="codigoclase" Type="Int32" Nullable="false" />
+          <Property Name="indicacion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IsValidacion" Type="Boolean" />
+          <NavigationProperty Name="EXAMENXATENCION" Relationship="DATABASEGENERALModel.FK__EXAMENXATENCION__56E8E7AB" FromRole="ESTUDIO" ToRole="EXAMENXATENCION" />
+        </EntityType>
+        <Association Name="FK__ATENCION__codigo__25518C17">
+          <End Type="DATABASEGENERALModel.PACIENTE" Role="PACIENTE" Multiplicity="1" />
+          <End Type="DATABASEGENERALModel.ATENCION" Role="ATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PACIENTE">
+              <PropertyRef Name="codigopaciente" />
+            </Principal>
+            <Dependent Role="ATENCION">
+              <PropertyRef Name="codigopaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EXAMENXATENCION__58D1301D">
+          <End Type="DATABASEGENERALModel.ATENCION" Role="ATENCION" Multiplicity="1" />
+          <End Type="DATABASEGENERALModel.EXAMENXATENCION" Role="EXAMENXATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATENCION">
+              <PropertyRef Name="numeroatencion" />
+              <PropertyRef Name="codigopaciente" />
+              <PropertyRef Name="codigomodalidad" />
+              <PropertyRef Name="codigounidad" />
+              <PropertyRef Name="codigocompaniaseguro" />
+              <PropertyRef Name="ruc" />
+              <PropertyRef Name="numerocita" />
+            </Principal>
+            <Dependent Role="EXAMENXATENCION">
+              <PropertyRef Name="numeroatencion" />
+              <PropertyRef Name="codigopaciente" />
+              <PropertyRef Name="codigomodalidad" />
+              <PropertyRef Name="codigounidad" />
+              <PropertyRef Name="codigocompaniaseguro" />
+              <PropertyRef Name="ruc" />
+              <PropertyRef Name="numerocita" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EXAMENXATENCION__56E8E7AB">
+          <End Type="DATABASEGENERALModel.ESTUDIO" Role="ESTUDIO" Multiplicity="1" />
+          <End Type="DATABASEGENERALModel.EXAMENXATENCION" Role="EXAMENXATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ESTUDIO">
+              <PropertyRef Name="codigoestudio" />
+              <PropertyRef Name="codigoclase" />
+            </Principal>
+            <Dependent Role="EXAMENXATENCION">
+              <PropertyRef Name="codigoestudio" />
+              <PropertyRef Name="codigoclase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DATABASEGENERALModelStoreContainer" CdmEntityContainer="DATABASEGENERALEntities">
+          <EntitySetMapping Name="Encuesta">
+            <EntityTypeMapping TypeName="DATABASEGENERALModel.Encuesta">
+              <MappingFragment StoreEntitySet="Encuesta">
+                <ScalarProperty Name="idencuesta" ColumnName="idencuesta" />
+                <ScalarProperty Name="numeroexamen" ColumnName="numeroexamen" />
+                <ScalarProperty Name="fec_ini_encu" ColumnName="fec_ini_encu" />
+                <ScalarProperty Name="fec_paso1" ColumnName="fec_paso1" />
+                <ScalarProperty Name="fec_paso2" ColumnName="fec_paso2" />
+                <ScalarProperty Name="tipo_encu" ColumnName="tipo_encu" />
+                <ScalarProperty Name="fec_paso3" ColumnName="fec_paso3" />
+                <ScalarProperty Name="usu_reg_encu" ColumnName="usu_reg_encu" />
+                <ScalarProperty Name="fec_ini_supervisa" ColumnName="fec_ini_supervisa" />
+                <ScalarProperty Name="fec_supervisa" ColumnName="fec_supervisa" />
+                <ScalarProperty Name="usu_reg_super" ColumnName="usu_reg_super" />
+                <ScalarProperty Name="fec_ini_tecno" ColumnName="fec_ini_tecno" />
+                <ScalarProperty Name="fec_fin_tecno" ColumnName="fec_fin_tecno" />
+                <ScalarProperty Name="usu_reg_tecno" ColumnName="usu_reg_tecno" />
+                <ScalarProperty Name="fec_ini_proto" ColumnName="fec_ini_proto" />
+                <ScalarProperty Name="fec_fin_proto" ColumnName="fec_fin_proto" />
+                <ScalarProperty Name="usu_reg_proto" ColumnName="usu_reg_proto" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="atencion" ColumnName="atencion" />
+                <ScalarProperty Name="SolicitarValidacion" ColumnName="SolicitarValidacion" />
+                <ScalarProperty Name="fec_Solicitavalidacion" ColumnName="fec_Solicitavalidacion" />
+                <ScalarProperty Name="usu_Solicitavalidacion" ColumnName="usu_Solicitavalidacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EXAMENXATENCION">
+            <EntityTypeMapping TypeName="DATABASEGENERALModel.EXAMENXATENCION">
+              <MappingFragment StoreEntitySet="EXAMENXATENCION">
+                <ScalarProperty Name="IsImpreso" ColumnName="IsImpreso" />
+                <ScalarProperty Name="ImpactoPrint_fec" ColumnName="ImpactoPrint_fec" />
+                <ScalarProperty Name="ImpactoPrint_user" ColumnName="ImpactoPrint_user" />
+                <ScalarProperty Name="ImpactoPrint" ColumnName="ImpactoPrint" />
+                <ScalarProperty Name="estadoImagen" ColumnName="estadoImagen" />
+                <ScalarProperty Name="isRevisadoCarta" ColumnName="isRevisadoCarta" />
+                <ScalarProperty Name="FecAlternativaIniEntregaPag_U" ColumnName="FecAlternativaIniEntregaPag_U" />
+                <ScalarProperty Name="FecAlternativaIniEntregaAutorPag_U" ColumnName="FecAlternativaIniEntregaAutorPag_U" />
+                <ScalarProperty Name="FecAlternativaIniEntregaAutorPag_M" ColumnName="FecAlternativaIniEntregaAutorPag_M" />
+                <ScalarProperty Name="FecAlternativaIniEntregaPag_M" ColumnName="FecAlternativaIniEntregaPag_M" />
+                <ScalarProperty Name="FecAlternativaIniEntregaAutorPag" ColumnName="FecAlternativaIniEntregaAutorPag" />
+                <ScalarProperty Name="FecAlternativaIniEntregaPag" ColumnName="FecAlternativaIniEntregaPag" />
+                <ScalarProperty Name="DigitaEst" ColumnName="DigitaEst" />
+                <ScalarProperty Name="num_oa_sjt_cod_item" ColumnName="num_oa_sjt_cod_item" />
+                <ScalarProperty Name="num_oa_sjt_doc_num" ColumnName="num_oa_sjt_doc_num" />
+                <ScalarProperty Name="num_oa_sjt_doc_ser" ColumnName="num_oa_sjt_doc_ser" />
+                <ScalarProperty Name="num_oa_sjt_doc_tip" ColumnName="num_oa_sjt_doc_tip" />
+                <ScalarProperty Name="PauseReaUsuReg" ColumnName="PauseReaUsuReg" />
+                <ScalarProperty Name="PauseReaFecReg" ColumnName="PauseReaFecReg" />
+                <ScalarProperty Name="PauseStopUsuReg" ColumnName="PauseStopUsuReg" />
+                <ScalarProperty Name="PauseStopFecReg" ColumnName="PauseStopFecReg" />
+                <ScalarProperty Name="PauseMotivo" ColumnName="PauseMotivo" />
+                <ScalarProperty Name="PauseEstado" ColumnName="PauseEstado" />
+                <ScalarProperty Name="AmpliSoliFec" ColumnName="AmpliSoliFec" />
+                <ScalarProperty Name="codigo" ColumnName="codigo" />
+                <ScalarProperty Name="numeroatencion" ColumnName="numeroatencion" />
+                <ScalarProperty Name="codigopaciente" ColumnName="codigopaciente" />
+                <ScalarProperty Name="numerocita" ColumnName="numerocita" />
+                <ScalarProperty Name="codigocompaniaseguro" ColumnName="codigocompaniaseguro" />
+                <ScalarProperty Name="ruc" ColumnName="ruc" />
+                <ScalarProperty Name="codigoequipo" ColumnName="codigoequipo" />
+                <ScalarProperty Name="horaatencion" ColumnName="horaatencion" />
+                <ScalarProperty Name="codigoestudio" ColumnName="codigoestudio" />
+                <ScalarProperty Name="codigoclase" ColumnName="codigoclase" />
+                <ScalarProperty Name="codigomodalidad" ColumnName="codigomodalidad" />
+                <ScalarProperty Name="codigounidad" ColumnName="codigounidad" />
+                <ScalarProperty Name="estadoestudio" ColumnName="estadoestudio" />
+                <ScalarProperty Name="prioridad" ColumnName="prioridad" />
+                <ScalarProperty Name="turnomedico" ColumnName="turnomedico" />
+                <ScalarProperty Name="encu_tipo" ColumnName="encu_tipo" />
+                <ScalarProperty Name="codigoequipoFinal" ColumnName="codigoequipoFinal" />
+                <ScalarProperty Name="EstadoInforme" ColumnName="EstadoInforme" />
+                <ScalarProperty Name="motivo" ColumnName="motivo" />
+                <ScalarProperty Name="otros_motivos" ColumnName="otros_motivos" />
+                <ScalarProperty Name="usu_cancela" ColumnName="usu_cancela" />
+                <ScalarProperty Name="fecha_cancela" ColumnName="fecha_cancela" />
+                <ScalarProperty Name="IsAcopied" ColumnName="IsAcopied" />
+                <ScalarProperty Name="IsAmpliInDemand" ColumnName="IsAmpliInDemand" />
+                <ScalarProperty Name="AmpliCodigo" ColumnName="AmpliCodigo" />
+                <ScalarProperty Name="CodigoDeEstudioOrigen" ColumnName="CodigoDeEstudioOrigen" />
+                <ScalarProperty Name="isLocked" ColumnName="isLocked" />
+                <ScalarProperty Name="EstadoEncuesta" ColumnName="EstadoEncuesta" />
+                <ScalarProperty Name="equipoAsignado" ColumnName="equipoAsignado" />
+                <ScalarProperty Name="IsPostProInDemand" ColumnName="IsPostProInDemand" />
+                <ScalarProperty Name="GrupoMedico" ColumnName="GrupoMedico" />
+                <ScalarProperty Name="isImpax" ColumnName="isImpax" />
+                <ScalarProperty Name="Fec_Rev_Impax" ColumnName="Fec_Rev_Impax" />
+                <ScalarProperty Name="usu_Rev_Impax" ColumnName="usu_Rev_Impax" />
+                <ScalarProperty Name="IsAudible" ColumnName="IsAudible" />
+                <ScalarProperty Name="UserTemporal" ColumnName="UserTemporal" />
+                <ScalarProperty Name="IsMoreThanOnePage" ColumnName="IsMoreThanOnePage" />
+                <ScalarProperty Name="UrlXero" ColumnName="UrlXero" />
+                <ScalarProperty Name="IsTranscriInDemand" ColumnName="IsTranscriInDemand" />
+                <ScalarProperty Name="MedProceAtro" ColumnName="MedProceAtro" />
+                <ScalarProperty Name="IsDictado" ColumnName="IsDictado" />
+                <ScalarProperty Name="AmpliMotivo" ColumnName="AmpliMotivo" />
+                <ScalarProperty Name="FecAlternativaIniEntrega" ColumnName="FecAlternativaIniEntrega" />
+                <ScalarProperty Name="IsPediatrico" ColumnName="IsPediatrico" />
+                <ScalarProperty Name="turnomedicoOld" ColumnName="turnomedicoOld" />
+                <ScalarProperty Name="IsSensible" ColumnName="IsSensible" />
+                <ScalarProperty Name="isSensibleB" ColumnName="isSensibleB" />
+                <ScalarProperty Name="consentimiento" ColumnName="consentimiento" />
+                <ScalarProperty Name="isSensibleA" ColumnName="isSensibleA" />
+                <ScalarProperty Name="IsValidRequired" ColumnName="IsValidRequired" />
+                <ScalarProperty Name="num_oa_sjt" ColumnName="num_oa_sjt" />
+                <ScalarProperty Name="IsVerifiedTurno" ColumnName="IsVerifiedTurno" />
+                <ScalarProperty Name="MedAsigRea" ColumnName="MedAsigRea" />
+                <ScalarProperty Name="FecAlternativaIniEntregaAutor" ColumnName="FecAlternativaIniEntregaAutor" />
+                <ScalarProperty Name="isOperado" ColumnName="isOperado" />
+                <ScalarProperty Name="isAngio" ColumnName="isAngio" />
+                <ScalarProperty Name="SensibleGrupo" ColumnName="SensibleGrupo" />
+                <ScalarProperty Name="prioridadMotivo" ColumnName="prioridadMotivo" />
+                <ScalarProperty Name="prioridadUser" ColumnName="prioridadUser" />
+                <ScalarProperty Name="prioridadFecReg" ColumnName="prioridadFecReg" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Encuesta_Satisfaccion">
+            <EntityTypeMapping TypeName="DATABASEGENERALModel.Encuesta_Satisfaccion">
+              <MappingFragment StoreEntitySet="Encuesta_Satisfaccion">
+                <ScalarProperty Name="isTerminado" ColumnName="isTerminado" />
+                <ScalarProperty Name="fec_ini" ColumnName="fec_ini" />
+                <ScalarProperty Name="usu_reg" ColumnName="usu_reg" />
+                <ScalarProperty Name="p3" ColumnName="p3" />
+                <ScalarProperty Name="p2" ColumnName="p2" />
+                <ScalarProperty Name="p1" ColumnName="p1" />
+                <ScalarProperty Name="paciente" ColumnName="paciente" />
+                <ScalarProperty Name="fec_fin" ColumnName="fec_fin" />
+                <ScalarProperty Name="fec_inicio" ColumnName="fec_inicio" />
+                <ScalarProperty Name="numeroatecion" ColumnName="numeroatecion" />
+                <ScalarProperty Name="idencuesta" ColumnName="idencuesta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USUARIO">
+            <EntityTypeMapping TypeName="DATABASEGENERALModel.USUARIO">
+              <MappingFragment StoreEntitySet="USUARIO">
+                <ScalarProperty Name="User_Uid" ColumnName="User_Uid" />
+                <ScalarProperty Name="isSessionLocked" ColumnName="isSessionLocked" />
+                <ScalarProperty Name="CurrentUnidad" ColumnName="CurrentUnidad" />
+                <ScalarProperty Name="Acro" ColumnName="Acro" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="isAnes" ColumnName="isAnes" />
+                <ScalarProperty Name="isEnf" ColumnName="isEnf" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="contrasena" ColumnName="contrasena" />
+                <ScalarProperty Name="bloqueado" ColumnName="bloqueado" />
+                <ScalarProperty Name="dni" ColumnName="dni" />
+                <ScalarProperty Name="codigousuario" ColumnName="codigousuario" />
+                <ScalarProperty Name="siglas" ColumnName="siglas" />
+                <ScalarProperty Name="estadousuario" ColumnName="estadousuario" />
+                <ScalarProperty Name="jerarquia" ColumnName="jerarquia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EQUIPO">
+            <EntityTypeMapping TypeName="DATABASEGENERALModel.EQUIPO">
+              <MappingFragment StoreEntitySet="EQUIPO">
+                <ScalarProperty Name="StationName" ColumnName="StationName" />
+                <ScalarProperty Name="AETitleConsulta" ColumnName="AETitleConsulta" />
+                <ScalarProperty Name="EstadoActual" ColumnName="EstadoActual" />
+                <ScalarProperty Name="codigomodalidad2" ColumnName="codigomodalidad2" />
+                <ScalarProperty Name="isSupervisable" ColumnName="isSupervisable" />
+                <ScalarProperty Name="PathTemplate" ColumnName="PathTemplate" />
+                <ScalarProperty Name="isIntegrator" ColumnName="isIntegrator" />
+                <ScalarProperty Name="LongDesc" ColumnName="LongDesc" />
+                <ScalarProperty Name="ShortDesc" ColumnName="ShortDesc" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="codigounidad2" ColumnName="codigounidad2" />
+                <ScalarProperty Name="codigosucursal2" ColumnName="codigosucursal2" />
+                <ScalarProperty Name="codigoequipo" ColumnName="codigoequipo" />
+                <ScalarProperty Name="nombreequipo" ColumnName="nombreequipo" />
+                <ScalarProperty Name="marca" ColumnName="marca" />
+                <ScalarProperty Name="modelo" ColumnName="modelo" />
+                <ScalarProperty Name="intensidad" ColumnName="intensidad" />
+                <ScalarProperty Name="fechaadquirio" ColumnName="fechaadquirio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PACIENTE">
+            <EntityTypeMapping TypeName="DATABASEGENERALModel.PACIENTE">
+              <MappingFragment StoreEntitySet="PACIENTE">
+                <ScalarProperty Name="UbigeoPaisId" ColumnName="UbigeoPaisId" />
+                <ScalarProperty Name="UbigeoId" ColumnName="UbigeoId" />
+                <ScalarProperty Name="IsProtocolo" ColumnName="IsProtocolo" />
+                <ScalarProperty Name="tipo_doc" ColumnName="tipo_doc" />
+                <ScalarProperty Name="codigopaciente" ColumnName="codigopaciente" />
+                <ScalarProperty Name="dni" ColumnName="dni" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+                <ScalarProperty Name="nombres" ColumnName="nombres" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
+                <ScalarProperty Name="fechanace" ColumnName="fechanace" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="celular" ColumnName="celular" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="nacionalidad" ColumnName="nacionalidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ATENCION">
+            <EntityTypeMapping TypeName="DATABASEGENERALModel.ATENCION">
+              <MappingFragment StoreEntitySet="ATENCION">
+                <ScalarProperty Name="IsPlacaDejada" ColumnName="IsPlacaDejada" />
+                <ScalarProperty Name="numeroTicket" ColumnName="numeroTicket" />
+                <ScalarProperty Name="isDelivery" ColumnName="isDelivery" />
+                <ScalarProperty Name="IsReimprimible" ColumnName="IsReimprimible" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="observacionAten" ColumnName="observacionAten" />
+                <ScalarProperty Name="newEdad" ColumnName="newEdad" />
+                <ScalarProperty Name="isChangeEdad" ColumnName="isChangeEdad" />
+                <ScalarProperty Name="newTalla" ColumnName="newTalla" />
+                <ScalarProperty Name="isChangeTalla" ColumnName="isChangeTalla" />
+                <ScalarProperty Name="newPeso" ColumnName="newPeso" />
+                <ScalarProperty Name="isChangePeso" ColumnName="isChangePeso" />
+                <ScalarProperty Name="CodigoSegOnline" ColumnName="CodigoSegOnline" />
+                <ScalarProperty Name="SitedCobertura" ColumnName="SitedCobertura" />
+                <ScalarProperty Name="SitedOrden" ColumnName="SitedOrden" />
+                <ScalarProperty Name="codigocompaniaseguroChanged" ColumnName="codigocompaniaseguroChanged" />
+                <ScalarProperty Name="numerocarnetseguro" ColumnName="numerocarnetseguro" />
+                <ScalarProperty Name="codigousuario" ColumnName="codigousuario" />
+                <ScalarProperty Name="edad" ColumnName="edad" />
+                <ScalarProperty Name="talla" ColumnName="talla" />
+                <ScalarProperty Name="peso" ColumnName="peso" />
+                <ScalarProperty Name="codigounidad" ColumnName="codigounidad" />
+                <ScalarProperty Name="codigomodalidad" ColumnName="codigomodalidad" />
+                <ScalarProperty Name="numerocita" ColumnName="numerocita" />
+                <ScalarProperty Name="ruc" ColumnName="ruc" />
+                <ScalarProperty Name="codigocompaniaseguro" ColumnName="codigocompaniaseguro" />
+                <ScalarProperty Name="cmp" ColumnName="cmp" />
+                <ScalarProperty Name="codigopaciente" ColumnName="codigopaciente" />
+                <ScalarProperty Name="numeroatencion" ColumnName="numeroatencion" />
+                <ScalarProperty Name="fechayhora" ColumnName="fechayhora" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ESTUDIO">
+            <EntityTypeMapping TypeName="DATABASEGENERALModel.ESTUDIO">
+              <MappingFragment StoreEntitySet="ESTUDIO">
+                <ScalarProperty Name="IsValidacion" ColumnName="IsValidacion" />
+                <ScalarProperty Name="indicacion" ColumnName="indicacion" />
+                <ScalarProperty Name="codigoclase" ColumnName="codigoclase" />
+                <ScalarProperty Name="codigoestudio" ColumnName="codigoestudio" />
+                <ScalarProperty Name="nombreestudio" ColumnName="nombreestudio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

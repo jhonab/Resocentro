@@ -1,0 +1,42 @@
+﻿@model Encuesta.ViewModels.Encuesta.EncuestaDetalleViewModel
+<script type="text/javascript">
+    function verEncuesta(examen) {
+        var _equipo = $("#lstEquipo").val();
+        if (_equipo != '') {
+            window.open('/LectorEncuesta/LectorEncuesta?examen=' + examen+'&isVisible=false', '_blank');
+        } else {
+
+            mostrarmensaje(4, 'Seleccione el <b>Equipo</b> para enviar los datos ');
+        }
+    }
+</script>
+@if (Model.encuestador != "")
+{
+    <div class="form-group">
+        <label>Encuestador</label>
+        @Html.DisplayFor(model => model.encuestador)
+        <input id="modelEncuesta_btnEncuesta" type="button" onclick="verEncuesta(@Model.nexamen)" class="btn btn-outline btn-info btn-xs" value="Encuesta" />
+    </div>
+}
+@if (Model.tecnologo != "")
+{
+    <div class="form-group">
+        <label>Tecnologo :</label>
+        @Html.DisplayFor(model => model.tecnologo)
+    </div>
+}
+@if (Model.equipo != "")
+{
+    <div class="form-group">
+        <label>Equipo :</label>
+        @Html.DisplayFor(model => model.equipo)
+    </div>
+}
+@if (Model.supervisor != "")
+{
+    <div class="form-group">
+        <label>Supervisor:</label>
+        @Html.DisplayFor(model => model.supervisor)
+    </div>
+}
+

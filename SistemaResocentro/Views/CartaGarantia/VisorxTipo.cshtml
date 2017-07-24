@@ -1,0 +1,175 @@
+﻿@model IEnumerable<SistemaResocentro.ViewModel.List_VisorCarta>
+@{
+    Layout = null;
+
+}
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+<script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<link href="~/css/progressbar.css" rel="stylesheet" />
+<script src="~/js/morris/morris.js"></script>
+<script src="~/js/morris/raphael-min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".table_visor").DataTable({
+            "sPaginationType": "bootstrap"
+        });
+
+        var donut = new Morris.Donut({
+            element: 'donut_usuario',
+            resize: true,
+            data: [@{
+                foreach (var item in Model.OrderBy(x => x.usu_reg).Select(x => x.usu_reg).Distinct().ToArray())
+        {  <text>{label:'@item',value:@Model.Where(x => x.usu_reg == item).Count()}, </text>  }
+        }],
+            hideHover: 'auto'
+        });
+        var donut1 = new Morris.Donut({
+            element: 'donut_update',
+            resize: true,
+            data: [@{
+                foreach (var item in Model.OrderBy(x => x.estado).Select(x => x.usu_update).Distinct().ToArray())
+        {  <text>{label:'@item',value:@Model.Where(x => x.usu_update == item).Count()}, </text>  }
+        }],
+            hideHover: 'auto'
+        });
+
+    });
+</script>
+<div class="row">
+
+    <div class="col-md-12">
+        <div id="lst_estudio" class="form-group ">
+            <label>Lista de Cartas</label>
+            <table class="table table_visor compact table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Fec. Tramite
+                        </th>
+                        <th>
+                            Codigo Carta
+                        </th>
+                        <th>
+                            Id Paciente
+                        </th>
+                        <th>
+                            Paciente
+                        </th>
+                        <th>
+                            Teléfono
+                        </th>
+                        <th>
+                            Estudio
+                        </th>
+                        <th>
+                            Aseguradora
+                        </th>
+                        <th>
+                            Cobertura
+                        </th>
+                        <th>
+                            Estado
+                        </th>
+                        <th>
+                            Usuario
+                        </th>
+                        <th>
+                            Fec. Aprobada
+                        </th>
+                        <th>
+                            Fec. Update
+                        </th>
+                        <th>
+                            User Update
+                        </th>
+                        <th>
+                            User Cita
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tramite)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.idcarta)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.idPaciente)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.paciente)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.telefono)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.estudio)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.aseguradora)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.cobertura)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.estado)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.usu_reg)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.fec_aprueba)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.fec_update)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.usu_update)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.usu_cita)
+                            </td>
+                            <td></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2">
+        <table class="table compact table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Estado</th>
+                    <th>Cant.</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Select(x => x.estado).Distinct().ToList())
+                {
+                    <tr>
+                        <td>@item</td>
+                        <td>@Model.Count(x=>x.estado==item)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+    <div class="col-md-5">
+        <label>Cant. Cartas Actualizadas</label>
+        <div class="chart" id="donut_update" style="height: 300px; position: relative;"></div>
+    </div>
+    <div class="col-md-5">
+        <label>Cant. Cartas Tramitadas</label>
+        <div class="chart" id="donut_usuario" style="height: 300px; position: relative;"></div>
+    </div>
+</div>

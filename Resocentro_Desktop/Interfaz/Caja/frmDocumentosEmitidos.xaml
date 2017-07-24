@@ -1,0 +1,223 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.Caja.frmDocumentosEmitidos"
+        Title="Documentos Emitidos" Height="800" Width="1000" Background="{DynamicResource Windows.Background}" >
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="110"/>
+            <RowDefinition Height="503*"/>
+        </Grid.RowDefinitions>
+        <telerik:RadTabControl>
+
+            <telerik:RadTabItem Header="N° Documento">
+                <Grid Background="{DynamicResource Windows.Background}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="150"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel  Margin="3">
+                        <Label Content="N° Documento"/>
+                        <TextBox x:Name="txtnumerodocumento" Text=""  MinWidth="150" TextAlignment="Right" Padding="0" VerticalContentAlignment="Center" CharacterCasing="Upper" KeyDown="txtnumerodocumento_KeyDown"/>
+                    </StackPanel>
+                </Grid>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Apellidos" >
+                <Grid Background="{DynamicResource Windows.Background}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="3">
+                        <Label Content="Apellidos"/>
+                        <TextBox x:Name="txtapellidos" Text="" CharacterCasing="Upper" Padding="0" VerticalContentAlignment="Center" MinWidth="200" KeyDown="txtapellidos_KeyDown" />
+                    </StackPanel>
+                </Grid>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Fecha">
+                <Grid Background="{DynamicResource Windows.Background}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel  Margin="3" >
+                            <Label Content="Empresa"/>
+                            <ComboBox x:Name="cbosucursal" SelectedItem="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="163" Height="22" KeyDown="rdpFecha_KeyDown"/>
+                        </StackPanel>
+                        <Label/>
+                        <StackPanel>
+                            <Label Content="Fecha"/>
+                            <telerik:RadDatePicker Name="rdpFecha" Height="22" VerticalAlignment="Top" SelectedDate="{x:Static sys:DateTime.Now}" KeyDown="rdpFecha_KeyDown"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Rango Fechas">
+                <Grid Background="{DynamicResource Windows.Background}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel  Margin="3" Orientation="Horizontal">
+                        <StackPanel>
+                            <Label Content="Empresa"/>
+                            <ComboBox x:Name="cbosucursal1" SelectedItem="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="163" Height="22" KeyDown="rdpFecha_KeyDown"/>
+                        </StackPanel>
+                        <Label/>
+                        <StackPanel>
+                            <Label Content="Rango Fechas"/>
+                            <StackPanel  Orientation="Horizontal"  Height="22" VerticalAlignment="Top">
+                                <telerik:RadDatePicker Name="rdpInicio" DisplayDateEnd="{Binding SelectedDate,ElementName=rdpFin}" SelectedDate="{x:Static sys:DateTime.Now}"  KeyDown="rdpFechaRango_KeyDown"/>
+                                <Label Content="al" Padding="0" Margin="10,0"/>
+                                <telerik:RadDatePicker Name="rdpFin" DisplayDateStart="{Binding SelectedDate,ElementName=rdpInicio}"  SelectedDate="{x:Static sys:DateTime.Now}" KeyDown="rdpFechaRango_KeyDown"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="RUC">
+                <Grid Background="{DynamicResource Windows.Background}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="494"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="3" Orientation="Horizontal">
+                        <StackPanel>
+                            <Label Content="Tipo Documento"/>
+                            <ComboBox x:Name="cboTipoDocumento" HorizontalAlignment="Left" VerticalAlignment="Center" SelectedIndex="1">
+                                <ComboBoxItem Content="01 - Factura"  />
+                                <ComboBoxItem Content="03 - Boleta"  />
+                            </ComboBox>
+                        </StackPanel>
+                        <Label/>
+                        <StackPanel>
+                            <Label Content="N° RUC"/>
+                            <TextBox x:Name="txtruc" Text="" MaxLength="11" TextAlignment="Right" MinWidth="90" CharacterCasing="Upper" Padding="0" VerticalContentAlignment="Center" KeyDown="txtruc_KeyDown" />
+                        </StackPanel>
+                        <Label/>
+                        <StackPanel>
+                            <Label Content="Rango Fechas"/>
+                            <StackPanel  Orientation="Horizontal"  Height="22" VerticalAlignment="Top">
+                                <telerik:RadDatePicker x:Name="rdpInicioRUC" DisplayDateEnd="{Binding SelectedDate, ElementName=rdpFinRUC}" SelectedDate="{x:Static sys:DateTime.Now}"  KeyDown="txtruc_KeyDown"/>
+                                <Label Content="al" Padding="0" Margin="10,0"/>
+                                <telerik:RadDatePicker x:Name="rdpFinRUC" DisplayDateStart="{Binding SelectedDate, ElementName=rdpInicioRUC}"  SelectedDate="{x:Static sys:DateTime.Now}" KeyDown="txtruc_KeyDown"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                </Grid>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Serie">
+                <Grid Background="{DynamicResource Windows.Background}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel  Margin="3" Orientation="Horizontal">
+                        <StackPanel>
+                            <Label Content="Empresa"/>
+                            <ComboBox x:Name="cbosucursal2" SelectedItem="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="163" Height="22" />
+                        </StackPanel>
+                        <Label/>
+                        <StackPanel>
+                            <Label Content="Rango Fechas"/>
+                            <StackPanel  Orientation="Horizontal"  Height="22" VerticalAlignment="Top">
+                                <telerik:RadDatePicker Name="rdpInicio1" DisplayDateEnd="{Binding SelectedDate,ElementName=rdpFin1}" SelectedDate="{x:Static sys:DateTime.Now}"  KeyDown="txtSerie_KeyDown"/>
+                                <Label Content="al" Padding="0" Margin="10,0"/>
+                                <telerik:RadDatePicker Name="rdpFin1" DisplayDateStart="{Binding SelectedDate,ElementName=rdpInicio1}"  SelectedDate="{x:Static sys:DateTime.Now}" KeyDown="txtSerie_KeyDown"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Label/>
+                        <StackPanel>
+                            <Label Content="Serie"/>
+                            <TextBox x:Name="txtserie" Text="" MaxLength="11" TextAlignment="Right" Width="50" CharacterCasing="Upper" Padding="0" VerticalContentAlignment="Center" KeyDown="txtSerie_KeyDown" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </telerik:RadTabItem>
+
+        </telerik:RadTabControl>
+        <telerik:RadTabControl Grid.Row="1">
+            <telerik:RadTabItem Header="Detallado">
+                <telerik:RadGridView Name="gridDocumento" IsReadOnly="True" LoadingRowDetails="gridDocumento_LoadingRowDetails" AutoGenerateColumns="False" ShowColumnFooters="True" RowIndicatorVisibility="Collapsed" >
+                    <telerik:RadGridView.Columns >
+                        <telerik:GridViewToggleRowDetailsColumn />
+                        <telerik:GridViewCheckBoxColumn ToolTip="Enviados a Sunat" DataMemberBinding="{Binding isSendSunat}" Header="S" />
+                        <telerik:GridViewHyperlinkColumn ToolTip="Documento en PDF" DataMemberBinding="{Binding pathfile}" IsFilterable="False" Header="D" Width="10"/>
+                        <telerik:GridViewHyperlinkColumn ToolTip="Documento en XML" DataMemberBinding="{Binding pathfilexml}" IsFilterable="False" Header="X" Width="10"/>
+                        <telerik:GridViewHyperlinkColumn ToolTip="Pre-Factura" DataMemberBinding="{Binding pathPreFactura}" IsFilterable="False" Header="P" Width="10"/>
+                        <telerik:GridViewDataColumn ToolTip="Estado Documento"  DataMemberBinding="{Binding estado}" Header="E"/>
+                        <telerik:GridViewDataColumn  DataMemberBinding="{Binding fechaemitio, StringFormat=\{0:dd/MM/yyyy HH:mm:ss\}}" Header="Fec. Emisión"/>
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding empresa}" Header="Empresa"/>
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding sucursal}" Header="Sucursal"/>
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding tipodocumento}" Header="Tipo Doc."/>
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding numerodocumento}" Header="N° Doc.">
+                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                <telerik:CountFunction Caption="Cant: "/>
+                            </telerik:GridViewDataColumn.AggregateFunctions>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding ruc_alterno}" Header="RUC"/>
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding razonsocial}" Header="Razón Social"/>
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding paciente}" Header="Paciente" />
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding cobertura}" Header="Cob %"/>
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding moneda}" Header="Moneda"/>
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding subtotal}" Header="Subtotal">
+                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                <telerik:SumFunction Caption="Total SubTotal: "/>
+                            </telerik:GridViewDataColumn.AggregateFunctions>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding igv}" Header="IGV">
+                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                <telerik:SumFunction Caption="Total IGV: "/>
+                            </telerik:GridViewDataColumn.AggregateFunctions>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding total}" Header="Total">
+                            <telerik:GridViewDataColumn.AggregateFunctions>
+                                <telerik:SumFunction Caption="Total: "/>
+                            </telerik:GridViewDataColumn.AggregateFunctions>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn  DataMemberBinding="{Binding tipocambio}" Header="TC"/>
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding poliza}" Header="Poliza"/>
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding titular}" Header="Titular"/>
+
+                    </telerik:RadGridView.Columns>
+                    <telerik:RadContextMenu.ContextMenu>
+                        <telerik:RadContextMenu Name="MenuContext_Carta" Opening="MenuContext_Carta_Opening" >
+                            <telerik:RadMenuItem Header="Informacion Documento" Click="MenuInfoDocumento_Click"/>
+                            <telerik:RadMenuItem Header="Historial Clínica Paciente" Click="MenuInfoPaciente_Click"/>
+                            <telerik:RadMenuItem Name="menuitemCanhgeSucursal" Header="Cambiar Sucursal a Documento"/>
+                            <telerik:RadMenuItem Header="Exportar Excel" Click="MenuItemExportar_Click"/>
+                        </telerik:RadContextMenu>
+                    </telerik:RadContextMenu.ContextMenu>
+                    <telerik:RadGridView.RowDetailsTemplate>
+                        <DataTemplate>
+
+                            <telerik:RadGridView IsReadOnly="True"  ItemsSource="{Binding listadetalle}" AutoGenerateColumns="False" ShowGroupPanel="False">
+                                <telerik:RadGridView.Columns >
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding descripcion}" Header="Descripción"/>
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding valorunitario}" Header="Valorunitario" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding promocion}" Header="Desc. Promociones" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding carta}" Header="Desc. Carta" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding cortesia}" Header="Desc. Cortesia" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding valortotal}" Header="Valor Bruto" />
+                                </telerik:RadGridView.Columns>
+                            </telerik:RadGridView>
+
+                        </DataTemplate>
+                    </telerik:RadGridView.RowDetailsTemplate>
+                </telerik:RadGridView>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Consolidado">
+                <telerik:RadGridView Name="gridDocumentoconsolidado" IsReadOnly="True" AutoGenerateColumns="True" RowIndicatorVisibility="Collapsed" ShowColumnFooters="True" >
+                    <telerik:RadContextMenu.ContextMenu>
+                        <telerik:RadContextMenu>
+                            <telerik:RadMenuItem Header="Exportar Excel" Click="MenuItemExportar2_Click"/>
+                        </telerik:RadContextMenu>
+                    </telerik:RadContextMenu.ContextMenu>
+                </telerik:RadGridView>
+            </telerik:RadTabItem>
+        </telerik:RadTabControl>
+    </Grid>
+</Window>

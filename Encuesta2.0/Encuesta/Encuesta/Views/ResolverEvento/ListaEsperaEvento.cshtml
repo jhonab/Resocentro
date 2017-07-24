@@ -1,0 +1,184 @@
+﻿@{
+    ViewBag.Title = "<i class='fa fa-area-chart fa-lg'></i> Resolver Eventos";
+    ViewBag.Titlenot = "Resolver Eventos";
+}
+
+<script src="~/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="~/js/jquery.autosize.js"></script>
+<script src="~/js/getUrl.js"></script>
+
+<script src="~/js/jquery-ui.min.js"></script>
+
+
+<script type="text/javascript">
+
+        var table;
+        var myDate = new Date();
+       
+
+    $(document).ready(function () {
+        //activacion del boton en el menu
+        $(".sidebar > .sidebar-menu > li").removeClass("active");
+        $(".sidebar > .sidebar-menu > li.p3-2").addClass("active");
+
+
+        $("#msj").fadeOut()//ocultar el msj
+        $('.animate').autosize();//autosizeTexbox
+        e = $('#myDataTable2').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "@Url.Action("ListaAsync", "ResolverEvento")",
+            //"bProcessing": true,
+            "iDisplayLength": 20,
+            "lengthMenu": [[20, 25, 50, -1], [20, 25, 50, "All"]],
+            "aoColumns": [
+                            { "sName": "N° Examen" },//0
+                             { "sName": "Paciente" },
+                              { "sName": "Estudio" },
+                             { "sName": "Fecha Evento" },//1
+                             { "sName": "Médico" },//2
+                             { "sName": "Nota" },//3
+                             {
+                                 "sName": "Acciones",
+                                 "mRender": function (data, type, full) {
+                                     return "";
+                                 }
+                             },
+                              {
+                                  "sName": "Acciones",
+                                  "mRender": function (data, type, full) {
+                                      return "";
+                                  }
+                              }
+
+            ],
+            "createdRow": function (row, aData, dataIndex) {
+
+                
+
+                $('td:eq(6)', row).append('<center><textarea id="txttext_' + aData[0] + '" name="texttest" placeholder="Escribir Solución" cols="60" rows="2" value="" required autofocus></textarea></center>');
+
+                //agregarboton de registrar
+                $('td:eq(7)', row).append('<center><button type="button" onclick="ResolverEvento(' + aData[0] + ', $(\'#txttext_' + aData[0] + '\').val())"  class="btn btn-success" >Resolver</button></center>');
+                "!#"
+
+            }
+        });
+
+    });
+
+    @*function ResolverEvento(idevento) {
+        window.location.href = "@Url.Action("ResolverEvento", "ResolverEvento")" + '?evento=' + idevento;
+    }*@
+
+
+    function ResolverEvento(idevento, solucion) {
+        //alert(idevento + "   TEXTO: " + solucion);
+      
+        if (solucion == "") {
+            alert("Ingresar Solución");
+        }
+        else {
+            $.ajax({
+                url: "@Url.Action("InsertarSolucion", "ResolverEvento")",
+                data: { codigo: idevento, notaFinal: solucion },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    alert('Ocurrio un problema y <b>NO</b> se enviaron los datos al sistema');
+                },
+                success: function (data) {
+                    if (data == true) {
+                        //alert("Se regitro la Solución");
+                        window.location.href = '@Url.Action("ListaEsperaEvento", "ResolverEvento")';
+
+                    }
+                    else
+                        alert("No se registro la Solución");
+                }
+            });
+        }
+    }
+
+    </script>
+
+   <div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h2 class="box-title">Eventos </h2>
+            </div>
+            <div class="box-body chart-responsive">
+                
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Lista de Eventos
+
+                    </div>
+
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="alert" id="msj">
+                        </div>
+                        <div class="row">
+                            <div id="div_time" class="col-lg-12">
+                            </div>
+                        </div>
+                        <br />
+                        <div class="table-responsive">
+                            <table id="myDataTable2" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="auto">N° Examen</th>
+                                        <th width="auto">Paciente</th>
+                                        <th width="auto">Estudio</th>
+                                        <th width="auto">Fecha Evento</th>
+                                        <th width="auto">Médico</th>
+                                        <th width="auto">Evento</th>
+                                        <th width="auto">Solución</th>
+                                        <th width="auto"></th>  
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@*<!-- Modal Buscar Examen-->
+<div class="modal fade" id="modalSolucion" tabindex="-1" role="dialog" aria-labelledby="modalSolucionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalSolucionLabel">Ingrese Número de Examen</h4>
+            </div>
+            <div class="modal-body" id="2">
+                <div class="input-group custom-search-form">
+                    <input type="number" class="form-control" id="modal_nexamen" placeholder="N° Examen...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" onclick="EditExamen();">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>*@
+

@@ -1,0 +1,40 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.Caja.frmCierreCaja" 
+        Title="Reporte de Cierre Caja" Height="677.7" Width="939" Background="{DynamicResource Windows.Background}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="124"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <WindowsFormsHost x:Name="windowsFormsHost1" Grid.Row="1">
+            <rv:ReportViewer x:Name="_reportViewer" ProcessingMode="Local"  />
+        </WindowsFormsHost>
+        <Button Content="Reporte" HorizontalAlignment="Right" Margin="0,11,10,0" VerticalAlignment="Top" Width="82" Click="Button_Click" Height="32"/>
+
+        <Label Content="Sede" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" Height="26" Width="37"/>
+        <ComboBox x:Name="cbosede" HorizontalAlignment="Left" Margin="69,10,0,0" VerticalAlignment="Top" Width="248" Height="22"/>
+
+        <Label Content="Inicio" HorizontalAlignment="Left" Margin="6,36,0,0" VerticalAlignment="Top" Height="26" Width="45"/>
+        <telerik:RadDatePicker Name="dtpInicio" HorizontalAlignment="Left" Height="22" Width="120" Margin="69,36,0,0" VerticalAlignment="Top"/>
+        <Label Content="Fin" HorizontalAlignment="Left" Margin="194,35,0,0" VerticalAlignment="Top" Height="26" Width="27"/>
+        <telerik:RadDatePicker Name="dtpFin" HorizontalAlignment="Left" Height="22" Width="120" Margin="226,36,0,0" VerticalAlignment="Top"/>
+        <Label Content="Inicio Fac." HorizontalAlignment="Left" Margin="162,67,0,0" VerticalAlignment="Top" Height="26" Width="70"/>
+        <TextBox x:Name="txtIni_Fac" HorizontalAlignment="Left" Height="23" Margin="225,67,0,0" TextWrapping="Wrap" Text="" TextAlignment="Center" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="90" LostFocus="txtIni_Fac_LostFocus" CharacterCasing="Upper"/>
+        <Label Content="Fin Fac." HorizontalAlignment="Left" Margin="174,93,0,0" VerticalAlignment="Top" Height="26" Width="56"/>
+        <TextBox x:Name="txtFin_Fac" HorizontalAlignment="Left" Height="23" Margin="225,93,0,0" TextWrapping="Wrap" Text="" VerticalContentAlignment="Center" TextAlignment="Center" VerticalAlignment="Top" Width="90" CharacterCasing="Upper"/>
+
+        <Label Content="Inicio Bol." HorizontalAlignment="Left" Margin="6,67,0,0" VerticalAlignment="Top" Height="26" Width="70" />
+        <TextBox x:Name="txtIni_Bol" HorizontalAlignment="Left" Height="23" Margin="70,67,0,0" TextWrapping="Wrap" Text="" VerticalContentAlignment="Center" TextAlignment="Center" VerticalAlignment="Top" Width="90" LostFocus="txtIni_Fac_LostFocus" CharacterCasing="Upper"/>
+
+        <Label Content="Fin Bol." HorizontalAlignment="Left" Margin="19,93,0,0" VerticalAlignment="Top" Height="26" Width="56"/>
+        <TextBox x:Name="txtFin_Bol" HorizontalAlignment="Left" Height="23" Margin="70,93,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" VerticalContentAlignment="Center" TextAlignment="Center" Width="90" CharacterCasing="Upper"/>
+        <CheckBox Name="chkrango" Content="Solo Rangos Ingresados" Foreground="White" HorizontalAlignment="Left" Margin="671,17,0,0" VerticalAlignment="Top" IsChecked="True" Height="15" Width="147"/>
+        <Label Content="Inicio Nota Cre." HorizontalAlignment="Left" Margin="320,65,0,0" VerticalAlignment="Top" Height="26" Width="98" />
+        <TextBox x:Name="txtIni_Cre" HorizontalAlignment="Left" Height="23" Margin="423,67,0,0" TextWrapping="Wrap" Text="" VerticalContentAlignment="Center" TextAlignment="Center" VerticalAlignment="Top" Width="90" LostFocus="txtIni_Fac_LostFocus" CharacterCasing="Upper"/>
+        <Label Content="Fin Nota Cre." HorizontalAlignment="Left" Margin="333,93,0,0" VerticalAlignment="Top" Height="26" Width="83" />
+        <TextBox x:Name="txtFin_Cre" HorizontalAlignment="Left" Height="23" Margin="423,93,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" VerticalContentAlignment="Center"  TextAlignment="Center" Width="90" CharacterCasing="Upper"/>
+    </Grid>
+</Window>

@@ -1,0 +1,54 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.frmCarta.frmRevisionCarta"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+         Title="Revisar de Cartas | Resocentro" Height="700" Width="810" MinHeight="700" MinWidth="810" Background="{DynamicResource Windows.Background}"  Foreground="White" Icon="/Resocentro_Desktop;component/img/favicon.png" >
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="351*"/>
+
+        </Grid.RowDefinitions>
+        <telerik:RadGridView x:Name="grid_Cartas" AutoGenerateColumns="False" FilteringMode="FilterRow"
+        	RowIndicatorVisibility="Collapsed" ShowColumnFooters="True" 
+        	ShowGroupFooters="False" SelectionMode="Extended" IsReadOnly="True" RowActivated="grid_Cartas_RowActivated" TabIndex="3" FocusVisualStyle="{StaticResource MyFocusVisual}" Grid.Row="2" FilterOperatorsLoading="grid_Cartas_FilterOperatorsLoading">
+            <telerik:RadGridView.GroupDescriptors>
+                <telerik:GroupDescriptor 
+                    Member="Estado"
+                    SortDirection="Ascending" />
+                <!--You can add more group descriptors here-->
+            </telerik:RadGridView.GroupDescriptors>
+            <telerik:RadGridView.Columns>
+
+                <telerik:GridViewCheckBoxColumn Header="Cita" DataMemberBinding="{Binding iscitado}" />
+                <telerik:GridViewCheckBoxColumn Header="Adju." DataMemberBinding="{Binding isAdjunto}" />
+                <telerik:GridViewDataColumn Header="Estado" DataMemberBinding="{Binding estado}" />
+                <telerik:GridViewDataColumn Header="Numero Carta" DataMemberBinding="{Binding codigocartagarantia}" />
+                <telerik:GridViewDataColumn Header="N° Referencia" DataMemberBinding="{Binding codigocartagarantia2}" />
+                <telerik:GridViewDataColumn Header="Paciente" DataMemberBinding="{Binding paciente}" >
+
+                    <telerik:GridViewColumn.AggregateFunctions>
+                        <telerik:CountFunction Caption="Total Carta : "/>
+                    </telerik:GridViewColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Header="Aseguradora" DataMemberBinding="{Binding aseguradora}" />
+                <telerik:GridViewDataColumn Header="Fecha Cita" DataMemberBinding="{Binding fec_cita, StringFormat=\{0:dd/MM/yyyy\}}" />
+                <telerik:GridViewDataColumn Header="Tramita" DataMemberBinding="{Binding user_tramita}" />
+                <telerik:GridViewDataColumn Header="Fecha Update" DataMemberBinding="{Binding fec_update, StringFormat=\{0:dd/MM/yyyy HH:mm:ss\}}" />
+                <telerik:GridViewDataColumn Header="Actualiza" DataMemberBinding="{Binding user_update}" />
+                <telerik:GridViewDataColumn Header="Cita" DataMemberBinding="{Binding user_cita}" />
+                <telerik:GridViewDataColumn Header="Proforma" DataMemberBinding="{Binding user_proforma}" />
+
+            </telerik:RadGridView.Columns>
+            <telerik:RadContextMenu.ContextMenu>
+                <telerik:RadContextMenu Opening="RadContextMenuCarta_Opening" >
+                    <telerik:RadMenuItem Header="Excluir Carta de Revision" Click="MenuItemAbrir_Click" x:Name="ContextMenu_ExcluirCarta" />
+                </telerik:RadContextMenu>
+            </telerik:RadContextMenu.ContextMenu>
+        </telerik:RadGridView>
+        <telerik:RadDatePicker x:Name="dtp_fecha_tramite" Margin="20,10,0,8" HorizontalAlignment="Left" Width="168"/>
+        <Button FontWeight="Bold" HorizontalAlignment="Left" Margin="203,7,0,5" x:Name="btnbuscar_tramite"  VerticalContentAlignment="Center" Content="Buscar" Padding="10,5" Click="btnbuscar_tramite_Click" IsTabStop="True" FocusVisualStyle="{StaticResource MyFocusVisual}"/>
+
+    </Grid>
+</Window>

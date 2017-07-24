@@ -1,0 +1,46 @@
+﻿@model IEnumerable<SistemaResocentro.Models.Sunasa_Cobertura>
+
+@{
+    Layout = null;
+}
+
+<link href="~/js/datatables/datatable.css" rel="stylesheet" />
+
+<script src="~/js/datatables/jquery.dataTables_ES.min.js"></script>
+<script src="~/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $(function () {
+        t0 = $("#datatablebeneficio").DataTable({
+            "sPaginationType": "bootstrap"
+        });
+    });
+</script>
+<table id="datatablebeneficio" class="table  compact table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                Codigo
+            </th>
+            <th>
+                Nombre
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sunasa_CoberturaId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-info btn-xs" onclick="selectbeneficio('@item.Sunasa_CoberturaId','@item.Nombre ')"><i class="fa fa-check"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

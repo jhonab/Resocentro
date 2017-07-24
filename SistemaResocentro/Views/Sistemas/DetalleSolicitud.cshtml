@@ -1,0 +1,145 @@
+﻿@model SistemaResocentro.Models.Incidente
+
+@{
+    ViewBag.Title = "DetalleSolicitud";
+    TimeSpan tsp;
+    if(Model.estado=="T"){
+        tsp=Model.fec_termino.Value-Model.fec_registro.Value;
+    }
+    else
+    {
+        tsp = DateTime.Now - Model.fec_registro.Value;
+    }
+}
+
+<h2>Detalle Solicitud</h2>
+<style>
+    strong {
+        color: #000;
+    }
+</style>
+
+<div>
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row detalle">
+            <div class="col-md-4">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Solicitante:</label>
+                        <div class="col-md-10">
+                            <strong>@Html.DisplayFor(model => model.usuario)</strong>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Fecha:</label>
+
+                        <div class="col-md-10">
+                            <strong >@Model.fec_registro</strong>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Incidente Reportado:</label>
+
+                        <div class="col-md-10">
+                            <strong class=" alert-danger">@Html.DisplayFor(model => model.problema)</strong>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Importancia:</label>
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(x => x.importancia, new SelectList((new SistemaResocentro.Models.Variable().getImportancia()), "nombre", "nombre"), "- Seleccione -", new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Telf. / Anexo:</label>
+                        <div class="col-md-10">
+                            <strong> @Html.DisplayFor(model => model.anexo)</strong>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Equipo:</label>
+                        <div class="col-md-10">
+                            <strong> @Html.DisplayFor(model => model.nombre_equipo)</strong>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">IP:</label>
+                        <div class="col-md-10">
+                            <strong> @Html.DisplayFor(model => model.ip)</strong>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Aplicativo:</label>
+                        <div class="col-md-10">
+                            <strong> @Html.DisplayFor(model => model.aplicativo)</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Estado:</label>
+                        <div class="col-md-4">
+                            @Html.HiddenFor(x => x.idIncidente)
+                            @Html.DropDownListFor(model => model.estado, new SelectList((new SistemaResocentro.Models.Variable().getEstadoIncidente()), "codigo", "nombre"), "- Seleccione -", new { @class = "form-control" })
+                        </div>
+                    </div>
+                    @if (Model.estado == "T")
+                    {
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Fecha Termino:</label>
+                            <div class="col-md-10">
+                                @Model.fec_termino  - <label>Duración:</label> @tsp.Days Día(s) @tsp.Hours:@tsp.Minutes   min.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Usuario Termino:</label>
+                            <div class="col-md-10">
+                                @Model.USUARIOTermino.ShortName
+                            </div>
+                        </div>
+                    }
+                    else if (Model.estado == "L")
+                    {
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Fecha Lectura:</label>
+                            <div class="col-md-10">
+                                @Model.fec_lectura
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Usuario de Lectura:</label>
+                            <div class="col-md-10">
+                                @Model.USUARIOLector.ShortName
+                            </div>
+                        </div>
+                    }
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Solución:</label>
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(x => x.comentarios, new { @class = "form-control", @rows = "5", @placeholder = "Ingrese la solución" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="pull-right">
+                                <a href="@Url.Action("SolicitudesPendientes", "Sistemas", new { estado="L"})" class="btn btn-default"><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;&nbsp;Regresar a la Lista</a>
+                                @if (Model.estado != "T")
+                                {
+                                   
+                                    <button type="submit" class="btn btn-primary btn-lg"> Finalizar&nbsp;&nbsp;<i class="fa fa-arrow-circle-right fa-lg"></i></button>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

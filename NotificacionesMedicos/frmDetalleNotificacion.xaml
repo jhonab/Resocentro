@@ -1,0 +1,141 @@
+﻿<UserControl x:Class="NotificacionesMedicos.frmDetalleNotificacion"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+               xmlns:tb="http://www.hardcodet.net/taskbar" Width="300" Height="93" Margin="20,0,0,20" >
+    <UserControl.Resources>
+        <Storyboard x:Key="FadeIn">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                           Storyboard.TargetName="grid"
+                                           Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00"
+                                      Value="0" />
+                <SplineDoubleKeyFrame KeyTime="00:00:01"
+                                      Value="0.95" />
+                <SplineDoubleKeyFrame KeyTime="00:00:03"
+                                      Value="0.95" />
+                <!--				<SplineDoubleKeyFrame KeyTime="00:00:05" Value="0"/>-->
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="HighlightCloseButton">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                           Storyboard.TargetName="imgClose"
+                                           Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00"
+                                      Value="0.4" />
+                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000"
+                                      Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="FadeCloseButton">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                           Storyboard.TargetName="imgClose"
+                                           Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00"
+                                      Value="1" />
+                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000"
+                                      Value="0.4" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="FadeBack">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                           Storyboard.TargetName="grid"
+                                           Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00"
+                                      Value="1" />
+                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000"
+                                      Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="FadeOut"
+                    Completed="OnFadeOutCompleted">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                           Storyboard.TargetName="grid"
+                                           Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00"
+                                      Value="1" />
+                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000"
+                                      Value="0.2" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="tb:TaskbarIcon.BalloonShowing">
+            <BeginStoryboard Storyboard="{StaticResource FadeIn}"
+                             x:Name="FadeIn_BeginStoryboard" />
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseEnter"
+                      SourceName="imgClose">
+            <BeginStoryboard Storyboard="{StaticResource HighlightCloseButton}"
+                             x:Name="HighlightCloseButton_BeginStoryboard" />
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseLeave"
+                      SourceName="imgClose">
+            <BeginStoryboard Storyboard="{StaticResource FadeCloseButton}"
+                             x:Name="FadeCloseButton_BeginStoryboard" />
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+            <StopStoryboard BeginStoryboardName="FadeIn_BeginStoryboard" />
+            <BeginStoryboard x:Name="FadeBack_BeginStoryboard1"
+                             Storyboard="{StaticResource FadeBack}" />
+        </EventTrigger>
+        <EventTrigger RoutedEvent="tb:TaskbarIcon.BalloonClosing">
+            <BeginStoryboard Storyboard="{StaticResource FadeOut}"
+                             x:Name="FadeOut_BeginStoryboard" />
+        </EventTrigger>
+    </UserControl.Triggers>
+    <Grid x:Name="grid"
+		MouseEnter="grid_MouseEnter"  >
+        <Border HorizontalAlignment="Stretch"  BorderThickness="3" Background="#FF434344" BorderBrush="#FF535353" CornerRadius="10">
+            <Border.Effect>
+                <DropShadowEffect Color="White" />
+            </Border.Effect>
+
+        </Border>
+
+        <Path Data="M11.343328,17.500179C11.617527,17.495315,11.888359,17.60368,12.084984,17.811301L16.172978,22.111204 20.165973,17.8193C20.455973,17.508307,20.912971,17.41631,21.296971,17.583306L31.291959,21.929206C31.657958,22.089204,31.893956,22.448196,31.893956,22.846187L31.893956,31.985979 29.89396,31.985979 29.89396,23.502172 24.919967,21.339141 24.919967,23.616291 24.9407,23.621229C26.659804,24.090965 27.916951,26.126867 27.916951,28.638248 27.916951,29.6243 27.718953,30.604351 27.360955,31.400392 27.193957,31.771411 26.829959,31.990425 26.447963,31.990425 26.310964,31.990425 26.171964,31.962423 26.038964,31.90242 25.534968,31.676408 25.30997,31.083377 25.536967,30.58035 25.777966,30.044322 25.916966,29.336286 25.916966,28.638248 25.916966,26.801153 25.000972,25.519086 24.177978,25.519086 23.355983,25.519086 22.439989,26.801153 22.439989,28.638248 22.439989,29.337286 22.579988,29.98332 22.853987,30.559349 23.092985,31.058376 22.880986,31.655406 22.38299,31.892419 21.883993,32.132431 21.285997,31.91842 21.049998,31.421394 20.645001,30.57335 20.440002,29.636301 20.440002,28.638248 20.440002,26.395944 21.442193,24.532688 22.880095,23.824811L22.919967,23.806692 22.919967,20.469406 21.148972,19.699257 16.913978,24.252155C16.724977,24.454151,16.461978,24.569147,16.185978,24.571147L16.180978,24.571147C15.906979,24.571147,15.644979,24.45915,15.456979,24.259155L11.111985,19.689258 7.9321076,21.023019 7.9790404,21.023019 7.9790404,27.226135 8.0600647,27.262783C8.8950006,27.665311 9.471019,28.519992 9.4710193,29.508991 9.471019,30.884988 8.3560042,32.000988 6.9799856,32.000988 5.6039674,32.000988 4.4889526,30.884988 4.4889526,29.508991 4.4889526,28.519992 5.064971,27.665311 5.8999071,27.262783L5.9790401,27.226989 5.9790401,21.84221 1.9999971,23.511171 1.9999971,31.985979 0,31.985979 0,22.846187C0,22.444196,0.24199963,22.080204,0.61399937,21.924207L10.973985,17.578306C11.09336,17.527995,11.218692,17.502389,11.343328,17.500179z M15.711556,6.4369822C15.044579,7.0229802 13.979661,7.6029961 12.354697,7.670989 12.308678,8.5199866 12.137662,9.3619652 11.69065,9.7979999 11.507671,9.9759779 11.264634,10.076991 11.01171,10.081995 10.962349,10.09447 10.932872,10.19368 10.917705,10.305896L10.911963,10.358696 10.91488,10.370996 10.910513,10.372031 10.910278,10.374197C10.906412,10.419985 10.904657,10.465494 10.904657,10.506006 10.897699,10.790002 10.972649,11.128991 11.052725,11.209008 11.552714,11.269005 11.898653,11.670982 11.902682,12.174948 11.905733,12.295004 12.022674,15.265947 15.785529,16.184951 16.526601,15.969985 19.113458,15.017961 19.431565,12.166953 19.477463,11.761985 19.764443,11.423973 20.157501,11.313988 20.174469,11.303978 20.48745,11.141991 20.515526,10.434961 20.510521,10.321009 20.45144,10.051967 20.104524,9.9349623 19.936437,9.8769789 19.787515,9.7770038 19.671551,9.6440082 19.561445,9.517971 19.261525,9.1730008 19.06756,7.5870049 17.956501,7.5549617 16.630603,7.2669983 15.711556,6.4369822z M16.175661,2.002409C15.916434,2.0014926 15.758146,2.0113497 15.750927,2.0113496 13.179902,2.0383484 11.382885,2.6163241 10.492876,3.6862788 9.6558675,4.6902363 9.8438693,5.8431873 9.8528694,5.8921854L10.32589,7.8870525 10.340578,7.7163873C10.364058,7.396466 10.371725,7.0253677 10.356696,6.6910098 10.343756,6.4020095 10.455692,6.1219809 10.663695,5.9230063 10.872675,5.7229947 11.156727,5.6210052 11.445661,5.6489592 14.117598,5.8899865 14.824613,4.4379628 14.854642,4.3769883 15.015885,4.0338383 15.359944,3.7891784 15.735143,3.7879484 15.760156,3.7878666 15.785308,3.7888665 15.810553,3.7909907 16.214597,3.8089967 16.573597,4.0599728 16.70958,4.4399766 17.208592,5.821017 19.832558,5.5619843 19.855506,5.5580168 20.12552,5.5289643 20.400537,5.6069671 20.609518,5.7809775 20.819474,5.954989 20.949476,6.2070026 20.969495,6.4779975 21.000095,6.9032407 21.036654,7.243505 21.073712,7.5140269L21.073834,7.514884 21.366983,5.9471834C21.435984,4.8412298 21.161981,3.9952657 20.531975,3.3642922 19.314775,2.1463752 17.101472,2.0056829 16.175661,2.002409z M16.231968,0.00019001961C17.420803,0.0073006153 20.212627,0.22176909 21.939989,1.9443523 23.003999,3.0053076 23.482004,4.4182478 23.359003,6.1451745 23.357002,6.182173 23.352002,6.2201715 23.345002,6.25717L22.496994,10.784978 22.492642,10.784166 22.472042,10.952496C22.321416,11.949613 21.824914,12.572844 21.338505,12.921957 20.681538,16.317947 17.613491,17.851941 16.00757,18.191967 15.939579,18.206981 15.868535,18.213939 15.799567,18.213939 15.729622,18.213939 15.658579,18.205944 15.589611,18.19099 11.682716,17.352979 10.269661,14.659991 9.9676663,12.889974 9.2459036,12.426833 8.9115505,11.507555 8.9031521,10.639733L8.9044374,10.555908 7.8968502,6.304168C7.8708498,6.1811731 7.5018462,4.1882575 8.9228604,2.4453315 10.212873,0.86339831 12.482895,0.045432806 15.668927,0.014434099 15.691895,0.012465477 15.899095,-0.0018005371 16.231968,0.00019001961z"   Fill="#FFFFFFFF" Stretch="Uniform" Margin="14,10,228,0" />
+        <TextBlock x:Name="txttexto" Margin="85,42,20,0" Height="auto"
+			VerticalAlignment="Top"
+			Foreground="White"
+			TextWrapping="Wrap"/>
+        <Path Fill="#FFFFFFFF"
+			Stretch="Fill"
+			Margin="92,38.2,14,0"
+			VerticalAlignment="Top"
+			Height="1"
+			Data="M26,107 L220.04123,107"
+			SnapsToDevicePixels="True">
+            <Path.Stroke>
+                <LinearGradientBrush EndPoint="0.973,0.5"
+					StartPoint="0.005,0.5">
+                    <GradientStop Color="#00ECAD25"
+						Offset="1" />
+                    <GradientStop Color="White"
+						Offset="0.106" />
+                </LinearGradientBrush>
+            </Path.Stroke>
+        </Path>
+        <TextBlock Name="txttitulo" Margin="77,10,31,0"
+			VerticalAlignment="Top"
+			Height="23"
+			Text="Supervision Solicitada"
+			TextWrapping="Wrap"
+			Foreground="White"
+			FontWeight="Bold" FontSize="15" TextAlignment="Right" />
+        <Image HorizontalAlignment="Right"
+			Margin="0,7,5,0"
+			VerticalAlignment="Top"
+			Width="16"
+			Height="16"
+			Source="img/Close.png"
+			Stretch="Fill"
+			Opacity="0.4"
+			ToolTip="Close Balloon"
+			x:Name="imgClose"
+			MouseDown="imgClose_MouseDown" />
+
+
+    </Grid>
+</UserControl>

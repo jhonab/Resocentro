@@ -1,0 +1,30 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.Interfaz.Caja.frmUploadFacturas"
+        Title="Actualizar Fecha de Pago" Height="650" Width="600" Background="{DynamicResource Windows.Background}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="37" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Button HorizontalAlignment="Right" IsEnabled="True" Content="Guardar Facturas" VerticalAlignment="Top" VerticalContentAlignment="Center" Click="radRibbonButton2_Click" Margin="0,10,15,0" Height="18" Width="117"   />
+        <Button HorizontalAlignment="Right" IsEnabled="True" Content="Verificar Facturas" VerticalContentAlignment="Center"  Click="radRibbonButton1_Click" Margin="0,10,137,0" Height="18" VerticalAlignment="Top" Width="119" />
+        
+        <telerik:RadGridView Grid.Row="1"  AutoGenerateColumns="False"  Name="radGridView1" PastingCellClipboardContent="radGridView1_PastingCellClipboardContent" CanUserInsertRows="true" NewRowPosition="Top"   Deleting="s" >
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn UniqueName="doc"  Header="N° Documento" DataMemberBinding="{Binding numero_doc}" />
+                <telerik:GridViewDataColumn  UniqueName="monto" Header="Monto Total" DataMemberBinding="{Binding total}" />
+                <telerik:GridViewDataColumn UniqueName="fec_pago"  Header="Fecha Pago" DataMemberBinding="{Binding Path=fec_pagp, StringFormat=\{0:dd/MM/yyyy\}}" />
+                <telerik:GridViewDataColumn  UniqueName="refe" Header="Referencia" DataMemberBinding="{Binding referencia}" />
+                <telerik:GridViewDataColumn  UniqueName="resultado" Name="resul" Header="Resultado"  DataMemberBinding="{Binding resultado}" IsReadOnly="True"/>
+                <telerik:GridViewDataColumn  Header="Fecha Emision" DataMemberBinding="{Binding Path=fec_emision, StringFormat=\{0:dd/MM/yyyy\}}"  IsReadOnly="True" />
+                <telerik:GridViewDataColumn  Header="Fecha Recepcion" DataMemberBinding="{Binding Path=fec_recepcion, StringFormat=\{0:dd/MM/yyyy\}}"  IsReadOnly="True"/>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+        <ComboBox x:Name="cbosucursal" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="163" Height="22"/>
+
+
+    </Grid>
+</Window>

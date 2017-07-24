@@ -1,0 +1,91 @@
+﻿<Window x:Class="Resocentro_Desktop.Interfaz.Cartas.Print.frmPrintProforma"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="frmPrintProforma" Height="29.7cm" Width="21cm" Background="White">
+    <Grid Name="grid" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="73"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="117*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="600*"/>
+        </Grid.RowDefinitions>
+        <Image HorizontalAlignment="Left" Height="100" Margin="59,37,0,0" Grid.RowSpan="3" VerticalAlignment="Top" Width="100"/>
+        <Image Source="/Resocentro_Desktop;component/img/Logo_Azul.png" HorizontalAlignment="Left" Width="281" />
+        <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="PROFORMA" Foreground="Black" TextAlignment="Center" FontSize="20" FontWeight="Bold"/>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="173"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Content="FECHA DE RECEPCIÓN" Padding="0" Foreground="Black" FontSize="13"/>
+            <Label Name="lblfecharecepcion" Content="Lunes 03 de Enero del 2016" FontSize="13" Padding="0" Foreground="Black" FontWeight="Normal" Grid.Column="1"/>
+
+            <Label Content="PACIENTE" Grid.Row="1" Padding="0"  Foreground="Black" FontSize="13"/>
+            <Label Name="lblpaciente" Grid.Row="1" Content="ALVAREZ BENIT JHON" FontSize="13" Padding="0" Foreground="Black" FontWeight="Normal" Grid.Column="1"/>
+
+            <Label Content="COMPAÑIA DE SEGURO" Grid.Row="2" Padding="0"  Foreground="Black" FontSize="13"/>
+            <Label Name="lblaseguradora" Grid.Row="2" Content="PARTICULAR" FontSize="13" Padding="0" Foreground="Black" FontWeight="Normal" Grid.Column="1"/>
+
+            <Label Content="MÉDICO TRATANTE" Grid.Row="3" Padding="0"  Foreground="Black" FontSize="13"/>
+            <Label Name="lblmedico" Grid.Row="3" Content="MEDICO DE REFERENCIA" FontSize="13" Padding="0" Foreground="Black" FontWeight="Normal" Grid.Column="1"/>
+
+            <Label Content="CLÍNICA DE PROCEDENCIA" Grid.Row="4" Padding="0"  Foreground="Black" FontSize="13"/>
+            <TextBlock Name="lblclinica" Grid.Row="4" TextWrapping="Wrap" Text="HOSPITAL DE EMERGENCIA" FontSize="13" Padding="0" Foreground="Black" FontWeight="Normal" Grid.Column="1"/>
+
+            <Label Content="EMPRESA CONTRATANTE" Grid.Row="5" Padding="0"  Foreground="Black" FontSize="13"/>
+            <Label Name="lblempresa" Grid.Row="5" Content="-" FontSize="13" Padding="0" Foreground="Black" FontWeight="Normal" Grid.Column="1"/>
+
+        </Grid>
+        
+        <Label Content="EXÁMENES SOLICITADOS" Padding="0" Grid.Row="4" Foreground="Black" FontSize="13" />
+
+        <DataGrid Name="grid_items" Grid.Row="5" AutoGenerateColumns="False" GridLinesVisibility="None" BorderThickness="0" HeadersVisibility="All" >
+        <DataGrid.Columns>
+                <DataGridTextColumn  Header="ESTUDIO" Width="680"  Binding="{Binding estudio}" FontSize="11" >
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Margin" Value="0" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+                <DataGridTextColumn Header="PRECIO" Width="60" MaxWidth="60"   FontSize="11" Binding="{Binding precio}">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment" Value="Right" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Margin" Value="0" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+        </DataGrid.Columns>
+        </DataGrid>
+
+        <Label Content="INSUMOS OPCIONALES" Padding="0" Grid.Row="6" Foreground="Black" FontSize="13" />
+
+        <StackPanel Grid.Row="7" HorizontalAlignment="Right">
+            <Label Name="lblcontraste" Content="CONTRASTE: 600" FontWeight="Normal" Foreground="Black"/>
+            <Label Name="lblsedacion" Content="SEDACIÓN: 600" FontWeight="Normal" Foreground="Black"/>
+        </StackPanel>
+
+        <Label Content="OBSERVACIONES" Padding="0" Grid.Row="8" Foreground="Black" FontSize="13" />
+        <TextBlock Name="txtobservaciones" Grid.Row="9" TextWrapping="Wrap" Foreground="Black" Text=""/>
+
+
+    </Grid>
+</Window>

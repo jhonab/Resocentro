@@ -1,0 +1,112 @@
+﻿@model xxx
+@{ViewBag.Title = "<i class='fa fa-area-chart fa-lg'></i> Reporte Medico ";
+  ViewBag.Titlenot = "Reporte Medico";
+}
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Filtro de Fecha
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("ReporteMedico", "Reporte", FormMethod.Get))
+                {
+                    <script type="text/javascript">
+                                        function validar() {
+                                            var msj = "";
+                                            if ($("#i").val() == "")
+                                                msj += "- Ingrese la fecha de inicio \n";
+                                            if ($("#f").val() == "")
+                                                msj += "- Ingrese la fecha de termino \n";
+
+                                            if (msj == "")
+                                                return true;
+                                            else {
+                                                alert(msj);
+                                                return false;
+                                            }
+                                        }
+                    </script>
+                    <div class="form-group col-lg-6">
+                        <label>Inicio:</label>
+                        <input type="date" id="i" name="i" class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label>Termino:</label>
+                        <input type="date" id="f" name="f" class="form-control" />
+                    </div>
+
+                    <input type="submit" value="Buscar" onclick="return validar();" class="btn btn-outline btn-success" />
+
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Médico Informante
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped table-bordered table-hover supervisor">
+                    <thead>
+                        <tr>
+                            <th>
+                                Médico
+                            </th>
+                            <th>
+                                % No Realizado
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.informante.OrderBy(x=> x.medico))
+                        {
+                            <tr>
+                                <td>@item.medico</td>
+                                <td style="text-align:right">@item.cant</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Médico Validador
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped table-bordered table-hover supervisor">
+                    <thead>
+                        <tr>
+                            <th>
+                                Médico
+                            </th>
+                            <th>
+                                % No Realizado
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.validador.OrderBy(x => x.medico))
+                        {
+                            <tr>
+                                <td>@item.medico</td>
+                                <td style="text-align:right">@item.cant</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

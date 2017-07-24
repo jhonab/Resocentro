@@ -1,0 +1,113 @@
+﻿@model IEnumerable<SistemaResocentro.ViewModel.SolicitudesEntreTurno>
+@{
+    ViewBag.Title = "Solicitudes de Entre Turno";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div id="titulo" class="box-header">
+                <h2 class="box-title">Solicitudes de Entre Turno </h2>
+            </div>
+            <div class="box-body chart-responsive">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Lista de Solicitudes
+                    </div>
+
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">                        
+
+                        <div class="table-responsive">
+                            <table id="myDataTable" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Hora</th>
+                                        <th>Solicitante</th>
+                                        <th>Motivo</th>
+                                        <th>Tramitador</th>
+                                        <th></th>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.tipo_solicitud</td>
+                                            <td>@item.hora.ToString("hh:mm tt \" del \" dd/MMM/yy")</td>
+                                            <td>@item.solicitante</td>
+                                            <td>@item.motivo</td>
+                                            <td>@item.tramitador</td>
+                                            <td><button type="button" class="btn btn-info" onclick="mostrarDetalle(@item.idSolicitud)"><i class="fa fa-list" ></i>&nbsp;&nbsp;&nbsp; Detalles</button></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal_Modalidad" tabindex="-1" role="dialog" aria-labelledby="modal_ModalidadLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header modal-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modal_ModalidadLabel">Solicitud de Entre Turno</h4>
+            </div>
+            <div class="modal-body">
+
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script type="text/javascript">
+    function mostrarDetalle(id) {
+        $(".modal-body").load("/AtencionCliente/DetalleEntreTurno?id=" + id, function (response, status, xhr) {
+            if (status == "error") {
+                alert("Error al Cargar");
+            }
+            $('#modal_Modalidad').modal('show');
+        });
+
+    }
+    function cargarTunos() {
+        var equipo = $("#equipomedico").val();
+        var hora = $("#hora_medico").val().split(":");
+        if (equipo != "") {
+            $.ajax({
+                url: "@Url.Action("getTurnos", "AtencionCliente")?equipo=" + equipo + "&hour=" + hora[0],
+                data: {},
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    alert("error");
+                },
+                success: function (data) {
+                    $("#tb_turno").html(data)
+                }
+            });
+        }
+    }
+    function validarHora() {
+        cargarTunos();
+        verificarHoraCorrecta();
+    }
+    function verificarHoraCorrecta() {
+        var date = new Date();
+        var time = (date.getHours() * 100) + date.getMinutes();
+        var hour = parseInt($("#hora_medico").val().replace(":", ""));
+        if (time > hour) {
+            alert("La hora ingresada es menor a la actual")
+            return false;
+        }
+        return true;
+    }
+
+</script>
