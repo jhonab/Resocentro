@@ -5,7 +5,7 @@
       xmlns:tb="http://www.hardcodet.net/taskbar" 
     xmlns:chat="clr-namespace:Resocentro_Desktop.Interfaz.Chat"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="Resocentro_Desktop.frmMenu"
-        Title="Menu | Resocentro" Height="90" MaxHeight="90" Width="900" Background="{DynamicResource Windows.Background}"  Icon="img/favicon.png" Closing="Window_Closing" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded"  >
+        Title="Menu Principal | Resocentro" Height="90" MaxHeight="90" Width="900" Background="{DynamicResource Windows.Background}"  Icon="img/favicon.png" Closing="Window_Closing" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded"  >
 
     <Window.Resources>
         <SolidColorBrush x:Key="MenuItem.Highlight.Border" Color="#2C2C2C"/>
