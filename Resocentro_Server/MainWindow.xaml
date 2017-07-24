@@ -8,7 +8,7 @@
         <telerik:RadTabControl>
             <telerik:RadTabItem Header="Envio Facturas">
                 <Grid Background="{DynamicResource Windows.Background}">
-                    <TextBox TextWrapping="Wrap"  IsReadOnly="True" Text="" Foreground="White" Background="{DynamicResource Windows.Background}"/>
+                    <TextBox Name="txtresumen" TextWrapping="Wrap"  IsReadOnly="True" Text="" Foreground="White" Background="{DynamicResource Windows.Background}"/>
                 </Grid>
             </telerik:RadTabItem>
         </telerik:RadTabControl>
