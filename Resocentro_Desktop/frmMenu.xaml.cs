@@ -1020,6 +1020,13 @@ namespace Resocentro_Desktop
             }
         }
 
+        private void MenuReenviarCorreo_Click(object sender, RoutedEventArgs e)
+        {
+            frnEnviarCorreofactura gui = new frnEnviarCorreofactura();
+            gui.cargarGUI(session);
+            gui.Show();
+        }
+
 
     }
 }

@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DATABASEGENERALModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DOCUMENTO">
+          <Key>
+            <PropertyRef Name="numerodocumento" />
+            <PropertyRef Name="ruc" />
+            <PropertyRef Name="codigopaciente" />
+            <PropertyRef Name="codigousuario" />
+          </Key>
+          <Property Name="numerodocumento" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ruc" Type="char" MaxLength="11" Nullable="false" />
+          <Property Name="codigopaciente" Type="int" Nullable="false" />
+          <Property Name="codigousuario" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="poliza" Type="varchar" MaxLength="20" />
+          <Property Name="cobertura" Type="real" Nullable="false" />
+          <Property Name="tipodocumento" Type="char" MaxLength="2" />
+          <Property Name="codigocarta" Type="varchar" MaxLength="20" />
+          <Property Name="titular" Type="varchar" MaxLength="600" />
+          <Property Name="total" Type="real" Nullable="false" />
+          <Property Name="igv" Type="real" Nullable="false" />
+          <Property Name="subtotal" Type="real" Nullable="false" />
+          <Property Name="fechaemitio" Type="datetime" Nullable="false" />
+          <Property Name="tipocambio" Type="real" Nullable="false" />
+          <Property Name="estado" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="tipomoneda" Type="varchar" MaxLength="20" />
+          <Property Name="porconcepto" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="rucalterno" Type="char" MaxLength="11" Nullable="false" />
+          <Property Name="codigounidad" Type="int" />
+          <Property Name="codigosucursal" Type="int" />
+          <Property Name="fechadepago" Type="datetime" Nullable="false" />
+          <Property Name="numnotacredito" Type="varchar" MaxLength="20" />
+          <Property Name="condicionpago" Type="varchar" MaxLength="20" />
+          <Property Name="codigosucursalReal" Type="int" />
+          <Property Name="isPagado" Type="bit" />
+          <Property Name="fecha_recibio_cia" Type="date" />
+          <Property Name="fec_isPagado" Type="date" />
+          <Property Name="referencia" Type="varchar" MaxLength="300" />
+          <Property Name="numnotacreditoTipoDoc" Type="char" MaxLength="2" />
+          <Property Name="dniAlterno" Type="varchar" MaxLength="20" />
+          <Property Name="pathFile" Type="varchar(max)" Nullable="false" />
+          <Property Name="isSendSUNAT" Type="bit" Nullable="false" />
+          <Property Name="valorIGV" Type="decimal" Precision="20" Scale="2" Nullable="false" />
+          <Property Name="tipoCobranza" Type="int" Nullable="false" />
+          <Property Name="razonsocialAlterno" Type="varchar" MaxLength="900" Nullable="false" />
+          <Property Name="isFacGlobal" Type="bit" Nullable="false" />
+          <Property Name="fecha_cancelacion" Type="datetime" />
+          <Property Name="usu_cancela" Type="varchar" MaxLength="20" />
+          <Property Name="motivos_adicionales" Type="varchar(max)" />
+          <Property Name="serie" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="correlativo" Type="int" Nullable="false" />
+          <Property Name="pathFileSummary" Type="varchar(max)" />
+          <Property Name="motivos_anulacion" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="DATABASEGENERALModelStoreContainer">
+          <EntitySet Name="DOCUMENTO" EntityType="Self.DOCUMENTO" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DATABASEGENERALModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DOCUMENTO">
+          <Key>
+            <PropertyRef Name="numerodocumento" />
+            <PropertyRef Name="ruc" />
+            <PropertyRef Name="codigopaciente" />
+            <PropertyRef Name="codigousuario" />
+          </Key>
+          <Property Name="numerodocumento" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ruc" Type="String" MaxLength="11" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="codigopaciente" Type="Int32" Nullable="false" />
+          <Property Name="codigousuario" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="poliza" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cobertura" Type="Single" Nullable="false" />
+          <Property Name="tipodocumento" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="codigocarta" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="titular" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
+          <Property Name="total" Type="Single" Nullable="false" />
+          <Property Name="igv" Type="Single" Nullable="false" />
+          <Property Name="subtotal" Type="Single" Nullable="false" />
+          <Property Name="fechaemitio" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="tipocambio" Type="Single" Nullable="false" />
+          <Property Name="estado" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="tipomoneda" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="porconcepto" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="rucalterno" Type="String" MaxLength="11" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="codigounidad" Type="Int32" />
+          <Property Name="codigosucursal" Type="Int32" />
+          <Property Name="fechadepago" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="numnotacredito" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="condicionpago" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="codigosucursalReal" Type="Int32" />
+          <Property Name="isPagado" Type="Boolean" />
+          <Property Name="fecha_recibio_cia" Type="DateTime" Precision="0" />
+          <Property Name="fec_isPagado" Type="DateTime" Precision="0" />
+          <Property Name="referencia" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="numnotacreditoTipoDoc" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="dniAlterno" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="pathFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="isSendSUNAT" Type="Boolean" Nullable="false" />
+          <Property Name="valorIGV" Type="Decimal" Precision="20" Scale="2" Nullable="false" />
+          <Property Name="tipoCobranza" Type="Int32" Nullable="false" />
+          <Property Name="razonsocialAlterno" Type="String" MaxLength="900" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="isFacGlobal" Type="Boolean" Nullable="false" />
+          <Property Name="fecha_cancelacion" Type="DateTime" Precision="3" />
+          <Property Name="usu_cancela" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="motivos_adicionales" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="serie" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="correlativo" Type="Int32" Nullable="false" />
+          <Property Name="pathFileSummary" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="motivos_anulacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="DATABASEGENERALEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DOCUMENTO" EntityType="Self.DOCUMENTO" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DATABASEGENERALModelStoreContainer" CdmEntityContainer="DATABASEGENERALEntities">
+          <EntitySetMapping Name="DOCUMENTO">
+            <EntityTypeMapping TypeName="DATABASEGENERALModel.DOCUMENTO">
+              <MappingFragment StoreEntitySet="DOCUMENTO">
+                <ScalarProperty Name="numerodocumento" ColumnName="numerodocumento" />
+                <ScalarProperty Name="ruc" ColumnName="ruc" />
+                <ScalarProperty Name="codigopaciente" ColumnName="codigopaciente" />
+                <ScalarProperty Name="codigousuario" ColumnName="codigousuario" />
+                <ScalarProperty Name="poliza" ColumnName="poliza" />
+                <ScalarProperty Name="cobertura" ColumnName="cobertura" />
+                <ScalarProperty Name="tipodocumento" ColumnName="tipodocumento" />
+                <ScalarProperty Name="codigocarta" ColumnName="codigocarta" />
+                <ScalarProperty Name="titular" ColumnName="titular" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="igv" ColumnName="igv" />
+                <ScalarProperty Name="subtotal" ColumnName="subtotal" />
+                <ScalarProperty Name="fechaemitio" ColumnName="fechaemitio" />
+                <ScalarProperty Name="tipocambio" ColumnName="tipocambio" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="tipomoneda" ColumnName="tipomoneda" />
+                <ScalarProperty Name="porconcepto" ColumnName="porconcepto" />
+                <ScalarProperty Name="rucalterno" ColumnName="rucalterno" />
+                <ScalarProperty Name="codigounidad" ColumnName="codigounidad" />
+                <ScalarProperty Name="codigosucursal" ColumnName="codigosucursal" />
+                <ScalarProperty Name="fechadepago" ColumnName="fechadepago" />
+                <ScalarProperty Name="numnotacredito" ColumnName="numnotacredito" />
+                <ScalarProperty Name="condicionpago" ColumnName="condicionpago" />
+                <ScalarProperty Name="codigosucursalReal" ColumnName="codigosucursalReal" />
+                <ScalarProperty Name="isPagado" ColumnName="isPagado" />
+                <ScalarProperty Name="fecha_recibio_cia" ColumnName="fecha_recibio_cia" />
+                <ScalarProperty Name="fec_isPagado" ColumnName="fec_isPagado" />
+                <ScalarProperty Name="referencia" ColumnName="referencia" />
+                <ScalarProperty Name="numnotacreditoTipoDoc" ColumnName="numnotacreditoTipoDoc" />
+                <ScalarProperty Name="dniAlterno" ColumnName="dniAlterno" />
+                <ScalarProperty Name="pathFile" ColumnName="pathFile" />
+                <ScalarProperty Name="isSendSUNAT" ColumnName="isSendSUNAT" />
+                <ScalarProperty Name="valorIGV" ColumnName="valorIGV" />
+                <ScalarProperty Name="tipoCobranza" ColumnName="tipoCobranza" />
+                <ScalarProperty Name="razonsocialAlterno" ColumnName="razonsocialAlterno" />
+                <ScalarProperty Name="isFacGlobal" ColumnName="isFacGlobal" />
+                <ScalarProperty Name="fecha_cancelacion" ColumnName="fecha_cancelacion" />
+                <ScalarProperty Name="usu_cancela" ColumnName="usu_cancela" />
+                <ScalarProperty Name="motivos_adicionales" ColumnName="motivos_adicionales" />
+                <ScalarProperty Name="serie" ColumnName="serie" />
+                <ScalarProperty Name="correlativo" ColumnName="correlativo" />
+                <ScalarProperty Name="pathFileSummary" ColumnName="pathFileSummary" />
+                <ScalarProperty Name="motivos_anulacion" ColumnName="motivos_anulacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -78,7 +78,7 @@ namespace Resocentro_Desktop.Interfaz.Sistemas
                                     }
                                 }
                                 else
-                                    item.resultado = msjResutlado.Trim();
+                                    item.resultado = "ERROR - "+msjResutlado.Trim();
                             }
                         }
                         catch (Exception ex)

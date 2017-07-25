@@ -1093,7 +1093,13 @@ order by ea.codigo";
                 //else
 
                 examen.estadoestudio = "R";
-
+                var integrador=db.INTEGRACION.SingleOrDefault(x => x.numero_estudio == examen.codigo);
+                if (integrador != null)
+                {
+                    integrador.estado = 2;
+                    new Variable().eliminarIntegradorRealizado(examen.codigo.ToString());
+                }
+               
                 DateTime fecha_validar = DateTime.Now;
 
                 if (fecha_validar.DayOfWeek == DayOfWeek.Sunday && examen.codigoestudio.Substring(0, 3) == "101")

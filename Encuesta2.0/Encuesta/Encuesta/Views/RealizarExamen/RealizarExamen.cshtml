@@ -380,14 +380,14 @@
                                                                 </div>
                                                                 <div class="radio">
                                                                     <label>
-                                                                        @Html.RadioButtonFor(b => b.grupomedico, "5") Abdomen
+                                                                        @Html.RadioButtonFor(b => b.grupomedico, "5") Cuerpo
                                                                     </label>
                                                                 </div>
-                                                                <div class="radio">
+                                                                @*<div class="radio">
                                                                     <label>
                                                                         @Html.RadioButtonFor(b => b.grupomedico, "6") Cuerpo
                                                                     </label>
-                                                                </div>
+                                                                </div>*@
                                                                 <div class="radio">
                                                                     <label>
                                                                         @Html.RadioButtonFor(b => b.grupomedico, "7") Protocolo
@@ -446,13 +446,21 @@
                                                                         @Html.RadioButtonFor(b => b.grupomedico, "5") Cuerpo
                                                                     </label>
                                                                 </div>
-                                                               
-                                                                    <div class="radio">
-                                                                        <label>
-                                                                            @Html.RadioButtonFor(b => b.grupomedico, "7") Protocolo
-                                                                        </label>
-                                                                    </div>
-                                                               
+                                                                @*<div class="radio">
+                <label>
+                    @Html.RadioButtonFor(b => b.grupomedico, "6") Cuerpo
+                </label>
+            </div>*@
+                                                                <div class="radio">
+                                                                    <label>
+                                                                        @Html.RadioButtonFor(b => b.grupomedico, "7") Protocolo
+                                                                    </label>
+                                                                </div>
+                                                                <div class="radio">
+                                                                    <label>
+                                                                        @Html.RadioButtonFor(b => b.grupomedico, "8") Obstétrica / Fetal
+                                                                    </label>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -90,6 +90,69 @@ namespace Encuesta.Util
             }
         }
 
+        public void eliminarIntegradorRealizado(string examen)
+        {
+            string myConnectionString;
+
+            myConnectionString = "server=172.16.104.111;port=3306;user id=visual;password=sistemas;database=pacsdb;persistsecurityinfo=True;";
+
+            try
+            {
+                using (MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection(myConnectionString))
+                {
+                    conn.Open();
+                    string query = string.Format(@"insert into mwl_item_delete (
+    `mwl_item_delete`.`patient_fk`,
+    `mwl_item_delete`.`sps_status`,
+    `mwl_item_delete`.`sps_id`,
+    `mwl_item_delete`.`start_datetime`,
+    `mwl_item_delete`.`station_aet`,
+    `mwl_item_delete`.`station_name`,
+    `mwl_item_delete`.`modality`,
+    `mwl_item_delete`.`perf_physician`,
+    `mwl_item_delete`.`perf_phys_fn_sx`,
+    `mwl_item_delete`.`perf_phys_gn_sx`,
+    `mwl_item_delete`.`perf_phys_i_name`,
+    `mwl_item_delete`.`perf_phys_p_name`,
+    `mwl_item_delete`.`req_proc_id`,
+    `mwl_item_delete`.`accession_no`,
+    `mwl_item_delete`.`study_iuid`,
+    `mwl_item_delete`.`updated_time`,
+    `mwl_item_delete`.`created_time`,
+    `mwl_item_delete`.`item_attrs`)
+SELECT 
+    `mwl_item`.`patient_fk`,
+    `mwl_item`.`sps_status`,
+    `mwl_item`.`sps_id`,
+    `mwl_item`.`start_datetime`,
+    `mwl_item`.`station_aet`,
+    `mwl_item`.`station_name`,
+    `mwl_item`.`modality`,
+    `mwl_item`.`perf_physician`,
+    `mwl_item`.`perf_phys_fn_sx`,
+    `mwl_item`.`perf_phys_gn_sx`,
+    `mwl_item`.`perf_phys_i_name`,
+    `mwl_item`.`perf_phys_p_name`,
+    `mwl_item`.`req_proc_id`,
+    `mwl_item`.`accession_no`,
+    `mwl_item`.`study_iuid`,
+    `mwl_item`.`updated_time`,
+    `mwl_item`.`created_time`,
+    `mwl_item`.`item_attrs` FROM pacsdb.mwl_item  where sps_id = '{0}.1';
+delete from mwl_item where sps_id='{0}.1';", examen.ToString());
+
+                    MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(query, conn);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+
+            }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+
+            }
+        }
+
         public string getNombreTiempoRM(int tipo)
         {
             switch (tipo)

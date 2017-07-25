@@ -418,6 +418,7 @@
                 </MenuItem>
                 <MenuItem Header="_Modificar Cobranza" x:Name="MenuRegistrarPago"  Visibility="Collapsed" Click="MenuRegistrarPago_Click"/>
                 <Separator/>
+                <MenuItem Header="Re-Enviar Correo Facturacion"  Click="MenuReenviarCorreo_Click"/>
                 <MenuItem Header="Empresas"  Click="MenuEmpresa_Click">
                     <MenuItem.Icon>
                         <StackPanel>

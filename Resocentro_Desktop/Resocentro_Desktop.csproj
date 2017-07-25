@@ -95,7 +95,7 @@
     <OutputPath>bin\x64\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
@@ -702,6 +702,9 @@
     <Compile Include="Interfaz\Caja\frmReporteFacturacion.xaml.cs">
       <DependentUpon>frmReporteFacturacion.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Interfaz\Caja\frnEnviarCorreofactura.xaml.cs">
+      <DependentUpon>frnEnviarCorreofactura.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Interfaz\Caja\impresion\frmCaratula.xaml.cs">
       <DependentUpon>frmCaratula.xaml</DependentUpon>
     </Compile>
@@ -1066,6 +1069,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Interfaz\Caja\frmReporteFacturacion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Interfaz\Caja\frnEnviarCorreofactura.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

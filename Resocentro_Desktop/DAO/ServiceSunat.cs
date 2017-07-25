@@ -29,7 +29,7 @@ namespace Resocentro_Desktop.DAO
                 try
                 {
                     wService.Open();
-                    byte[] returnByte = wService.sendBill(filename + ".zip", byteArray);
+                    byte[] returnByte = wService.sendBill(filename + ".zip", byteArray,"");
                     new CobranzaDAO().insertarLogDocumento(filename, "SENDBILL", "-");
                     wService.Close();
                     pathCDR = Tool.PathDocumentosFacturacion + codigopaciente.ToString() + @"\RESULT\R-" + filename + ".zip";
@@ -54,7 +54,7 @@ namespace Resocentro_Desktop.DAO
                 try
                 {
                     wService.Open();
-                    byte[] returnByte = wService.sendBill(filename + ".zip", byteArray);
+                    byte[] returnByte = wService.sendBill(filename + ".zip", byteArray,"");
                     new CobranzaDAO().insertarLogDocumento(filename, "SENDBILL", "-");
                     wService.Close();
                     pathCDR = Tool.PathDocumentosFacturacion + codigopaciente.ToString() + @"\RESULT\R-" + filename + ".zip";
@@ -99,7 +99,7 @@ namespace Resocentro_Desktop.DAO
                 try
                 {
                     wService.Open();
-                    ticket = wService.sendSummary(filename, byteArray);
+                    ticket = wService.sendSummary(filename, byteArray,"");
                     new CobranzaDAO().insertarLogDocumento(filename, "SENDBAJA", ticket);
                     wService.Close();
 
@@ -117,7 +117,7 @@ namespace Resocentro_Desktop.DAO
                 try
                 {
                     wService.Open();
-                    ticket = wService.sendSummary(filename, byteArray);
+                    ticket = wService.sendSummary(filename, byteArray,"");
                     new CobranzaDAO().insertarLogDocumento(filename, "SENDBAJA", ticket);
                     wService.Close();
 
@@ -157,7 +157,7 @@ namespace Resocentro_Desktop.DAO
                 try
                 {
                     wService.Open();
-                    ticket = wService.sendSummary(filename, byteArray);
+                    ticket = wService.sendSummary(filename, byteArray,"");
                     new CobranzaDAO().insertarLogDocumento(filename, "SENDSUMMARY", ticket);
                     wService.Close();
 
@@ -175,7 +175,7 @@ namespace Resocentro_Desktop.DAO
                 try
                 {
                     wService.Open();
-                    ticket = wService.sendSummary(filename, byteArray);
+                    ticket = wService.sendSummary(filename, byteArray,"");
                     new CobranzaDAO().insertarLogDocumento(filename, "SENDSUMMARY", ticket);
                     wService.Close();
 

@@ -12,6 +12,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="fileName" type="xs:string" />
       <xs:element xmlns:ns1="http://www.w3.org/2005/05/xmlmime" ns1:expectedContentTypes="application/octet-stream" minOccurs="0" name="contentFile" type="xs:base64Binary" />
+      <xs:element minOccurs="0" maxOccurs="1" name="partyType" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="sendSummaryResponse">
@@ -39,6 +40,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="fileName" type="xs:string" />
       <xs:element xmlns:ns2="http://www.w3.org/2005/05/xmlmime" ns2:expectedContentTypes="application/octet-stream" minOccurs="0" name="contentFile" type="xs:base64Binary" />
+      <xs:element minOccurs="0" maxOccurs="1" name="partyType" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="sendPackResponse">
@@ -50,6 +52,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="fileName" type="xs:string" />
       <xs:element xmlns:ns3="http://www.w3.org/2005/05/xmlmime" ns3:expectedContentTypes="application/octet-stream" minOccurs="0" name="contentFile" type="xs:base64Binary" />
+      <xs:element minOccurs="0" maxOccurs="1" name="partyType" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="sendBillResponse">

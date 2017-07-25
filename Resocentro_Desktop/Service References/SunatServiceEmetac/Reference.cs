@@ -53,7 +53,7 @@ namespace Resocentro_Desktop.SunatServiceEmetac {
     }
     
     /// <comentarios/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2053.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -148,12 +148,17 @@ namespace Resocentro_Desktop.SunatServiceEmetac {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, DataType="base64Binary")]
         public byte[] contentFile;
         
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.sunat.gob.pe", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string partyType;
+        
         public sendBillRequest() {
         }
         
-        public sendBillRequest(string fileName, byte[] contentFile) {
+        public sendBillRequest(string fileName, byte[] contentFile, string partyType) {
             this.fileName = fileName;
             this.contentFile = contentFile;
+            this.partyType = partyType;
         }
     }
     
@@ -189,12 +194,17 @@ namespace Resocentro_Desktop.SunatServiceEmetac {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, DataType="base64Binary")]
         public byte[] contentFile;
         
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.sunat.gob.pe", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string partyType;
+        
         public sendPackRequest() {
         }
         
-        public sendPackRequest(string fileName, byte[] contentFile) {
+        public sendPackRequest(string fileName, byte[] contentFile, string partyType) {
             this.fileName = fileName;
             this.contentFile = contentFile;
+            this.partyType = partyType;
         }
     }
     
@@ -230,12 +240,17 @@ namespace Resocentro_Desktop.SunatServiceEmetac {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, DataType="base64Binary")]
         public byte[] contentFile;
         
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.sunat.gob.pe", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string partyType;
+        
         public sendSummaryRequest() {
         }
         
-        public sendSummaryRequest(string fileName, byte[] contentFile) {
+        public sendSummaryRequest(string fileName, byte[] contentFile, string partyType) {
             this.fileName = fileName;
             this.contentFile = contentFile;
+            this.partyType = partyType;
         }
     }
     
@@ -312,10 +327,11 @@ namespace Resocentro_Desktop.SunatServiceEmetac {
             return base.Channel.sendBill(request);
         }
         
-        public byte[] sendBill(string fileName, byte[] contentFile) {
+        public byte[] sendBill(string fileName, byte[] contentFile, string partyType) {
             Resocentro_Desktop.SunatServiceEmetac.sendBillRequest inValue = new Resocentro_Desktop.SunatServiceEmetac.sendBillRequest();
             inValue.fileName = fileName;
             inValue.contentFile = contentFile;
+            inValue.partyType = partyType;
             Resocentro_Desktop.SunatServiceEmetac.sendBillResponse retVal = ((Resocentro_Desktop.SunatServiceEmetac.billService)(this)).sendBill(inValue);
             return retVal.applicationResponse;
         }
@@ -325,10 +341,11 @@ namespace Resocentro_Desktop.SunatServiceEmetac {
             return base.Channel.sendBillAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Resocentro_Desktop.SunatServiceEmetac.sendBillResponse> sendBillAsync(string fileName, byte[] contentFile) {
+        public System.Threading.Tasks.Task<Resocentro_Desktop.SunatServiceEmetac.sendBillResponse> sendBillAsync(string fileName, byte[] contentFile, string partyType) {
             Resocentro_Desktop.SunatServiceEmetac.sendBillRequest inValue = new Resocentro_Desktop.SunatServiceEmetac.sendBillRequest();
             inValue.fileName = fileName;
             inValue.contentFile = contentFile;
+            inValue.partyType = partyType;
             return ((Resocentro_Desktop.SunatServiceEmetac.billService)(this)).sendBillAsync(inValue);
         }
         
@@ -337,10 +354,11 @@ namespace Resocentro_Desktop.SunatServiceEmetac {
             return base.Channel.sendPack(request);
         }
         
-        public string sendPack(string fileName, byte[] contentFile) {
+        public string sendPack(string fileName, byte[] contentFile, string partyType) {
             Resocentro_Desktop.SunatServiceEmetac.sendPackRequest inValue = new Resocentro_Desktop.SunatServiceEmetac.sendPackRequest();
             inValue.fileName = fileName;
             inValue.contentFile = contentFile;
+            inValue.partyType = partyType;
             Resocentro_Desktop.SunatServiceEmetac.sendPackResponse retVal = ((Resocentro_Desktop.SunatServiceEmetac.billService)(this)).sendPack(inValue);
             return retVal.ticket;
         }
@@ -350,10 +368,11 @@ namespace Resocentro_Desktop.SunatServiceEmetac {
             return base.Channel.sendPackAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Resocentro_Desktop.SunatServiceEmetac.sendPackResponse> sendPackAsync(string fileName, byte[] contentFile) {
+        public System.Threading.Tasks.Task<Resocentro_Desktop.SunatServiceEmetac.sendPackResponse> sendPackAsync(string fileName, byte[] contentFile, string partyType) {
             Resocentro_Desktop.SunatServiceEmetac.sendPackRequest inValue = new Resocentro_Desktop.SunatServiceEmetac.sendPackRequest();
             inValue.fileName = fileName;
             inValue.contentFile = contentFile;
+            inValue.partyType = partyType;
             return ((Resocentro_Desktop.SunatServiceEmetac.billService)(this)).sendPackAsync(inValue);
         }
         
@@ -362,10 +381,11 @@ namespace Resocentro_Desktop.SunatServiceEmetac {
             return base.Channel.sendSummary(request);
         }
         
-        public string sendSummary(string fileName, byte[] contentFile) {
+        public string sendSummary(string fileName, byte[] contentFile, string partyType) {
             Resocentro_Desktop.SunatServiceEmetac.sendSummaryRequest inValue = new Resocentro_Desktop.SunatServiceEmetac.sendSummaryRequest();
             inValue.fileName = fileName;
             inValue.contentFile = contentFile;
+            inValue.partyType = partyType;
             Resocentro_Desktop.SunatServiceEmetac.sendSummaryResponse retVal = ((Resocentro_Desktop.SunatServiceEmetac.billService)(this)).sendSummary(inValue);
             return retVal.ticket;
         }
@@ -375,10 +395,11 @@ namespace Resocentro_Desktop.SunatServiceEmetac {
             return base.Channel.sendSummaryAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Resocentro_Desktop.SunatServiceEmetac.sendSummaryResponse> sendSummaryAsync(string fileName, byte[] contentFile) {
+        public System.Threading.Tasks.Task<Resocentro_Desktop.SunatServiceEmetac.sendSummaryResponse> sendSummaryAsync(string fileName, byte[] contentFile, string partyType) {
             Resocentro_Desktop.SunatServiceEmetac.sendSummaryRequest inValue = new Resocentro_Desktop.SunatServiceEmetac.sendSummaryRequest();
             inValue.fileName = fileName;
             inValue.contentFile = contentFile;
+            inValue.partyType = partyType;
             return ((Resocentro_Desktop.SunatServiceEmetac.billService)(this)).sendSummaryAsync(inValue);
         }
     }
