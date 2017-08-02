@@ -484,7 +484,7 @@ WHERE SUBSTRING(ea.codigoestudio,1,3)='{0}'
 
 
                                     d.isGratuita = Convert.ToBoolean(reader["isCortesia"].ToString());
-                                    if(d.isGratuita)
+                                    if (d.isGratuita)
                                         d.tipoIGV = (int)TIPO_IGV.INAFECTO_RETIRO;
 
                                     d.isCortesia = Convert.ToBoolean(reader["isDescuento"].ToString());
@@ -1471,7 +1471,7 @@ WHERE SUBSTRING(ea.codigoestudio,1,3)='{0}'
                 case "4041": return "El codigo de pais debe ser PE ";
 
                 default:
-                    return "No se encontro la descripcion del código";
+                    return "No se encontro la descripcion del código : " + code;
             }
         }
 
@@ -2086,10 +2086,10 @@ WHERE SUBSTRING(ea.codigoestudio,1,3)='{0}'
             return result;
         }
 
-        public void insertarResumen(DocumentoSunat documento, string ticket, string pathResumen, string pathRespuesta, MySession session)
+        public void insertarResumen(DocumentoSunat documento, string ticket, string pathResumen, string pathRespuesta, string session)
         {
-            string sqlResumen = "INSERT INTO SendResumen([empresa],[numeroResumen],[fechaEmision],[fechaReferencia],[ticket],[pathResumen],[pathRespuesta],[usuario])VALUES ('" + documento.empresa + "','" + documento.numeroDocumento + "',getdate(),'" + documento.fechaEmision.ToShortDateString() + "','" + ticket + "','" + pathResumen + "','" + pathRespuesta + "','" + session.codigousuario + "');";
-
+            string sqlResumen = "INSERT INTO SendResumen([empresa],[numeroResumen],[fechaEmision],[fechaReferencia],[ticket],[pathResumen],[pathRespuesta],[usuario]) output INSERTED.idSendResumen  VALUES ('" + documento.empresa + "','" + documento.numeroDocumento + "',getdate(),'" + documento.fechaEmision.ToShortDateString() + "','" + ticket + "','" + pathResumen + "','" + pathRespuesta + "','" + session + "');";
+            string sqlDetalle = "INSERT INTO [dbo].[DetalleSendResumen] ([idSendResumen],[tipoDocumento],[serie],[inicio],[fin],[gravada],[exoneradas],[inafectas],[igv])VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')";
 
             using (DATABASEGENERALEntities db = new DATABASEGENERALEntities())
             {
@@ -2106,8 +2106,19 @@ WHERE SUBSTRING(ea.codigoestudio,1,3)='{0}'
 
                         command.CommandText = sqlResumen;
                         command.Prepare();
-                        command.ExecuteNonQuery();
+                        int idSendResumen = (int)command.ExecuteScalar();
+                        string sqlquery = "";
+                        foreach (var item in documento.detalleResumenBoleta)
+                        {
+                            sqlquery += string.Format(sqlDetalle, idSendResumen, (item.tipodocumento + "-" + item.tipodocumentoSUNAT), item.serie, item.inicioRango, item.finRango, item.totalVentaGravadas, item.totalVentaExonerada, item.totalVentaInafectas, item.totalIGV);
+                        }
 
+                        if (sqlquery != "")
+                        {
+                            command.CommandText = sqlResumen;
+                            command.Prepare();
+                            command.ExecuteNonQuery();
+                        }
 
                         transaction.Commit();
                     }
@@ -2636,7 +2647,8 @@ WHERE SUBSTRING(ea.codigoestudio,1,3)='{0}'
                                 if (reader["estado"].ToString() == "A")
                                     result = ERROR_ANULACION_DOCUMENTO.DOCUMENTO_RESTRINGIDO;
                                 fecharegistro = Convert.ToDateTime(reader["fechaemitio"].ToString());
-                                if (!(fecharegistro > Tool.getDatetime().AddDays(-7) && fecharegistro.Month == Tool.getDatetime().Month))
+                                TimeSpan ts = Tool.getDatetime() - fecharegistro;
+                                if (ts.Days > 7)
                                     result = ERROR_ANULACION_DOCUMENTO.DOCUMENTO_RESTRINGIDO;
                                 if (!Convert.ToBoolean(reader["isSendSunat"].ToString()))
                                     result = ERROR_ANULACION_DOCUMENTO.DOCUMENTO_NO_ENVIADO;
@@ -2844,11 +2856,11 @@ WHERE SUBSTRING(ea.codigoestudio,1,3)='{0}'
             }
             return result;
         }
-        public void cambiarestadoPagado(DocumentoSunat documento,string usuario)
+        public void cambiarestadoPagado(DocumentoSunat documento, string usuario)
         {
             using (DATABASEGENERALEntities db = new DATABASEGENERALEntities())
             {
-                string sqlUpdate = "UPDATE EXAMENXATENCION SET estadoestudio='P',user_caja='"+usuario+"',fecha_caja=getdate() WHERE numeroatencion='" + documento.numeroatencion + "' AND estadoestudio='" + (documento.empresa == 2 ? "A" : "R") + "';";
+                string sqlUpdate = "UPDATE EXAMENXATENCION SET estadoestudio='P',user_caja='" + usuario + "',fecha_caja=getdate() WHERE numeroatencion='" + documento.numeroatencion + "' AND estadoestudio='" + (documento.empresa == 2 ? "A" : "R") + "';";
 
                 using (SqlConnection connection = new SqlConnection(db.Database.Connection.ConnectionString))
                 {
@@ -2967,7 +2979,7 @@ WHERE SUBSTRING(ea.codigoestudio,1,3)='{0}'
             }
         }
 
-        public void procesarEstudios(string numerocita, string codigopaciente, string numeroatencion, int empresa,string usuario)
+        public void procesarEstudios(string numerocita, string codigopaciente, string numeroatencion, int empresa, string usuario)
         {
             using (DATABASEGENERALEntities db = new DATABASEGENERALEntities())
             {
@@ -2975,7 +2987,7 @@ WHERE SUBSTRING(ea.codigoestudio,1,3)='{0}'
                 string sqlUpdateAtencion = "";
 
                 if (empresa == 1)
-                    sqlUpdateAtencion = "UPDATE EXAMENXATENCION SET estadoestudio='P',fecha_caja=getdate(),user_caja='"+usuario+"' WHERE numeroatencion='" + numeroatencion + "' AND estadoestudio='R';";
+                    sqlUpdateAtencion = "UPDATE EXAMENXATENCION SET estadoestudio='P',fecha_caja=getdate(),user_caja='" + usuario + "' WHERE numeroatencion='" + numeroatencion + "' AND estadoestudio='R';";
                 else
                     sqlUpdateAtencion = "UPDATE EXAMENXATENCION SET estadoestudio='P',fecha_caja=getdate(),user_caja='" + usuario + "' WHERE numeroatencion='" + numeroatencion + "' AND estadoestudio='A';";
 
@@ -3289,7 +3301,7 @@ WHERE SUBSTRING(ea.codigoestudio,1,3)='{0}'
                 string sqlString = "exec getListaFacturacion '{0}','{1}','{2}'";
                 using (SqlConnection connection = new SqlConnection(db.Database.Connection.ConnectionString))
                 {
-                    using (SqlCommand command = new SqlCommand(string.Format(sqlString, empresa, fecha,fin), connection))
+                    using (SqlCommand command = new SqlCommand(string.Format(sqlString, empresa, fecha, fin), connection))
                     {
                         connection.Open();
                         SqlDataReader reader = command.ExecuteReader();

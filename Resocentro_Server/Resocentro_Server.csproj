@@ -27,7 +27,7 @@
     <InstallUrl>http://localhost:5050/Resocentro_Server/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>8</ApplicationRevision>
+    <ApplicationRevision>16</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -76,6 +76,8 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL" />
+    <Reference Include="Oracle.ManagedDataAccess.EntityFramework, Version=6.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -108,6 +110,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DAO\CobranzaDAO.cs" />
+    <Compile Include="DAO\DetalleSendResumen.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAO\DOCUMENTO.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -127,7 +132,20 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="DAO\Sunat.cs" />
+    <Compile Include="DAO\VerificacionSunat.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\CobranzaEntity.cs" />
+    <Compile Include="Service References\ServiceSunatConsultaEmetac\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ServiceSunatConsultaResocentro\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\ServiceSunatEmetac\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -184,6 +202,34 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="Resocentro_Server_ClaveTemporal.pfx" />
+    <None Include="Service References\ServiceSunatConsultaEmetac\billConsultService.wsdl" />
+    <None Include="Service References\ServiceSunatConsultaEmetac\billConsultService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceSunatConsultaEmetac\billConsultService1.wsdl" />
+    <None Include="Service References\ServiceSunatConsultaEmetac\Resocentro_Server.ServiceSunatConsultaEmetac.getStatusCdrResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceSunatConsultaEmetac\Resocentro_Server.ServiceSunatConsultaEmetac.getStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceSunatConsultaEmetac\Resocentro_Server.ServiceSunatConsultaEmetac.statusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceSunatConsultaResocentro\billConsultService.wsdl" />
+    <None Include="Service References\ServiceSunatConsultaResocentro\billConsultService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceSunatConsultaResocentro\billConsultService1.wsdl" />
+    <None Include="Service References\ServiceSunatConsultaResocentro\Resocentro_Server.ServiceSunatConsultaResocentro.getStatusCdrResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceSunatConsultaResocentro\Resocentro_Server.ServiceSunatConsultaResocentro.getStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceSunatConsultaResocentro\Resocentro_Server.ServiceSunatConsultaResocentro.statusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\ServiceSunatEmetac\billService.wsdl" />
     <None Include="Service References\ServiceSunatEmetac\billService.xsd">
       <SubType>Designer</SubType>
@@ -233,6 +279,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ServiceSunatConsultaEmetac\" />
+    <WCFMetadataStorage Include="Service References\ServiceSunatConsultaResocentro\" />
     <WCFMetadataStorage Include="Service References\ServiceSunatEmetac\" />
     <WCFMetadataStorage Include="Service References\ServiceSunatResocentro\" />
   </ItemGroup>
@@ -271,6 +319,18 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <None Include="Service References\ServiceSunatConsultaEmetac\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServiceSunatConsultaEmetac\configuration.svcinfo" />
+    <None Include="Service References\ServiceSunatConsultaEmetac\configuration91.svcinfo" />
+    <None Include="Service References\ServiceSunatConsultaResocentro\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServiceSunatConsultaResocentro\configuration.svcinfo" />
+    <None Include="Service References\ServiceSunatConsultaResocentro\configuration91.svcinfo" />
     <Resource Include="faviconserver.ico" />
     <Resource Include="img\faviconserver.png" />
   </ItemGroup>

@@ -129,47 +129,7 @@ namespace Resocentro_Desktop.Interfaz.Cobranza
             verificarBaja();
         }
 
-        public void verificarBaja()
-        {
-            if (lblticket.Content.ToString() != "")
-            {
-                try
-                {
-                    //lblticket.Content = "201700782991965";
-                    string estado = new ServiceSunat().getStatus(item.empresa, lblticket.Content.ToString(), txtnumerodocumento.Text);
 
-                    if (estado == "0")
-                    {
-                        if (new CobranzaDAO().anularDocumento(txtnumerodocumento.Text, cboTipoDocumento.Text.Substring(0, 2), cbosede.SelectedValue.ToString(), txtmotivo.Text, session))
-                        {
-                            new CobranzaDAO().addWatermakerAnulado(doc.pathFile);
-                            MessageBox.Show("Se ANULO con exito el documento en SUNAT");
-                            printAnulacion(doc.pathFile);
-                            lblticket.Content = "";
-                            this.IsEnabled = false;
-                        }
-                    }
-                    else
-                    {
-                        if (estado.Contains("98"))
-                            MessageBox.Show("ESTADO: EN PROCESO DE VALIDACION\nvuelva a verificar");
-                        else
-                        {
-                            openFile(Tool.PathDocumentosFacturacion + "\\BAJA\\RESPUESTA-" + lblticket.Content.ToString() + ".zip");
-                            MessageBox.Show("NO se anulo documento\n ESTADO: PROCESO CON ERRORES \n\nVERIFIQUE CON SISTEMAS");
-
-                            lblticket.Content = "";
-                            this.IsEnabled = false;
-                        }
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-        }
         private void openFile(string path)
         {
             System.Diagnostics.Process printJob = new System.Diagnostics.Process();
@@ -219,24 +179,87 @@ namespace Resocentro_Desktop.Interfaz.Cobranza
 
                 if (filename != "")
                 {
-                    string ticket = new ServiceSunat().sendSummary(item.empresa, filename);
-                    lblticket.Content = ticket;
 
-                    if (ticket != "")
+                    using (DATABASEGENERALEntities db = new DATABASEGENERALEntities())
                     {
-                        btnAnular.IsEnabled = false;
-                        btnReenviar.IsEnabled = false;
-                        MessageBox.Show("Se esta procesando su solicitud ...");
+                        VerificacionSunat ver = new VerificacionSunat();
+                        ver.idTicket = "-";
+                        ver.empresa = item.empresa.ToString();
+                        ver.numerodocumento = txtnumerodocumento.Text;
+                        ver.fecha = Tool.getDatetime();
+                        ver.resultado = "-";
+                        ver.isActivo = true;
+                        ver.tipo_envio = "BAJA";
+                        ver.codigopaciente = item.codigopaciente;
+                        ver.pathfile = filename;
+                        ver.tipodocumento = cboTipoDocumento.Text.Substring(0, 2);
+                        ver.usuario = session.codigousuario;
+                        ver.sucursal = int.Parse(cbosede.SelectedValue.ToString().Substring(1));
+                        db.VerificacionSunat.Add(ver);
+                        db.SaveChanges();
+                        lblticket.Content = "-";
                         verificarBaja();
                     }
+                    /* string ticket = new ServiceSunat().sendSummary(item.empresa, filename);
+                     lblticket.Content = ticket;
+
+                     if (ticket != "")
+                     {
+                         btnAnular.IsEnabled = false;
+                         btnReenviar.IsEnabled = false;
+                         MessageBox.Show("Se esta procesando su solicitud ...");
+                         verificarBaja();
+                     }*/
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(CobranzaDAO.getErrorSunat(ex.Message));
             }
         }
+        public void verificarBaja()
+        {
+            if (lblticket.Content.ToString() != "")
+            {
+                try
+                {
+                    //lblticket.Content = "201700782991965";
+                    /* string estado = new ServiceSunat().getStatus(item.empresa, lblticket.Content.ToString(), txtnumerodocumento.Text);
 
+                     if (estado == "0")
+                     {
+                        
+                    if (new CobranzaDAO().anularDocumento(txtnumerodocumento.Text, cboTipoDocumento.Text.Substring(0, 2), cbosede.SelectedValue.ToString(), txtmotivo.Text, session))
+                    { */
+                    new CobranzaDAO().addWatermakerAnulado(doc.pathFile);
+                    MessageBox.Show("Se ANULO con exito el documento en SUNAT");
+                    printAnulacion(doc.pathFile);
+                    lblticket.Content = "";
+                    this.IsEnabled = false;
+                    /*}
+                    
+                    }
+                    else
+                    {
+                        if (estado.Contains("98"))
+                            MessageBox.Show("ESTADO: EN PROCESO DE VALIDACION\nvuelva a verificar");
+                        else
+                        {
+                            openFile(Tool.PathDocumentosFacturacion + "\\BAJA\\RESPUESTA-" + lblticket.Content.ToString() + ".zip");
+                            MessageBox.Show("NO se anulo documento\n ESTADO: PROCESO CON ERRORES \n\nVERIFIQUE CON SISTEMAS");
+
+                            lblticket.Content = "";
+                            this.IsEnabled = false;
+                        }
+
+                    }*/
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (lblticket.Content.ToString() != "")

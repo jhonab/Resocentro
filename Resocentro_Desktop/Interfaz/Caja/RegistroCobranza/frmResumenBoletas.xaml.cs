@@ -77,7 +77,7 @@ namespace Resocentro_Desktop.Interfaz.Cobranza
                         string ticket = new ServiceSunat().sendSummaryResumen(item.empresa, filename);
                         txtticket.Text = ticket;
                         
-                        new CobranzaDAO().insertarResumen(item, ticket, pathMain, (Tool.PathDocumentosFacturacion + "\\RESUMEN\\RESPUESTA-" + ticket + ".zip"), session);
+                        new CobranzaDAO().insertarResumen(item, ticket, pathMain, (Tool.PathDocumentosFacturacion + "\\RESUMEN\\RESPUESTA-" + ticket + ".zip"), session.codigousuario);
                         btnEnviar.IsEnabled = false;
                         MessageBox.Show("Archivo enviado con exito");
 

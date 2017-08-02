@@ -157,7 +157,7 @@ namespace Resocentro_Desktop.DAO
                 try
                 {
                     wService.Open();
-                    ticket = wService.sendSummary(filename, byteArray,"");
+                    ticket = wService.sendSummary(filename, byteArray, "");
                     new CobranzaDAO().insertarLogDocumento(filename, "SENDSUMMARY", ticket);
                     wService.Close();
 

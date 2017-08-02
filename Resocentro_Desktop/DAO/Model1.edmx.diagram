@@ -104,6 +104,7 @@
         <EntityTypeShape EntityType="DATABASEGENERALModel.Horario_Tecnologo" Width="1.5" PointX="5.375" PointY="38" />
         <AssociationConnector Association="DATABASEGENERALModel.FK_Horario_Tecnologo_USUARIO" />
         <AssociationConnector Association="DATABASEGENERALModel.FK_Horario_Tecnologo_USUARIO1" />
+        <EntityTypeShape EntityType="DATABASEGENERALModel.VerificacionSunat" Width="1.5" PointX="14.375" PointY="20.75" />
       </Diagram>
       <Diagram DiagramId="e0e278cdea714f4f94892782f065b8ed" Name="Carta" ZoomLevel="88" >
         <EntityTypeShape EntityType="DATABASEGENERALModel.ESTUDIO_COMPANIA" Width="2.5" PointX="3.5" PointY="1.625" IsExpanded="false" />

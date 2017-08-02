@@ -40,7 +40,7 @@ namespace Resocentro_Server.DAO
                 {
                     wService.Close();
                     new CobranzaDAO().insertarLogDocumento(filename, "SENDBILL", "-", ex.Code.Name);
-                    throw new Exception(ex.Message + "\n" + ex.Code.Name + " - " + CobranzaDAO.getErrorSunat(ex.Code.Name.ToString()));
+                    throw new Exception( ex.Code.Name + "| - " + CobranzaDAO.getErrorSunat(ex.Code.Name.ToString())+"\n\n"+ex.Message + "\n" );
                 }
             }
             else if (empresa == 2)
@@ -83,7 +83,7 @@ namespace Resocentro_Server.DAO
         /// <param name="empresa"></param>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public string sendSummary(int empresa, string filename)
+        public string sendSummary(int empresa, string filename,string numerodocumento)
         {
             System.Net.ServicePointManager.UseNagleAlgorithm = true;
             System.Net.ServicePointManager.Expect100Continue = false;
@@ -99,7 +99,7 @@ namespace Resocentro_Server.DAO
                 {
                     wService.Open();
                     ticket = wService.sendSummary(filename, byteArray,"");
-                    new CobranzaDAO().insertarLogDocumento(filename, "SENDBAJA", ticket);
+                    new CobranzaDAO().insertarLogDocumento(numerodocumento, "SENDBAJA", ticket);
                     wService.Close();
 
                 }
@@ -316,7 +316,65 @@ namespace Resocentro_Server.DAO
 
         }
 
-       
+        public string getCDR(int empresa,string nuumerodocumento,int codigopaciente,string filename)
+        {
+            System.Net.ServicePointManager.UseNagleAlgorithm = true;
+            System.Net.ServicePointManager.Expect100Continue = false;
+            System.Net.ServicePointManager.CheckCertificateRevocationList = true;
+
+            string[] numerodoc = filename.Split('-');
+
+            string rucEmisor = numerodoc[0];
+            string tipoDocumento = numerodoc[1];
+            string serie = numerodoc[2];
+            int correlativo = int.Parse(numerodoc[3].Replace(".zip",""));
+            string pathCDR = PathDocumentosFacturacion + codigopaciente.ToString() + @"\RESULT\R-" + filename;
+
+            if (empresa == 1)
+            {
+                ServiceSunatConsultaResocentro.billServiceClient wService = new ServiceSunatConsultaResocentro.billServiceClient();
+                try
+                {
+
+                    wService.Open();
+                    ServiceSunatConsultaResocentro.statusResponse returnstring = wService.getStatusCdr(rucEmisor, tipoDocumento, serie, correlativo);
+                    byte[] returnByte = returnstring.content;
+                    wService.Close();
+                    System.IO.File.WriteAllBytes(pathCDR, returnByte);
+
+                }
+                catch (System.ServiceModel.FaultException ex)
+                {
+                    wService.Close();
+                    throw new Exception(ex.Code.Name);
+                }
+            }
+            else if (empresa == 2)
+            {
+                ServiceSunatConsultaEmetac.billServiceClient wService = new ServiceSunatConsultaEmetac.billServiceClient();
+                try
+                {
+                    wService.Open();
+                    ServiceSunatConsultaEmetac.statusResponse returnstring = wService.getStatusCdr(rucEmisor, tipoDocumento, serie, correlativo);
+                    byte[] returnByte = returnstring.content;
+                    wService.Close();
+                    System.IO.File.WriteAllBytes(pathCDR, returnByte);
+
+                }
+                catch (System.ServiceModel.FaultException ex)
+                {
+                    wService.Close();
+                    throw new Exception(ex.Code.Name);
+                }
+            }
+            else
+            {
+                throw new Exception("No esta registrado ningun Servicio de Sunat para esta Empresa");
+            }
+
+            return pathCDR;
+
+        }
         public bool verificarStatusConexion(int empresa)
         {
             bool result = false;

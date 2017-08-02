@@ -107,6 +107,7 @@
           <Property Name="domiciliofiscal" Type="varchar(max)" />
           <Property Name="domiciliocomercial" Type="varchar(max)" />
           <Property Name="UbigeoId" Type="char" MaxLength="6" />
+          <Property Name="IafaId" Type="int" />
         </EntityType>
         <EntityType Name="ATENCION">
           <Key>
@@ -1419,6 +1420,24 @@
           <Property Name="User_Uid" Type="varchar(max)" />
           <Property Name="AreaId" Type="int" />
         </EntityType>
+        <EntityType Name="VerificacionSunat">
+          <Key>
+            <PropertyRef Name="idVerificacionSunat" />
+          </Key>
+          <Property Name="idVerificacionSunat" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idTicket" Type="varchar" MaxLength="100" />
+          <Property Name="empresa" Type="varchar" MaxLength="2" />
+          <Property Name="numerodocumento" Type="varchar" MaxLength="100" />
+          <Property Name="fecha" Type="datetime" />
+          <Property Name="resultado" Type="varchar" MaxLength="100" />
+          <Property Name="isActivo" Type="bit" />
+          <Property Name="tipo_envio" Type="varchar" MaxLength="100" />
+          <Property Name="codigopaciente" Type="int" />
+          <Property Name="pathfile" Type="varchar" MaxLength="900" />
+          <Property Name="tipodocumento" Type="varchar" MaxLength="10" />
+          <Property Name="usuario" Type="varchar" MaxLength="20" />
+          <Property Name="sucursal" Type="int" />
+        </EntityType>
         <Association Name="FK__AL_Stock___Almac__38B00FFC">
           <End Role="AL_Almacen" Type="Self.AL_Almacen" Multiplicity="1" />
           <End Role="AL_Stock_Diario" Type="Self.AL_Stock_Diario" Multiplicity="*" />
@@ -2552,6 +2571,7 @@
           <EntitySet Name="UBIGEO" EntityType="Self.UBIGEO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UNIDADNEGOCIO" EntityType="Self.UNIDADNEGOCIO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VerificacionSunat" EntityType="Self.VerificacionSunat" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__AL_Stock___Almac__38B00FFC" Association="Self.FK__AL_Stock___Almac__38B00FFC">
             <End Role="AL_Almacen" EntitySet="AL_Almacen" />
             <End Role="AL_Stock_Diario" EntitySet="AL_Stock_Diario" />
@@ -3367,6 +3387,7 @@
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="Horario_Tecnologo" EntitySet="Horario_Tecnologo" />
           </AssociationSet>
+          <EntitySet Name="VerificacionSunat" EntityType="DATABASEGENERALModel.VerificacionSunat" />
           </EntityContainer>
         <EntityType Name="EMPLEADO">
           <Key>
@@ -4815,6 +4836,7 @@
           <NavigationProperty Name="COMPANIASEGURO" Relationship="DATABASEGENERALModel.FK__COMPANIASEG__ruc__2FCF1A8A" FromRole="ASEGURADORA" ToRole="COMPANIASEGURO" />
           <NavigationProperty Name="UBIGEO" Relationship="DATABASEGENERALModel.FK_ASEGURADORA_UBIGEO" FromRole="ASEGURADORA" ToRole="UBIGEO" />
           <NavigationProperty Name="DOCUMENTO" Relationship="DATABASEGENERALModel.FK__DOCUMENTO__ruc__4D5F7D71" FromRole="ASEGURADORA" ToRole="DOCUMENTO" />
+          <Property Name="IafaId" Type="Int32" />
         </EntityType>
         <Association Name="FK__COMPANIASEG__ruc__2FCF1A8A">
           <End Type="DATABASEGENERALModel.ASEGURADORA" Role="ASEGURADORA" Multiplicity="1" />
@@ -6035,6 +6057,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="VerificacionSunat">
+          <Key>
+            <PropertyRef Name="idVerificacionSunat" />
+          </Key>
+          <Property Name="idVerificacionSunat" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTicket" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="empresa" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="numerodocumento" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="fecha" Type="DateTime" Precision="3" />
+          <Property Name="resultado" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="isActivo" Type="Boolean" />
+          <Property Name="tipo_envio" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="codigopaciente" Type="Int32" />
+          <Property Name="pathfile" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
+          <Property Name="tipodocumento" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="usuario" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="sucursal" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6934,6 +6974,7 @@
           <EntitySetMapping Name="ASEGURADORA">
             <EntityTypeMapping TypeName="DATABASEGENERALModel.ASEGURADORA">
               <MappingFragment StoreEntitySet="ASEGURADORA">
+                <ScalarProperty Name="IafaId" ColumnName="IafaId" />
                 <ScalarProperty Name="UbigeoId" ColumnName="UbigeoId" />
                 <ScalarProperty Name="domiciliocomercial" ColumnName="domiciliocomercial" />
                 <ScalarProperty Name="domiciliofiscal" ColumnName="domiciliofiscal" />
@@ -7610,6 +7651,25 @@
                 <ScalarProperty Name="inicio" ColumnName="inicio" />
                 <ScalarProperty Name="fecha" ColumnName="fecha" />
                 <ScalarProperty Name="idProgramacion" ColumnName="idProgramacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VerificacionSunat">
+            <EntityTypeMapping TypeName="DATABASEGENERALModel.VerificacionSunat">
+              <MappingFragment StoreEntitySet="VerificacionSunat">
+                <ScalarProperty Name="sucursal" ColumnName="sucursal" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+                <ScalarProperty Name="tipodocumento" ColumnName="tipodocumento" />
+                <ScalarProperty Name="pathfile" ColumnName="pathfile" />
+                <ScalarProperty Name="codigopaciente" ColumnName="codigopaciente" />
+                <ScalarProperty Name="tipo_envio" ColumnName="tipo_envio" />
+                <ScalarProperty Name="isActivo" ColumnName="isActivo" />
+                <ScalarProperty Name="resultado" ColumnName="resultado" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="numerodocumento" ColumnName="numerodocumento" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+                <ScalarProperty Name="idTicket" ColumnName="idTicket" />
+                <ScalarProperty Name="idVerificacionSunat" ColumnName="idVerificacionSunat" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

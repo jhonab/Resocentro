@@ -9,8 +9,8 @@
             <telerik:RadTabItem Header="Envio Facturas" Background="{DynamicResource Windows.Background}">
                 <Grid Background="{DynamicResource Windows.Background}" Margin="5">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10*"/>
-                        <RowDefinition Height="63*"/>
+                        <RowDefinition Height="39"/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBox Name="txtresumen" TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True" Text="" Foreground="White" Background="{DynamicResource Windows.Background}" Grid.Row="1" VerticalScrollBarVisibility="Auto" CaretIndex="99999999" />
                     <Button Name="btnEnvio_Factura" Content="Pausa" HorizontalAlignment="Left" Margin="0,9,0,0" VerticalAlignment="Top" Width="75" Click="btnPausefacturas_Click"/>
@@ -18,19 +18,37 @@
                     <Label Content="Cada " Foreground="White" HorizontalAlignment="Left" Margin="191,9,0,0" VerticalAlignment="Top"/>
                     <telerik:RadNumericUpDown Name="txtminutos_factura" HorizontalAlignment="Left" Margin="233,9,0,0" VerticalAlignment="Top" Width="61" Height="25" RenderTransformOrigin="0.5,0.5" NumberDecimalDigits="0" ValueChanged="txtminutos_factura_ValueChanged"/>
                     <Label Content="minutos. " Foreground="White" HorizontalAlignment="Left" Margin="299,9,0,0" VerticalAlignment="Top" Width="54"/>
+                    <Button x:Name="btnClean_Factura" Content="Clean" HorizontalAlignment="Left" Margin="80,10,0,0" VerticalAlignment="Top" Width="75" Click="btnCleanfacturas_Click"/>
 
                 </Grid>
             </telerik:RadTabItem>
             <telerik:RadTabItem Header="Envio Boletas" Background="{DynamicResource Windows.Background}">
                 <Grid Background="{DynamicResource Windows.Background}" Margin="5">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10*"/>
-                        <RowDefinition Height="63*"/>
+                        <RowDefinition Height="39"/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBox Name="txtresumenBoletas" TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True" Text="" Foreground="White" Background="{DynamicResource Windows.Background}" Grid.Row="1"/>
+                    <TextBox Name="txtresumenBoletas" TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True" Text="" Foreground="White" Background="{DynamicResource Windows.Background}" Grid.Row="1" VerticalScrollBarVisibility="Auto" CaretIndex="99999999" />
+
                     <Button Name="btnEnvio_Boletas" Content="Pausa" HorizontalAlignment="Left" Margin="0,9,0,0" VerticalAlignment="Top" Width="75" Click="btnpauseBoletas_Click"/>
                     <Label Content="Ejecutar a las " Foreground="White" HorizontalAlignment="Right" Margin="0,3,97,0" VerticalAlignment="Top"/>
                     <telerik:RadTimePicker Name="rtpEnvio_Boletas" HorizontalAlignment="Right" Height="20" Margin="0,8,2,0"  VerticalAlignment="Top" Width="90"/>
+                    <Button x:Name="btnClean_Factura_Copy" Content="Clean" HorizontalAlignment="Left" Margin="80,10,0,0" VerticalAlignment="Top" Width="75" Click="btnCleanBoletas_Click"/>
+                </Grid>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Verificar Envios Pendientes" Background="{DynamicResource Windows.Background}">
+                <Grid Background="{DynamicResource Windows.Background}" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="63*"/>
+                    </Grid.RowDefinitions>
+                    <TextBox Name="txtresumen_verificacion" TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True" Text="" Foreground="White" Background="{DynamicResource Windows.Background}" Grid.Row="1" VerticalScrollBarVisibility="Auto" CaretIndex="99999999" />
+                    <Label Name="lblcontadorVerificacion" Content="" Foreground="White" HorizontalAlignment="Right" Margin="0,6,10,0" VerticalAlignment="Top"/>
+                    <Label Content="Cada " Foreground="White" HorizontalAlignment="Left" Margin="191,9,0,0" VerticalAlignment="Top"/>
+                    <telerik:RadNumericUpDown Name="txtminutos_verificacion" HorizontalAlignment="Left" Margin="233,9,0,0" VerticalAlignment="Top" Width="61" Height="25" RenderTransformOrigin="0.5,0.5" NumberDecimalDigits="0" ValueChanged="txtminutos_verificacion_ValueChanged"/>
+                    <Label Content="minutos. " Foreground="White" HorizontalAlignment="Left" Margin="299,9,0,0" VerticalAlignment="Top" Width="54"/>
+                    <Button x:Name="btnClean_Factura_Copy1" Content="Clean" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="btnCleanConfirmacion_Click"/>
+
                 </Grid>
             </telerik:RadTabItem>
         </telerik:RadTabControl>

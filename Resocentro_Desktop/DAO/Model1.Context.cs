@@ -104,6 +104,7 @@ namespace Resocentro_Desktop.DAO
         public virtual DbSet<ADJUNTO_CARTAGARANTIA> ADJUNTO_CARTAGARANTIA { get; set; }
         public virtual DbSet<FORMADEPAGO> FORMADEPAGO { get; set; }
         public virtual DbSet<Horario_Tecnologo> Horario_Tecnologo { get; set; }
+        public virtual DbSet<VerificacionSunat> VerificacionSunat { get; set; }
     
         public virtual int InsertEstudioCaja(Nullable<int> cita, string codigoestudio)
         {

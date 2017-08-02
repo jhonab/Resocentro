@@ -1,11 +1,14 @@
-﻿using Resocentro_Server.Entity;
+﻿using Oracle.ManagedDataAccess.Client;
+using Resocentro_Server.Entity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
@@ -641,7 +644,7 @@ namespace Resocentro_Server.DAO
 
         public List<SendFacturasOffline> getFacturasPendientesSendSunat()
         {
-            string sql = "select numerodocumento,estado,codigounidad,codigopaciente,replace(pathFile,'PDF','zip')filename from documento where numerodocumento like'F0%' and tipodocumento='01' and isSendSUNAT=0  and convert(date,fechaemitio)=convert(date,getdate())";
+            string sql = "select numerodocumento,estado,codigounidad,codigopaciente,replace(pathFile,'PDF','zip')filename from documento where numerodocumento like'F0%' and tipodocumento='01' and isSendSUNAT=0 and estado<>'A' --and convert(date,fechaemitio)=convert(date,getdate())";
             List<SendFacturasOffline> lista = new List<SendFacturasOffline>();
             using (DATABASEGENERALEntities db = new DATABASEGENERALEntities())
             {
@@ -719,11 +722,11 @@ namespace Resocentro_Server.DAO
             return xelement.InnerText == "0";
         }
 
-        public List<PreResumenBoleta> getListaResumen(string fecha,string unidad)
+        public List<PreResumenBoleta> getListaResumen(string fecha, string unidad)
         {
             List<PreResumenBoleta> lista = new List<PreResumenBoleta>();
-            
-            if (fecha != null&& unidad != null)
+
+            if (fecha != null && unidad != null)
             {
                 string queryString = "dbo.getListaResumenBoletas";
                 using (DATABASEGENERALEntities db = new DATABASEGENERALEntities())
@@ -1988,8 +1991,8 @@ namespace Resocentro_Server.DAO
 
         public void insertarResumen(DocumentoSunat documento, string ticket, string pathResumen, string pathRespuesta, string session)
         {
-            string sqlResumen = "INSERT INTO SendResumen([empresa],[numeroResumen],[fechaEmision],[fechaReferencia],[ticket],[pathResumen],[pathRespuesta],[usuario])VALUES ('" + documento.empresa + "','" + documento.numeroDocumento + "',getdate(),'" + documento.fechaEmision.ToShortDateString() + "','" + ticket + "','" + pathResumen + "','" + pathRespuesta + "','" + session + "');";
-
+            string sqlResumen = "INSERT INTO SendResumen([empresa],[numeroResumen],[fechaEmision],[fechaReferencia],[ticket],[pathResumen],[pathRespuesta],[usuario]) output INSERTED.idSendResumen  VALUES ('" + documento.empresa + "','" + documento.numeroDocumento + "',getdate(),'" + documento.fechaEmision.ToShortDateString() + "','" + ticket + "','" + pathResumen + "','" + pathRespuesta + "','" + session + "');";
+            string sqlDetalle = "INSERT INTO [dbo].[DetalleSendResumen] ([idSendResumen],[tipoDocumento],[serie],[inicio],[fin],[gravada],[exoneradas],[inafectas],[igv])VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')";
 
             using (DATABASEGENERALEntities db = new DATABASEGENERALEntities())
             {
@@ -2006,8 +2009,19 @@ namespace Resocentro_Server.DAO
 
                         command.CommandText = sqlResumen;
                         command.Prepare();
-                        command.ExecuteNonQuery();
+                        int idSendResumen = (int)command.ExecuteScalar();
+                        string sqlquery = "";
+                        foreach (var item in documento.detalleResumenBoleta)
+                        {
+                            sqlquery += string.Format(sqlDetalle, idSendResumen, (item.tipodocumento + "-" + item.tipodocumentoSUNAT), item.serie, item.inicioRango, item.finRango, item.totalVentaGravadas, item.totalVentaExonerada, item.totalVentaInafectas, item.totalIGV);
+                        }
 
+                        if (sqlquery != "")
+                        {
+                            command.CommandText = sqlResumen;
+                            command.Prepare();
+                            command.ExecuteNonQuery();
+                        }
 
                         transaction.Commit();
                     }
@@ -2077,6 +2091,192 @@ namespace Resocentro_Server.DAO
             }
 
             return lista;
+        }
+
+
+        public string getConexionOracle(int empresa)
+        {
+            if (empresa == 1)
+                return "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=SERVERCONTABLE)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=MEDICAL)));User Id=finanzas;Password=123;";
+            else if (empresa == 2)
+                return "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=172.16.104.184)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=MEDICAL)));User Id=emetac;Password=123;";
+            else
+                return "";
+        }
+
+        public bool anularDocumento(string numeroDocumento, string tipodocumento, string empresasucursal, string motivo, string session)
+        {
+            bool result = true;
+            #region SQL
+            using (DATABASEGENERALEntities db = new DATABASEGENERALEntities())
+            {
+                using (SqlConnection connection = new SqlConnection(db.Database.Connection.ConnectionString))
+                {
+                    SqlCommand command = new SqlCommand();
+                    connection.Open();
+                    SqlTransaction transaction = connection.BeginTransaction("GuardarDocumento");
+                    string sqlDocumento = "UPDATE DOCUMENTO SET estado='A',subtotal='0.0',igv='0.0',total='0.0',porconcepto='Por:', fecha_cancelacion=getdate(),usu_cancela='" + session + "',motivos_anulacion='" + motivo + "' WHERE tipodocumento='" + tipodocumento + "' AND numerodocumento='" + numeroDocumento + "'  AND codigounidad='" + empresasucursal.Substring(0, 1) + "';";
+                    string sqlDetalleDocumento = "UPDATE DETALLEDOCUMENTO SET descripcion='" + motivo + "',valorventa='0.00' WHERE numerodocumento='" + numeroDocumento + "' AND codigounidad='" + empresasucursal.Substring(0, 1) + "' AND codigopaciente=(SELECT codigopaciente FROM DOCUMENTO WHERE tipodocumento='" + tipodocumento + "' AND numerodocumento='" + numeroDocumento + "'  AND codigounidad='" + empresasucursal.Substring(0, 1) + "');";
+                    string sqlCobranza = "UPDATE COBRANZACIASEGURO SET estado='A' WHERE numerodocumento='" + numeroDocumento + "'  AND codigopaciente=(SELECT codigopaciente FROM DOCUMENTO WHERE tipodocumento='" + tipodocumento + "' AND numerodocumento='" + numeroDocumento + "'  AND codigounidad='" + empresasucursal.Substring(0, 1) + "' AND codigosucursal='" + (int.Parse(empresasucursal.Substring(1, 2))).ToString() + "');";
+
+                    try
+                    {
+                        command.Connection = connection;
+                        command.Transaction = transaction;
+                        command.CommandType = CommandType.Text;
+
+                        command.CommandText = sqlDocumento;
+                        command.Prepare();
+                        command.ExecuteNonQuery();
+
+                        command.CommandText = sqlDetalleDocumento;
+                        command.Prepare();
+                        command.ExecuteNonQuery();
+
+                        command.CommandText = sqlCobranza;
+                        command.Prepare();
+                        command.ExecuteNonQuery();
+
+                        transaction.Commit();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        result = false;
+                        string mensaje = "ERROR SQL: No se guardaron los registros de Libro Caja,Documento,Detalle Documento :\n-" + ex.Message;
+                        try
+                        {
+                            transaction.Rollback();
+                        }
+                        catch (Exception ex2)
+                        {
+                            mensaje += "\n\nError Rollback";
+                            mensaje += "\n-Exxeption Type: " + ex2.GetType();
+                            mensaje += "\n-Message: " + ex2.Message;
+                        }
+
+                        throw new Exception(mensaje);
+
+                    }
+                    finally
+                    {
+                        transaction.Dispose();
+                        command.Dispose();
+                        connection.Dispose();
+                        connection.Close();
+                    }
+
+                }
+            }
+            #endregion
+            if (result)
+            {
+                #region ORACLE
+                string conexion = getConexionOracle(int.Parse(empresasucursal.Substring(0, 1)));
+                using (OracleConnection connection = new OracleConnection(conexion))
+                {
+                    connection.Open();
+                    OracleCommand command = new OracleCommand();
+                    OracleTransaction transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted);
+                    string sqlTVVFACUTRA = "UPDATE TVV_FACTURA SET MONTO_B='0',MONTO_N='0',MONTO_F='0',IMPUESTO_M='0',ESTADO='0' WHERE NUM_FACT like '%" + numeroDocumento + "' AND COD_DOC='" + tipodocumento + "'";
+                    string sqlTVVDETFACUTRA = "UPDATE TVV_DET_FACTURA SET PRECIO='0',PORC_DSCTO ='0' WHERE NUM_FACT like '%" + numeroDocumento + "' AND COD_DOC='" + tipodocumento + "' AND EMPRESA='" + (empresasucursal.Substring(0, 1) + (int.Parse(empresasucursal.Substring(1, 2)).ToString())) + "'";
+                    string sqlFIVCOBRANZA = "DELETE FROM FIV_COBRANZAS WHERE NUMERO_DOCUMENTO like '%" + numeroDocumento + "' AND RUC_CLIENTE = (SELECT COD_AUXILIAR FROM TVV_FACTURA WHERE NUM_FACT like '%" + numeroDocumento + "' AND COD_DOC='" + tipodocumento + "')";
+
+                    try
+                    {
+                        command.Connection = connection;
+                        command.Transaction = transaction;
+                        command.CommandType = CommandType.Text;
+
+                        command.CommandText = sqlTVVFACUTRA;
+                        command.Prepare();
+                        command.ExecuteNonQuery();
+
+                        command.CommandText = sqlTVVDETFACUTRA;
+                        command.Prepare();
+                        command.ExecuteNonQuery();
+
+                        command.CommandText = sqlFIVCOBRANZA;
+                        command.Prepare();
+                        command.ExecuteNonQuery();
+
+                        transaction.Commit();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        result = false;
+                        string mensaje = "ERROR ORACLE: No se guardaron los registros de Libro Caja,Documento,Detalle Documento :\n-" + ex.Message;
+                        try
+                        {
+                            transaction.Rollback();
+                        }
+                        catch (Exception ex2)
+                        {
+                            mensaje += "\n\nError Rollback";
+                            mensaje += "\n-Exception Type: " + ex2.GetType();
+                            mensaje += "\n-Message: " + ex2.Message;
+                        }
+
+                        throw new Exception(mensaje);
+                    }
+                    finally
+                    {
+                        transaction.Dispose();
+                        command.Dispose();
+                        connection.Dispose();
+                        connection.Close();
+                    }
+                }
+                #endregion
+            }
+            return result;
+        }
+
+
+        public static void sendCorreoDocumentoGenerado(string mensaje)
+        {
+
+            MailMessage msg = new MailMessage();
+            System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+
+
+            try
+            {
+                msg.Subject = "Error envio Automatico SUNAT";
+                msg.IsBodyHtml = true;
+                msg.BodyEncoding = System.Text.Encoding.UTF8;
+                msg.SubjectEncoding = System.Text.Encoding.UTF8;
+                msg.Body = mensaje;
+                msg.To.Add("jhon.alvarez@resocentro.com");
+                msg.Sender = new MailAddress("facturacion@resocentro.com", "Facturacion Resocentro");
+                msg.From = new MailAddress("facturacion@resocentro.com", "Facturacion Resocentro");
+                msg.ReplyToList.Add(new MailAddress("facturacion@resocentro.com", "Facturacion Resocentro"));
+                client.Host = "smtp.gmail.com";
+                System.Net.NetworkCredential basicauthenticationinfo;
+                basicauthenticationinfo = new System.Net.NetworkCredential("alerta.resocentro@gmail.com", "Resocentro2013");
+                client.Port = int.Parse("587");
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = basicauthenticationinfo;
+                //client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
+                client.SendAsync(msg, msg);
+                //client.Send(msg);
+                //msg.Dispose();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+
+        }
+
+        private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
+        {
+            MailMessage mail = (MailMessage)e.UserState;
+            mail.Dispose();
         }
     }
 }

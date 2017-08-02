@@ -26,5 +26,7 @@ namespace Resocentro_Server.DAO
         }
     
         public virtual DbSet<DOCUMENTO> DOCUMENTO { get; set; }
+        public virtual DbSet<VerificacionSunat> VerificacionSunat { get; set; }
+        public virtual DbSet<DetalleSendResumen> DetalleSendResumen { get; set; }
     }
 }
